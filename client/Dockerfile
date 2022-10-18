@@ -2,6 +2,8 @@
 FROM node:lts-alpine
 ENV NODE_ENV=production
 
+RUN npm install -g create-react-app
+
 # set working directory
 WORKDIR /usr/src/client
 
