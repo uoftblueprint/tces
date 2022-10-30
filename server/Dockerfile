@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:18.12.0-slim
+FROM node:18.12.0-bullseye-slim
 ENV NODE_ENV=production
 
 # set working directory
@@ -7,7 +7,7 @@ WORKDIR /usr/src/server
 
 # add packages and install them
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
+RUN npm ci --only=production
 
 # add app
 COPY . .
