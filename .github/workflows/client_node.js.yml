@@ -33,5 +33,5 @@ jobs:
       working-directory: client
       env:
          CI: ""
-    - run: npm test
-      working-directory: client
+    #- run: npm test
+    #  working-directory: client
