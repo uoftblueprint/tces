@@ -1,8 +1,9 @@
 # Toronto Community Employment Services (TCES)
 
-Clone this repository, install docker and node and run 
+Clone this repository, install Node.JS and run this command in the root directory:
 
-`npm install` in both the client and server dir
+`npm run install:all`
 
-`docker compose up` in the root directory!
+Next, install docker and run this command in the root directory:
 
+`docker compose up`
