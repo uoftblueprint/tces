@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:lts-alpine
+FROM node:18.12.0-slim
 ENV NODE_ENV=production
 
 RUN npm install -g create-react-app

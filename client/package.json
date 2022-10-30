@@ -17,7 +17,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "WATCHPACK_POLLING=true react-scripts --openssl-legacy-provider start",
+    "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "CI='' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
