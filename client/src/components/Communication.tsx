@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 // Testing frontend and backend communication with a simple API calls
 function Communication() {
-	const url = "http://localhost:3001/api/";
+	const url = "api/";
 
 	// POST and GET request functions
 

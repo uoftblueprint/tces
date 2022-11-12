@@ -9,7 +9,7 @@ const app = express();
 
 // Trying to handle CORS
 app.use((req, res, next) => {
-  const allowedOrigins = ['http://localhost:3006'];
+  const allowedOrigins = ['http://localhost:3000'];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
        res.setHeader('Access-Control-Allow-Origin', origin);
