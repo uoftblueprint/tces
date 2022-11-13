@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-
 // Testing frontend and backend communication with a simple API calls
 function Communication() {
-	const url = "api/";
+	const url = "/api";
 
 	// POST and GET request functions
 
@@ -19,13 +17,14 @@ function Communication() {
 	async function postData(event: { preventDefault: () => void }) {
 		event.preventDefault();
 		let value = "";
-		if ((document.getElementById("input-text") as HTMLInputElement) != null) {
-			value = (document.getElementById("input-text") as HTMLInputElement).value;
+		if ((document.getElementById("message") as HTMLInputElement) != null) {
+			value = (document.getElementById("message") as HTMLInputElement).value;
 		}
 		const response = await fetch(url, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*",
 			},
 			body: JSON.stringify({
 				message: value,
@@ -38,8 +37,13 @@ function Communication() {
 
 	return (
 		<div>
-			<form method="post" className="addItem">
-				<input type="text" placeholder="Input" name="input-text" required />
+			<form method="post" action={url}>
+				<input
+					type="text"
+					placeholder="Input Some Text"
+					id="message"
+					required
+				/>
 				<button id="submitItem" value="Submit" onClick={postData}>
 					POST
 				</button>
