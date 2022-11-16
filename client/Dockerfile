@@ -12,6 +12,4 @@ RUN npm ci
 
 # start app
 EXPOSE 3000
-RUN chown -R node /app/client
-USER node
 CMD ["npm", "start"]

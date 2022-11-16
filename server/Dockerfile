@@ -13,6 +13,4 @@ COPY . .
 
 # start app
 EXPOSE 3001
-RUN chown -R node /usr/src/server
-USER node
 CMD ["npm", "start"]
