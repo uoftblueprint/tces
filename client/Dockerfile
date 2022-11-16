@@ -1,21 +1,17 @@
 # pull official base image
-FROM node:18.12.0-bullseye-slim
-ENV NODE_ENV=production
-
-RUN npm install -g create-react-app
+FROM node:18.12.0-alpine
 
 # set working directory
-WORKDIR /usr/src/client
-
-# add packages and install them
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm ci --only=production
-
+WORKDIR /app/client
 # add app
 COPY . .
 
+# add packages and install them
+RUN npm install -g create-react-app
+RUN npm ci
+
 # start app
 EXPOSE 3000
-RUN chown -R node /usr/src/client
+RUN chown -R node /app/client
 USER node
 CMD ["npm", "start"]
