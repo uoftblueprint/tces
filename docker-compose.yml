@@ -33,4 +33,15 @@ services:
       - 3001:3001
     networks:
       - test
+    links:
+      - mongo
 
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - test
