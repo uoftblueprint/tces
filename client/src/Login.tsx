@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import FormTextField from "./components/FormTextField";
 
 function Login() {
   const [data, setData] = useState(null);
@@ -46,26 +47,8 @@ function Login() {
             Sign in
           </Typography>
           <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
+            <FormTextField text="email" fullWidth margin="normal" />
+            <FormTextField text="password" fullWidth margin="normal" />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
