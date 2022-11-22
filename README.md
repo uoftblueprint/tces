@@ -6,4 +6,4 @@ Clone this repository, install Node.JS and run this command in the root director
 
 Next, install docker and run this command in the root directory:
 
-`docker compose up`
+`docker compose up --build`
