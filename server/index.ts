@@ -1,4 +1,6 @@
 // server/index.js
+import { connectToDatabase } from "./Controller/client.controller";
+import { clientsRouter } from "./Routes/client.router";
 
 const express = require("express");
 
@@ -29,5 +31,18 @@ async function run() {
     await client.close(); // Ensures that the client will close when you finish/error
   }
 }
+
+connectToDatabase()
+  .then(() => {
+    app.use("/clients", clientsRouter);
+
+    app.listen(PORT, () => {
+      console.log(`Server started at http://localhost:${PORT}`);
+    });
+  })
+  .catch((error: Error) => {
+    console.error("Database connection failed", error);
+    process.exit();
+  });
 
 run().catch(console.dir);
