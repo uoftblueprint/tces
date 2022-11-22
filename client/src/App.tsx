@@ -1,3 +1,9 @@
+import React, { useEffect, useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { Button } from "@mui/material";
+import  SettingsIcon  from "@mui/icons-material/Settings";
+import { NavBar } from './NavBar/NavBar';
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
