@@ -3,9 +3,6 @@
         "dev": "concurrently 'cd client && PORT=3006 npm start' 'cd server && npm run dev'",
         "prod": "cd server && npm start",
         "build": "cd client && npm run build",
-        "install:all": "npm i && cd client && npm i && cd ../server && npm i",
-        "install:client": "cd client && npm i",
-        "install:server": "cd server && npm i",
         "test": "jest"
     },
     "devDependencies": {
