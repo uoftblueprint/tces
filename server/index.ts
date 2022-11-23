@@ -26,7 +26,7 @@ app.listen(PORT, () => {
 });
 
 const { MongoClient } = require("mongodb");
-const uri = "mongodb://localhost:27017";  // Connection URI
+const uri = "mongodb://mongo:27017";  // Connection URI
 const client = new MongoClient(uri);  // Create a new MongoClient
 
 async function run() {
