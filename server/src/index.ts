@@ -1,5 +1,4 @@
-// server/index.js
-const express = require("express");
+import express, { Request, Response } from 'express';
 
 const PORT = process.env.PORT || 3001;
 
@@ -8,12 +7,12 @@ const app = express();
 // Allow parsing of JSON data
 app.use(express.json());
 
-app.get("/api", (req, res) => {
-	res.json({ message: "Hello from server!" });
+app.get("/api", (req: Request, res: Response) => {
+	res.json({ message: "Hello from server! NEW HOT " });
 });
 
 // Test POST request
-app.post("/api", (req, res) => {
+app.post("/api", (req:Request, res: Response) => {
 	const request = req.body;
 	if (!request) {
 		return res.status(400).json({ message: "No request body" });
@@ -41,4 +40,4 @@ async function run() {
   }
 }
 
-run().catch(console.dir);
+//run().catch(console.dir);
