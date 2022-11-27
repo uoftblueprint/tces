@@ -1,38 +1,29 @@
-version: '0.1'
-
-networks:
-  test:
+version: "0.1"
 
 services:
-  client:
-    image: client
+  react-frontend:
+    container_name: tces-prod-frontend
     build:
-      context: client
-      dockerfile: ./Dockerfile
+      context: ./client
+      dockerfile: Dockerfile.prod
     environment:
       NODE_ENV: production
-      CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./client:/home/node/app
     working_dir: /home/node/app
     ports:
-      - 3000:3000
-    depends_on: 
-      - server
-    networks:
-      - test
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - nodejs-middleware
 
-  server:
-    image: server
+  nodejs-middleware:
+    container_name: tces-prod-backend
     build:
-      context: server
-      dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: production
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - 3001:3001
-    networks:
-      - test
     links:
       - mongo
 
@@ -42,6 +33,4 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - '27017:27017'
-    networks:
-      - test
+      - "27017:27017"
