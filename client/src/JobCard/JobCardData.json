@@ -1,0 +1,27 @@
+{
+    "id": ObjectId("fe0b3acec32e1fb86cdbe9cd"),
+    "title": "Lorem",
+    "pay_per_hour": 72,
+    "employer_name": "Shopper's Drug Mart",
+    "email": "shoppers@example.com",
+    "description": "Lorem",
+    "type": "Permanent",
+    "expiry_date": ISODate("2016-04-08T15:06:21.595Z"),
+    "creation_date": ISODate("2016-04-08T15:06:21.595Z"),
+    "owner_id": ObjectId("8e83ffe1f1c3638c3fc6653c"),
+    "creator_id": ObjectId("e18debaeab4ebb39ceea0f3a"),
+    "timeline":{
+        "notes": [
+              {
+              "text": "Lorem",
+              "category": "Lorem"
+              },
+              {
+              "text": "Lorem2",
+              "category": "Lorem2"
+              }
+         ]
+    } 
+    ,
+    "employer_id": ObjectId("cabca54558fe16d6cca2af67")
+    }
