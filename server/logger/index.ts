@@ -1,8 +1,8 @@
 const { createLogger, format, transports } = require("winston");
-const { combine, timestamp, printf } = format;
+const { combine, timestamp, printf, prettyPrint } = format;
 
 const formatSetup = printf(({ level, message, timestamp }) => {
-	return `${timestamp} ${level}: ${message}`;
+	return `${timestamp} ${message} ${level}`;
 });
 
 module.exports = (dirname) => {
@@ -17,8 +17,7 @@ module.exports = (dirname) => {
 
 	for (let level of Object.keys(levels)) {
 		levels[level] = createLogger({
-			levels: { [level]: 0 },
-			format: combine(timestamp(), formatSetup),
+			format: combine(timestamp(), formatSetup, prettyPrint()),
 			transports: [
 				new transports.Console({
 					level,
