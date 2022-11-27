@@ -6,7 +6,8 @@
 
 ## Development
 1. Ensure your local files are synced with any updates on GitHub
-2. Run the following commands in the main directory (make sure Docker is running!):
+2. Make a copy of `.env.example` called `.env`, fill in all empty fields.
+3. Run the following commands in the main directory (make sure Docker is running!):
 ```
 docker compose -f docker-compose.dev.yml build
 docker compose -f docker-compose.dev.yml up
