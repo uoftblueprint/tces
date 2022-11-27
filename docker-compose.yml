@@ -1,4 +1,4 @@
-version: '0.1'
+version: "0.1"
 
 networks:
   test:
@@ -16,25 +16,31 @@ services:
       - ./client:/home/node/app
     working_dir: /home/node/app
     ports:
-      - 3000:3000
-    depends_on: 
-      - server
-    networks:
-      - test
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - nodejs-middleware
 
-  server:
-    image: server
+  nodejs-middleware:
+    container_name: tces-dev-backend
     build:
-      context: server
-      dockerfile: ./Dockerfile
+      context: ./server
+      dockerfile: Dockerfile
+      target: base
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+    volumes:
+      - ./server/src:/home/node/backend/src
+      - ./server/nodemon.json:/home/node/backend/nodemon.json
     ports:
       - 3001:3001
-    networks:
-      - test
+    expose:
+      - "3001"
     links:
       - mongo
+    env_file:
+      - .env
+    command: npm run dev
 
   mongo:
     container_name: mongo
@@ -42,6 +48,4 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - '27017:27017'
-    networks:
-      - test
+      - "27017:27017"

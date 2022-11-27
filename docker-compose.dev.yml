@@ -1,0 +1,47 @@
+version: "0.1"
+
+services:
+  react-frontend:
+    container_name: tces-dev-frontend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./client:/home/node/app
+    working_dir: /home/node/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - nodejs-middleware
+
+  nodejs-middleware:
+    container_name: tces-dev-backend
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: base
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./server/src:/home/node/backend/src
+      - ./server/nodemon.json:/home/node/backend/nodemon.json
+    ports:
+      - 3001:3001
+    expose:
+      - "3001"
+    links:
+      - mongo
+    env_file:
+      - .env
+    command: npm run dev
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
