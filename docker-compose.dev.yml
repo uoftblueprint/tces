@@ -1,4 +1,4 @@
-version: "0.1"
+version: '0.1'
 
 services:
   react-frontend:
@@ -31,7 +31,7 @@ services:
     ports:
       - 3001:3001
     expose:
-      - "3001"
+      - '3001'
     links:
       - mongo
     env_file:
@@ -44,4 +44,5 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - "27017:27017"
+      - '27017:27017'
+
