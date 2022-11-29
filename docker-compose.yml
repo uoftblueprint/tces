@@ -1,17 +1,13 @@
 version: "0.1"
 
-networks:
-  test:
-
 services:
-  client:
-    image: client
+  react-frontend:
+    container_name: tces-prod-frontend
     build:
-      context: client
-      dockerfile: ./Dockerfile
+      context: ./client
+      dockerfile: Dockerfile.prod
     environment:
       NODE_ENV: production
-      CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./client:/home/node/app
     working_dir: /home/node/app
