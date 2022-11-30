@@ -28,3 +28,12 @@ and navigate to http://localhost:3000/ to view your local version of the website
 3. Add the appropriate files to commit: `git add <file_name>`
 4. Create a new commit: `git commit -m "quality message"`
 5. Push the commit to GitHub: `git push`
+
+# Known Issues
+## MongoDB container dying with `data` permission denied
+Example:
+![image](https://user-images.githubusercontent.com/22108651/204692135-9d86dfaa-4462-4730-98cb-6f3ca221950a.png)
+Fix:
+- Just delete `data` directory, then re-build with `docker compose`. 
+
+
