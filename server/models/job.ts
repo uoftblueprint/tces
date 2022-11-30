@@ -9,7 +9,6 @@ export default class Job {
         public creator_id: ObjectId,
         public timeline: Document,
         public employer_id: ObjectId,
-        public id?: ObjectId,
         public pay_per_hour?: number,
         public address_id?: ObjectId,
         public description?: string,
