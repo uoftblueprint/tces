@@ -1,7 +1,7 @@
 {
 	"name": "logger",
 	"version": "1.0.0",
-	"description": "All logger related files",
+	"description": "",
 	"main": "index.ts",
 	"scripts": {
 		"start": "node index.ts",
@@ -9,8 +9,5 @@
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"winston": "^3.8.2"
-	}
+	"license": "ISC"
 }
