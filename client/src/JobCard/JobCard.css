@@ -1,0 +1,55 @@
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    position: absolute;
+    width: 659px;
+    height: 729px;
+    left: 100px;
+    top: 269px;
+
+}
+
+.editLogo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    width: 48px;
+    height: 48px;
+
+}
+
+.cardTitle {
+
+}
+
+.cardSec {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    isolation: isolate;
+    
+    width: 627px;
+    height: 56px;
+
+    background: rgba(255, 255, 255, 0.003);
+}
+
+.cardParagraph {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    isolation: isolate;
+    width: 627px;
+    height: 224px;
+    background: rgba(255, 255, 255, 0.003);   
+    flex: none;
+    order: 7;
+    align-self: stretch;
+    flex-grow: 0;
+}
