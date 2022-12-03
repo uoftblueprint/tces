@@ -28,8 +28,10 @@ const createClient = async (req: Request, res: Response) => {
     result
       ? res
           .status(201)
-          .send(`Successfully created a new job with id ${result.insertedId}`)
-      : res.status(500).send("Failed to create a new job.");
+          .send(
+            `Successfully created a new client with id ${result.insertedId}`
+          )
+      : res.status(500).send("Failed to create a new client.");
   } catch (error) {
     if (error instanceof Error) {
       console.log(error);
