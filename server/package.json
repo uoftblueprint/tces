@@ -22,6 +22,7 @@
     "@types/jest": "^29.2.3",
     "jest": "^29.3.1",
     "ts-jest": "^29.0.3",
+    "@jest-mock/express": "^2.0.1",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
