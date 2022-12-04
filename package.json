@@ -3,10 +3,5 @@
         "dev": "concurrently 'cd client && PORT=3006 npm start' 'cd server && npm run dev'",
         "prod": "cd server && npm start",
         "build": "cd client && npm run build",
-        "test": "jest"
     },
-    "devDependencies": {
-        "@types/jest": "^29.2.3",
-        "jest": "^29.3.1"
-    }
 }
