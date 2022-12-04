@@ -40,5 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://server:3001"
+  "proxy": "http://tces-dev-backend:3001"
 }
