@@ -2,20 +2,20 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "../src/database/conn";
-import Job from "../models/job";
+import Job from "../models/job.model";
 
-const getJob = async (req: Request, res: Response) => {
-    const id = req?.params?.id;
+const getJobById = async (req: Request, res: Response) => {
+    const job_id = req?.params?.id;
 
     try {
-        const query = { _id: new ObjectId(id) };
+        const query = { id: new ObjectId(job_id) };
         const job = (await collections.jobs?.findOne(query)) as unknown as Job;
 
         if (job) {
             res.status(200).send(job);
         }
     } catch (error) {
-        res.status(404).send(`Unable to find matching document with id: ${id}`);
+        res.status(404).send(`Unable to find matching document with id: ${job_id}`);
     }
 };
 
@@ -33,9 +33,9 @@ const createJob = async (req: Request, res: Response) => {
             res.status(400).send(error.message);
         } else {
             console.log('Unexpected error', error);
-            res.status(400).send(error);
+            res.status(500).send(error);
         }
     }
 };
 
-export { getJob, createJob };
+export { getJobById, createJob };

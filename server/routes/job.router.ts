@@ -7,7 +7,7 @@ export const jobsRouter = express.Router();
 jobsRouter.use(express.json());
 
 // GET
-jobsRouter.get("/job/:id", JobController.getJob);
+jobsRouter.get("/job/:id", JobController.getJobById);
 
 // POST
 jobsRouter.post("/job", JobController.createJob);
