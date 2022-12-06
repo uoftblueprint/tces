@@ -6,7 +6,8 @@
 
 ## Development
 1. Ensure your local files are synced with any updates on GitHub
-2. Run the following commands in the main directory (make sure Docker is running!):
+2. Make a copy of `.env.example` called `.env`, fill in all empty fields.
+3. Run the following commands in the main directory (make sure Docker is running!):
 ```
 docker compose -f docker-compose.dev.yml build
 docker compose -f docker-compose.dev.yml up
@@ -27,3 +28,12 @@ and navigate to http://localhost:3000/ to view your local version of the website
 3. Add the appropriate files to commit: `git add <file_name>`
 4. Create a new commit: `git commit -m "quality message"`
 5. Push the commit to GitHub: `git push`
+
+# Known Issues
+## MongoDB container dying with `data` permission denied
+Example:
+![image](https://user-images.githubusercontent.com/22108651/204692135-9d86dfaa-4462-4730-98cb-6f3ca221950a.png)
+Fix:
+- Just delete `data` directory, then re-build with `docker compose`. 
+
+
