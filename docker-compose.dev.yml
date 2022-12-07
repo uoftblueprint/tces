@@ -1,19 +1,19 @@
-version: "0.1"
+version: '0.1'
 
 services:
   react-frontend:
-    container_name: tces-prod-frontend
+    container_name: tces-dev-frontend
     build:
       context: ./client
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./client:/home/node/app
     working_dir: /home/node/app
     ports:
-      - '80:80'
-      - '443:443'
+      - 3000:3000
     depends_on:
       - nodejs-middleware
 
@@ -45,3 +45,4 @@ services:
       - ./data:/data/db
     ports:
       - '27017:27017'
+
