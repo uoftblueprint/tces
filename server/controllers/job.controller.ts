@@ -5,17 +5,17 @@ import { collections } from "../src/database/conn";
 import Job from "../models/job.model";
 
 const getJobById = async (req: Request, res: Response) => {
-    const job_id = req?.params?.id;
+    const id = req?.params?.id;
 
     try {
-        const query = { id: new ObjectId(job_id) };
+        const query = { _id: new ObjectId(id) };
         const job = (await collections.jobs?.findOne(query)) as unknown as Job;
 
         if (job) {
             res.status(200).send(job);
         }
     } catch (error) {
-        res.status(404).send(`Unable to find matching document with id: ${job_id}`);
+        res.status(404).send(`Unable to find matching document with id: ${id}`);
     }
 };
 
