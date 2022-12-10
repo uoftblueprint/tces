@@ -15,7 +15,7 @@ export default class Job {
   public expiry_date?: Date;
   
   constructor(title: string, creation_date: Date, creator_id: ObjectId, owner_id: ObjectId = creator_id, 
-    timeline: Document, employer_id: ObjectId,  pay_per_hour?: number,address_id?: ObjectId, 
+    timeline: Document, employer_id: ObjectId, pay_per_hour?: number,address_id?: ObjectId, 
     description?: string, type?: string, expiry_date?: Date,
   ) {
     this.title = title;
@@ -39,7 +39,7 @@ export default class Job {
       if(job) {    
         resolve(job);  
       } else {    
-        reject(new Error(`Unable to find matching document with id: ${id}`));  
+        reject(new Error(`Unable to find matching job with id: ${id}`));  
       }
     });
   }

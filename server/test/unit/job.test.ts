@@ -23,7 +23,7 @@ const mockJobData = {
 };
 const mockCreateJobSuccess = `Successfully created a new job with id ${mockJobData.id}`;
 // Testing whether errors are handled properly is also needed. 
-const mockGetJobByIdError = new Error('Unable to find matching document with id: abcdefghijklmnopqrstuvwx');
+const mockGetJobByIdError = new Error('Unable to find matching job with id: abcdefghijklmnopqrstuvwx');
 const mockCreateJobError = new Error("Failed to create a new job.");
 
 describe('Job Controller Unit Tests', () => {
