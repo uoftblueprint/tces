@@ -1,39 +1,39 @@
 // External Dependencies
-import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
-import { collections } from "../src/database/conn";
+import { NextFunction, Request, Response } from "express";
 import Job from "../models/job.model";
 
-const getJobById = async (req: Request, res: Response) => {
-    const id = req?.params?.id;
-
+const getJobById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const query = { _id: new ObjectId(id) };
-        const job = (await collections.jobs?.findOne(query)) as unknown as Job;
-
-        if (job) {
-            res.status(200).send(job);
-        }
+        const id = req?.params?.id;
+        const job = await Job.getJobById(id);
+        res.status(200).json(job);
     } catch (error) {
-        res.status(404).send(`Unable to find matching document with id: ${id}`);
+        if (error instanceof Error) {
+            console.log(error);
+            res.status(404).send(error.message);
+            next(error);
+        } else {
+            console.log('Unexpected error', error);
+            res.status(500).send(error);
+            next(error);
+        }
     }
 };
 
-const createJob = async (req: Request, res: Response) => {
+const createJob = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const newJob = req.body as Job;
-        const result = await collections.jobs?.insertOne(newJob);
-
-        result
-            ? res.status(201).send(`Successfully created a new job with id ${result.insertedId}`)
-            : res.status(500).send("Failed to create a new job.");
+        const result = await Job.createJob(newJob);
+        res.status(201).send(result);
     } catch (error) {
         if (error instanceof Error) {
             console.log(error);
             res.status(400).send(error.message);
+            next(error);
         } else {
             console.log('Unexpected error', error);
             res.status(500).send(error);
+            next(error);
         }
     }
 };

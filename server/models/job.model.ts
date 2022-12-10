@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { collections } from "../src/database/conn";
 
 export default class Job {
   public title: string;
@@ -31,22 +32,26 @@ export default class Job {
     this.expiry_date = expiry_date;
   }
 
-    // getJobById() {
-    //     return new Promise((resolve, reject) => {
-    //       const query = `SELECT c.name, c.email, c.phone, u.street_name, 
-    //       u.city, u.province, u.applicant_dob, u.curr_level 
-    //       FROM client_users AS c INNER JOIN UserInfo AS u 
-    //       ON c.user_id = u.user_id WHERE c.user_id = ?`;
-    //       sql.query(query, [user_id], (err, userInfo) => {
-    //         if (err) reject(err);
-    //         else resolve(userInfo);
-    //       });
-    //     });
-    // }
+  static async getJobById(id: string) {
+    const query = { _id: new ObjectId(id) };
+    const job = (await collections.jobs?.findOne(query)) as unknown as Job;
+    return new Promise((resolve, reject) => {
+      if(job) {    
+        resolve(job);  
+      } else {    
+        reject(new Error(`Unable to find matching document with id: ${id}`));  
+      }
+    });
+  }
 
-    // createJob() {
-    //     return new Promise((resolve, reject) => {
-        
-    //     });
-    // }
+  static async createJob(newJob: Job) {
+    const result = await collections.jobs?.insertOne(newJob);
+    return new Promise((resolve, reject) => {
+      if(result) {
+        resolve(`Successfully created a new job with id ${result.insertedId}`);
+      } else {
+        reject(new Error("Failed to create a new job."));
+      }
+    });
+  }
 }
