@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { connectToDatabase } from './database/conn';
+import { employersRouter } from "../Routes/employer.routes";
 
 const PORT = process.env.PORT || 3001;
 
@@ -27,6 +28,9 @@ connectToDatabase()
     app.listen(PORT, () => {
         console.log(`Server listening on ${PORT}`);
     });
+
+    app.use("/api", employersRouter);
+    
   })
   .catch((error: Error) => {
     console.error("Database Connection Failed", error)
