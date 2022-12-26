@@ -11,3 +11,9 @@ jobsRouter.get("/job/:id", JobController.getJobById);
 
 // POST
 jobsRouter.post("/job", JobController.createJob);
+
+// DELETE
+jobsRouter.delete("/job/:id", JobController.deleteJob);
+
+// PUT
+jobsRouter.put("/job/:id", JobController.updateJob);

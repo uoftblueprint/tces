@@ -54,4 +54,30 @@ export default class Job {
       }
     });
   }
+  
+  static async deleteJob(id: string) {
+    const query = { _id: new ObjectId(id) };
+    const result = await collections.jobs?.deleteOne(query);
+    return new Promise((resolve, reject) => {
+      if (result && result.deletedCount) {
+        resolve(`Successfully removed job with id ${id}`);
+      } else if (!result) {
+        reject(new Error(`Failed to remove job with id ${id}`));
+      } else if (!result.deletedCount) {
+        reject(new Error(`Job with id ${id} does not exist`));
+      }
+    });
+  }
+
+  static async updateJob(id: string, updateJob: Job) {
+    const query = { _id: new ObjectId(id) };
+    const result = await collections.jobs?.updateOne(query, { $set: updateJob });
+    return new Promise((resolve, reject) => {
+      if (result) {
+        resolve(`Successfully updated job with id ${id}`);
+      } else {
+        reject(new Error(`Job with id: ${id} not updated`));
+      }
+    });
+  }
 }
