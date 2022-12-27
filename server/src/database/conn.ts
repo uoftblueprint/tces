@@ -31,5 +31,65 @@ export async function connectToDatabase() {
     `Successfully connected to collection: ${jobsCollection.collectionName}`
   );
 
+  await db.command({
+    "collMod": JOBS_COLLECTION_NAME,
+    "validator": jobSchema
+  });
 }
 
+const jobSchema = {
+  $jsonSchema: {
+    bsonType: "object",
+    required: ["title", "creation_date", "creator_id", "owner_id", "timeline", "employer_id"],
+    properties: {
+      _id: {
+        bsonType: "objectId",
+        description: "'_id' is required and must be an ObjectId"
+      },
+      title: {
+        bsonType: "string",
+        description: "'title' is required and must be a String"
+      },
+      creation_date: {
+        bsonType: "date",
+        description: "'creation_date' is required and must be a Date"
+      },
+      creator_id: {
+        bsonType: "objectId",
+        description: "'creator_id' is required and must be an ObjectId"
+      },
+      owner_id: {
+        bsonType: "objectId",
+        description: "'owner_id' is required and must be an ObjectId"
+      },
+      timeline: {
+        bsonType: "object",
+        description: "'timeline' is required and must be an Object"
+      },
+      employer_id: {
+        bsonType: "objectId",
+        description: "'employer_id' is required and must be an ObjectId"
+      },
+      pay_per_hour: {
+          bsonType: ["null", "number"],
+          description: "'pay_per_hour' must be a Number"
+      },
+      address_id: {
+        bsonType: ["null", "objectId"],
+        description: "'address_id' must be an ObjectId"
+      },
+      description: {
+        bsonType: ["null", "string"],
+        description: "'description' must be a String"
+      },
+      type: {
+        bsonType: ["null", "string"],
+        description: "'type' must be a String"
+      },
+      expiry_date: {
+        bsonType: ["null", "date"],
+        description: "'expiry_date' must be a Date"
+      }
+    }
+  }
+}
