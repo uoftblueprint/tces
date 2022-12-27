@@ -44,7 +44,24 @@ export default class Job {
     });
   }
 
-  static async createJob(newJob: Job) {
+  static async createJob(newJobInfo: { 
+    title: string; creation_date: string; creator_id: string; owner_id: string | undefined;
+    timeline: string; employer_id: string; pay_per_hour: number | undefined; address_id: string | undefined;
+    description: string | undefined; type: string | undefined; expiry_date: string | undefined;
+  }) {
+    const newJob = new Job(
+      newJobInfo.title, 
+      new Date(newJobInfo.creation_date), 
+      new ObjectId(newJobInfo.creator_id),
+      newJobInfo.owner_id ? new ObjectId(newJobInfo.owner_id) : new ObjectId(newJobInfo.creator_id),
+      JSON.parse(JSON.stringify(newJobInfo.timeline)),
+      new ObjectId(newJobInfo.employer_id),
+      newJobInfo.pay_per_hour ? newJobInfo.pay_per_hour : undefined,
+      newJobInfo.address_id ? new ObjectId(newJobInfo.address_id) : undefined, 
+      newJobInfo.description ? newJobInfo.description : undefined,
+      newJobInfo.type ? newJobInfo.type : undefined,
+      newJobInfo.expiry_date ? new Date(newJobInfo.expiry_date) : undefined
+    );
     const result = await collections.jobs?.insertOne(newJob);
     return new Promise((resolve, reject) => {
       if(result) {
@@ -69,8 +86,25 @@ export default class Job {
     });
   }
 
-  static async updateJob(id: string, updateJob: Job) {
+  static async updateJob(id: string, updateJobInfo: { 
+    title: string; creation_date: string; creator_id: string; owner_id: string | undefined;
+    timeline: string; employer_id: string; pay_per_hour: number | undefined; address_id: string | undefined;
+    description: string | undefined; type: string | undefined; expiry_date: string | undefined;
+  }) {
     const query = { _id: new ObjectId(id) };
+    const updateJob = new Job(
+      updateJobInfo.title, 
+      new Date(updateJobInfo.creation_date), 
+      new ObjectId(updateJobInfo.creator_id),
+      updateJobInfo.owner_id ? new ObjectId(updateJobInfo.owner_id) : new ObjectId(updateJobInfo.creator_id),
+      JSON.parse(JSON.stringify(updateJobInfo.timeline)),
+      new ObjectId(updateJobInfo.employer_id),
+      updateJobInfo.pay_per_hour ? updateJobInfo.pay_per_hour : undefined,
+      updateJobInfo.address_id ? new ObjectId(updateJobInfo.address_id) : undefined, 
+      updateJobInfo.description ? updateJobInfo.description : undefined,
+      updateJobInfo.type ? updateJobInfo.type : undefined,
+      updateJobInfo.expiry_date ? new Date(updateJobInfo.expiry_date) : undefined
+    );
     const result = await collections.jobs?.updateOne(query, { $set: updateJob });
     return new Promise((resolve, reject) => {
       if (result) {
