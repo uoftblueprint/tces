@@ -6,7 +6,13 @@ export const clientRouter = express.Router();
 clientRouter.use(express.json());
 
 // GET
-clientRouter.get("/client/:id", ClientController.getClient);
+clientRouter.get("/client/:id", ClientController.getClientById);
 
 // POST
 clientRouter.post("/client", ClientController.createClient);
+
+// DELETE
+clientRouter.delete("/job/:id", ClientController.deleteClient);
+
+// PUT
+clientRouter.put("/job/:id", ClientController.updateClient);

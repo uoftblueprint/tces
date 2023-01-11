@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { connectToDatabase } from "./database/conn";
-import { clientRouter } from "./routes/client.router";
+import { clientRouter } from "../routes/client.router";
 
 const PORT = process.env.PORT || 3001;
 
