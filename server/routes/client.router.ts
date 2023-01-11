@@ -12,7 +12,7 @@ clientRouter.get("/client/:id", ClientController.getClientById);
 clientRouter.post("/client", ClientController.createClient);
 
 // DELETE
-clientRouter.delete("/job/:id", ClientController.deleteClient);
+clientRouter.delete("/client/:id", ClientController.deleteClient);
 
 // PUT
-clientRouter.put("/job/:id", ClientController.updateClient);
+clientRouter.put("/client/:id", ClientController.updateClient);
