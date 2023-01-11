@@ -10,26 +10,27 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
+
 export default function ActivityTimeline() {
 
-  const [list, setList] = useState([]);
-  const [input, setInput] = useState("");
+  const [list, setList] = useState<any>([]);
+  const [input, setInput] = useState<string>("");
 
-  const addActivity = (activity) => {
+  const addActivity = (activity: string) => {
     const newActivity = {
       id: Math.random(),
       activity: activity,
     };
-    setList([...list, newActivity]);
+    setList(([...list, newActivity]));
     setInput("");
   };
 
   return(
     <div>
       <ul>
-        {list.map((activity) => (
+        {list.map((activity: any) => (
           <li key={activity.id} style={{ listStyleType: "none" }}>
-            <Timeline>
+            <Timeline onResize={undefined} onResizeCapture={undefined}>
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot />
