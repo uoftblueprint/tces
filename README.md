@@ -11,7 +11,7 @@ Find out more about TCES by visiting the following page: https://toronto-jobs.or
 - Commit, PR and Branching standards
 - API Documentation
   
-[Take me to the wiki page!](https://github.com/uoftblueprint/tces/blob/main/LICENSE)
+[Take me to the wiki page!](https://github.com/uoftblueprint/tces/wiki)
 ## Contributors
 - Daniel Dervishi
 - Jordan Janakievski
