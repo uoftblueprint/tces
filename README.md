@@ -15,6 +15,7 @@ Find out more about TCES by visiting the following page: https://toronto-jobs.or
 ## Contributors
 - Daniel Dervishi
 - Jordan Janakievski
+- Tanmay Shah
 ## License
 
 [MIT](https://github.com/uoftblueprint/tces/blob/main/LICENSE)
