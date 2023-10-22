@@ -127,7 +127,7 @@ This one is only checking the response status, but in practice, we also want to 
 
 To run our tests, we will be using [Vitest](https://vitest.dev/)
 
-To run all tests, run the following command:
+To run all tests, run the following command inside of the server folder:
 ```
 npm run test
 ```
