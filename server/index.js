@@ -4,7 +4,7 @@ const app = express();
 const port = 8000;
 
 const mysql = require('mysql2');
-const connection = mysql.createConnection(process.env.DATABASE_URL);
+const connection = mysql.createConnection(process.env.development.DATABASE_URL);
 
 app.get('/', (req, res) => {
     res.send('Helloooo World!');
