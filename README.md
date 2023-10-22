@@ -50,6 +50,9 @@ Find out more about TCES by visiting the following page: https://toronto-jobs.or
 - Daniel Dervishi
 - Jordan Janakievski
 - Emily Zhou
+- Kevin Le
+- Ron Varshavsky
+
 ## License
 
 [MIT](https://github.com/uoftblueprint/tces/blob/main/LICENSE)
