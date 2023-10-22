@@ -15,6 +15,7 @@ app.listen(port, () => {
 });
 
 // Query all users from the db
+// This will work once the users table is moved from the dev branch to the main branch for the db
 app.get('/users', (req, res) => {
     connection.query('SELECT * FROM users', (err, rows, fields) => {
         if (err) {
