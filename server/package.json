@@ -4,7 +4,7 @@
   "description": "Server for the TCES CRM system.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "author": "Blueprint",
   "license": "MIT",
@@ -12,6 +12,12 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.6.2",
-    "sequelize": "^6.33.0"
+    "sequelize": "^6.33.0",
+    "pino": "^8.16.0",
+    "pino-http": "^8.5.0"
+  },
+  "devDependencies": {
+    "pino-pretty": "^10.2.3",
+    "vitest": "^0.34.6"
   }
 }
