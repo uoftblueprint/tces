@@ -87,20 +87,20 @@ const Button = styled.button`
 `;
 
 function Login() {
-    return (
-        <Container>
-            <Logo src="./img/tcesLogo.png" alt="TCES Logo" />
-            <MessageContainer>
-                <H3>Welcome back to TCES!</H3>
-                <P>Log in below with your details.</P>
-            </MessageContainer>
-            <InputContainer>
-                <Input placeholder="TCES Email" name="tces email" />
-                <Input placeholder="Password" name="password" />
-            </InputContainer>
-            <Button>LOG IN</Button>
-        </Container>
-    );
+  return (
+    <Container>
+      <Logo src="./img/tcesLogo.png" alt="TCES Logo" />
+      <MessageContainer>
+        <H3>Welcome back to TCES!</H3>
+        <P>Log in below with your details.</P>
+      </MessageContainer>
+      <InputContainer>
+        <Input placeholder="TCES Email" name="tces email" />
+        <Input placeholder="Password" name="password" />
+      </InputContainer>
+      <Button>LOG IN</Button>
+    </Container>
+  );
 }
 
 export default Login;
