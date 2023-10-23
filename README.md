@@ -61,6 +61,7 @@ docker compose build
 - Emily Zhou
 - Kevin Le
 - Ron Varshavsky
+- Taha Siddiqi
 
 ## License
 
