@@ -40,8 +40,10 @@ Find out more about TCES by visiting the following page: https://toronto-jobs.or
 3. Opening a terminaal on the backend (after running the container): `docker exec -it express-app /bin/sh`
     - After doing this you can install new dependencies using `npm install <dependency_name>`
     - Update the dependencies after a pull `npm i`
-4. Running the linter (frontend only for now): `docker compose run react-app npm run lint`
-5. Running the formatter (frontend only for now): `docker compose run react-app npm run format`
+4. Running the linter (frontend): `docker compose run react-app npm run lint`
+5. Running the formatter (frontend): `docker compose run react-app npm run format`
+4. Running the linter (backend): `docker compose run express-app npm run lint`
+5. Running the formatter (backend): `docker compose run express-app npm run format`
 6. Stopping the containers: `docker compose stop`
 7. Removing the container: `docker compose down -v`
 8. Removing the images: `docker rmi -f tces-react-app tces-express-app`
