@@ -28,8 +28,15 @@ Find out more about TCES by visiting the following page: https://toronto-jobs.or
     1. To start the WSL terminal, open the start menu and type in "ubuntu". Click on the "Ubuntu 20.04" application. (We recommend pinning this to your taskbar to make it easier to find in the future.)
     2. Type in the command `pwd`, which shows what folder you're currently in. You should see `/home/<your user name>` printed. If it isn't, switch to your home directory using the command `cd ~`.
 4. Clone the tces repo
+```
+git clone https://github.com/uoftblueprint/tces.git
+```
 5. Open docker desktop
 6. cd into the tces project repo root folder and run `docker compose build`
+```
+cd tces
+docker compose build
+```
 
 ## Useful docker commands
 **Note: each of these commands should be run in the tces project repo root folder**
