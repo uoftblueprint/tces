@@ -31,3 +31,5 @@ app.get("/users", (req, res) => {
 
 // All endpoints within this API will be found under the /auth subdirectory
 app.use('/auth', authRouter);
+
+module.exports = connection;
