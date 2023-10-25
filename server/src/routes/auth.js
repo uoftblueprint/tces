@@ -12,7 +12,7 @@ const crypto = require('crypto');
 
 // Local strategy configuration
 passport.use(new LocalStrategy(function verify(username, password, cb) {
-  connection.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, row) {
+  connection.get('SELECT * FROM users WHERE email = ?', [ username ], function(err, row) {
     if (err) { return cb(err); }
     if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
@@ -28,9 +28,13 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 }));
 
 // User logs in with password
-router.post('/login/password', (req, res) => {
-    res.status(200).send("TODO: Implement login functionality");
-});
+router.post('/login/password', 
+    // auth middleware
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
+);
 
 // User signs up
 router.post('/signup', (req, res) => {
