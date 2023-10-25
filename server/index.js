@@ -6,6 +6,9 @@ const port = 8000;
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
+// Import router for all authentication API endpoints
+const authRouter = require('./src/routes/auth');
+
 app.get("/", (req, res) => {
   res.send("Helloooo World!");
 });
@@ -25,3 +28,6 @@ app.get("/users", (req, res) => {
     }
   });
 });
+
+// All endpoints within this API will be found under the /auth subdirectory
+app.use('/auth', authRouter);
