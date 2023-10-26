@@ -62,6 +62,7 @@ docker compose build
 - Kevin Le
 - Ron Varshavsky
 - Taha Siddiqi
+- Selin Tasman
 
 ## License
 
