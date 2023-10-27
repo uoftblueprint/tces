@@ -95,7 +95,7 @@ function Login() {
                 <P>Log in below with your details.</P>
             </MessageContainer>
             <InputContainer>
-                <Input placeholder="TCES Emai" name="tces email" />
+                <Input placeholder="TCES Email" name="tces email" />
                 <Input placeholder="Password" name="password" />
             </InputContainer>
             <Button>LOG IN</Button>
