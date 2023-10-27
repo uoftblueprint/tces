@@ -1,3 +1,4 @@
 module.exports = {
-    userTable: "user-dev",
+    // add backticks because this table name has a dash
+    userTable: "`users-dev`",
 }

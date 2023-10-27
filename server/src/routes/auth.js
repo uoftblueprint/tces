@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// database connection
-const connection = require('../../index');
+
+
+const mysql = require("mysql2");
+const connection = mysql.createConnection(process.env.DATABASE_URL);
 
 // PassportJS imports for auth
 const passport = require('passport');
@@ -31,17 +33,47 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 
 // User logs in with password
 router.post('/login/password', 
-    // auth middleware
-    passport.authenticate('local', {
-        successRedirect: `${frontendUrl}/`,
-        failureRedirect: `${frontendUrl}/login`
-    })
+  // auth middleware
+  passport.authenticate('local', {
+    successRedirect: `${frontendUrl}/`,
+    failureRedirect: `${frontendUrl}/login`
+  })
 );
 
 // Admin creates a user 
 // TODO: add permission handling to ensure the user is signed in as the admin
+/**
+ * Expected body parameters:
+ * @type string {body.first_name}
+ * @type string {body.last_name}
+ * @type string {body.email}
+ * @type string {body.password} 
+ */
 router.post('/create_user', (req, res, next) => {
-    res.status(200).send("TODO: Implement signup functionality");
+    // Generate salt value
+    const salt = crypto.randomBytes(16);
+
+    crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256', (err, hashedPassword) => {
+        if (err) { return next(err); } 
+
+        connection.query(`INSERT INTO ${userTable} (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)`, [
+            req.body.first_name,
+            req.body.last_name,
+            req.body.email,
+            hashedPassword,
+            salt
+        ], (err) => {
+            if (err) { return next(err); }
+            var user = {
+                id: this.lastID,
+                email: req.body.email
+            };
+            req.login(user, (err) => {
+            if (err) { return next(err); }
+                res.redirect('/');
+            });
+        });
+    });
 });
 
 // User logs out
