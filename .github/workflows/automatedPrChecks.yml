@@ -5,7 +5,6 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-
   client-tests-and-lint:
     runs-on: ubuntu-latest
 
