@@ -21,7 +21,7 @@ jobs:
     - name: Install client dependencies
       run: |
         cd client
-        npm ci
+        npm install
 
     - name: Run client tests
       run: |
