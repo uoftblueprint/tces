@@ -36,8 +36,9 @@ router.post('/login/password',
     })
 );
 
-// User signs up
-router.post('/signup', (req, res) => {
+// Admin creates a user 
+// TODO: add permission handling to ensure the user is signed in as the admin
+router.post('/create_user', (req, res, next) => {
     res.status(200).send("TODO: Implement signup functionality");
 });
 
