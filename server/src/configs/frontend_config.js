@@ -1,3 +1,3 @@
 module.exports = {
-    frontendUrl: "localhost:8000"
+    frontendUrl: "http://localhost:3000"
 }

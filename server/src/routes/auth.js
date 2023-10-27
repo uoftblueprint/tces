@@ -8,6 +8,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 // Encryption library
 const crypto = require('crypto');
+const { userTable } = require('../configs/user_config');
+const { frontendUrl } = require('../configs/frontend_config');
 
 
 // Local strategy configuration
@@ -31,8 +33,8 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 router.post('/login/password', 
     // auth middleware
     passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        successRedirect: `${frontendUrl}/`,
+        failureRedirect: `${frontendUrl}/login`
     })
 );
 
