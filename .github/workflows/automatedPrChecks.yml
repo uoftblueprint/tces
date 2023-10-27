@@ -30,6 +30,7 @@ jobs:
     - name: Run server linter
       run: |
         cd server
+        npm ci
         npm run lint
 
   client-tests-and-lint:
