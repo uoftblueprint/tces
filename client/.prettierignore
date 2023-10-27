@@ -3,3 +3,6 @@ README.md
 .eslintrc.json
 package-lock.json
 package.json
+**/__tests__/**
+**/*.test.js
+**/*.spec.js
