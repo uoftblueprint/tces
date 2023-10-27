@@ -20,7 +20,7 @@ jobs:
     - name: Install server dependencies
       run: |
         cd server
-        npm install
+        npm ci
 
     - name: Run server tests
       run: |
@@ -30,7 +30,6 @@ jobs:
     - name: Run server linter
       run: |
         cd server
-        npm ci
         npm run lint
 
   client-tests-and-lint:
@@ -48,7 +47,7 @@ jobs:
     - name: Install client dependencies
       run: |
         cd client
-        npm install
+        npm ci
 
     - name: Run client tests
       run: |
