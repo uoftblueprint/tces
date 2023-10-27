@@ -1,6 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { test, expect } from "@testing-library/jest-dom";
 
 test("renders the correct content", () => {
   render(<h1>hello world</h1>);
