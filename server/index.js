@@ -6,6 +6,9 @@ const port = 8000;
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
+// So that we can send and receive JSON through express
+app.use(express.json());
+
 // Import router for all authentication API endpoints
 const authRouter = require('./src/routes/auth');
 
