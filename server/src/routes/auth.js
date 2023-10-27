@@ -16,13 +16,16 @@ const { frontendUrl } = require('../configs/frontend_config');
 
 // Local strategy configuration
 passport.use(new LocalStrategy(function verify(username, password, cb) {
-    connection.get('SELECT * FROM users WHERE email = ?', [ username ], function(err, row) {
+    connection.query(`SELECT * FROM ${userTable} WHERE email = ?`, [ username ], function(err, rows, fields) {
         if (err) { return cb(err); }
-        if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
+        if (!rows || rows.length == 0) { return cb(null, false, { message: 'Incorrect username or password.' }); }
+
+        // get first row, here it will only be one row
+        const row = rows[0];
 
         crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
             if (err) { return cb(err); }
-            if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
+            if (!crypto.timingSafeEqual(row.password, hashedPassword)) {
                 return cb(null, false, { message: 'Incorrect username or password.' });
             }
         
@@ -32,11 +35,18 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 }));
 
 // User logs in with password
+/**
+ * Note: you MUST use `username` as the JSON body key or else this will not work! 
+ * 
+ * Expected body parameters:
+ * @type string {body.username}
+ * @type string {body.password}
+ */
 router.post('/login/password', 
   // auth middleware
   passport.authenticate('local', {
-    successRedirect: `${frontendUrl}/`,
-    failureRedirect: `${frontendUrl}/login`
+    successRedirect: "/success",//`${frontendUrl}/`,
+    failureRedirect: "/failure" //`${frontendUrl}/login`
   })
 );
 
