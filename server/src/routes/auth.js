@@ -105,7 +105,10 @@ router.post('/create_user', (req, res, next) => {
 
 // User logs out
 router.post('/logout', (req, res) => {
-    res.status(200).send("TODO: Implement logout functionality");
+    req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 });
 
 module.exports = router;
