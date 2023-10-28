@@ -34,6 +34,18 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
     });
 }));
 
+// Set up serialization and deserialization for the user's session
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+        cb(null, { id: user.id, username: user.username });
+    });
+});
+passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+});
+
 // User logs in with password
 /**
  * Note: you MUST use `username` as the JSON body key or else this will not work! 

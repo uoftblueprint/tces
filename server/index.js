@@ -6,11 +6,25 @@ const port = 8000;
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
+// Session storage imports
+const passport = require('passport');
+var session = require('express-session');
+var SQLiteStore = require('connect-sqlite3')(session);
+
 // So that we can send and receive JSON through express
 app.use(express.json());
 
 // Import router for all authentication API endpoints
 const authRouter = require('./src/routes/auth');
+
+// Set up session for authorization
+app.use(session({
+  secret: 'blueprint-tces',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true }
+}));
+app.use(passport.authenticate('session'));
 
 app.get("/", (req, res) => {
   res.send("Helloooo World!");
