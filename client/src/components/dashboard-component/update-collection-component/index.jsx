@@ -40,6 +40,7 @@ UpdatesCollection.propTypes = {
       userName: PropTypes.string.isRequired,
       companyName: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
+      // eslint-disable-next-line
     })
   ).isRequired,
 };
