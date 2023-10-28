@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Typography, Container, Box } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import DashboardHeaderComponent from "./header-dashboard-component";
@@ -36,17 +36,7 @@ function DashboardComponent() {
           Job Lead Updates
         </Typography>
         <Divider />
-        {jobUpdates.length > 0 ? (
-          <UpdatesCollection jobUpdates={jobUpdates} />
-        ) : (
-          <Box textAlign="center" sx={{ mt: 4 }}>
-            <img
-              src="/noJobleadUpdates.svg"
-              alt="No Job Lead Updates"
-              style={{ width: "50%", margin: "20px" }}
-            />
-          </Box>
-        )}
+        <UpdatesCollection jobUpdates={jobUpdates} />
       </MainContainer>
       <SearchFieldContainer>
         <SearchField

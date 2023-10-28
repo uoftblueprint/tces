@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 const JobUpdatesContainer = styled(Box)`
   height: 40vh;
-  min-height: 100px;
+  min-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
 `;
