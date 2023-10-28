@@ -7,6 +7,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     font-family: Helvetica;
+    background-color: #f0f3f8;
 `;
 
 const Logo = styled.img`
@@ -39,22 +40,22 @@ const P = styled.p`
 `;
 
 const InputContainer = styled.div`
-    flex-direction: column;
     position: relative;
     width: 760px;
     outline-style: outset;
-    outline-color: #0000003b;
-    outline-width: 2px;
+    outline-color: #2f2f2f39;
+    outline-width: 0px 1px 5px 1px;
     border-radius: 8px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 const Input = styled.input`
     border: 1px solid;
     border-color: #0000003b;
     border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
     padding: 16px;
     width: 90%;
     margin: 16px;
@@ -75,7 +76,6 @@ const Button = styled.button`
     color: white;
     border: none;
     font-weight: bold;
-    cursor: pointer;
     border-radius: 5px;
     padding: 20px;
     width: 760px;
