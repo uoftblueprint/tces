@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Typography, Container, Box } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import DashboardHeaderComponent from "./header-dashboard-component";
