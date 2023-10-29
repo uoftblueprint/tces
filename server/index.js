@@ -22,7 +22,7 @@ app.use(session({
   secret: 'blueprint-tces',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true }
+  store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' })
 }));
 app.use(passport.authenticate('session'));
 

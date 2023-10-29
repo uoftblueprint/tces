@@ -111,4 +111,12 @@ router.post('/logout', (req, res) => {
     });
 });
 
+
+router.post('/test', (req, res) => {
+    if (req.user) {
+        res.send("User logged in");
+    }
+    res.send("user not logged in");
+})
+
 module.exports = router;
