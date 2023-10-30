@@ -15,15 +15,15 @@ const { frontendUrl } = require('../configs/frontend_config');
 
 
 // Local strategy configuration
-passport.use(new LocalStrategy(function verify(username, password, cb) {
-    connection.query(`SELECT * FROM ${userTable} WHERE email = ?`, [ username ], function(err, rows, fields) {
+passport.use(new LocalStrategy((username, password, cb) => {
+    connection.query(`SELECT * FROM ${userTable} WHERE email = ?`, [ username ], (err, rows, fields) => {
         if (err) { return cb(err); }
         if (!rows || rows.length == 0) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
         // get first row, here it will only be one row
         const row = rows[0];
 
-        crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
+        crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', (err, hashedPassword) => {
             if (err) { return cb(err); }
             if (!crypto.timingSafeEqual(row.password, hashedPassword)) {
                 return cb(null, false, { message: 'Incorrect username or password.' });
@@ -35,13 +35,13 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 }));
 
 // Set up serialization and deserialization for the user's session
-passport.serializeUser(function(user, cb) {
-    process.nextTick(function() {
+passport.serializeUser((user, cb) => {
+    process.nextTick(() => {
         cb(null, { id: user.id, username: user.username, is_admin: user.is_admin });
     });
 });
-passport.deserializeUser(function(user, cb) {
-    process.nextTick(function() {
+passport.deserializeUser((user, cb) => {
+    process.nextTick(() => {
         return cb(null, user);
     });
 });
@@ -75,7 +75,7 @@ router.post('/create_user', (req, res, next) => {
     if (!req.user) { res.status(403).send("You are not logged in"); }
     if (!req.user.is_admin) { res.status(403).send("Only an admin can create users"); }
 
-    // If you reac here, the user is an admin
+    // If you reach here, the user is an admin
     try {
         // Generate salt value
         const salt = crypto.randomBytes(16);
