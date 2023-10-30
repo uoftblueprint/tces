@@ -72,8 +72,8 @@ router.post('/login/password',
  * @type string {body.password} 
  */
 router.post('/create_user', (req, res, next) => {
-    if (!req.user) { res.statusCode(403).send("You are not logged in"); }
-    if (!req.user.is_admin) { res.statusCode(403).send("Only an admin can create users"); }
+    if (!req.user) { res.status(403).send("You are not logged in"); }
+    if (!req.user.is_admin) { res.status(403).send("Only an admin can create users"); }
 
     // If you reac here, the user is an admin
     try {
