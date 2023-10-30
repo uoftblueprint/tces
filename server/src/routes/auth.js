@@ -7,7 +7,6 @@ const connection = mysql.createConnection(process.env.DATABASE_URL);
 
 // PassportJS imports for auth
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 // Encryption library
 const crypto = require('crypto');
 const { userTable } = require('../configs/user_config');
@@ -59,14 +58,7 @@ router.post('/create_user', (req, res, next) => {
                 salt
             ], (err) => {
                 if (err) { return next(err); }
-                var user = {
-                    id: this.lastID,
-                    email: req.body.email
-                };
-                req.login(user, (err) => {
-                if (err) { return next(err); }
-                    res.redirect('/');
-                });
+                res.status(200).send("User created successfully");
             });
         });
     } catch (err) {
