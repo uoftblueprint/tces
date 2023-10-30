@@ -11,6 +11,9 @@ const passport = require('passport');
 var session = require('express-session');
 var SQLiteStore = require('connect-sqlite3')(session);
 
+// Import passport configuration
+require("./src/configs/passport");
+
 // So that we can send and receive JSON through express
 app.use(express.json());
 

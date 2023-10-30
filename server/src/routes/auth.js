@@ -14,38 +14,6 @@ const { userTable } = require('../configs/user_config');
 const { frontendUrl } = require('../configs/frontend_config');
 
 
-// Local strategy configuration
-passport.use(new LocalStrategy((username, password, cb) => {
-    connection.query(`SELECT * FROM ${userTable} WHERE email = ?`, [ username ], (err, rows, fields) => {
-        if (err) { return cb(err); }
-        if (!rows || rows.length == 0) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-
-        // get first row, here it will only be one row
-        const row = rows[0];
-
-        crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', (err, hashedPassword) => {
-            if (err) { return cb(err); }
-            if (!crypto.timingSafeEqual(row.password, hashedPassword)) {
-                return cb(null, false, { message: 'Incorrect username or password.' });
-            }
-        
-            return cb(null, row);
-        });
-    });
-}));
-
-// Set up serialization and deserialization for the user's session
-passport.serializeUser((user, cb) => {
-    process.nextTick(() => {
-        cb(null, { id: user.id, username: user.username, is_admin: user.is_admin });
-    });
-});
-passport.deserializeUser((user, cb) => {
-    process.nextTick(() => {
-        return cb(null, user);
-    });
-});
-
 // User logs in with password
 /**
  * Note: you MUST use `username` as the JSON body key or else this will not work! 
@@ -119,9 +87,9 @@ router.post('/logout', (req, res) => {
 router.post('/test', (req, res) => {
     if (req.user) {
         if (req.user.is_admin) {
-            res.send("User is logged in as admin");
+            res.send(`User ${req.user.username} is logged in as admin`);
         }
-        res.send("User logged in, but not an admin");
+        res.send(`User ${req.user} logged in, but not an admin`);
     }
     res.send("user not logged in");
 })
