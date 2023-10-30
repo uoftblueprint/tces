@@ -37,7 +37,7 @@ passport.use(new LocalStrategy(function verify(username, password, cb) {
 // Set up serialization and deserialization for the user's session
 passport.serializeUser(function(user, cb) {
     process.nextTick(function() {
-        cb(null, { id: user.id, username: user.username });
+        cb(null, { id: user.id, username: user.username, is_admin: user.is_admin });
     });
 });
 passport.deserializeUser(function(user, cb) {
@@ -114,7 +114,10 @@ router.post('/logout', (req, res) => {
 
 router.post('/test', (req, res) => {
     if (req.user) {
-        res.send("User logged in");
+        if (req.user.is_admin) {
+            res.send("User is logged in as admin");
+        }
+        res.send("User logged in, but not an admin");
     }
     res.send("user not logged in");
 })
