@@ -64,6 +64,7 @@ docker compose build
 - Taha Siddiqi
 - Selin Tasman
 - Grant Hamblin
+- Tanmay Shah
 
 ## License
 
