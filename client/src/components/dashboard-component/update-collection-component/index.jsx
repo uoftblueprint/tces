@@ -41,7 +41,7 @@ UpdatesCollection.propTypes = {
       companyName: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
       // eslint-disable-next-line
-    })
+    }),
   ).isRequired,
 };
 
