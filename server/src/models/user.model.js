@@ -1,10 +1,12 @@
+require("dotenv").config();
+
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(
-  'blueprint-tces',
-  '8p17fcl2jfs56m6568qv',
-  'pscale_pw_I0KA2cGUmh9IeR95xDnRy9YAjZlkLQGzJVn1JXbJWve',
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USERNAME,
+  process.env.DATABASE_PASSWORD,
   {
-    host: 'aws.connect.psdb.cloud',
+    host: process.env.DATABASE_HOST,
     dialect: 'mysql',
     dialectOptions: {
       ssl: {
@@ -15,13 +17,14 @@ const sequelize = new Sequelize(
         defaultScope: {
             attributes: { exclude: ['createdAt', 'updatedAt'] }
         },
-        timestamps: false 
+        timestamps: false,
+        freezeTableName: true
     }
   },
 );
 
 
-const User = sequelize.define("users-dev", {
+const User = sequelize.define(process.env.USERS_TABLE, {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -47,7 +50,7 @@ const User = sequelize.define("users-dev", {
         type: DataTypes.BLOB('tiny'),
         allowNull: false
     },
-    isAdmin: {
+    is_admin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: 0

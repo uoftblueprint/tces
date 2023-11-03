@@ -1,16 +1,16 @@
+require('dotenv').config();
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
-const { userTable } = require('./user_config');
 const crypto = require('crypto');
-
 
 // Local strategy configuration
 passport.use(new LocalStrategy((username, password, cb) => {
-    connection.query(`SELECT * FROM ${userTable} WHERE email = ?`, [ username ], (err, rows, fields) => {
+    connection.query(`SELECT * FROM ${process.env.USERS_TABLE} WHERE email = ?`, [ username ], (err, rows, fields) => {
         if (err) { return cb(err); }
         if (!rows || rows.length == 0) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 

@@ -27,8 +27,6 @@ const User = require('../models/user.model')
 const passport = require('passport');
 // Encryption library
 const crypto = require('crypto');
-const { userTable } = require('../configs/user_config');
-const { frontendUrl } = require('../configs/frontend_config');
 
 
 // User logs in with password
@@ -68,13 +66,13 @@ router.post('/create_user', async (req, res, next) => {
         // synchronous hashing function
         const hashedPassword = crypto.pbkdf2Sync(req.body.password, salt, 310000, 32, 'sha256');
         
-        User.create({ 
+        await User.create({ 
             first_name: req.body.first_name, 
             last_name: req.body.last_name,
             email: req.body.email,
             password: hashedPassword,
             salt: salt
-        }).then(() => {});
+        });
 
         res.status(200).send("User created successfully");
 
