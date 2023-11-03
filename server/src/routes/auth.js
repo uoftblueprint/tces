@@ -1,26 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-
-const mysql = require("mysql2");
-const connection = mysql.createConnection(process.env.DATABASE_URL);
-// const Sequelize = require("sequelize");
-// const sequelize = new Sequelize(
-//   'blueprint-tces',
-//   'username',
-//   'password',
-//   {
-//     host: 'aws.connect.psdb.cloud',
-//     dialect: 'mysql',
-//     dialectOptions: {
-//       ssl: {
-//         rejectUnauthorized: true
-//       },
-//     }
-//   }
-// );
-
-const User = require('../models/user.model')
+const User = require('../models/user.model');
 
 
 // PassportJS imports for auth
