@@ -64,7 +64,7 @@ router.post('/create_user', (req, res, next) => {
         const salt = crypto.randomBytes(16);
 
         // synchronous hashing function
-        const hashedPassword = crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256');
+        const hashedPassword = crypto.pbkdf2Sync(req.body.password, salt, 310000, 32, 'sha256');
         
         connection.query(`INSERT INTO ${userTable} (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)`, [
             req.body.first_name,
