@@ -21,8 +21,8 @@ const crypto = require('crypto');
 router.post('/login/password', 
   // auth middleware
   passport.authenticate('local', {
-    successRedirect: "/success",//`${frontendUrl}/`,
-    failureRedirect: "/failure" //`${frontendUrl}/login`
+    successRedirect: `${process.env.FRONTEND_URL}/`,
+    failureRedirect: `${process.env.FRONTEND_URL}/login`
   })
 );
 
@@ -36,8 +36,8 @@ router.post('/login/password',
  * @type string {body.password} 
  */
 router.post('/create_user', async (req, res, next) => {
-    if (!req.user) { res.status(403).send("You are not logged in"); }
-    if (!req.user.is_admin) { res.status(403).send("Only an admin can create users"); }
+    if (!req.user) { res.status(403).send("You are not logged in"); return; }
+    if (!req.user.is_admin) { res.status(403).send("Only an admin can create users"); return; }
 
     // If you reach here, the user is an admin
     try {
@@ -58,8 +58,11 @@ router.post('/create_user', async (req, res, next) => {
         res.status(200).send("User created successfully");
 
     } catch (err) {
-        console.log(err);
-        res.status(500).send(err);
+        if (err.name == "SequelizeUniqueConstraintError") {
+            res.status(403).send("A user with this email already exists in the database");
+            return;
+        }
+        res.status(500).send("Unexpected server error");
     }
 });
 
@@ -71,15 +74,18 @@ router.post('/logout', (req, res) => {
     });
 });
 
-
+// This endpoint is to verify the users login status
 router.post('/test', (req, res) => {
     if (req.user) {
         if (req.user.is_admin) {
             res.send(`User ${req.user.username} is logged in as admin`);
+            return;
         }
         res.send(`User ${req.user} logged in, but not an admin`);
+        return;
     }
     res.send("user not logged in");
-})
+    return;
+});
 
 module.exports = router;
