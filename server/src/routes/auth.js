@@ -4,6 +4,22 @@ const router = express.Router();
 
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize(
+  'blueprint-tces',
+  'username',
+  'password',
+  {
+    host: 'aws.connect.psdb.cloud',
+    dialect: 'mysql',
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: true
+      },
+    }
+  }
+);
+
 
 // PassportJS imports for auth
 const passport = require('passport');
@@ -47,20 +63,20 @@ router.post('/create_user', (req, res, next) => {
         // Generate salt value
         const salt = crypto.randomBytes(16);
 
-        crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256', (err, hashedPassword) => {
-            if (err) { return next(err); } 
-
-            connection.query(`INSERT INTO ${userTable} (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)`, [
-                req.body.first_name,
-                req.body.last_name,
-                req.body.email,
-                hashedPassword,
-                salt
-            ], (err) => {
-                if (err) { return next(err); }
-                res.status(200).send("User created successfully");
-            });
+        // synchronous hashing function
+        const hashedPassword = crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256');
+        
+        connection.query(`INSERT INTO ${userTable} (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)`, [
+            req.body.first_name,
+            req.body.last_name,
+            req.body.email,
+            hashedPassword,
+            salt
+        ], (err) => {
+            if (err) { return next(err); }
+            res.status(200).send("User created successfully");
         });
+
     } catch (err) {
         console.log(err);
         res.status(500).send("error");
