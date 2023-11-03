@@ -4,21 +4,23 @@ const router = express.Router();
 
 const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(
-  'blueprint-tces',
-  'username',
-  'password',
-  {
-    host: 'aws.connect.psdb.cloud',
-    dialect: 'mysql',
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: true
-      },
-    }
-  }
-);
+// const Sequelize = require("sequelize");
+// const sequelize = new Sequelize(
+//   'blueprint-tces',
+//   'username',
+//   'password',
+//   {
+//     host: 'aws.connect.psdb.cloud',
+//     dialect: 'mysql',
+//     dialectOptions: {
+//       ssl: {
+//         rejectUnauthorized: true
+//       },
+//     }
+//   }
+// );
+
+const User = require('../models/user.model')
 
 
 // PassportJS imports for auth
@@ -54,7 +56,7 @@ router.post('/login/password',
  * @type string {body.email}
  * @type string {body.password} 
  */
-router.post('/create_user', (req, res, next) => {
+router.post('/create_user', async (req, res, next) => {
     if (!req.user) { res.status(403).send("You are not logged in"); }
     if (!req.user.is_admin) { res.status(403).send("Only an admin can create users"); }
 
@@ -66,20 +68,19 @@ router.post('/create_user', (req, res, next) => {
         // synchronous hashing function
         const hashedPassword = crypto.pbkdf2Sync(req.body.password, salt, 310000, 32, 'sha256');
         
-        connection.query(`INSERT INTO ${userTable} (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)`, [
-            req.body.first_name,
-            req.body.last_name,
-            req.body.email,
-            hashedPassword,
-            salt
-        ], (err) => {
-            if (err) { return next(err); }
-            res.status(200).send("User created successfully");
-        });
+        User.create({ 
+            first_name: req.body.first_name, 
+            last_name: req.body.last_name,
+            email: req.body.email,
+            password: hashedPassword,
+            salt: salt
+        }).then(() => {});
+
+        res.status(200).send("User created successfully");
 
     } catch (err) {
         console.log(err);
-        res.status(500).send("error");
+        res.status(500).send(err);
     }
 });
 
