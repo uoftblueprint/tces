@@ -1,5 +1,5 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
+require("dotenv").config();
+const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
@@ -7,28 +7,24 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASSWORD,
   {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql',
+    dialect: "mysql",
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: true
+        rejectUnauthorized: true,
       },
     },
     define: {
-        defaultScope: {
-            attributes: { exclude: ['createdAt', 'updatedAt'] }
-        },
-        timestamps: false,
-        freezeTableName: true
-    }
+      defaultScope: {
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
+      timestamps: false,
+      freezeTableName: true,
+    },
   },
 );
 
-try {
-    sequelize.authenticate().then(() => { console.log('Connection has been established successfully.'); });
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-} 
+sequelize.authenticate();
 
 module.exports = {
-    sequelize: sequelize
-}
+  sequelize,
+};

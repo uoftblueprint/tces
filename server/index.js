@@ -7,9 +7,9 @@ const mysql = require("mysql2");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 
 // Session storage imports
-const passport = require('passport');
-var session = require('express-session');
-var SQLiteStore = require('connect-sqlite3')(session);
+const passport = require("passport");
+var session = require("express-session");
+var SQLiteStore = require("connect-sqlite3")(session);
 
 // Import passport configuration
 require("./src/configs/passport");
@@ -18,16 +18,18 @@ require("./src/configs/passport");
 app.use(express.json());
 
 // Import router for all authentication API endpoints
-const authRouter = require('./src/routes/auth');
+const authRouter = require("./src/routes/auth");
 
 // Set up session for authorization
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' })
-}));
-app.use(passport.authenticate('session'));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
+  }),
+);
+app.use(passport.authenticate("session"));
 
 app.get("/", (req, res) => {
   res.send("Helloooo World!");
@@ -50,4 +52,4 @@ app.get("/users", (req, res) => {
 });
 
 // All endpoints within this API will be found under the /auth subdirectory
-app.use('/', authRouter);
+app.use("/", authRouter);
