@@ -25,7 +25,7 @@ function Login() {
     const loginDataJSON = JSON.stringify(loginData);
 
     // Replace url with target route
-    fetch("http://localhost:8000/auth/login/password", {
+    fetch("http://localhost:8000/login", {
       method: "POST", // Not sure which method
       headers: {
         "Content-Type": "application/json",
