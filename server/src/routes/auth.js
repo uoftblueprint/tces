@@ -6,11 +6,10 @@ const router = express.Router();
 const passport = require('passport');
 // Encryption library
 const crypto = require('crypto');
-const { 
-    createUserRequestHandler, 
-    logoutRequestHandler,
-    isLoggedInRequestHandler
-} = require('../controllers/authController');
+
+const createUserRequestHandler  = require('../controllers/auth/createUser');
+const logoutRequestHandler      = require('../controllers/auth/logout');
+const isLoggedInRequestHandler  = require('../controllers/auth/isLoggedIn');
 
 
 // User logs in with password
