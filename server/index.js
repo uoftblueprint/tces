@@ -22,7 +22,7 @@ const authRouter = require('./src/routes/auth');
 
 // Set up session for authorization
 app.use(session({
-  secret: 'blueprint-tces',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' })
@@ -50,4 +50,4 @@ app.get("/users", (req, res) => {
 });
 
 // All endpoints within this API will be found under the /auth subdirectory
-app.use('/auth', authRouter);
+app.use('/', authRouter);

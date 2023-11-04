@@ -18,7 +18,7 @@ const crypto = require('crypto');
  * @type string {body.username}
  * @type string {body.password}
  */
-router.post('/login/password', 
+router.post('/login', 
   // auth middleware
   passport.authenticate('local', {
     successRedirect: `${process.env.FRONTEND_URL}/`,
