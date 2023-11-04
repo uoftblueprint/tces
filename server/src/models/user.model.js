@@ -19,7 +19,8 @@ const User = sequelize.define(process.env.USERS_TABLE, {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.BLOB('tiny'),
