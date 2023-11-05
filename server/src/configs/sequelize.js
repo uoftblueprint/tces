@@ -23,7 +23,11 @@ const sequelize = new Sequelize(
   },
 );
 
-sequelize.authenticate();
+try {
+  sequelize.authenticate();
+} catch {
+  console.log("Sequelize could not connect");
+}
 
 module.exports = {
   sequelize,
