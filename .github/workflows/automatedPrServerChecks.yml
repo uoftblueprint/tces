@@ -1,0 +1,36 @@
+name: Automated Server PR Tests and Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  server-tests-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      env:
+        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install server dependencies
+      run: |
+        cd server
+        npm install
+
+    - name: Run server tests
+      run: |
+        cd server
+        npm run test
+
+    - name: Run server linter
+      run: |
+        cd server
+        npm run lint
