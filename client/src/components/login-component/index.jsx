@@ -10,7 +10,7 @@ import {
   P,
 } from "./index.styles";
 
-function Login() {
+function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -73,4 +73,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginComponent;
