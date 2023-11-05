@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
-
+const logger = require("../middlewares/logger/pino");
 
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
@@ -25,7 +25,7 @@ const sequelize = new Sequelize(
 );
 
 sequelize.authenticate().catch(() => {
-  console.error("Error connecting to database");
+  logger.error("Unable to connect to the database");
 });
 
 module.exports = {
