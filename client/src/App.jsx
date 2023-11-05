@@ -1,7 +1,12 @@
-import Login from "./login-component/index";
+import "./App.css";
+import DashboardPage from "./pages/dashboard";
 
 function App() {
-  return <Login />;
+  return (
+    <div className="App">
+      <DashboardPage />
+    </div>
+  );
 }
 
 export default App;
