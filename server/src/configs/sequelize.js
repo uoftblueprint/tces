@@ -24,11 +24,13 @@ try {
     },
   );
 
-  sequelize.authenticate();
+  sequelize.authenticate().catch(() => {
+    console.error("Error connecting to database");
+  });
 
   module.exports = {
     sequelize,
   };
 } catch {
-  console.log("Sequelize could not connect");
+  console.error("Sequelize could not connect");
 }
