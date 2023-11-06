@@ -3,9 +3,6 @@ const express = require("express");
 const app = express();
 const port = 8000;
 
-const mysql = require("mysql2");
-const connection = mysql.createConnection(process.env.DATABASE_URL);
-
 // Session storage imports
 const passport = require("passport");
 var session = require("express-session");
@@ -37,18 +34,6 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
-});
-
-// Query all users from the db
-// This will work once the users table is moved from the dev branch to the main branch for the db
-app.get("/users", (req, res) => {
-  connection.query("SELECT * FROM users", (err, rows, fields) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(rows);
-    }
-  });
 });
 
 // All endpoints within this API will be found under the /auth subdirectory
