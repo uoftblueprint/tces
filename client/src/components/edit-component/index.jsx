@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   TextField,
   Stack,
@@ -8,10 +7,8 @@ import {
   CardHeader,
   CardContent,
   Typography,
-  Form,
-  Header,
-  Cancel,
-} from "./index.styles";
+} from "@mui/material";
+import { Form, Header, Cancel } from "./index.styles";
 
 function EditComponent() {
   const [firstName, setFirstName] = useState("");
@@ -33,7 +30,7 @@ function EditComponent() {
 
     // Replace url with target route
     fetch("http://localhost:8000/edit", {
-      method: "POST", // Not sure which method
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
