@@ -20,12 +20,16 @@ const columns = [
     headerName: "Name",
     width: 535,
     editable: false,
+    sortable: false,
+    filterable: false,
   },
   {
     field: "email",
     headerName: "Email",
     width: 535,
     editable: false,
+    sortable: false,
+    filterable: false,
   },
   {
     field: "actions",
@@ -188,6 +192,7 @@ export default function DataGridDemo() {
               },
             }}
             pageSizeOptions={[10]}
+            disableColumnSelector
           />
         </div>
       </Box>
