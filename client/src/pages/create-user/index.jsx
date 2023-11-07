@@ -1,4 +1,4 @@
-import CreateComponent from "../../components/create-component";
+import CreateComponent from "../../components/create-user-component";
 
 function Create() {
   return <CreateComponent />;

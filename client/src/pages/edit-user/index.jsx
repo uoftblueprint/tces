@@ -1,4 +1,4 @@
-import EditComponent from "../../components/edit-component";
+import EditComponent from "../../components/edit-user-component";
 
 function Edit() {
   return <EditComponent />;
