@@ -66,35 +66,43 @@ function EditComponent() {
             <Stack gap={1.5}>
               <TextField
                 type="text"
+                id="firstName"
                 name="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 label="First Name"
                 helperText="*Required"
+                required
               />
               <TextField
                 type="text"
+                id="lastName"
                 name="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 label="Last Name"
                 helperText="*Required"
+                required
               />
               <TextField
                 type="email"
+                id="email"
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 label="Email"
                 helperText="*Required"
+                required
               />
               <TextField
                 type="password"
+                id="password"
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 helperText="*Required"
+                required
               />
             </Stack>
           </CardContent>
@@ -103,7 +111,12 @@ function EditComponent() {
           <Cancel variant="outlined" size="large">
             Cancel
           </Cancel>
-          <Button variant="contained" size="large" onClick={handleSave}>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            onClick={handleSave}
+          >
             Save
           </Button>
         </Stack>

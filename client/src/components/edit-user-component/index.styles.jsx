@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Box, Button } from "@mui/material";
 
-const Form = styled.div`
+const Form = styled.form`
   height: 100vh;
   display: flex;
   flex-direction: column;
