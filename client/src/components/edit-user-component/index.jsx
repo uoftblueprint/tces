@@ -81,7 +81,7 @@ function EditComponent() {
                 helperText="*Required"
               />
               <TextField
-                type="text"
+                type="email"
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -89,7 +89,7 @@ function EditComponent() {
                 helperText="*Required"
               />
               <TextField
-                type="text"
+                type="password"
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
