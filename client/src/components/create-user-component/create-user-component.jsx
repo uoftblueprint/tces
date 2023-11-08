@@ -16,7 +16,8 @@ function CreateComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCreate = () => {
+  const handleCreate = (e) => {
+    e.preventDefault();
     // Create a JSON object with the required keys and values
     const userData = {
       firstName,
@@ -51,7 +52,7 @@ function CreateComponent() {
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleCreate}>
       <Stack maxWidth="md" gap={4}>
         <Header>
           <Typography variant="h3">Create New User</Typography>
@@ -109,12 +110,7 @@ function CreateComponent() {
           <Cancel variant="outlined" size="large">
             Cancel
           </Cancel>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            onClick={handleCreate}
-          >
+          <Button type="submit" variant="contained" size="large">
             Submit
           </Button>
         </Stack>

@@ -16,7 +16,8 @@ function EditComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     // Create a JSON object with the required keys and values
     const userData = {
       firstName,
@@ -51,7 +52,7 @@ function EditComponent() {
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleSave}>
       <Stack maxWidth="md" gap={4}>
         <Header>
           <Typography variant="h3">Edit User</Typography>
@@ -111,12 +112,7 @@ function EditComponent() {
           <Cancel variant="outlined" size="large">
             Cancel
           </Cancel>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            onClick={handleSave}
-          >
+          <Button type="submit" variant="contained" size="large">
             Save
           </Button>
         </Stack>
