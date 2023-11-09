@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../../images/tces-logo.png";
+import logo from "../../../public/img/tces-logo.png";
 import Dropdown from "./Dropdown";
 import NavbarProfile from "./NavbarProfile";
 import NavbarButton from "./NavbarButton";
