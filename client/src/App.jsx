@@ -10,6 +10,5 @@ function App() {
       <DashboardPage />
     </div>
   );
-
 }
 export default App;
