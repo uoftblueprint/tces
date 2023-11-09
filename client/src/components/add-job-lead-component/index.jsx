@@ -78,7 +78,7 @@ function AddJobLead() {
     const newJobLeads = [...jobLeads];
     const index = newJobLeads.findIndex((lead) => lead.id === id);
     if (index !== -1) {
-      newJobLeads[index][field] = e.target.value;
+      newJobLeads[index][field] = e;
       setJobLeads(newJobLeads);
     } else {
       console.error(`Invalid id: ${id}`);
@@ -101,7 +101,9 @@ function AddJobLead() {
               value={lead.employer}
               label="Employer Name"
               helperText="*Required"
-              onChange={(e) => handleInputChange(e, lead.id, "employer")}
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employer")
+              }
             >
               <MenuItem value="name 1">Name 1</MenuItem>
               <MenuItem value="name 2">Name 2</MenuItem>
@@ -114,7 +116,9 @@ function AddJobLead() {
             sx={{ m: 1, width: "96%" }}
             id="outlined-helperText"
             value={lead.title}
-            onChange={(e) => handleInputChange(e, lead.id, "title")}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "title")
+            }
             label="Job Title"
             helperText="*Required"
           />
@@ -132,7 +136,9 @@ function AddJobLead() {
               }
               label="Compensation Minimum"
               value={lead.minCompensation}
-              onChange={(e) => handleInputChange(e, lead.id, "minCompensation")}
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "minCompensation")
+              }
             />
           </FormControl>
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
@@ -149,7 +155,9 @@ function AddJobLead() {
               }
               label="Compensation Maximum"
               value={lead.maxCompensation}
-              onChange={(e) => handleInputChange(e, lead.id, "maxCompensation")}
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "maxCompensation")
+              }
             />
           </FormControl>
           <TextField
@@ -159,7 +167,9 @@ function AddJobLead() {
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
-            onChange={(e) => handleInputChange(e, lead.id, "hoursPerWeek")}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "hoursPerWeek")
+            }
           />
           <TextField
             fullWidth
@@ -168,7 +178,9 @@ function AddJobLead() {
             label="National Occupation Code"
             variant="outlined"
             value={lead.nationalOC}
-            onChange={(e) => handleInputChange(e, lead.id, "nationalOC")}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "nationalOC")
+            }
           />
           <TextField
             fullWidth
@@ -178,7 +190,9 @@ function AddJobLead() {
             multiline
             rows={4}
             value={lead.description}
-            onChange={(e) => handleInputChange(e, lead.id, "description")}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "description")
+            }
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
@@ -208,7 +222,9 @@ function AddJobLead() {
               id="demo-simple-select-helper"
               value={lead.employmentType}
               label="Employment Type"
-              onChange={(e) => handleInputChange(e, lead.id, "employmentType")}
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employmentType")
+              }
             >
               <MenuItem value="full-time">Full Time</MenuItem>
               <MenuItem value="part-time">Part Time</MenuItem>

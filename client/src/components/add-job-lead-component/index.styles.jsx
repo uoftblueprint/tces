@@ -2,19 +2,20 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  padding: 100px;
+  padding: 0 100px 100px 100px;
   flex-direction: column;
   align-items: center;
   font-family: Helvetica;
   background-color: #f0f3f8;
-  gap: 16px;
+  gap: 30px;
 `;
 
 const ButtonContainer = styled.div`
-  width: 62%;
+  width: 62.5%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding-top: 10px;
 `;
 
 const JobLeadContainer = styled.div`
@@ -42,7 +43,7 @@ const H1 = styled.h1`
   font-weight: 500;
   align-self: flex-start;
   padding-left: 19%;
-  margin-bottom: 16px;
+  margin-bottom: -15px;
 `;
 
 const Body = styled.body`
@@ -50,12 +51,10 @@ const Body = styled.body`
   font-weight: 400;
   align-self: flex-start;
   padding-left: 19%;
-  margin-bottom: 20px;
 `;
 
 const ButtonL = styled.button`
-  width: 62%;
-  margin: 10px;
+  width: 62.5%;
   padding: 16px;
   font-size: 20px;
   font-weight: 500;
