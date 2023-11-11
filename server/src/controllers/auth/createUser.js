@@ -29,23 +29,21 @@ const createUserRequestHandler = async (req, res, next) => {
       data: {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        email: req.body.email
-      }
+        email: req.body.email,
+      },
     });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
-      res
-        .status(403)
-        .json({
-          status: "error",
-          message: "A user with this email already exists in the database"
-        });
+      res.status(403).json({
+        status: "error",
+        message: "A user with this email already exists in the database",
+      });
       return;
     }
     console.log(err);
     res.status(500).json({
       status: "error",
-      message: "Unexpected server error"
+      message: "Unexpected server error",
     });
   }
 };

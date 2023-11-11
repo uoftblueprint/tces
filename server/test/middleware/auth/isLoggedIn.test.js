@@ -8,7 +8,7 @@ describe("createUser test suite", () => {
       status: (code) => {
         mockRes.statusCode = code;
         return {
-           json: (message) => {
+          json: (message) => {
             return;
           },
         };

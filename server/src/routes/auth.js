@@ -8,7 +8,7 @@ const passport = require("passport");
 const createUserRequestHandler = require("../controllers/auth/createUser");
 const logoutRequestHandler = require("../controllers/auth/logout");
 const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
-const isAdmin = require('../middlewares/auth/isAdmin');
+const isAdmin = require("../middlewares/auth/isAdmin");
 
 // User logs in with password
 /**
