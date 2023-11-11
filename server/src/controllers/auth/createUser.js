@@ -2,16 +2,6 @@ const User = require("../../models/user.model");
 const crypto = require("crypto");
 
 const createUserRequestHandler = async (req, res, next) => {
-  if (!req.user) {
-    res.status(403).send("You are not logged in");
-    return;
-  }
-  if (!req.user.is_admin) {
-    res.status(403).send("Only an admin can create users");
-    return;
-  }
-
-  // If you reach here, the user is an admin
   try {
     // Generate salt value
     const salt = crypto.randomBytes(16);

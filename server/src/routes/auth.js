@@ -8,6 +8,7 @@ const passport = require("passport");
 const createUserRequestHandler = require("../controllers/auth/createUser");
 const logoutRequestHandler = require("../controllers/auth/logout");
 const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
+const { isAdmin } = require('../middlewares/auth');
 
 // User logs in with password
 /**
@@ -27,7 +28,6 @@ router.post(
 );
 
 // Admin creates a user
-// TODO: add permission handling to ensure the user is signed in as the admin
 /**
  * Expected body parameters:
  * @type string {body.first_name}
@@ -35,7 +35,7 @@ router.post(
  * @type string {body.email}
  * @type string {body.password}
  */
-router.post("/create_user", createUserRequestHandler);
+router.post("/create_user", isAdmin, createUserRequestHandler);
 
 // User logs out
 router.post("/logout", logoutRequestHandler);
