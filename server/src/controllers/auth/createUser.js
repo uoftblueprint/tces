@@ -27,9 +27,11 @@ const createUserRequestHandler = async (req, res, next) => {
       status: "success",
       message: "User created successfully",
       data: {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
+        user: {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+        },
       },
     });
   } catch (err) {

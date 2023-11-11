@@ -4,17 +4,26 @@ const isLoggedInRequestHandler = (req, res) => {
       res.json({
         status: "success",
         message: `User ${req.user.username} is logged in as admin`,
-        is_admin: true,
+        data: {
+          is_admin: true,
+        },
       });
       return;
     }
     res.json({
       status: "success",
       message: `User ${req.user} logged in, but not an admin`,
+      data: {
+        is_admin: false,
+      },
     });
     return;
   }
-  res.json({ status: "failure", message: "user not logged in" });
+  res.json({
+    status: "fail",
+    message: "user not logged in",
+    data: { is_admin: null },
+  });
   return;
 };
 
