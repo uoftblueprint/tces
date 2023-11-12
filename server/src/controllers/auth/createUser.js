@@ -1,3 +1,5 @@
+const logger = require('pino')();
+
 const User = require("../../models/user.model");
 const crypto = require("crypto");
 
@@ -42,7 +44,7 @@ const createUserRequestHandler = async (req, res, next) => {
       });
       return;
     }
-    console.log(err);
+    logger.error(`Uncaught error thrown: ${err}`);
     res.status(500).json({
       status: "error",
       message: "Unexpected server error",
