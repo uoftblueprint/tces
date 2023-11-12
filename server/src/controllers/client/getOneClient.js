@@ -7,7 +7,7 @@ const getOneClientRequestHandler = async (req, res) => {
                 
         const client = await Client.findOne({where: {id: client_id}});
         if (client) {
-            return res.status(200).json({status: "success", message: "Got client data successfully", data: {  }});
+            return res.status(200).json({status: "success", message: "Got client data successfully", data: { client }});
         }
 
         return res.status(404).json({status: "fail", message: `Client with id ${client_id} does not exist in the database`, data: null});
