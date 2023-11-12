@@ -228,9 +228,8 @@ function AddJobLead() {
             >
               <MenuItem value="full-time">Full Time</MenuItem>
               <MenuItem value="part-time">Part Time</MenuItem>
-              <MenuItem value="contract">Contract</MenuItem>
-              <MenuItem value="temporary">Temporary</MenuItem>
-              <MenuItem value="internship">Internship</MenuItem>
+              <MenuItem value="casual">Casual</MenuItem>
+              <MenuItem value="on-call">On-Call</MenuItem>
             </Select>
             <FormHelperText>*Required</FormHelperText>
           </FormControl>
