@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   Container,
   Logo,
@@ -10,28 +12,27 @@ import {
   P,
 } from "./index.styles";
 
-function LoginComponent() {
+function LoginComponent({ setIsAuthenticated }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     // Create a JSON object with the required keys and values
-    const loginData = {
-      username: email,
-      password,
-    };
-
+    // const loginData = {
+    //   username: email,
+    //   password,
+    // };
     // Convert the JSON object to a string
-    const loginDataJSON = JSON.stringify(loginData);
-
+    // const loginDataJSON = JSON.stringify(loginData);
     // Replace url with target route
-    fetch("http://localhost:8000/login", {
-      method: "POST", // Not sure which method
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: loginDataJSON,
-    });
+    // fetch("http://localhost:8000/login", {
+    //   method: "POST", // Not sure which method
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: loginDataJSON,
+    // });
     // .then((response) => {
     //     if (response.ok) {
     //         // Handle success response (e.g., redirect or show a success message)
@@ -43,7 +44,9 @@ function LoginComponent() {
     // })
     // .catch((error) => {
     //     console.error('Error:', error);
-    // });
+    // })
+    setIsAuthenticated(true);
+    navigate("/dashboard");
   };
 
   return (
@@ -72,5 +75,9 @@ function LoginComponent() {
     </Container>
   );
 }
+
+LoginComponent.propTypes = {
+  setIsAuthenticated: PropTypes.func.isRequired,
+};
 
 export default LoginComponent;
