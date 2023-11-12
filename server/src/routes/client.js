@@ -8,3 +8,6 @@ const router = express.Router();
 
 router.get("/:client_id", isLoggedIn, getOneClientRequestHandler)
 router.get("/", isLoggedIn, getAllClientsRequestHandler)
+
+
+module.exports = router;
