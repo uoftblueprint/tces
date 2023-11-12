@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
+const User = require("./user.model");
 
 const Client = sequelize.define("clients", {
   id: {
@@ -11,12 +12,18 @@ const Client = sequelize.define("clients", {
   owner: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: process.env.USERS_TABLE,
+    references: {
+        model: User,
+        key: "id"
+    },
   },
   creator: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: process.env.USERS_TABLE,
+    references: {
+        model: User,
+        key: "id"
+    },
   },
   name: {
     type: DataTypes.STRING,
