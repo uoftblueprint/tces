@@ -8,14 +8,27 @@ import {
 } from "react-router-dom";
 import RouteGuard from "./components/route-guard-component";
 import DashboardPage from "./pages/dashboard";
+import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
-// import CreatePage from "./pages/create-user/create-user";
-// import EditPage from "./pages/edit-user/edit-user";
+import mockJobUpdates from "./mock-data/mockJobUpdates";
+import mockUser from "./mock-data/mockUser";
+import CreatePage from "./pages/create-user/create-user";
+import EditPage from "./pages/edit-user/edit-user";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const redirect = "/signin";
+  // redirect urls in-case user has a cached login or not
+  const notAuthRedirect = "/signin";
+  const AuthRedirect = "/dashboard";
 
+  // states defined at the very root of the react tree (will be passed down to contributing child components)
+  /* User State */
+  const [currUser] = useState(mockUser);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+  /* Job Updates State */
+  const [jobUpdates] = useState(mockJobUpdates);
+
+  // declaring routes here
   return (
     <Router>
       <Routes>
@@ -23,7 +36,7 @@ function App() {
           path="/"
           element={
             isAuthenticated ? (
-              <Navigate to="/dashboard" />
+              <Navigate to="/admin" />
             ) : (
               <Navigate to="/signin" />
             )
@@ -31,13 +44,53 @@ function App() {
         />
         <Route
           path="/signin"
-          element={<LoginPage setIsAuthenticated={setIsAuthenticated} />}
+          element={
+            <RouteGuard isPermitted={!isAuthenticated} redirect={AuthRedirect}>
+              <LoginPage setIsAuthenticated={setIsAuthenticated} />
+            </RouteGuard>
+          }
         />
         <Route
           path="/dashboard"
           element={
-            <RouteGuard isPermitted={isAuthenticated} redirect={redirect}>
-              <DashboardPage />
+            <RouteGuard
+              isPermitted={isAuthenticated}
+              redirect={notAuthRedirect}
+            >
+              <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <RouteGuard
+              isPermitted={isAuthenticated}
+              redirect={notAuthRedirect}
+            >
+              <AdminDashboard />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/admin/create-user"
+          element={
+            <RouteGuard
+              isPermitted={isAuthenticated}
+              redirect={notAuthRedirect}
+            >
+              <CreatePage />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/admin/edit-user"
+          element={
+            <RouteGuard
+              isPermitted={isAuthenticated}
+              redirect={notAuthRedirect}
+            >
+              <EditPage />
             </RouteGuard>
           }
         />

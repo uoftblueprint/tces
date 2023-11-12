@@ -1,4 +1,4 @@
-const mockData = [];
+const mockJobUpdates = [];
 // const mockData = [
 //   {
 //     action: "Added Job Lead",
@@ -86,4 +86,4 @@ const mockData = [];
 //   },
 // ];
 
-export default mockData;
+export default mockJobUpdates;

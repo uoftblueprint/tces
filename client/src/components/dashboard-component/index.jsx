@@ -1,9 +1,8 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
 import { Typography, Container } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import DashboardHeaderComponent from "./header-dashboard-component";
-import mockData from "./mockData";
 import {
   MainContainer,
   SearchFieldContainer,
@@ -12,17 +11,13 @@ import {
 } from "./index.styles";
 import DashboardNavigationComponent from "./nav-dashboard-component";
 import UpdatesCollection from "./update-collection-component";
+import UserType from "../../prop-types/UserType";
+import JobUpdateType from "../../prop-types/JobUpdateType";
 
-function DashboardComponent() {
-  const firstName = "First Name";
-
-  const mockJobUpdates = mockData;
-
-  const [jobUpdates] = useState(mockJobUpdates);
-
+function DashboardComponent({ currUser, jobUpdates }) {
   return (
     <Container>
-      <DashboardHeaderComponent userName={firstName} />
+      <DashboardHeaderComponent userName={currUser.name} />
       <DashboardNavigationComponent />
       <MainContainer>
         <Typography
@@ -60,5 +55,10 @@ function DashboardComponent() {
     </Container>
   );
 }
+
+DashboardComponent.propTypes = {
+  currUser: UserType.isRequired,
+  jobUpdates: PropTypes.arrayOf(JobUpdateType).isRequired,
+};
 
 export default DashboardComponent;
