@@ -13,6 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
+import "./UserManagementStyles.css";
 
 const columns = [
   {
@@ -44,7 +45,6 @@ const columns = [
           icon={<EditIcon />}
           label="Edit"
           className="textPrimary actionButton"
-          // onClick={handleEditClick(id)}
           color="inherit"
         />,
         <GridActionsCellItem
@@ -71,7 +71,7 @@ const rows = [
   { id: 10, name: "First Last", email: "email@email.com" },
 ];
 
-export default function DataGridDemo() {
+export default function UserManagement() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(rows);
 
@@ -90,10 +90,17 @@ export default function DataGridDemo() {
     setFilteredRows(rows);
   };
 
+  const handleBackClick = () => {
+    window.location.href = "about:blank";
+  };
+
   return (
-    <div style={{ marginRight: 40 }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <ArrowBackIcon sx={{ color: "gray", marginRight: 2, marginLeft: 2 }} />
+    <div className="dashboard-container">
+      <div className="header-container">
+        <ArrowBackIcon
+          onClick={handleBackClick}
+          sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
+        />
         <Typography
           style={{
             fontFamily: "Arial",
@@ -124,77 +131,75 @@ export default function DataGridDemo() {
         </Button>
       </div>
 
-      <Box sx={{ height: 400, width: "100%" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            // display: "grid",
-            // gridTemplateColumns: "1fr auto",
-            gridColumnGap: "30px",
-            // height: "590px",
-            // width: "1400px"
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gridColumnGap: "30px",
+          height: 400,
+          width: "100%",
+        }}
+      >
+        <Card sx={{ width: 235, height: 175, marginLeft: 2 }}>
+          <CardContent>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Name
+            </Typography>
+            <Typography sx={{ mb: 0.5 }} color="text.secondary">
+              <TextField
+                type="text"
+                value={searchQuery}
+                onChange={handleSearch}
+                size="small"
+                style={{
+                  borderWidth: "10px",
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={handleFilterReset}>
+              Reset Filters
+            </Button>
+          </CardActions>
+        </Card>
+        <DataGrid
+          sx={{
+            width: 1100,
+            height: 592,
+            "& .actionButton": {
+              display: "none",
+            },
+            [`& .${gridClasses.row}:hover`]: {
+              ".actionButton": {
+                display: "block",
+              },
+            },
           }}
-        >
-          <Card sx={{ width: 235, height: 175, marginLeft: 2 }}>
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                Name
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                <TextField
-                  type="text"
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  style={{
-                    borderWidth: "10px",
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={handleFilterReset}>
-                Reset Filters
-              </Button>
-            </CardActions>
-          </Card>
-          <DataGrid
-            sx={{
-              width: 1100,
-              height: 592,
-              "& .actionButton": {
-                display: "none",
+          rows={filteredRows}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
               },
-              [`& .${gridClasses.row}:hover`]: {
-                ".actionButton": {
-                  display: "block",
-                },
-              },
-            }}
-            rows={filteredRows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
-                },
-              },
-            }}
-            pageSizeOptions={[10]}
-            disableColumnSelector
-          />
-        </div>
+            },
+          }}
+          pageSizeOptions={[10]}
+          disableColumnSelector
+          disableColumnMenu
+        />
       </Box>
     </div>
   );
