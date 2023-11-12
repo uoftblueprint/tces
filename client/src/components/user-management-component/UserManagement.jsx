@@ -13,7 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import "./UserManagementStyles.css";
+import { DashboardContainer, HeaderContainer } from "./index.styles";
 
 const columns = [
   {
@@ -95,8 +95,8 @@ export default function UserManagement() {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="header-container">
+    <DashboardContainer>
+      <HeaderContainer>
         <ArrowBackIcon
           onClick={handleBackClick}
           sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
@@ -129,7 +129,7 @@ export default function UserManagement() {
         >
           New Users
         </Button>
-      </div>
+      </HeaderContainer>
 
       <Box
         sx={{
@@ -145,6 +145,7 @@ export default function UserManagement() {
             <Typography
               sx={{ fontSize: 14 }}
               color="text.secondary"
+              align="left"
               gutterBottom
             >
               Name
@@ -201,6 +202,6 @@ export default function UserManagement() {
           disableColumnMenu
         />
       </Box>
-    </div>
+    </DashboardContainer>
   );
 }
