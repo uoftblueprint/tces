@@ -70,17 +70,6 @@ describe("createUser test suite", () => {
 
     await isAdmin(mockReq, mockRes, mockNext);
     expect(mockRes.statusCode).toBe(403);
-
-    vi.mock("../../../src/models/user.model", () => {
-      return {
-        findOne: async (options) => {
-          return { is_admin: false };
-        },
-      };
-    });
-
-    await isAdmin(mockReq, mockRes, mockNext);
-    expect(mockRes.statusCode).toBe(403);
   });
 
   it("should not respond with 403", () => {

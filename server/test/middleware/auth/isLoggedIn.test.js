@@ -36,6 +36,14 @@ describe("createUser test suite", () => {
     };
     const mockNext = vi.fn();
 
+    vi.mock("../../../src/models/user.model", () => {
+      return {
+        findOne: async (options) => {
+          return null;
+        },
+      };
+    });
+
     await isLoggedIn(mockReq, mockRes, mockNext);
     expect(mockRes.statusCode).toBe(403);
   });
