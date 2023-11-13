@@ -20,4 +20,23 @@ describe("createUser test suite", () => {
     await isLoggedIn(mockReq, mockRes, mockNext);
     expect(mockRes.statusCode).toBe(403);
   });
+
+  it("should respond with 403 if the user is not in the database", async () => {
+    const mockReq = { user: { username: "user" } };
+    const mockRes = {
+      status: (code) => {
+        mockRes.statusCode = code;
+        return {
+          json: (message) => {
+            return;
+          },
+        };
+      },
+      statusCode: 0,
+    };
+    const mockNext = vi.fn();
+
+    await isLoggedIn(mockReq, mockRes, mockNext);
+    expect(mockRes.statusCode).toBe(403);
+  });
 });
