@@ -13,16 +13,30 @@ const Client = sequelize.define("clients", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-        model: User,
-        key: "id"
+      model: User,
+      key: "id",
+    },
+    validate: {
+      isInUser(value) {
+        if (!User.findByPk(value)) {
+          throw new Error("User does not exist");
+        }
+      },
     },
   },
   creator: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-        model: User,
-        key: "id"
+      model: User,
+      key: "id",
+    },
+    validate: {
+      isInUser(value) {
+        if (!User.findByPk(value)) {
+          throw new Error("User does not exist");
+        }
+      },
     },
   },
   name: {
@@ -47,19 +61,39 @@ const Client = sequelize.define("clients", {
     allowNull: false,
   },
   status_at_exit: {
-    type: DataTypes.ENUM(['active', 'closed_to_employed', 'closed_to_training', 'closed_to_no_results']),
+    type: DataTypes.ENUM([
+      "active",
+      "closed_to_employed",
+      "closed_to_training",
+      "closed_to_no_results",
+    ]),
     allowNull: false,
   },
-  status_at_3_months : {
-    type: DataTypes.ENUM(['active', 'closed_to_employed', 'closed_to_training', 'closed_to_no_results']),
+  status_at_3_months: {
+    type: DataTypes.ENUM([
+      "active",
+      "closed_to_employed",
+      "closed_to_training",
+      "closed_to_no_results",
+    ]),
     allowNull: false,
   },
-  status_at_6_months : {
-    type: DataTypes.ENUM(['active', 'closed_to_employed', 'closed_to_training', 'closed_to_no_results']),
+  status_at_6_months: {
+    type: DataTypes.ENUM([
+      "active",
+      "closed_to_employed",
+      "closed_to_training",
+      "closed_to_no_results",
+    ]),
     allowNull: false,
   },
-  status_at_12_months : {
-    type: DataTypes.ENUM(['active', 'closed_to_employed', 'closed_to_training', 'closed_to_no_results']),
+  status_at_12_months: {
+    type: DataTypes.ENUM([
+      "active",
+      "closed_to_employed",
+      "closed_to_training",
+      "closed_to_no_results",
+    ]),
     allowNull: false,
   },
 });

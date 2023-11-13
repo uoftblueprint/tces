@@ -1,4 +1,4 @@
-const logger = require('pino')();
+const logger = require("pino")();
 
 const User = require("../../models/user.model");
 const crypto = require("crypto");
