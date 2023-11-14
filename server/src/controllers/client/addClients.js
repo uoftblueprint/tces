@@ -9,13 +9,11 @@ const addClientsRequestHandler = async (req, res) => {
 
       const clients = await Client.bulkCreate(req.body.client);
 
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          message: "created clients",
-          data: { clients },
-        });
+      return res.status(200).json({
+        status: "success",
+        message: "created clients",
+        data: { clients },
+      });
     }
 
     // create one client
@@ -38,13 +36,12 @@ const addClientsRequestHandler = async (req, res) => {
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
-      return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "Either owner or creator is not a valid user",
-          data: null,
-        });
+      return res.status(400).json({
+        status: "fail",
+        message:
+          "Either owner or creator is not a valid user, OR the email is already in use",
+        data: null,
+      });
     }
 
     logger.error(`Unexpected error thrown: ${err}`);
