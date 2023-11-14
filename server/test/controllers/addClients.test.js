@@ -61,6 +61,11 @@ describe("addClients test suite", () => {
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
+
+    it("Returns 200 on success", async () => {
+      await addClientsRequestHandler(mockReq, mockRes);
+      expect(mockRes.statusCode).toBe(200);
+    });
   });
 
   describe("Add multiple clients", () => {
@@ -113,6 +118,11 @@ describe("addClients test suite", () => {
   
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
+    });
+
+    it("Returns 200 on success", async () => {
+      await addClientsRequestHandler(mockReq, mockRes);
+      expect(mockRes.statusCode).toBe(200);
     });
 
   });
