@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -39,7 +39,8 @@ function AddJobLead() {
     setOpen(false);
   };
 
-  const [jobLeads, setJobLeads] = useState([
+  // Initialize state from local storage or use default if not present
+  const initialJobLeads = JSON.parse(localStorage.getItem("jobLeads")) || [
     {
       id: 0,
       employer: "",
@@ -53,7 +54,14 @@ function AddJobLead() {
       expirationDate: null,
       employmentType: "",
     },
-  ]);
+  ];
+
+  const [jobLeads, setJobLeads] = useState(initialJobLeads);
+
+  useEffect(() => {
+    // Save state to local storage whenever it changes
+    localStorage.setItem("jobLeads", JSON.stringify(jobLeads));
+  }, [jobLeads]);
 
   const handleAddJobLead = () => {
     const newId = jobLeads.length + 1;
