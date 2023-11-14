@@ -38,8 +38,8 @@ function AddEmployerInfo() {
   };
 
   const handleBackButtonClick = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   // Initialize state from local storage or use default if not present
   const initialContacts = () =>

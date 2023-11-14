@@ -28,8 +28,13 @@ import {
 
 function AddCompanyInfo() {
   const [open, setOpen] = React.useState(false);
-  const [showAddSecondaryButton, setShowAddSecondaryButton] =
-    React.useState(true);
+  const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(() => {
+    const localStorageValue = localStorage.getItem("showAddSecondaryButton");
+    console.log("localStorageValue:", localStorageValue);
+    return localStorageValue === null || localStorageValue === undefined
+      ? true
+      : localStorageValue === "true";
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -70,6 +75,11 @@ function AddCompanyInfo() {
     localStorage.setItem("contactInfo", JSON.stringify(contactInfo));
   }, [contactInfo]);
 
+  useEffect(() => {
+    // Save state to local storage whenever it changes
+    localStorage.setItem("showAddSecondaryButton", showAddSecondaryButton.toString());
+  }, [showAddSecondaryButton]);
+
   const handleAddSecondary = () => {
     // Check if the limit for additional secondary addresses is reached
     if (contactInfo.length <= 1) {
@@ -84,9 +94,9 @@ function AddCompanyInfo() {
           secondaryPostalCode: "",
         },
       ]);
-      // Hide the "Add Secondary Address" button after adding one secondary address
-      setShowAddSecondaryButton(false);
     }
+    // Hide the "Add Secondary Address" button after adding one secondary address
+    setShowAddSecondaryButton(false);
   };
 
   const handleInputChange = (e, id, field) => {
@@ -103,9 +113,11 @@ function AddCompanyInfo() {
   const handleResetInputs = () => {
     // Clear local storage
     localStorage.removeItem("contactInfo");
+    localStorage.removeItem("showAddSecondaryButton")
 
     // Reset the inputs to initial values
     setContactInfo(initialContactInfo());
+    setShowAddSecondaryButton(true);
   };
 
   return (

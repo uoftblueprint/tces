@@ -44,8 +44,8 @@ function AddEmployerJobLead() {
 
   const navigate = useNavigate();
   const handleBackButtonClick = () => {
-    navigate("/employer-contacts")
-  }
+    navigate("/employer-contacts");
+  };
 
   // Initialize state from local storage or use default if not present
   const initialJobLeads = JSON.parse(
