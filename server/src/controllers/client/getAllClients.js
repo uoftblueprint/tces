@@ -4,7 +4,6 @@ const Client = require("../../models/client.model");
 const getAllClientsRequestHandler = async (req, res) => {
   try {
     const clients = await Client.findAll();
-    console.log(clients);
 
     return res.status(200).json({status: "success", message: "All clients found successfully", data: clients});
 
