@@ -5,13 +5,13 @@ import "./App.css";
 // import EditPage from "./pages/edit-user/edit-user";
 // import AddJobLead from "./components/add-job-lead-component";
 // import AddCompanyInfo from "./components/add-employer-component/company-info-component";
-// import AddEmployerInfo from "./components/add-employer-component/employer-contact-component";
-import AddEmployerJobLead from "./components/add-employer-component/job-lead-component";
+import AddEmployerInfo from "./components/add-employer-component/employer-contact-component";
+// import AddEmployerJobLead from "./components/add-employer-component/job-lead-component";
 
 function App() {
   return (
     <div className="App">
-      <AddEmployerJobLead />
+      <AddEmployerInfo />
     </div>
   );
 }

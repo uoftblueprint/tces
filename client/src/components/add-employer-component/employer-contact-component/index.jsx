@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -31,7 +31,8 @@ function AddEmployerInfo() {
     setOpen(false);
   };
 
-  const [jobLeads, setJobLeads] = useState([
+   // Initialize state from local storage or use default if not present
+   const initialJobLeads = JSON.parse(localStorage.getItem("jobLeads")) || [
     {
       id: 0,
       name: "",
@@ -40,7 +41,14 @@ function AddEmployerInfo() {
       email: "",
       alternatePhoneNumber: "",
     },
-  ]);
+  ];
+
+  const [jobLeads, setJobLeads] = useState(initialJobLeads);
+
+  useEffect(() => {
+    // Save state to local storage whenever it changes
+    localStorage.setItem("jobLeads", JSON.stringify(jobLeads));
+  }, [jobLeads]);
 
   const handleAddJobLead = () => {
     const newId = jobLeads.length + 1;

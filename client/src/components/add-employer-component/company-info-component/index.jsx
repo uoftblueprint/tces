@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   FormHelperText,
@@ -38,7 +38,8 @@ function AddCompanyInfo() {
     setOpen(false);
   };
 
-  const [contactInfo, setContactInfo] = useState([
+  // Initialize state from local storage or use default if not present
+  const initialContactInfo = JSON.parse(localStorage.getItem("contactInfo")) || [
     {
       id: 0,
       businessName: "",
@@ -53,7 +54,14 @@ function AddCompanyInfo() {
       province: "",
       postalCode: "",
     },
-  ]);
+  ];
+
+  const [contactInfo, setContactInfo] = useState(initialContactInfo);
+
+  useEffect(() => {
+    // Save state to local storage whenever it changes
+    localStorage.setItem("contactInfo", JSON.stringify(contactInfo));
+  }, [contactInfo]);
 
   const handleAddSecondary = () => {
     // Check if the limit for additional secondary addresses is reached
