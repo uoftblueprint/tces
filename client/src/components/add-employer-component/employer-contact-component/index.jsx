@@ -31,29 +31,30 @@ function AddEmployerInfo() {
     setOpen(false);
   };
 
-   // Initialize state from local storage or use default if not present
-   const initialJobLeads = JSON.parse(localStorage.getItem("jobLeads")) || [
-    {
-      id: 0,
-      name: "",
-      jobTitle: "",
-      phoneNumber: "",
-      email: "",
-      alternatePhoneNumber: "",
-    },
-  ];
+  // Initialize state from local storage or use default if not present
+  const initialContacts = () =>
+    JSON.parse(localStorage.getItem("contacts")) || [
+      {
+        id: 0,
+        name: "",
+        jobTitle: "",
+        phoneNumber: "",
+        email: "",
+        alternatePhoneNumber: "",
+      },
+    ];
 
-  const [jobLeads, setJobLeads] = useState(initialJobLeads);
+  const [contacts, setContacts] = useState(initialContacts);
 
   useEffect(() => {
     // Save state to local storage whenever it changes
-    localStorage.setItem("jobLeads", JSON.stringify(jobLeads));
-  }, [jobLeads]);
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
 
-  const handleAddJobLead = () => {
-    const newId = jobLeads.length + 1;
-    setJobLeads((prevJobLeads) => [
-      ...prevJobLeads,
+  const handleAddContact = () => {
+    const newId = contacts.length + 1;
+    setContacts((prevContacts) => [
+      ...prevContacts,
       {
         id: newId,
         name: "",
@@ -65,12 +66,20 @@ function AddEmployerInfo() {
     ]);
   };
 
+  const handleResetInputs = () => {
+    // Clear local storage
+    localStorage.removeItem("contacts");
+
+    // Reset the inputs to initial values
+    setContacts(initialContacts());
+  };
+
   const handleInputChange = (e, id, field) => {
-    const newJobLeads = [...jobLeads];
-    const index = newJobLeads.findIndex((lead) => lead.id === id);
+    const newContacts = [...contacts];
+    const index = newContacts.findIndex((lead) => lead.id === id);
     if (index !== -1) {
-      newJobLeads[index][field] = e;
-      setJobLeads(newJobLeads);
+      newContacts[index][field] = e;
+      setContacts(newContacts);
     } else {
       console.error(`Invalid id: ${id}`);
     }
@@ -82,7 +91,7 @@ function AddEmployerInfo() {
       <Body>
         Input information about the Employer/HR Contact(s) of the employer.
       </Body>
-      {jobLeads.map((lead) => (
+      {contacts.map((lead) => (
         <EmployerContactContainer key={lead.id}>
           <H3>Employer Contact</H3>
           <TextField
@@ -139,7 +148,7 @@ function AddEmployerInfo() {
           />
         </EmployerContactContainer>
       ))}
-      <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+      <ButtonL onClick={handleAddContact}>+ Add Another Contact</ButtonL>
       <Stack spacing={2}>
         <Pagination count={3} shape="rounded" />
       </Stack>
@@ -165,7 +174,13 @@ function AddEmployerInfo() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>CANCEL</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleResetInputs();
+              }}
+              autoFocus
+            >
               YES, I&apos;M SURE
             </Button>
           </DialogActions>

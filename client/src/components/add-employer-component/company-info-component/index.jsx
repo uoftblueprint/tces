@@ -39,22 +39,23 @@ function AddCompanyInfo() {
   };
 
   // Initialize state from local storage or use default if not present
-  const initialContactInfo = JSON.parse(localStorage.getItem("contactInfo")) || [
-    {
-      id: 0,
-      businessName: "",
-      businessLegalName: "",
-      naicsCode: "",
-      phoneNumber: "",
-      faxNumber: "",
-      generalEmail: "",
-      website: "",
-      employerAddress: null,
-      city: null,
-      province: "",
-      postalCode: "",
-    },
-  ];
+  const initialContactInfo = () =>
+    JSON.parse(localStorage.getItem("contactInfo")) || [
+      {
+        id: 0,
+        businessName: "",
+        businessLegalName: "",
+        naicsCode: "",
+        phoneNumber: "",
+        faxNumber: "",
+        generalEmail: "",
+        website: "",
+        employerAddress: null,
+        city: null,
+        province: "",
+        postalCode: "",
+      },
+    ];
 
   const [contactInfo, setContactInfo] = useState(initialContactInfo);
 
@@ -91,6 +92,14 @@ function AddCompanyInfo() {
     } else {
       console.error(`Invalid id: ${id}`);
     }
+  };
+
+  const handleResetInputs = () => {
+    // Clear local storage
+    localStorage.removeItem("contactInfo");
+
+    // Reset the inputs to initial values
+    setContactInfo(initialContactInfo());
   };
 
   return (
@@ -342,7 +351,13 @@ function AddCompanyInfo() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>CANCEL</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleResetInputs();
+              }}
+              autoFocus
+            >
               YES, I&apos;M SURE
             </Button>
           </DialogActions>

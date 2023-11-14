@@ -42,7 +42,9 @@ function AddEmployerJobLead() {
   };
 
   // Initialize state from local storage or use default if not present
-  const initialJobLeads = JSON.parse(localStorage.getItem("employerJobLeads")) || [
+  const initialJobLeads = JSON.parse(
+    localStorage.getItem("employerJobLeads"),
+  ) || [
     {
       id: 0,
       jobTitle: "",
@@ -93,7 +95,9 @@ function AddEmployerJobLead() {
   return (
     <Container>
       <H1>Adding a new Employer</H1>
-      <Body>Input information about any job leads associated with the employer.</Body>
+      <Body>
+        Input information about any job leads associated with the employer.
+      </Body>
       {jobLeads.map((lead) => (
         <JobLeadContainer key={lead.id}>
           <H3>Job Lead</H3>
