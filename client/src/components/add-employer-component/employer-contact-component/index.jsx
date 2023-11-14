@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -30,6 +31,15 @@ function AddEmployerInfo() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const navigate = useNavigate();
+  const handleNextButtonClick = () => {
+    navigate("/employer-job-leads");
+  };
+
+  const handleBackButtonClick = () => {
+    navigate("/")
+  }
 
   // Initialize state from local storage or use default if not present
   const initialContacts = () =>
@@ -196,10 +206,13 @@ function AddEmployerInfo() {
               },
             }}
             variant="contained"
+            onClick={handleBackButtonClick}
           >
             BACK
           </Button>
-          <Button variant="contained">SUBMIT</Button>
+          <Button variant="contained" onClick={handleNextButtonClick}>
+            NEXT
+          </Button>
         </div>
       </ButtonContainer>
     </Container>

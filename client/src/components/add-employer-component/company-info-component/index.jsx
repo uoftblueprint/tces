@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   FormHelperText,
@@ -36,6 +37,11 @@ function AddCompanyInfo() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const navigate = useNavigate();
+  const handleNextButtonClick = () => {
+    navigate("/employer-contacts");
   };
 
   // Initialize state from local storage or use default if not present
@@ -362,7 +368,9 @@ function AddCompanyInfo() {
             </Button>
           </DialogActions>
         </Dialog>
-        <Button variant="contained">NEXT</Button>
+        <Button variant="contained" onClick={handleNextButtonClick}>
+          NEXT
+        </Button>
       </ButtonContainer>
     </Container>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -40,6 +41,11 @@ function AddEmployerJobLead() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const navigate = useNavigate();
+  const handleBackButtonClick = () => {
+    navigate("/employer-contacts")
+  }
 
   // Initialize state from local storage or use default if not present
   const initialJobLeads = JSON.parse(
@@ -236,6 +242,7 @@ function AddEmployerJobLead() {
               },
             }}
             variant="contained"
+            onClick={handleBackButtonClick}
           >
             BACK
           </Button>
