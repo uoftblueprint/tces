@@ -40,7 +40,7 @@ function AddJobLead() {
   };
 
   // Initialize state from local storage or use default if not present
-  const initialJobLeads = JSON.parse(localStorage.getItem("jobLeads")) || [
+  const initialJobLeads = () => JSON.parse(localStorage.getItem("jobLeads")) || [
     {
       id: 0,
       employer: "",
@@ -91,6 +91,14 @@ function AddJobLead() {
     } else {
       console.error(`Invalid id: ${id}`);
     }
+  };
+
+  const handleResetInputs = () => {
+    // Clear local storage
+    localStorage.removeItem("jobLeads");
+    
+    // Reset the inputs to initial values
+    setJobLeads(initialJobLeads());
   };
 
   return (
@@ -266,7 +274,7 @@ function AddJobLead() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>CANCEL</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button onClick={() => { handleClose(); handleResetInputs(); }} autoFocus>
               YES, I&apos;M SURE
             </Button>
           </DialogActions>
