@@ -7,12 +7,14 @@ import "./App.css";
 // import AddJobLead from "./components/add-job-lead-component";
 import AddCompanyInfo from "./components/add-employer-component/company-info-component";
 import AddJobLead from "./components/add-job-lead-component";
+import AddEmployer from "./components/add-employer-component";
 
 function App() {
   return (
     <div className="App">
       <AddCompanyInfo />
       <AddJobLead />
+      <AddEmployer />
     </div>
   );
 }
