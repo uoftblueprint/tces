@@ -12,6 +12,10 @@ const getAllClientsRequestHandler = async (req, res) => {
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);
+    return res.status(500).json({
+      status: "error",
+      message: "An unexpected error occurred",
+    });
   }
 };
 
