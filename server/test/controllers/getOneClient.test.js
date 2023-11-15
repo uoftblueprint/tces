@@ -35,23 +35,25 @@ describe("getOneClient test suite", () => {
   describe("Valid requests", () => {
     beforeEach(() => {
       mock("../../src/models/client.model", mockGetOneClient);
-      getOneClientRequestHandler = mock.reRequire("../../src/controllers/client/getOneClient");
+      getOneClientRequestHandler = mock.reRequire(
+        "../../src/controllers/client/getOneClient",
+      );
     });
-  
+
     it("Calls findOne", async () => {
       const spy = vi.spyOn(mockGetOneClient, "findOne");
-  
+
       await getOneClientRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
-  
+
     it("Does not call findAll", async () => {
       const spy = vi.spyOn(mockGetOneClient, "findAll");
-  
+
       await getOneClientRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
-  
+
     it("Returns 200 on success", async () => {
       await getOneClientRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);
@@ -61,12 +63,14 @@ describe("getOneClient test suite", () => {
   describe("Invalid requests", () => {
     beforeEach(() => {
       mock("../../src/models/client.model", mockGetOneClientInvalid);
-      getOneClientRequestHandler = mock.reRequire("../../src/controllers/client/getOneClient");
+      getOneClientRequestHandler = mock.reRequire(
+        "../../src/controllers/client/getOneClient",
+      );
     });
 
     it("Returns 404 if the client does not exist", async () => {
       await getOneClientRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(404);
-    })
+    });
   });
 });

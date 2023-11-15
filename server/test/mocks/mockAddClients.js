@@ -1,5 +1,4 @@
-
 module.exports = {
-    create: async (client) => {},
-    bulkCreate: async (clients) => {},
+  create: async (client) => {},
+  bulkCreate: async (clients) => {},
 };

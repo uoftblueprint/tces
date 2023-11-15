@@ -1,8 +1,8 @@
-module.exports ={
-    findOne: () => {
-      return {};
-    },
-    findAll: () => {
-      return {};
-    },
-  }
+module.exports = {
+  findOne: () => {
+    return {};
+  },
+  findAll: () => {
+    return {};
+  },
+};

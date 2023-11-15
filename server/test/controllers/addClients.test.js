@@ -6,7 +6,9 @@ const mockAddClients = require("../mocks/mockAddClients");
 
 beforeEach(() => {
   mock("../../src/models/client.model", mockAddClients);
-  addClientsRequestHandler = mock.reRequire("../../src/controllers/client/addClients");
+  addClientsRequestHandler = mock.reRequire(
+    "../../src/controllers/client/addClients",
+  );
 });
 
 afterEach(() => {
@@ -75,48 +77,46 @@ describe("addClients test suite", () => {
     const mockReq = {
       body: {
         client: [
-            {
-              owner: 1,
-              creator: 1,
-              name: "name",
-              email: "email@gmail.com",
-              phone_number: "289-555-5555",
-              status: "open?",
-              closure_date: new Date(),
-              status_at_exit: "active",
-              status_at_3_months: "active",
-              status_at_6_months: "active",
-              status_at_12_months: "active",
-            },
-            {
-              owner: 1,
-              creator: 2,
-              name: "name",
-              email: "email2@gmail.com",
-              phone_number: "289-555-5555",
-              status: "open?",
-              closure_date: new Date(),
-              status_at_exit: "active",
-              status_at_3_months: "active",
-              status_at_6_months: "active",
-              status_at_12_months: "active",
-            }
-          ],
+          {
+            owner: 1,
+            creator: 1,
+            name: "name",
+            email: "email@gmail.com",
+            phone_number: "289-555-5555",
+            status: "open?",
+            closure_date: new Date(),
+            status_at_exit: "active",
+            status_at_3_months: "active",
+            status_at_6_months: "active",
+            status_at_12_months: "active",
+          },
+          {
+            owner: 1,
+            creator: 2,
+            name: "name",
+            email: "email2@gmail.com",
+            phone_number: "289-555-5555",
+            status: "open?",
+            closure_date: new Date(),
+            status_at_exit: "active",
+            status_at_3_months: "active",
+            status_at_6_months: "active",
+            status_at_12_months: "active",
+          },
+        ],
       },
     };
-    
+
     it("Calls bulkCreate", async () => {
-
-
       const spy = vi.spyOn(mockAddClients, "bulkCreate");
-  
+
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call create", async () => {
       const spy = vi.spyOn(mockAddClients, "create");
-  
+
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
@@ -125,6 +125,5 @@ describe("addClients test suite", () => {
       await addClientsRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);
     });
-
   });
 });

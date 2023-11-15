@@ -6,7 +6,9 @@ const mockGetManyClients = require("../mocks/mockGetAllClients");
 
 beforeEach(() => {
   mock("../../src/models/client.model", mockGetManyClients);
-  getAllClientsRequestHandler = mock.reRequire("../../src/controllers/client/getAllClients");
+  getAllClientsRequestHandler = mock.reRequire(
+    "../../src/controllers/client/getAllClients",
+  );
 });
 
 afterEach(() => {
