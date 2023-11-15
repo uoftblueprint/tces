@@ -15,6 +15,11 @@ const addClientsRequestHandler = async (req, res) => {
       });
     }
 
+    var closure_date = null;
+    if (req.body.client.closure_date) {
+      closure_date = new Date(req.body.client.closure_date);
+    }
+
     // create one client
     const client = await Client.create({
       owner: req.body.client.owner,
@@ -23,7 +28,7 @@ const addClientsRequestHandler = async (req, res) => {
       email: req.body.client.email || null,
       phone_number: req.body.client.phone_number || null,
       status: req.body.client.status || null,
-      closure_date: new Date(req.body.client.closure_date) || null,
+      closure_date: closure_date,
       status_at_exit: null,
       status_at_3_months: null,
       status_at_6_months: null,
