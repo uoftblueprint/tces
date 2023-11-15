@@ -1,14 +1,17 @@
-import { expect, vi, describe, it, afterEach } from "vitest";
+import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import addClientsRequestHandler from "../../src/controllers/client/addClients";
 const Client = await require("../../src/models/client.model");
+const mock = require("mock-require");
+const mockAddClients = require("../mocks/mockAddClients");
 
-vi.hoisted(() => {
-  const mock = require("mock-require");
+beforeEach(() => {
+  mock("../../src/models/client.model", mockAddClients);
+  addClientsRequestHandler = mock.reRequire("../../src/controllers/client/addClients");
+});
 
-  mock("../../src/models/client.model", {
-    create: vi.fn(),
-    bulkCreate: vi.fn(),
-  });
+afterEach(() => {
+  // Reset mocks after every test
+  mock.stop("../../src/models/client.model");
 });
 
 describe("addClients test suite", () => {
@@ -49,14 +52,14 @@ describe("addClients test suite", () => {
     };
 
     it("Calls create", async () => {
-      const spy = vi.spyOn(Client, "create");
+      const spy = vi.spyOn(mockAddClients, "create");
 
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call bulkCreate", async () => {
-      const spy = vi.spyOn(Client, "bulkCreate");
+      const spy = vi.spyOn(mockAddClients, "bulkCreate");
 
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
@@ -72,46 +75,48 @@ describe("addClients test suite", () => {
     const mockReq = {
       body: {
         client: [
-          {
-            owner: 1,
-            creator: 1,
-            name: "name",
-            email: "email@gmail.com",
-            phone_number: "289-555-5555",
-            status: "open?",
-            closure_date: new Date(),
-            status_at_exit: "active",
-            status_at_3_months: "active",
-            status_at_6_months: "active",
-            status_at_12_months: "active",
-          },
-          {
-            owner: 1,
-            creator: 2,
-            name: "name",
-            email: "email2@gmail.com",
-            phone_number: "289-555-5555",
-            status: "open?",
-            closure_date: new Date(),
-            status_at_exit: "active",
-            status_at_3_months: "active",
-            status_at_6_months: "active",
-            status_at_12_months: "active",
-          },
-        ],
+            {
+              owner: 1,
+              creator: 1,
+              name: "name",
+              email: "email@gmail.com",
+              phone_number: "289-555-5555",
+              status: "open?",
+              closure_date: new Date(),
+              status_at_exit: "active",
+              status_at_3_months: "active",
+              status_at_6_months: "active",
+              status_at_12_months: "active",
+            },
+            {
+              owner: 1,
+              creator: 2,
+              name: "name",
+              email: "email2@gmail.com",
+              phone_number: "289-555-5555",
+              status: "open?",
+              closure_date: new Date(),
+              status_at_exit: "active",
+              status_at_3_months: "active",
+              status_at_6_months: "active",
+              status_at_12_months: "active",
+            }
+          ],
       },
     };
-
+    
     it("Calls bulkCreate", async () => {
-      const spy = vi.spyOn(Client, "bulkCreate");
 
+
+      const spy = vi.spyOn(mockAddClients, "bulkCreate");
+  
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call create", async () => {
-      const spy = vi.spyOn(Client, "create");
-
+      const spy = vi.spyOn(mockAddClients, "create");
+  
       await addClientsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
@@ -120,5 +125,6 @@ describe("addClients test suite", () => {
       await addClientsRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);
     });
+
   });
 });

@@ -1,18 +1,17 @@
-import { expect, vi, describe, it, afterEach } from "vitest";
+import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getAllClientsRequestHandler from "../../src/controllers/client/getAllClients";
 const Client = await require("../../src/models/client.model");
+const mock = require("mock-require");
+const mockGetManyClients = require("../mocks/mockGetAllClients");
 
-vi.hoisted(() => {
-  const mock = require("mock-require");
+beforeEach(() => {
+  mock("../../src/models/client.model", mockGetManyClients);
+  getAllClientsRequestHandler = mock.reRequire("../../src/controllers/client/getAllClients");
+});
 
-  mock("../../src/models/client.model", {
-    findOne: () => {
-      return {};
-    },
-    findAll: () => {
-      return {};
-    },
-  });
+afterEach(() => {
+  // Reset mocks after every test
+  mock.stop("../../src/models/client.model");
 });
 
 describe("getOneClient test suite", () => {
@@ -40,14 +39,14 @@ describe("getOneClient test suite", () => {
   });
 
   it("Does not call findOne", async () => {
-    const spy = vi.spyOn(Client, "findOne");
+    const spy = vi.spyOn(mockGetManyClients, "findOne");
 
     await getAllClientsRequestHandler(mockReq, mockRes);
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it("Calls findAll", async () => {
-    const spy = vi.spyOn(Client, "findAll");
+    const spy = vi.spyOn(mockGetManyClients, "findAll");
 
     await getAllClientsRequestHandler(mockReq, mockRes);
     expect(spy).toHaveBeenCalledTimes(1);
