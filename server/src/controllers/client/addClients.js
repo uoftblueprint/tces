@@ -19,15 +19,15 @@ const addClientsRequestHandler = async (req, res) => {
     const client = await Client.create({
       owner: req.body.client.owner,
       creator: req.body.client.creator,
-      name: req.body.client.name,
-      email: req.body.client.email,
-      phone_number: req.body.client.phone_number,
-      status: req.body.client.status,
-      closure_date: new Date(req.body.client.closure_date),
-      status_at_exit: "active",
-      status_at_3_months: "active",
-      status_at_6_months: "active",
-      status_at_12_months: "active",
+      name: req.body.client.name || null,
+      email: req.body.client.email || null,
+      phone_number: req.body.client.phone_number || null,
+      status: req.body.client.status || null,
+      closure_date: new Date(req.body.client.closure_date) || null,
+      status_at_exit: null,
+      status_at_3_months: null,
+      status_at_6_months: null,
+      status_at_12_months: null,
     });
     return res
       .status(200)

@@ -41,24 +41,24 @@ const Client = sequelize.define("clients", {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   phone_number: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   closure_date: {
     // timestamp is a PSQL thing, in mysql it is DATE
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   status_at_exit: {
     type: DataTypes.ENUM([
@@ -67,7 +67,7 @@ const Client = sequelize.define("clients", {
       "closed_to_training",
       "closed_to_no_results",
     ]),
-    allowNull: false,
+    allowNull: true,
   },
   status_at_3_months: {
     type: DataTypes.ENUM([
@@ -76,7 +76,7 @@ const Client = sequelize.define("clients", {
       "closed_to_training",
       "closed_to_no_results",
     ]),
-    allowNull: false,
+    allowNull: true,
   },
   status_at_6_months: {
     type: DataTypes.ENUM([
@@ -85,7 +85,7 @@ const Client = sequelize.define("clients", {
       "closed_to_training",
       "closed_to_no_results",
     ]),
-    allowNull: false,
+    allowNull: true,
   },
   status_at_12_months: {
     type: DataTypes.ENUM([
@@ -94,7 +94,7 @@ const Client = sequelize.define("clients", {
       "closed_to_training",
       "closed_to_no_results",
     ]),
-    allowNull: false,
+    allowNull: true,
   },
 });
 
