@@ -6,8 +6,12 @@ vi.hoisted(() => {
   const mock = require("mock-require");
 
   mock("../../src/models/client.model", {
-    findOne: () => {return {}},
-    findAll: () => {return {}},
+    findOne: () => {
+      return {};
+    },
+    findAll: () => {
+      return {};
+    },
   });
 });
 
@@ -17,7 +21,7 @@ describe("getOneClient test suite", () => {
       client_id: 1,
     },
   };
-  
+
   var mockRes = {
     status: (code) => {
       mockRes.statusCode = code;

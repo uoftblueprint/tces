@@ -1,6 +1,5 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
-console.log(Client.create);
 
 const addClientsRequestHandler = async (req, res) => {
   try {
