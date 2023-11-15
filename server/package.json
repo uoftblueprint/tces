@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "lint": "npx eslint src/**/*.js",
     "format": "prettier --write ."
   },
@@ -28,6 +29,7 @@
     "sequelize": "^6.33.0"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
