@@ -1,4 +1,4 @@
 module.exports = {
-    create: async (employer) => {},
-    bulkCreate: async (employers) => {},
-  };
+  create: async (employer) => {},
+  bulkCreate: async (employers) => {},
+};

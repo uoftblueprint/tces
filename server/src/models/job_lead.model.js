@@ -80,16 +80,11 @@ const JobLead = sequelize.define("job_leads", {
     allowNull: true,
   },
   job_description: {
-    type: DataTypes.TEXT('medium'),
+    type: DataTypes.TEXT("medium"),
     allowNull: true,
   },
   employment_type: {
-    type: DataTypes.ENUM([
-      "Full Time",
-      "Part Time",
-      "Casual",
-      "On-Call",
-    ]),
+    type: DataTypes.ENUM(["Full Time", "Part Time", "Casual", "On-Call"]),
     allowNull: false,
   },
   expiration_date: {

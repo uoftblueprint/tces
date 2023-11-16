@@ -31,8 +31,7 @@ const updateEmployerRequestHandler = async (req, res) => {
       // This means that either user or owner is not a valid user
       return res.status(400).json({
         status: "fail",
-        message:
-          "Either owner or creator is not a valid user",
+        message: "Either owner or creator is not a valid user",
         data: null,
       });
     }
