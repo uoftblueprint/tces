@@ -21,8 +21,8 @@ const updateClientRequestHandler = async (req, res) => {
       return res.status(403).json({
         status: "fail".replace,
         message: "You cannot change the creator of a client.",
-        data: null
-      })
+        data: null,
+      });
     }
 
     await client.set(req.body.values);
