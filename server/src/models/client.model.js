@@ -52,7 +52,10 @@ const Client = sequelize.define("clients", {
     allowNull: true,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM([
+      "active",
+      "closed",
+    ]),
     allowNull: true,
   },
   closure_date: {
@@ -62,37 +65,33 @@ const Client = sequelize.define("clients", {
   },
   status_at_exit: {
     type: DataTypes.ENUM([
-      "active",
-      "closed_to_employed",
-      "closed_to_training",
-      "closed_to_no_results",
+      "employed",
+      "training",
+      "no_results",
     ]),
     allowNull: true,
   },
   status_at_3_months: {
     type: DataTypes.ENUM([
-      "active",
-      "closed_to_employed",
-      "closed_to_training",
-      "closed_to_no_results",
+      "employed",
+      "training",
+      "no_results",
     ]),
     allowNull: true,
   },
   status_at_6_months: {
     type: DataTypes.ENUM([
-      "active",
-      "closed_to_employed",
-      "closed_to_training",
-      "closed_to_no_results",
+      "employed",
+      "training",
+      "no_results",
     ]),
     allowNull: true,
   },
   status_at_12_months: {
     type: DataTypes.ENUM([
-      "active",
-      "closed_to_employed",
-      "closed_to_training",
-      "closed_to_no_results",
+      "employed",
+      "training",
+      "no_results",
     ]),
     allowNull: true,
   },
