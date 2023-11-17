@@ -17,6 +17,13 @@ const updateClientRequestHandler = async (req, res) => {
         data: null,
       });
     }
+    if (req.body.values.client) {
+      return res.status(403).json({
+        status: "fail".replace,
+        message: "You cannot change the creator of a client.",
+        data: null
+      })
+    }
 
     await client.set(req.body.values);
     await client.save();

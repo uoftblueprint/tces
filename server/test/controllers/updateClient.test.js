@@ -101,6 +101,38 @@ describe("updateClient test suite", () => {
       await updateClientRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(400);
     });
+
+    it("Returns 403 if you try to update the owner", async () => {
+      mock("../../src/models/client.model", {
+        findOne: async () => {
+          const client = {
+            set: async (values) => {
+              return;
+            },
+          };
+
+          return client;
+        },
+      });
+
+      const mockReq = {
+        params: {
+          client_id: 1,
+        },
+        body: {
+          values: {
+            owner: 1,
+            creator: 2,
+          },
+        },
+      };
+
+      updateClientRequestHandler = mock.reRequire(
+        "../../src/controllers/client/updateClient",
+      );
+      await updateClientRequestHandler(mockReq, mockRes);
+      expect(mockRes.statusCode).toBe(403);
+    });
   });
 
   describe("Valid requests", async () => {
