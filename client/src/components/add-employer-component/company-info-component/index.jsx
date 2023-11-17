@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   TextField,
   FormHelperText,
@@ -25,6 +24,7 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+import AddEmployerInfo from "../employer-contact-component";
 
 function AddCompanyInfo() {
   const [open, setOpen] = React.useState(false);
@@ -35,6 +35,7 @@ function AddCompanyInfo() {
       ? true
       : localStorageValue === "true";
   });
+  const [showAddEmployerInfo, setShowAddEmployerInfo] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,9 +45,8 @@ function AddCompanyInfo() {
     setOpen(false);
   };
 
-  const navigate = useNavigate();
   const handleNextButtonClick = () => {
-    navigate("/employer-contacts");
+    setShowAddEmployerInfo(true);
   };
 
   // Initialize state from local storage or use default if not present
@@ -121,6 +121,9 @@ function AddCompanyInfo() {
   };
 
   return (
+    showAddEmployerInfo ? (
+      <AddEmployerInfo />
+    ) : (
     <Container>
       <H1>Adding a New Employer</H1>
       <Body>Input information about the employer you are adding.</Body>
@@ -385,7 +388,8 @@ function AddCompanyInfo() {
         </Button>
       </ButtonContainer>
     </Container>
+  )
   );
-}
+  }
 
 export default AddCompanyInfo;

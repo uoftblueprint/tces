@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -20,9 +19,13 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+import AddCompanyInfo from "../company-info-component";
+import AddEmployerJobLead from "../job-lead-component";
 
 function AddEmployerInfo() {
   const [open, setOpen] = React.useState(false);
+  const [showAddCompanyInfo, setShowAddCompanyInfo] = useState(false);
+  const [showAddEmployerJobLead, setShowAddEmployerJobLead] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,13 +35,12 @@ function AddEmployerInfo() {
     setOpen(false);
   };
 
-  const navigate = useNavigate();
-  const handleNextButtonClick = () => {
-    navigate("/employer-job-leads");
+  const handleBackButtonClick = () => {
+    setShowAddCompanyInfo(true);
   };
 
-  const handleBackButtonClick = () => {
-    navigate("/");
+  const handleNextButtonClick = () => {
+    setShowAddEmployerJobLead(true);
   };
 
   // Initialize state from local storage or use default if not present
@@ -96,6 +98,11 @@ function AddEmployerInfo() {
   };
 
   return (
+    showAddCompanyInfo ? (
+      <AddCompanyInfo />
+    ) : showAddEmployerJobLead ? (
+      <AddEmployerJobLead />
+    ) : (
     <Container>
       <H1>Adding a New Employer</H1>
       <Body>
@@ -216,6 +223,7 @@ function AddEmployerInfo() {
         </div>
       </ButtonContainer>
     </Container>
+    )
   );
 }
 

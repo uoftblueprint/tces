@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -30,9 +29,11 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+import AddEmployerInfo from "../employer-contact-component";
 
 function AddEmployerJobLead() {
   const [open, setOpen] = React.useState(false);
+  const [showAddEmployerInfo, setShowAddEmployerInfo] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,9 +43,8 @@ function AddEmployerJobLead() {
     setOpen(false);
   };
 
-  const navigate = useNavigate();
   const handleBackButtonClick = () => {
-    navigate("/employer-contacts");
+    setShowAddEmployerInfo(true);
   };
 
   // Initialize state from local storage or use default if not present
@@ -99,6 +99,9 @@ function AddEmployerJobLead() {
   };
 
   return (
+    showAddEmployerInfo ? (
+      <AddEmployerInfo />
+    ) : (
     <Container>
       <H1>Adding a new Employer</H1>
       <Body>
@@ -250,6 +253,7 @@ function AddEmployerJobLead() {
         </div>
       </ButtonContainer>
     </Container>
+    )
   );
 }
 

@@ -4,12 +4,12 @@ import "./App.css";
 // import CreatePage from "./pages/create-user/create-user";
 // import EditPage from "./pages/edit-user/edit-user";
 // import AddJobLead from "./components/add-job-lead-component";
-import AddEmployer from "./components/add-employer-component";
+import AddCompanyInfo from "./components/add-employer-component/company-info-component";
 
 function App() {
   return (
     <div className="App">
-      <AddEmployer />
+      <AddCompanyInfo />
     </div>
   );
 }
