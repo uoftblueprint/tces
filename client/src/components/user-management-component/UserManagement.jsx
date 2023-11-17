@@ -13,6 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
 const columns = [
@@ -72,6 +73,7 @@ const rows = [
 ];
 
 export default function UserManagement() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(rows);
 
@@ -79,9 +81,9 @@ export default function UserManagement() {
     const query = event.target.value;
     setSearchQuery(query);
 
-    const filtered = rows.filter((row) =>
-      row.name.toLowerCase().includes(query.toLowerCase()),
-    );
+    const filtered = rows.filter((row) => {
+      return row.name.toLowerCase().includes(query.toLowerCase());
+    });
     setFilteredRows(filtered);
   };
 
@@ -91,7 +93,7 @@ export default function UserManagement() {
   };
 
   const handleBackClick = () => {
-    window.location.href = "about:blank";
+    navigate("/dashboard");
   };
 
   return (
