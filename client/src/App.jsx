@@ -21,11 +21,11 @@ function App() {
   const AuthRedirect = "/dashboard";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
-  /* User State */
+  // User State
   const [currUser] = useState(mockUser);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-  /* Job Updates State */
+  // Job Updates State
   const [jobUpdates] = useState(mockJobUpdates);
 
   // declaring routes here

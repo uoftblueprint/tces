@@ -1,4 +1,4 @@
-import UserManagement from "../../components/user-management-component/UserManagement";
+import UserManagement from "../../components/user-management-component";
 
 function AdminDashboard() {
   return <UserManagement />;

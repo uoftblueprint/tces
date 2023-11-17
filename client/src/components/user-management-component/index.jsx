@@ -16,64 +16,64 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
-const columns = [
-  {
-    field: "name",
-    headerName: "Name",
-    width: 535,
-    editable: false,
-    sortable: false,
-    filterable: false,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    width: 535,
-    editable: false,
-    sortable: false,
-    filterable: false,
-  },
-  {
-    field: "actions",
-    type: "actions",
-    headerName: "",
-    width: 160,
-    hide: true,
-    cellClassName: "actions",
-    getActions: () => {
-      return [
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Edit"
-          className="textPrimary actionButton"
-          color="inherit"
-        />,
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Delete"
-          color="inherit"
-          className="actionButton"
-        />,
-      ];
-    },
-  },
-];
-
-const rows = [
-  { id: 1, name: "First Last", email: "email@email.com" },
-  { id: 2, name: "First Last", email: "email@email.com" },
-  { id: 3, name: "First Last", email: "email@email.com" },
-  { id: 4, name: "First Last", email: "email@email.com" },
-  { id: 5, name: "First Last", email: "email@email.com" },
-  { id: 6, name: "First Last", email: "email@email.com" },
-  { id: 7, name: "First Last", email: "email@email.com" },
-  { id: 8, name: "First Last", email: "email@email.com" },
-  { id: 9, name: "First Last", email: "email@email.com" },
-  { id: 10, name: "First Last", email: "email@email.com" },
-];
-
 export default function UserManagement() {
   const navigate = useNavigate();
+  const columns = [
+    {
+      field: "name",
+      headerName: "Name",
+      width: 535,
+      editable: false,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 535,
+      editable: false,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "",
+      width: 160,
+      hide: true,
+      cellClassName: "actions",
+      getActions: () => {
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary actionButton"
+            color="inherit"
+            onClick={() => navigate("/admin/edit-user")}
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            color="inherit"
+            className="actionButton"
+          />,
+        ];
+      },
+    },
+  ];
+
+  const rows = [
+    { id: 1, name: "First Last", email: "email@email.com" },
+    { id: 2, name: "First Last", email: "email@email.com" },
+    { id: 3, name: "First Last", email: "email@email.com" },
+    { id: 4, name: "First Last", email: "email@email.com" },
+    { id: 5, name: "First Last", email: "email@email.com" },
+    { id: 6, name: "First Last", email: "email@email.com" },
+    { id: 7, name: "First Last", email: "email@email.com" },
+    { id: 8, name: "First Last", email: "email@email.com" },
+    { id: 9, name: "First Last", email: "email@email.com" },
+    { id: 10, name: "First Last", email: "email@email.com" },
+  ];
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(rows);
 
@@ -128,6 +128,7 @@ export default function UserManagement() {
             },
           }}
           startIcon={<AddIcon />}
+          onClick={() => navigate("/admin/create-user")}
         >
           New Users
         </Button>
