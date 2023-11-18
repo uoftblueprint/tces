@@ -77,7 +77,10 @@ function AddCompanyInfo() {
 
   useEffect(() => {
     // Save state to local storage whenever it changes
-    localStorage.setItem("showAddSecondaryButton", showAddSecondaryButton.toString());
+    localStorage.setItem(
+      "showAddSecondaryButton",
+      showAddSecondaryButton.toString(),
+    );
   }, [showAddSecondaryButton]);
 
   const handleAddSecondary = () => {
@@ -113,17 +116,16 @@ function AddCompanyInfo() {
   const handleResetInputs = () => {
     // Clear local storage
     localStorage.removeItem("contactInfo");
-    localStorage.removeItem("showAddSecondaryButton")
+    localStorage.removeItem("showAddSecondaryButton");
 
     // Reset the inputs to initial values
     setContactInfo(initialContactInfo());
     setShowAddSecondaryButton(true);
   };
 
-  return (
-    showAddEmployerInfo ? (
-      <AddEmployerInfo />
-    ) : (
+  return showAddEmployerInfo ? (
+    <AddEmployerInfo />
+  ) : (
     <Container>
       <H1>Adding a New Employer</H1>
       <Body>Input information about the employer you are adding.</Body>
@@ -135,7 +137,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="outlined-helperText"
+                id="businessName"
                 value={lead.businessName}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "businessName")
@@ -146,7 +148,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="outlined-multiline-static"
+                id="businessLegalName"
                 label="Business Legal Name"
                 value={lead.businessLegalName}
                 onChange={(e) =>
@@ -160,7 +162,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="outlined-helperText"
+                id="naicsCode"
                 value={lead.naicsCode}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "naicsCode")
@@ -171,7 +173,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="outlined-helperText"
+                id="phoneNumber"
                 value={lead.phoneNumber}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "phoneNumber")
@@ -182,7 +184,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="outlined-helperText"
+                id="faxNumber"
                 value={lead.faxNumber}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "faxNumber")
@@ -203,7 +205,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="outlined-helperText"
+                id="website"
                 value={lead.website}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "website")
@@ -213,7 +215,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="outlined-helperText"
+                id="employerAddress"
                 value={lead.employerAddress}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "employerAddress")
@@ -224,7 +226,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="outlined-helperText"
+                id="city"
                 value={lead.city}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "city")
@@ -237,7 +239,7 @@ function AddCompanyInfo() {
                 <Select
                   sx={{ textAlign: "left" }}
                   labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
+                  id="province"
                   value={lead.province}
                   label="Province"
                   onChange={(e) =>
@@ -264,7 +266,7 @@ function AddCompanyInfo() {
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="outlined-helperText"
+                id="postalCode"
                 value={lead.postalCode}
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "postalCode")
@@ -348,7 +350,19 @@ function AddCompanyInfo() {
           : "Secondary Address Added"}
       </ButtonL>
       <Stack spacing={2}>
-        <Pagination count={3} shape="rounded" />
+        <Pagination
+          count={3}
+          shape="rounded"
+          hidePrevButton
+          hideNextButton
+          page={1}
+          sx={{
+            "& .MuiPaginationItem-page.Mui-selected": {
+              backgroundColor: "#3568E5",
+              color: "white",
+            },
+          }}
+        />
       </Stack>
       <ButtonContainer>
         <Button
@@ -358,15 +372,10 @@ function AddCompanyInfo() {
         >
           DISCARD
         </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">ARE YOU SURE?</DialogTitle>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>ARE YOU SURE?</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               You will lose all your progress and return to the Dashboard.
             </DialogContentText>
           </DialogContent>
@@ -388,8 +397,7 @@ function AddCompanyInfo() {
         </Button>
       </ButtonContainer>
     </Container>
-  )
   );
-  }
+}
 
 export default AddCompanyInfo;

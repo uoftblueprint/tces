@@ -48,20 +48,19 @@ function AddEmployerJobLead() {
   };
 
   // Initialize state from local storage or use default if not present
-  const initialJobLeads = JSON.parse(
-    localStorage.getItem("employerJobLeads"),
-  ) || [
-    {
-      id: 0,
-      jobTitle: "",
-      compensation: "",
-      hoursPerWeek: "",
-      description: "",
-      creationDate: null,
-      expirationDate: null,
-      employmentType: "",
-    },
-  ];
+  const initialJobLeads = () =>
+    JSON.parse(localStorage.getItem("employerJobLeads")) || [
+      {
+        id: 0,
+        jobTitle: "",
+        compensation: "",
+        hoursPerWeek: "",
+        description: "",
+        creationDate: null,
+        expirationDate: null,
+        employmentType: "",
+      },
+    ];
 
   const [jobLeads, setJobLeads] = useState(initialJobLeads);
 
@@ -98,10 +97,17 @@ function AddEmployerJobLead() {
     }
   };
 
-  return (
-    showAddEmployerInfo ? (
-      <AddEmployerInfo />
-    ) : (
+  const handleResetInputs = () => {
+    // Clear local storage
+    localStorage.removeItem("employerJobLeads");
+
+    // Reset the inputs to initial values
+    setJobLeads(initialJobLeads());
+  };
+
+  return showAddEmployerInfo ? (
+    <AddEmployerInfo />
+  ) : (
     <Container>
       <H1>Adding a new Employer</H1>
       <Body>
@@ -113,7 +119,7 @@ function AddEmployerJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="outlined-helperText"
+            id="jobTitle"
             value={lead.jobTitle}
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "jobTitle")
@@ -121,11 +127,9 @@ function AddEmployerJobLead() {
             label="Job Title"
           />
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="outlined-adornment-amount">
-              Compensation
-            </InputLabel>
+            <InputLabel htmlFor="compensation">Compensation</InputLabel>
             <OutlinedInput
-              id="outlined-adornment-amount"
+              id="compensation"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -142,7 +146,7 @@ function AddEmployerJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="outlined-basic"
+            id="hoursPerWeek"
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
@@ -153,7 +157,7 @@ function AddEmployerJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="outlined-multiline-static"
+            id="description"
             label="Job Description"
             multiline
             rows={4}
@@ -164,6 +168,7 @@ function AddEmployerJobLead() {
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              id="creationDate"
               label="Creation Date"
               fullWidth
               sx={{ m: 1, width: "47%" }}
@@ -173,6 +178,7 @@ function AddEmployerJobLead() {
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              id="expirationDate"
               label="Expiration Date"
               fullWidth
               sx={{ m: 1, width: "47%" }}
@@ -186,8 +192,7 @@ function AddEmployerJobLead() {
             </InputLabel>
             <Select
               sx={{ textAlign: "left" }}
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
+              id="employmentType"
               value={lead.employmentType}
               label="Employment Type"
               onChange={(e) =>
@@ -205,7 +210,19 @@ function AddEmployerJobLead() {
       ))}
       <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
       <Stack spacing={2}>
-        <Pagination count={3} shape="rounded" />
+        <Pagination
+          count={3}
+          shape="rounded"
+          hidePrevButton
+          hideNextButton
+          page={3}
+          sx={{
+            "& .MuiPaginationItem-page.Mui-selected": {
+              backgroundColor: "#3568E5",
+              color: "white",
+            },
+          }}
+        />
       </Stack>
       <ButtonContainer>
         <Button
@@ -215,21 +232,22 @@ function AddEmployerJobLead() {
         >
           DISCARD
         </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">ARE YOU SURE?</DialogTitle>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>ARE YOU SURE?</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               You will lose all your progress and return to the Dashboard.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>CANCEL</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleResetInputs();
+              }}
+              autoFocus
+            >
               YES, I&apos;M SURE
             </Button>
           </DialogActions>
@@ -253,7 +271,6 @@ function AddEmployerJobLead() {
         </div>
       </ButtonContainer>
     </Container>
-    )
   );
 }
 
