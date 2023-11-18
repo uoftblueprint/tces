@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   TextField,
   Stack,
@@ -8,9 +9,11 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Form, Header, Cancel } from "./index.styles";
 
-function CreateComponent() {
+function CreateComponent({ onAddUser }) {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,20 +26,24 @@ function CreateComponent() {
       firstName,
       lastName,
       email,
-      password,
+      isAdmin: false,
     };
 
+    onAddUser(userData);
+
+    navigate("/admin");
+
     // Convert the JSON object to a string
-    const userDataJSON = JSON.stringify(userData);
+    // const userDataJSON = JSON.stringify(userData);
 
     // Replace url with target route
-    fetch("http://localhost:8000/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: userDataJSON,
-    });
+    // fetch("http://localhost:8000/create", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: userDataJSON,
+    // });
     // .then((response) => {
     //     if (response.ok) {
     //         // Handle success response (e.g., redirect or show a success message)
@@ -118,5 +125,8 @@ function CreateComponent() {
     </Form>
   );
 }
+CreateComponent.propTypes = {
+  onAddUser: PropTypes.func.isRequired,
+};
 
 export default CreateComponent;
