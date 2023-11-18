@@ -40,21 +40,22 @@ function AddJobLead() {
   };
 
   // Initialize state from local storage or use default if not present
-  const initialJobLeads = () => JSON.parse(localStorage.getItem("jobLeads")) || [
-    {
-      id: 0,
-      employer: "",
-      title: "",
-      minCompensation: "",
-      maxCompensation: "",
-      hoursPerWeek: "",
-      nationalOC: "",
-      description: "",
-      creationDate: null,
-      expirationDate: null,
-      employmentType: "",
-    },
-  ];
+  const initialJobLeads = () =>
+    JSON.parse(localStorage.getItem("jobLeads")) || [
+      {
+        id: 0,
+        employer: "",
+        title: "",
+        minCompensation: "",
+        maxCompensation: "",
+        hoursPerWeek: "",
+        nationalOC: "",
+        description: "",
+        creationDate: null,
+        expirationDate: null,
+        employmentType: "",
+      },
+    ];
 
   const [jobLeads, setJobLeads] = useState(initialJobLeads);
 
@@ -88,15 +89,13 @@ function AddJobLead() {
     if (index !== -1) {
       newJobLeads[index][field] = e;
       setJobLeads(newJobLeads);
-    } else {
-      console.error(`Invalid id: ${id}`);
     }
   };
 
   const handleResetInputs = () => {
     // Clear local storage
     localStorage.removeItem("jobLeads");
-    
+
     // Reset the inputs to initial values
     setJobLeads(initialJobLeads());
   };
@@ -231,9 +230,7 @@ function AddJobLead() {
             />
           </LocalizationProvider>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-            <InputLabel id="typeLabel">
-              Employment Type
-            </InputLabel>
+            <InputLabel id="typeLabel">Employment Type</InputLabel>
             <Select
               sx={{ textAlign: "left" }}
               labelId="typeLabel"
@@ -262,10 +259,7 @@ function AddJobLead() {
         >
           DISCARD
         </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-        >
+        <Dialog open={open} onClose={handleClose}>
           <DialogTitle>ARE YOU SURE?</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -274,7 +268,13 @@ function AddJobLead() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>CANCEL</Button>
-            <Button onClick={() => { handleClose(); handleResetInputs(); }} autoFocus>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleResetInputs();
+              }}
+              autoFocus
+            >
               YES, I&apos;M SURE
             </Button>
           </DialogActions>
