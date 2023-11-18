@@ -10,10 +10,12 @@ import RouteGuard from "./components/route-guard-component";
 import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
-import mockJobUpdates from "./mock-data/mockJobUpdates";
-import mockUser from "./mock-data/mockUser";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
+
+import mockJobUpdates from "./mock-data/mockJobUpdates";
+import mockUser from "./mock-data/mockUser";
+import mockManagedUsers from "./mock-data/mockManagedUsers";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -29,7 +31,7 @@ function App() {
   const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
-  const [managedUsers, setManagedUsers] = useState({});
+  const [managedUsers, setManagedUsers] = useState(mockManagedUsers);
 
   // declaring routes here
   return (
@@ -100,7 +102,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/edit-user/:userId"
+          path="/admin/edit-user/:userID"
           element={
             <RouteGuard
               isPermitted={isAuthenticated}

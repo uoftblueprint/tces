@@ -1,4 +1,5 @@
-import CreateComponent from "../../components/create-user-component/create-user-component";
+import PropTypes from "prop-types";
+import CreateComponent from "../../components/create-user-component";
 
 function Create({ setManagedUsers }) {
   const addUser = (newUser) => {
@@ -6,5 +7,10 @@ function Create({ setManagedUsers }) {
   };
   return <CreateComponent onAddUser={addUser} />;
 }
+
+Create.propTypes = {
+  setManagedUsers: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+};
 
 export default Create;

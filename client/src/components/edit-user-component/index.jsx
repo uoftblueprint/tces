@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,7 +12,7 @@ import {
 } from "@mui/material";
 import { Form, Header, Cancel } from "./index.styles";
 
-function EditComponent() {
+function EditComponent({ userID, onModifyUser }) {
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -23,23 +24,28 @@ function EditComponent() {
     e.preventDefault();
     // Create a JSON object with the required keys and values
     const userData = {
+      userID,
       firstName,
       lastName,
       email,
-      password,
+      isAdmin: false,
     };
 
+    onModifyUser(userData);
+
+    navigate("/admin");
+
     // Convert the JSON object to a string
-    const userDataJSON = JSON.stringify(userData);
+    // const userDataJSON = JSON.stringify(userData);
 
     // Replace url with target route
-    fetch("http://localhost:8000/edit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: userDataJSON,
-    });
+    // fetch("http://localhost:8000/edit", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: userDataJSON,
+    // });
     // .then((response) => {
     //     if (response.ok) {
     //         // Handle success response (e.g., redirect or show a success message)
@@ -127,5 +133,10 @@ function EditComponent() {
     </Form>
   );
 }
+
+EditComponent.propTypes = {
+  userID: PropTypes.number.isRequired,
+  onModifyUser: PropTypes.func.isRequired,
+};
 
 export default EditComponent;

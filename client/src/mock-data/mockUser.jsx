@@ -1,6 +1,7 @@
 const mockUser = {
   userID: 1,
-  name: "John Doe",
+  firstName: "John",
+  lastName: "Doe",
   email: "johndoe@gmail.com",
   isAdmin: true,
 };

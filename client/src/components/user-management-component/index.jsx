@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
@@ -13,14 +15,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import UserType from "../../prop-types/UserType";
+
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
-export default function UserManagement() {
+function UserManagement({ managedUsers, onRemoveUser }) {
   const navigate = useNavigate();
   const columns = [
     {
-      field: "name",
+      field: "displayName",
       headerName: "Name",
       width: 535,
       editable: false,
@@ -56,21 +59,22 @@ export default function UserManagement() {
             label="Delete"
             color="inherit"
             className="actionButton"
+            onClick={() => {
+              onRemoveUser(params.id);
+            }}
           />,
         ];
       },
     },
   ];
-
-  const rows = [{ id: 1, name: "First Last", email: "email@email.com" }];
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [filteredRows, setFilteredRows] = React.useState(rows);
+  const [filteredRows, setFilteredRows] = React.useState(managedUsers);
 
   const handleSearch = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
 
-    const filtered = rows.filter((row) => {
+    const filtered = managedUsers.filter((row) => {
       return row.name.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredRows(filtered);
@@ -78,7 +82,7 @@ export default function UserManagement() {
 
   const handleFilterReset = () => {
     setSearchQuery("");
-    setFilteredRows(rows);
+    setFilteredRows(managedUsers);
   };
 
   const handleBackClick = () => {
@@ -197,3 +201,11 @@ export default function UserManagement() {
     </DashboardContainer>
   );
 }
+
+UserManagement.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  onRemoveUser: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+};
+
+export default UserManagement;
