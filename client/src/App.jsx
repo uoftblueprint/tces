@@ -29,7 +29,6 @@ function App() {
   const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
-
   const [managedUsers, setManagedUsers] = useState({});
 
   // declaring routes here
@@ -76,7 +75,10 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <AdminDashboard />
+                <AdminDashboard
+                  managedUsers={managedUsers}
+                  setManagedUsers={setManagedUsers}
+                />
               </RouteGuard>
             </RouteGuard>
           }
@@ -92,7 +94,7 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <CreatePage />
+                <CreatePage setManagedUsers={setManagedUsers} />
               </RouteGuard>
             </RouteGuard>
           }
@@ -108,7 +110,7 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <EditPage />
+                <EditPage setManagedUsers={setManagedUsers} />
               </RouteGuard>
             </RouteGuard>
           }
