@@ -12,8 +12,8 @@ import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 import mockUser from "./mock-data/mockUser";
-import CreatePage from "./pages/create-user/create-user";
-import EditPage from "./pages/edit-user/edit-user";
+import CreatePage from "./pages/create-user";
+import EditPage from "./pages/edit-user";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -65,7 +65,7 @@ function App() {
           path="/admin"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated}
+              isPermitted={isAuthenticated && currUser.isAdmin}
               redirect={notAuthRedirect}
             >
               <AdminDashboard />
@@ -76,7 +76,7 @@ function App() {
           path="/admin/create-user"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated}
+              isPermitted={isAuthenticated && currUser.isAdmin}
               redirect={notAuthRedirect}
             >
               <CreatePage />
@@ -84,10 +84,10 @@ function App() {
           }
         />
         <Route
-          path="/admin/edit-user"
+          path="/admin//edit-user/:userId"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated}
+              isPermitted={isAuthenticated && currUser.isAdmin}
               redirect={notAuthRedirect}
             >
               <EditPage />
