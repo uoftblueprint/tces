@@ -27,12 +27,12 @@ const addClientsRequestHandler = async (req, res) => {
       name: req.body.client.name || null,
       email: req.body.client.email || null,
       phone_number: req.body.client.phone_number || null,
-      status: req.body.client.status || null,
-      closure_date: closure_date,
-      status_at_exit: null,
-      status_at_3_months: null,
-      status_at_6_months: null,
-      status_at_12_months: null,
+      status: req.body.client.status || "active",
+      closure_date: closure_date || null,
+      status_at_exit: "no_results",
+      status_at_3_months: "no_results",
+      status_at_6_months: "no_results",
+      status_at_12_months: "no_results",
     });
     return res
       .status(200)
