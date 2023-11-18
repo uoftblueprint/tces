@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Stack,
@@ -11,6 +12,8 @@ import {
 import { Form, Header, Cancel } from "./index.styles";
 
 function EditComponent() {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -109,7 +112,11 @@ function EditComponent() {
           </CardContent>
         </Card>
         <Stack direction="row">
-          <Cancel variant="outlined" size="large">
+          <Cancel
+            variant="outlined"
+            size="large"
+            onClick={() => navigate("/admin")}
+          >
             Cancel
           </Cancel>
           <Button type="submit" variant="contained" size="large">

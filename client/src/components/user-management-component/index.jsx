@@ -42,14 +42,14 @@ export default function UserManagement() {
       width: 160,
       hide: true,
       cellClassName: "actions",
-      getActions: () => {
+      getActions: (params) => {
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary actionButton"
             color="inherit"
-            onClick={() => navigate("/admin/edit-user")}
+            onClick={() => navigate(`/admin/edit-user/${params.id}`)}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
@@ -62,18 +62,7 @@ export default function UserManagement() {
     },
   ];
 
-  const rows = [
-    { id: 1, name: "First Last", email: "email@email.com" },
-    { id: 2, name: "First Last", email: "email@email.com" },
-    { id: 3, name: "First Last", email: "email@email.com" },
-    { id: 4, name: "First Last", email: "email@email.com" },
-    { id: 5, name: "First Last", email: "email@email.com" },
-    { id: 6, name: "First Last", email: "email@email.com" },
-    { id: 7, name: "First Last", email: "email@email.com" },
-    { id: 8, name: "First Last", email: "email@email.com" },
-    { id: 9, name: "First Last", email: "email@email.com" },
-    { id: 10, name: "First Last", email: "email@email.com" },
-  ];
+  const rows = [{ id: 1, name: "First Last", email: "email@email.com" }];
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(rows);
 

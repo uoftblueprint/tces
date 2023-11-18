@@ -28,6 +28,10 @@ function App() {
   // Job Updates State
   const [jobUpdates] = useState(mockJobUpdates);
 
+  // Admin State
+
+  const [managedUsers, setManagedUsers] = useState({});
+
   // declaring routes here
   return (
     <Router>
@@ -65,10 +69,15 @@ function App() {
           path="/admin"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated && currUser.isAdmin}
+              isPermitted={isAuthenticated}
               redirect={notAuthRedirect}
             >
-              <AdminDashboard />
+              <RouteGuard
+                isPermitted={currUser.isAdmin}
+                redirect={AuthRedirect}
+              >
+                <AdminDashboard />
+              </RouteGuard>
             </RouteGuard>
           }
         />
@@ -76,21 +85,31 @@ function App() {
           path="/admin/create-user"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated && currUser.isAdmin}
+              isPermitted={isAuthenticated}
               redirect={notAuthRedirect}
             >
-              <CreatePage />
+              <RouteGuard
+                isPermitted={currUser.isAdmin}
+                redirect={AuthRedirect}
+              >
+                <CreatePage />
+              </RouteGuard>
             </RouteGuard>
           }
         />
         <Route
-          path="/admin//edit-user/:userId"
+          path="/admin/edit-user/:userId"
           element={
             <RouteGuard
-              isPermitted={isAuthenticated && currUser.isAdmin}
+              isPermitted={isAuthenticated}
               redirect={notAuthRedirect}
             >
-              <EditPage />
+              <RouteGuard
+                isPermitted={currUser.isAdmin}
+                redirect={AuthRedirect}
+              >
+                <EditPage />
+              </RouteGuard>
             </RouteGuard>
           }
         />

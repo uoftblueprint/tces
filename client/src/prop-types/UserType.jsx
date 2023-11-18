@@ -4,7 +4,7 @@ const UserType = PropTypes.shape({
   userID: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  isAdmin: PropTypes.boolean.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
   // eslint-disable-next-line
 });
 
