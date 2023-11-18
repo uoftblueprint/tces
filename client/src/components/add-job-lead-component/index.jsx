@@ -109,11 +109,11 @@ function AddJobLead() {
         <JobLeadContainer key={lead.id}>
           <H3>Job Lead</H3>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-            <InputLabel id="demo-simple-select-label">Employer Name</InputLabel>
+            <InputLabel id="nameLabel">Employer Name</InputLabel>
             <Select
               sx={{ textAlign: "left" }}
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
+              labelId="nameLabel"
+              id="employer"
               value={lead.employer}
               label="Employer Name"
               helperText="*Required"
@@ -130,7 +130,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="outlined-helperText"
+            id="title"
             value={lead.title}
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "title")
@@ -139,11 +139,11 @@ function AddJobLead() {
             helperText="*Required"
           />
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="outlined-adornment-amount">
+            <InputLabel htmlFor="minCompensation">
               Compensation Minimum
             </InputLabel>
             <OutlinedInput
-              id="outlined-adornment-amount"
+              id="minCompensation"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -158,11 +158,11 @@ function AddJobLead() {
             />
           </FormControl>
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="outlined-adornment-amount">
+            <InputLabel htmlFor="maxCompensation">
               Compensation Maximum
             </InputLabel>
             <OutlinedInput
-              id="outlined-adornment-amount"
+              id="maxCompensation"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -179,7 +179,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="outlined-basic"
+            id="hoursPerWeek"
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
@@ -190,7 +190,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="outlined-basic"
+            id="nationalOC"
             label="National Occupation Code"
             variant="outlined"
             value={lead.nationalOC}
@@ -201,7 +201,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="outlined-multiline-static"
+            id="description"
             label="Job Description"
             multiline
             rows={4}
@@ -213,6 +213,7 @@ function AddJobLead() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Creation Date"
+              id="creationDate"
               fullWidth
               sx={{ m: 1, width: "47%" }}
               value={lead.creationDate}
@@ -222,6 +223,7 @@ function AddJobLead() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Expiration Date"
+              id="expirationDate"
               fullWidth
               sx={{ m: 1, width: "47%" }}
               value={lead.expirationDate}
@@ -229,13 +231,13 @@ function AddJobLead() {
             />
           </LocalizationProvider>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-            <InputLabel id="demo-simple-select-label">
+            <InputLabel id="typeLabel">
               Employment Type
             </InputLabel>
             <Select
               sx={{ textAlign: "left" }}
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
+              labelId="typeLabel"
+              id="employmentType"
               value={lead.employmentType}
               label="Employment Type"
               onChange={(e) =>
@@ -263,12 +265,10 @@ function AddJobLead() {
         <Dialog
           open={open}
           onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">ARE YOU SURE?</DialogTitle>
+          <DialogTitle>ARE YOU SURE?</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               You will lose all your progress and return to the Dashboard.
             </DialogContentText>
           </DialogContent>
