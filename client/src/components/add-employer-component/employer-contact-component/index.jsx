@@ -92,8 +92,6 @@ function AddEmployerInfo() {
     if (index !== -1) {
       newContacts[index][field] = e;
       setContacts(newContacts);
-    } else {
-      console.error(`Invalid id: ${id}`);
     }
   };
 

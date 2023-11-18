@@ -30,7 +30,6 @@ function AddCompanyInfo() {
   const [open, setOpen] = React.useState(false);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(() => {
     const localStorageValue = localStorage.getItem("showAddSecondaryButton");
-    console.log("localStorageValue:", localStorageValue);
     return localStorageValue === null || localStorageValue === undefined
       ? true
       : localStorageValue === "true";
@@ -108,8 +107,6 @@ function AddCompanyInfo() {
     if (index !== -1) {
       newContactInfo[index][field] = e;
       setContactInfo(newContactInfo);
-    } else {
-      console.error(`Invalid id: ${id}`);
     }
   };
 

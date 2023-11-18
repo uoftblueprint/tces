@@ -92,8 +92,6 @@ function AddEmployerJobLead() {
     if (index !== -1) {
       newJobLeads[index][field] = e;
       setJobLeads(newJobLeads);
-    } else {
-      console.error(`Invalid id: ${id}`);
     }
   };
 
