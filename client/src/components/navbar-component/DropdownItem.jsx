@@ -4,7 +4,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
-import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 
 function DropdownItem({ keyword }) {
@@ -42,7 +41,6 @@ function DropdownItem({ keyword }) {
           {icon}
           <div className="dropdown-item-text">{label}</div>
         </div>
-
         <ArrowForwardIcon color="action" />
       </div>
     </Button>
