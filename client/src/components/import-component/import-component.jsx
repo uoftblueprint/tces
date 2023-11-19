@@ -42,13 +42,12 @@ function importComponent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Grab the file 
+    // Grab the file
     const { files } = e.target.files;
     // Create a new FormData object
     const formData = new FormData();
     // Add the file(s) to the FormData object
     formData.append("files", files);
-
 
     // Replace url with target route
     // fetch("http://localhost:8000/create", {
