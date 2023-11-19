@@ -11,42 +11,30 @@ import {
   H3,
   P,
 } from "./index.styles";
+import login from "../../utils/api";
 
 function LoginComponent({ setIsAuthenticated }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Create a JSON object with the required keys and values
-    // const loginData = {
-    //   username: email,
-    //   password,
-    // };
-    // Convert the JSON object to a string
-    // const loginDataJSON = JSON.stringify(loginData);
-    // Replace url with target route
-    // fetch("http://localhost:8000/login", {
-    //   method: "POST", // Not sure which method
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: loginDataJSON,
-    // });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('Login successful');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Login failed');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // })
-    setIsAuthenticated(true);
-    navigate("/dashboard");
+  const handleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const response = await login(email, password);
+      if (response.ok) {
+        console.log("Login successful");
+        setIsAuthenticated(true);
+        navigate("/dashboard");
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -71,7 +59,9 @@ function LoginComponent({ setIsAuthenticated }) {
           onChange={(e) => setPassword(e.target.value)}
         />
       </InputContainer>
-      <Button onClick={handleLogin}>LOG IN</Button>
+      <Button onClick={handleLogin} disabled={isLoading}>
+        {isLoading ? "LOGGING IN..." : "LOG IN"}
+      </Button>
     </Container>
   );
 }

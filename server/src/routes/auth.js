@@ -1,9 +1,8 @@
 const express = require("express");
-
-const router = express.Router();
-
 // PassportJS imports for auth
 const passport = require("passport");
+
+const router = express.Router();
 
 const createUserRequestHandler = require("../controllers/auth/createUser");
 const logoutRequestHandler = require("../controllers/auth/logout");
@@ -18,14 +17,29 @@ const isAdmin = require("../middlewares/auth/isAdmin");
  * @type string {body.username}
  * @type string {body.password}
  */
-router.post(
-  "/login",
-  // auth middleware
-  passport.authenticate("local", {
-    successRedirect: `${process.env.FRONTEND_URL}/`,
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
-  }),
-);
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      return res.status(401).json({ message: info.message });
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      return res.json({
+        message: "Login successful",
+        user: { id: user.id, username: user.email, is_admin: user.is_admin },
+      });
+    });
+  })(req, res, next); // IIFE to invoke the returned function immediately with req, res, and next
+});
 
 // Admin creates a user
 /**

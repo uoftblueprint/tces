@@ -1,7 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 8000;
+
+const corsOption = {
+  origin: "http://localhost:3000",
+};
 
 // Session storage imports
 const passport = require("passport");
@@ -17,6 +22,9 @@ app.use(express.json());
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
 
+// Set up cors for local dev connection with frontend
+app.use(cors(corsOption));
+
 // Set up session for authorization
 app.use(
   session({
@@ -24,17 +32,17 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
-  }),
+  })
 );
 app.use(passport.authenticate("session"));
 
 app.get("/", (req, res) => {
-  res.send("Helloooo World!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  res.send("Helloooo World! Hi :)");
 });
 
 // All endpoints within this API will be found under the /auth subdirectory
 app.use("/", authRouter);
+
+app.listen(port, () => {
+  console.log(`TCES Backend listening on port ${port}`);
+});
