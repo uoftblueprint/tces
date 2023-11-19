@@ -25,7 +25,7 @@ function App() {
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
   const [currUser] = useState(mockUser);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Job Updates State
   const [jobUpdates] = useState(mockJobUpdates);
@@ -41,7 +41,7 @@ function App() {
           path="/"
           element={
             isAuthenticated ? (
-              <Navigate to="/admin" />
+              <Navigate to="/dashboard" />
             ) : (
               <Navigate to="/signin" />
             )
