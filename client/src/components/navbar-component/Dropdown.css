@@ -21,7 +21,8 @@
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
-  line-height: 133.4%; /* 32.016px */
+  line-height: 133.4%;
+  /* 32.016px */
   height: 32px;
   padding: 16px;
   display: flex;
@@ -39,6 +40,13 @@
   height: 48px;
   background: none;
   border: none;
+  width: 100%;
+}
+
+.dropdown-item-button {
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
 
 .dropdown-item-container:not(:last-child) {

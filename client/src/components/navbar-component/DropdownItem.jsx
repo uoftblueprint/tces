@@ -5,6 +5,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 
 function DropdownItem({ keyword }) {
   const icons = {
@@ -30,15 +31,22 @@ function DropdownItem({ keyword }) {
   const route = routes[keyword];
 
   return (
-    <div className="dropdown-item-container">
-      <div className="dropdown-item-left-content">
-        {icon}
-        <div className="dropdown-item-text">{label}</div>
-      </div>
-      <IconButton href={route}>
+    <Button
+      variant="text"
+      className="dropdown-item-button"
+      style={{ color: "rgba(0, 0, 0, 0.6)" }}
+      href={route}
+    >
+      <div className="dropdown-item-container">
+        <div className="dropdown-item-left-content">
+          {icon}
+          <div className="dropdown-item-text">{label}</div>
+        </div>
+
         <ArrowForwardIcon color="action" />
-      </IconButton>
-    </div>
+
+      </div>
+    </Button>
   );
 }
 
