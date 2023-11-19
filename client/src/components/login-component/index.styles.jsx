@@ -118,6 +118,14 @@ const Button = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+  height: 20px;
+  overflow: hidden;
+`;
+
 export {
   Container,
   Logo,
@@ -127,4 +135,5 @@ export {
   Button,
   H3,
   P,
+  ErrorMessage,
 };

@@ -10,6 +10,7 @@ import {
   Button,
   H3,
   P,
+  ErrorMessage,
 } from "./index.styles";
 import login from "../../utils/api";
 
@@ -18,20 +19,22 @@ function LoginComponent({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     setIsLoading(true);
+    setErrorMessage("");
     try {
       const response = await login(email, password);
       if (response.ok) {
-        console.log("Login successful");
         setIsAuthenticated(true);
         navigate("/dashboard");
       } else {
-        console.error("Login failed");
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Login failed");
       }
     } catch (error) {
-      console.error("Error:", error);
+      setErrorMessage("An error occurred during login");
     } finally {
       setIsLoading(false);
     }
@@ -62,6 +65,7 @@ function LoginComponent({ setIsAuthenticated }) {
       <Button onClick={handleLogin} disabled={isLoading}>
         {isLoading ? "LOGGING IN..." : "LOG IN"}
       </Button>
+      <ErrorMessage>{errorMessage}</ErrorMessage>
     </Container>
   );
 }

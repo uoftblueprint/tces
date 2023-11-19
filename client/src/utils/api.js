@@ -1,8 +1,10 @@
-const { API_BASE_URL } = process.env;
+// eslint-disable-next-line prefer-destructuring
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const login = async (email, password) => {
+  console.log(REACT_APP_API_BASE_URL);
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${REACT_APP_API_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
