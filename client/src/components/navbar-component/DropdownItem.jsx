@@ -44,7 +44,6 @@ function DropdownItem({ keyword }) {
         </div>
 
         <ArrowForwardIcon color="action" />
-
       </div>
     </Button>
   );
