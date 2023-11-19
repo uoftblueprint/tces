@@ -1,15 +1,15 @@
 import "./App.css";
-import Navbar from "./components/navbar-component/Navbar";
-// import Create from "./pages/create-user/create-user";
-// import DashboardPage from "./pages/dashboard";
+import DashboardPage from "./pages/dashboard";
 // import LoginPage from "./pages/login";
+// import CreatePage from "./pages/create-user/create-user";
 // import EditPage from "./pages/edit-user/edit-user";
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
+      <DashboardPage />
     </div>
   );
 }
+
 export default App;
