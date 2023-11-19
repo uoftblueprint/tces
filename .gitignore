@@ -26,3 +26,4 @@
 # Editor directories and files
 **/.idea
 **/.vscode
+client/package-lock.json
