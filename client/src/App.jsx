@@ -8,10 +8,12 @@ import "./App.css";
 import AddCompanyInfo from "./components/add-employer-component/company-info-component";
 import AddJobLead from "./components/add-job-lead-component";
 import AddEmployer from "./components/add-employer-component";
+import Navbar from "./components/navbar-component/Navbar";
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <AddCompanyInfo />
       <AddJobLead />
       <AddEmployer />

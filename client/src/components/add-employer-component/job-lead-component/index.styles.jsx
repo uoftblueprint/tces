@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  padding: 0 100px 100px 100px;
+  padding: 50px 100px 100px 100px;
   flex-direction: column;
   align-items: center;
   font-family: Helvetica;
