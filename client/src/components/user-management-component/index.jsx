@@ -16,11 +16,58 @@ import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import UserType from "../../prop-types/UserType";
+import ConfirmDialog from "../confirm-dialog-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
 function UserManagement({ managedUsers, onRemoveUser }) {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [filteredRows, setFilteredRows] = React.useState(managedUsers);
+  const [confirmDeleteDialog, setConfirmDeleteDialog] = React.useState(false);
+  const [userToDelete, setUserToDelete] = React.useState(null);
+
+  React.useEffect(() => {
+    setFilteredRows(managedUsers);
+  }, [managedUsers]);
+
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    const filtered = managedUsers.filter((row) => {
+      return row.name.toLowerCase().includes(query.toLowerCase());
+    });
+    setFilteredRows(filtered);
+  };
+
+  const handleFilterReset = () => {
+    setSearchQuery("");
+    setFilteredRows(managedUsers);
+  };
+
+  const handleBackClick = () => {
+    navigate("/dashboard");
+  };
+
+  const handleDeleteClick = (userID) => {
+    setUserToDelete(userID);
+    setConfirmDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (userToDelete !== null) {
+      onRemoveUser(userToDelete);
+      setUserToDelete(null);
+    }
+    setConfirmDeleteDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDeleteDialog(false);
+    setUserToDelete(null);
+  };
+
   const columns = [
     {
       field: "displayName",
@@ -59,40 +106,12 @@ function UserManagement({ managedUsers, onRemoveUser }) {
             label="Delete"
             color="inherit"
             className="actionButton"
-            onClick={() => {
-              onRemoveUser(params.row.userID);
-              navigate(`/admin/`);
-            }}
+            onClick={() => handleDeleteClick(params.row.userID)}
           />,
         ];
       },
     },
   ];
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [filteredRows, setFilteredRows] = React.useState(managedUsers);
-
-  React.useEffect(() => {
-    setFilteredRows(managedUsers);
-  }, [managedUsers]);
-
-  const handleSearch = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-
-    const filtered = managedUsers.filter((row) => {
-      return row.name.toLowerCase().includes(query.toLowerCase());
-    });
-    setFilteredRows(filtered);
-  };
-
-  const handleFilterReset = () => {
-    setSearchQuery("");
-    setFilteredRows(managedUsers);
-  };
-
-  const handleBackClick = () => {
-    navigate("/dashboard");
-  };
 
   return (
     <DashboardContainer>
@@ -203,6 +222,13 @@ function UserManagement({ managedUsers, onRemoveUser }) {
           disableColumnMenu
         />
       </Box>
+      <ConfirmDialog
+        open={confirmDeleteDialog}
+        title="Confirm Delete"
+        message="Are you sure you want to delete this user?"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
     </DashboardContainer>
   );
 }
