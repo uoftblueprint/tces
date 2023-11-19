@@ -19,8 +19,10 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+/* eslint-disable */
 import AddCompanyInfo from "../company-info-component";
 import AddEmployerJobLead from "../job-lead-component";
+/* eslint-enable */
 
 function AddEmployerInfo() {
   const [open, setOpen] = React.useState(false);

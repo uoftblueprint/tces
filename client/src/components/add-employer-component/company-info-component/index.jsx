@@ -24,6 +24,7 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+// eslint-disable-next-line import/no-cycle
 import AddEmployerInfo from "../employer-contact-component";
 
 function AddCompanyInfo() {
