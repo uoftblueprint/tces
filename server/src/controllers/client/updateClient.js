@@ -17,12 +17,24 @@ const updateClientRequestHandler = async (req, res) => {
         data: null,
       });
     }
-    if (req.body.values.client) {
+    if (req.body.values.creator) {
       return res.status(403).json({
-        status: "fail".replace,
+        status: "fail",
         message: "You cannot change the creator of a client.",
         data: null,
       });
+    }
+    if (req.body.values.status == "closed") {
+      // Case: we are closing a client
+      if (!req.body.values.status_at_exit) {
+        return res.status(403).json({
+          status: "fail",
+          message: "You must provide a status_at_exit when closing a client",
+          data: null,
+        });
+      }
+
+      req.body.values.closed_date = new Date();
     }
 
     await client.set(req.body.values);
