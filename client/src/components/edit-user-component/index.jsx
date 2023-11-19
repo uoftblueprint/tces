@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Form, Header, Cancel } from "./index.styles";
+import ConfirmDialog from "../confirm-dialog-component";
 
 function EditComponent({ userID, onModifyUser }) {
   const navigate = useNavigate();
@@ -19,10 +20,14 @@ function EditComponent({ userID, onModifyUser }) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmEditDialog, setConfirmEditDialog] = useState(false);
 
   const handleSave = (e) => {
     e.preventDefault();
-    // Create a JSON object with the required keys and values
+    setConfirmEditDialog(true);
+  };
+
+  const confirmEdit = () => {
     const userData = {
       userID,
       firstName,
@@ -30,34 +35,13 @@ function EditComponent({ userID, onModifyUser }) {
       email,
       isAdmin: false,
     };
-
     onModifyUser(userData);
-
     navigate("/admin");
+    setConfirmEditDialog(false);
+  };
 
-    // Convert the JSON object to a string
-    // const userDataJSON = JSON.stringify(userData);
-
-    // Replace url with target route
-    // fetch("http://localhost:8000/edit", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: userDataJSON,
-    // });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('Login successful');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Login failed');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // });
+  const cancelEdit = () => {
+    setConfirmEditDialog(false);
   };
 
   return (
@@ -130,6 +114,13 @@ function EditComponent({ userID, onModifyUser }) {
           </Button>
         </Stack>
       </Stack>
+      <ConfirmDialog
+        open={confirmEditDialog}
+        title="Confirm Edit"
+        message="Are you sure you want to save these changes?"
+        onConfirm={confirmEdit}
+        onCancel={cancelEdit}
+      />
     </Form>
   );
 }
