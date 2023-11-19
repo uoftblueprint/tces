@@ -14,7 +14,7 @@ import {
 } from "./index.styles";
 import login from "../../utils/api";
 
-function LoginComponent({ setIsAuthenticated }) {
+function LoginComponent({ setIsAuthenticated, loginUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,12 +22,22 @@ function LoginComponent({ setIsAuthenticated }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage(
+        // eslint-disable-next-line
+        "Please fill in your email and password before proceeding"
+      );
+      return;
+    }
     setIsLoading(true);
     setErrorMessage("");
     try {
       const response = await login(email, password);
       if (response.ok) {
+        const userData = await response.json();
+        loginUser(userData.user);
         setIsAuthenticated(true);
+
         navigate("/dashboard");
       } else {
         const errorData = await response.json();
@@ -72,6 +82,7 @@ function LoginComponent({ setIsAuthenticated }) {
 
 LoginComponent.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
 };
 
 export default LoginComponent;

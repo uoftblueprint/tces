@@ -24,7 +24,7 @@ function App() {
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
-  const [currUser] = useState(mockUser);
+  const [currUser, setCurrUser] = useState(mockUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Job Updates State
@@ -51,7 +51,10 @@ function App() {
           path="/signin"
           element={
             <RouteGuard isPermitted={!isAuthenticated} redirect={AuthRedirect}>
-              <LoginPage setIsAuthenticated={setIsAuthenticated} />
+              <LoginPage
+                setIsAuthenticated={setIsAuthenticated}
+                setCurrUser={setCurrUser}
+              />
             </RouteGuard>
           }
         />

@@ -17,7 +17,7 @@ import JobUpdateType from "../../prop-types/JobUpdateType";
 function DashboardComponent({ currUser, jobUpdates }) {
   return (
     <Container>
-      <DashboardHeaderComponent userName={currUser.firstName} />
+      <DashboardHeaderComponent currUser={currUser} />
       <DashboardNavigationComponent />
       <MainContainer>
         <Typography

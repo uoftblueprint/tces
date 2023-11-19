@@ -2,7 +2,6 @@
 const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const login = async (email, password) => {
-  console.log(REACT_APP_API_BASE_URL);
   try {
     const response = await fetch(`${REACT_APP_API_BASE_URL}/login`, {
       method: "POST",

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,8 +11,9 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import UserType from "../../../prop-types/UserType";
 
-function DashboardHeaderComponent({ userName }) {
+function DashboardHeaderComponent({ currUser }) {
   const navigate = useNavigate();
   const buttonGroupRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -35,7 +35,7 @@ function DashboardHeaderComponent({ userName }) {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography variant="h4" gutterBottom align="left">
-            {"Welcome Back, "} {userName}!
+            {"Welcome Back, "} {currUser.firstName}!
           </Typography>
           <Typography variant="body1" gutterBottom align="left">
             Start a search, add a new entry using the button or browse through
@@ -71,12 +71,14 @@ function DashboardHeaderComponent({ userName }) {
               }}
             >
               {/* TEMP PATH TO ADMIN PAGE UNTIL NAVBAR MERGES IN */}
-              <MenuItem
-                onClick={navigateAdmin}
-                sx={{ justifyContent: "center" }}
-              >
-                Admin Dashboard
-              </MenuItem>
+              {currUser.isAdmin && (
+                <MenuItem
+                  onClick={navigateAdmin}
+                  sx={{ justifyContent: "center" }}
+                >
+                  Admin Dashboard
+                </MenuItem>
+              )}
               <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
                 Add New Employer
               </MenuItem>
@@ -95,7 +97,7 @@ function DashboardHeaderComponent({ userName }) {
 }
 
 DashboardHeaderComponent.propTypes = {
-  userName: PropTypes.string.isRequired,
+  currUser: UserType.isRequired,
 };
 
 export default DashboardHeaderComponent;
