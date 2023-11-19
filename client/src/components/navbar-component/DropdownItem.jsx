@@ -4,15 +4,30 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
+import IconButton from "@mui/material/IconButton";
 
-function DropdownItem({ label, keyword }) {
+function DropdownItem({ keyword }) {
   const icons = {
     settings: <SettingsIcon color="action" />,
     logout: <LogoutIcon color="action" />,
     admin: <AdminIcon color="action" />,
   };
 
+  const labels = {
+    settings: "Settings",
+    logout: "Log Out",
+    admin: "Admin Dashboard",
+  };
+
+  const routes = {
+    settings: "#",
+    logout: "#",
+    admin: "#",
+  };
+
   const icon = icons[keyword];
+  const label = labels[keyword];
+  const route = routes[keyword];
 
   return (
     <div className="dropdown-item-container">
@@ -20,13 +35,14 @@ function DropdownItem({ label, keyword }) {
         {icon}
         <div className="dropdown-item-text">{label}</div>
       </div>
-      <ArrowForwardIcon color="action" />
+      <IconButton href={route}>
+        <ArrowForwardIcon color="action" />
+      </IconButton>
     </div>
   );
 }
 
 DropdownItem.propTypes = {
-  label: PropTypes.string.isRequired,
   keyword: PropTypes.string.isRequired,
 };
 

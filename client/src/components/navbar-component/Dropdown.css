@@ -9,7 +9,8 @@
   width: 600px;
   position: fixed;
   top: 56px;
-  left: 812px;
+  right: 25px;
+  z-index: 1000;
 }
 
 .dropdown-title {

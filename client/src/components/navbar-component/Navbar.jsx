@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "../../../public/img/tces-logo.png";
 import Dropdown from "./Dropdown";
 import NavbarProfile from "./NavbarProfile";
 import NavbarButton from "./NavbarButton";
@@ -15,18 +14,20 @@ function Navbar() {
     <div className="nav-container">
       <div className="left-content">
         <div className="image">
-          <img src={logo} alt="logo" width="46" height="50" />
+          <img src="./img/tcesLogo.svg" alt="logo" width="46" height="50" />
         </div>
         <div className="left-content-buttons">
-          <NavbarButton title="CLIENTS" />
-          <NavbarButton title="JOB LEADS" />
-          <NavbarButton title="EMPLOYERS" />
+          <NavbarButton keyword="clients" />
+          <NavbarButton keyword="jobleads" />
+          <NavbarButton keyword="employers" />
         </div>
       </div>
       <div className="right-content">
         <NavbarProfile toggleDropdown={toggleDropdown} />
       </div>
-      {isDropdownVisible && <Dropdown isAdmin />}
+      {isDropdownVisible && (
+        <Dropdown isAdmin setIsDropdownVisible={setIsDropdownVisible} />
+      )}
     </div>
   );
 }
