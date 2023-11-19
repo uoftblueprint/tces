@@ -114,7 +114,11 @@ function CreateComponent({ onAddUser }) {
           </CardContent>
         </Card>
         <Stack direction="row">
-          <Cancel variant="outlined" size="large">
+          <Cancel
+            variant="outlined"
+            size="large"
+            onClick={() => navigate("/admin")}
+          >
             Cancel
           </Cancel>
           <Button type="submit" variant="contained" size="large">
