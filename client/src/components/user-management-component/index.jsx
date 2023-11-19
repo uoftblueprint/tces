@@ -118,7 +118,12 @@ function UserManagement({ managedUsers, onRemoveUser }) {
       <HeaderContainer>
         <ArrowBackIcon
           onClick={handleBackClick}
-          sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
+          sx={{
+            color: "gray",
+            marginRight: 2,
+            marginLeft: 2,
+            cursor: "pointer",
+          }}
         />
         <Typography
           style={{

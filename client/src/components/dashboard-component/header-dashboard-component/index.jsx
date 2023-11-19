@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Typography,
@@ -13,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 function DashboardHeaderComponent({ userName }) {
+  const navigate = useNavigate();
   const buttonGroupRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -23,6 +25,10 @@ function DashboardHeaderComponent({ userName }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const navigateAdmin = () => {
+    navigate("/admin");
   };
   return (
     <Box my={4}>
@@ -64,6 +70,13 @@ function DashboardHeaderComponent({ userName }) {
                 },
               }}
             >
+              {/* TEMP PATH TO ADMIN PAGE UNTIL NAVBAR MERGES IN */}
+              <MenuItem
+                onClick={navigateAdmin}
+                sx={{ justifyContent: "center" }}
+              >
+                Admin Dashboard
+              </MenuItem>
               <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
                 Add New Employer
               </MenuItem>
