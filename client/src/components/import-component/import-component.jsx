@@ -22,14 +22,15 @@ import { Form, Header, Upload, UploadIcon, Cancel } from "./index.styles";
 
 function importComponent() {
   const [menu, setMenu] = useState("");
+  const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
+        // if (oldProgress === 100) {
+        //   return 0;
+        // }
         const diff = Math.random() * 10;
         return Math.min(oldProgress + diff, 100);
       });
@@ -43,11 +44,11 @@ function importComponent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Grab the file
-    const { files } = e.target.files;
+    const { files: currFiles } = e.target.files;
     // Create a new FormData object
     const formData = new FormData();
     // Add the file(s) to the FormData object
-    formData.append("files", files);
+    formData.append("files", currFiles);
 
     // Replace url with target route
     // fetch("http://localhost:8000/create", {
@@ -79,30 +80,14 @@ function importComponent() {
     }
   };
 
-  const handleFileChange = (e) => {
-    // Get the file(s) from the file input
-    const { files } = e.target.files;
-    // Create a new FormData object
-    const formData = new FormData();
-    // Add the file(s) to the FormData object
-    formData.append("files", files);
-    // Replace url with target route
-    fetch("http://localhost:8000/import", {
-      method: "POST",
-      body: formData,
-    });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('File uploaded successfully');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Failed uploading file');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // });
+  const handleFileChange = (event) => {
+    const uploadedFiles = event.target.files;
+    // Update state with new files
+    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+  };
+
+  const handleDelete = (filename) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== filename));
   };
 
   return (
@@ -146,6 +131,7 @@ function importComponent() {
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                   multiple
+                  required
                 />
                 <UploadIcon variant="rounded" color="primary" />
                 <Typography variant="subtitle1">
@@ -166,7 +152,9 @@ function importComponent() {
                   CSV file only
                 </Typography>
               </Upload>
-              <Stack gap={1} mx={1} mt={2}>
+            </Paper>
+            <Stack gap={1} mx={1} mt={2}>
+              {files.map((file) => (
                 <Grid container spacing={2} alignItems="center" mt={1}>
                   <Grid item>
                     <UploadIcon variant="rounded" color="primary" />
@@ -174,27 +162,29 @@ function importComponent() {
                   <Grid item xs>
                     <Stack direction="column" spacing={2}>
                       <Box>
-                        <Typography variant="subtitle1">
-                          employers.csv
-                        </Typography>
+                        <Typography variant="subtitle1">{file.name}</Typography>
                         <Typography
                           variant="body2"
                           style={{ color: "rgba(0, 0, 0, 0.60)" }}
                         >
-                          100kb • Loading
+                          {file.size}kb •{" "}
+                          {progress === 100 ? "Complete" : "Loading"}
                         </Typography>
                       </Box>
                       <LinearProgress variant="determinate" value={progress} />
                     </Stack>
                   </Grid>
                   <Grid item>
-                    <IconButton aria-label="delete">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDelete(file.name)}
+                    >
                       <CloseIcon />
                     </IconButton>
                   </Grid>
                 </Grid>
-              </Stack>
-            </Paper>
+              ))}
+            </Stack>
           </CardContent>
         </Card>
         <Stack direction="row">
