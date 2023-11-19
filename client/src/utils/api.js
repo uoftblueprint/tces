@@ -1,7 +1,7 @@
-// eslint-disable-next-line prefer-destructuring
-const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
+  // eslint-disable-next-line no-useless-catch
   try {
     const response = await fetch(`${REACT_APP_API_BASE_URL}/login`, {
       method: "POST",
@@ -12,7 +12,7 @@ const login = async (email, password) => {
     });
     return response;
   } catch (error) {
-    console.error("Error:", error);
+    // TODO implement error handling logic
     throw error;
   }
 };

@@ -17,6 +17,8 @@ import mockJobUpdates from "./mock-data/mockJobUpdates";
 import mockUser from "./mock-data/mockUser";
 import mockManagedUsers from "./mock-data/mockManagedUsers";
 
+const { REACT_APP_BYPASS_AUTH } = process.env;
+
 function App() {
   // redirect urls in-case user has a cached login or not
   const notAuthRedirect = "/signin";
@@ -40,7 +42,7 @@ function App() {
         <Route
           path="/"
           element={
-            isAuthenticated ? (
+            isAuthenticate || REACT_APP_BYPASS_AUTH ? (
               <Navigate to="/dashboard" />
             ) : (
               <Navigate to="/signin" />
