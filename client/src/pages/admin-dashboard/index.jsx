@@ -9,9 +9,9 @@ function AdminDashboard({ managedUsers, setManagedUsers }) {
     displayName: `${user.firstName} ${user.lastName}`,
   }));
 
-  const removeUser = (userId) => {
+  const removeUser = (userID) => {
     setManagedUsers((prevUsers) => {
-      return prevUsers.filter((user) => user.id !== userId);
+      return prevUsers.filter((user) => user.userID !== userID);
     });
   };
 

@@ -52,7 +52,7 @@ function UserManagement({ managedUsers, onRemoveUser }) {
             label="Edit"
             className="textPrimary actionButton"
             color="inherit"
-            onClick={() => navigate(`/admin/edit-user/${params.id}`)}
+            onClick={() => navigate(`/admin/edit-user/${params.row.userID}`)}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
@@ -60,7 +60,8 @@ function UserManagement({ managedUsers, onRemoveUser }) {
             color="inherit"
             className="actionButton"
             onClick={() => {
-              onRemoveUser(params.id);
+              onRemoveUser(params.row.userID);
+              navigate(`/admin/`);
             }}
           />,
         ];
@@ -69,6 +70,10 @@ function UserManagement({ managedUsers, onRemoveUser }) {
   ];
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(managedUsers);
+
+  React.useEffect(() => {
+    setFilteredRows(managedUsers);
+  }, [managedUsers]);
 
   const handleSearch = (event) => {
     const query = event.target.value;
