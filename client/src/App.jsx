@@ -42,7 +42,7 @@ function App() {
         <Route
           path="/"
           element={
-            isAuthenticate || REACT_APP_BYPASS_AUTH ? (
+            isAuthenticated || REACT_APP_BYPASS_AUTH ? (
               <Navigate to="/dashboard" />
             ) : (
               <Navigate to="/signin" />

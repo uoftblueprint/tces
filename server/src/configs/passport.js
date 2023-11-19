@@ -20,15 +20,15 @@ passport.use(
       user.salt,
       310000,
       32,
-      "sha256"
+      "sha256",
     );
 
     if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-      return cb(null, false, { message: "Incorrect password." });
+      return cb(null, false, { message: "Incorrect username or password." });
     }
 
     return cb(null, user);
-  })
+  }),
 );
 
 // Set up serialization and deserialization for the user's session

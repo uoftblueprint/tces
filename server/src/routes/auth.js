@@ -19,6 +19,7 @@ const isAdmin = require("../middlewares/auth/isAdmin");
  */
 
 router.post("/login", (req, res, next) => {
+  // eslint-disable-next-line consistent-return
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
@@ -28,7 +29,7 @@ router.post("/login", (req, res, next) => {
       return res.status(401).json({ message: info.message });
     }
 
-    req.logIn(user, (err) => {
+    req.logIn(user, () => {
       if (err) {
         return next(err);
       }
