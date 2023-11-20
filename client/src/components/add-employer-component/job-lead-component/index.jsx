@@ -146,7 +146,11 @@ function AddEmployerJobLead() {
                   label="Compensation"
                   value={lead.compensation}
                   onChange={(input) =>
-                    handleInputChange(input.target.value, lead.id, "compensation")
+                    handleInputChange(
+                      input.target.value,
+                      lead.id,
+                      "compensation",
+                    )
                   }
                 />
               </FormControl>
@@ -187,7 +191,9 @@ function AddEmployerJobLead() {
                   }}
                   value={dayjs(lead.creationDate)}
                   helperText="*Required"
-                  onChange={(date) => handleInputChange(date, lead.id, "creationDate")}
+                  onChange={(date) =>
+                    handleInputChange(date, lead.id, "creationDate")
+                  }
                 />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -204,7 +210,9 @@ function AddEmployerJobLead() {
                   }}
                   value={dayjs(lead.expirationDate)}
                   helperText="*Required"
-                  onChange={(date) => handleInputChange(date, lead.id, "expirationDate")}
+                  onChange={(date) =>
+                    handleInputChange(date, lead.id, "expirationDate")
+                  }
                 />
               </LocalizationProvider>
               <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
@@ -276,7 +284,8 @@ function AddEmployerJobLead() {
             <div style={{ display: "flex", gap: "16px" }}>
               <Button
                 sx={{
-                  background: "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
+                  background:
+                    "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
                   color: "black",
                   ":hover": {
                     background:
@@ -294,7 +303,7 @@ function AddEmployerJobLead() {
         </Container>
       )}
     </>
-  )
+  );
 }
 
 export default AddEmployerJobLead;
