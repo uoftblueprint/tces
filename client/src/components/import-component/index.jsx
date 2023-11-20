@@ -28,9 +28,6 @@ function importComponent() {
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
-        // if (oldProgress === 100) {
-        //   return 0;
-        // }
         const diff = Math.random() * 10;
         return Math.min(oldProgress + diff, 100);
       });
@@ -43,12 +40,10 @@ function importComponent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Grab the file
-    const { files: currFiles } = e.target.files;
     // Create a new FormData object
     const formData = new FormData();
     // Add the file(s) to the FormData object
-    formData.append("files", currFiles);
+    formData.append("files", files);
 
     // Replace url with target route
     // fetch("http://localhost:8000/create", {
