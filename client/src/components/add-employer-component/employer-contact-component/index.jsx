@@ -88,11 +88,11 @@ function AddEmployerInfo() {
     setContacts(initialContacts());
   };
 
-  const handleInputChange = (e, id, field) => {
+  const handleInputChange = (input, id, field) => {
     const newContacts = [...contacts];
     const index = newContacts.findIndex((lead) => lead.id === id);
     if (index !== -1) {
-      newContacts[index][field] = e;
+      newContacts[index][field] = input;
       setContacts(newContacts);
     }
   };
@@ -115,8 +115,8 @@ function AddEmployerInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="name"
                 value={lead.name}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "name")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "name")
                 }
                 label="Name"
                 helperText="*Required"
@@ -126,8 +126,8 @@ function AddEmployerInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="jobTitle"
                 value={lead.jobTitle}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "jobTitle")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "jobTitle")
                 }
                 label="Job Title/Designation"
                 helperText="*Required"
@@ -137,8 +137,8 @@ function AddEmployerInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="phoneMNumber"
                 value={lead.phoneNumber}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "phoneNumber")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "phoneNumber")
                 }
                 label="Phone Number"
                 helperText="*Required"
@@ -148,8 +148,8 @@ function AddEmployerInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="email"
                 value={lead.email}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "email")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "email")
                 }
                 label="Email"
                 helperText="*Required"
@@ -159,9 +159,9 @@ function AddEmployerInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="alternatePhoneNumber"
                 value={lead.alternatePhoneNumber}
-                onChange={(e) =>
+                onChange={(input) =>
                   handleInputChange(
-                    e.target.value,
+                    input.target.value,
                     lead.id,
                     "alternatePhoneNumber",
                   )

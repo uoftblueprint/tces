@@ -102,11 +102,11 @@ function AddCompanyInfo() {
     setShowAddSecondaryButton(false);
   };
 
-  const handleInputChange = (e, id, field) => {
+  const handleInputChange = (input, id, field) => {
     const newContactInfo = [...contactInfo];
     const index = newContactInfo.findIndex((lead) => lead.id === id);
     if (index !== -1) {
-      newContactInfo[index][field] = e;
+      newContactInfo[index][field] = input;
       setContactInfo(newContactInfo);
     }
   };
@@ -137,8 +137,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="businessName"
                 value={lead.businessName}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "businessName")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "businessName")
                 }
                 label="Business Name"
                 helperText="*Required"
@@ -149,9 +149,9 @@ function AddCompanyInfo() {
                 id="businessLegalName"
                 label="Business Legal Name"
                 value={lead.businessLegalName}
-                onChange={(e) =>
+                onChange={(input) =>
                   handleInputChange(
-                    e.target.value,
+                    input.target.value,
                     lead.id,
                     "businessLegalName",
                   )
@@ -162,8 +162,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="naicsCode"
                 value={lead.naicsCode}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "naicsCode")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "naicsCode")
                 }
                 label="NAICS Code"
                 helperText="*Required"
@@ -173,8 +173,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="phoneNumber"
                 value={lead.phoneNumber}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "phoneNumber")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "phoneNumber")
                 }
                 label="Phone Number"
                 helperText="*Required"
@@ -184,8 +184,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="faxNumber"
                 value={lead.faxNumber}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "faxNumber")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "faxNumber")
                 }
                 label="Fax Number"
               />
@@ -194,8 +194,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="outlined-helperText"
                 value={lead.generalEmail}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "generalEmail")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "generalEmail")
                 }
                 label="General Email"
                 helperText="*Required"
@@ -205,8 +205,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="website"
                 value={lead.website}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "website")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "website")
                 }
                 label="Website"
               />
@@ -215,8 +215,12 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="employerAddress"
                 value={lead.employerAddress}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "employerAddress")
+                onChange={(input) =>
+                  handleInputChange(
+                    input.target.value,
+                    lead.id,
+                    "employerAddress",
+                  )
                 }
                 label="Employer Address"
                 helperText="*Required"
@@ -226,8 +230,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "96%" }}
                 id="city"
                 value={lead.city}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "city")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "city")
                 }
                 label="City"
                 helperText="*Required"
@@ -240,8 +244,8 @@ function AddCompanyInfo() {
                   id="province"
                   value={lead.province}
                   label="Province"
-                  onChange={(e) =>
-                    handleInputChange(e.target.value, lead.id, "province")
+                  onChange={(input) =>
+                    handleInputChange(input.target.value, lead.id, "province")
                   }
                 >
                   <MenuItem value="alberta">Alberta</MenuItem>
@@ -266,8 +270,8 @@ function AddCompanyInfo() {
                 sx={{ m: 1, width: "47%" }}
                 id="postalCode"
                 value={lead.postalCode}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "postalCode")
+                onChange={(input) =>
+                  handleInputChange(input.target.value, lead.id, "postalCode")
                 }
                 label="Postal Code"
                 helperText="*Required"
@@ -283,8 +287,12 @@ function AddCompanyInfo() {
                 id={`secondaryAddress${lead.id}`}
                 helperText="*Required"
                 value={lead.secondaryAddress}
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "secondaryAddress")
+                onChange={(input) =>
+                  handleInputChange(
+                    input.target.value,
+                    lead.id,
+                    "secondaryAddress",
+                  )
                 }
                 label="Secondary Address"
               />
@@ -294,8 +302,12 @@ function AddCompanyInfo() {
                 id={`secondaryCity${lead.id}`}
                 value={lead.secondaryCity}
                 helperText="*Required"
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "secondaryCity")
+                onChange={(input) =>
+                  handleInputChange(
+                    input.target.value,
+                    lead.id,
+                    "secondaryCity",
+                  )
                 }
                 label="City"
               />
@@ -310,9 +322,9 @@ function AddCompanyInfo() {
                   value={lead.secondaryProvince}
                   helperText="*Required"
                   label="Province"
-                  onChange={(e) =>
+                  onChange={(input) =>
                     handleInputChange(
-                      e.target.value,
+                      input.target.value,
                       lead.id,
                       "secondaryProvince",
                     )
@@ -326,9 +338,9 @@ function AddCompanyInfo() {
                 id={`secondaryPostalCode${lead.id}`}
                 helperText="*Required"
                 value={lead.secondaryPostalCode}
-                onChange={(e) =>
+                onChange={(input) =>
                   handleInputChange(
-                    e.target.value,
+                    input.target.value,
                     lead.id,
                     "secondaryPostalCode",
                   )
