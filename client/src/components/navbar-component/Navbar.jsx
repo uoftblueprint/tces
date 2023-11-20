@@ -1,9 +1,10 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import Dropdown from "./Dropdown";
 import NavbarProfile from "./NavbarProfile";
 import NavbarButton from "./NavbarButton";
 
-function Navbar() {
+function Navbar({ isAdmin }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -26,10 +27,17 @@ function Navbar() {
         <NavbarProfile toggleDropdown={toggleDropdown} />
       </div>
       {isDropdownVisible && (
-        <Dropdown isAdmin setIsDropdownVisible={setIsDropdownVisible} />
+        <Dropdown
+          isAdmin={isAdmin}
+          setIsDropdownVisible={setIsDropdownVisible}
+        />
       )}
     </div>
   );
 }
+
+Navbar.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+};
 
 export default Navbar;
