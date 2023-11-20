@@ -173,6 +173,7 @@ function AddEmployerJobLead() {
                 multiline
                 rows={4}
                 value={lead.description}
+                helperText="*Required"
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "description")
                 }
@@ -187,6 +188,7 @@ function AddEmployerJobLead() {
                     textField: {
                       size: "small",
                       error: false,
+                      required: true,
                     },
                   }}
                   value={dayjs(lead.creationDate)}
