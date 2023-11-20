@@ -6,8 +6,7 @@ import "./App.css";
 // import EditPage from "./pages/edit-user/edit-user";
 // import AddJobLead from "./components/add-job-lead-component";
 import AddCompanyInfo from "./components/add-employer-component/company-info-component";
-// import AddJobLead from "./components/add-job-lead-component";
-// import AddEmployer from "./components/add-employer-component";
+// import AddEmployerJobLead from "./components/add-employer-component/job-lead-component";
 import Navbar from "./components/navbar-component/Navbar";
 
 function App() {

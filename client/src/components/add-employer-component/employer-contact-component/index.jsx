@@ -19,15 +19,17 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
-/* eslint-disable */
+/* eslint-disable import/no-cycle */
 import AddCompanyInfo from "../company-info-component";
 import AddEmployerJobLead from "../job-lead-component";
-/* eslint-enable */
 
 function AddEmployerInfo() {
   const [open, setOpen] = React.useState(false);
-  const [showAddCompanyInfo, setShowAddCompanyInfo] = useState(false);
-  const [showAddEmployerJobLead, setShowAddEmployerJobLead] = useState(false);
+  const [page, setPage] = React.useState(2);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,11 +40,11 @@ function AddEmployerInfo() {
   };
 
   const handleBackButtonClick = () => {
-    setShowAddCompanyInfo(true);
+    setPage(1);
   };
 
   const handleNextButtonClick = () => {
-    setShowAddEmployerJobLead(true);
+    setPage(3);
   };
 
   // Initialize state from local storage or use default if not present
@@ -99,9 +101,9 @@ function AddEmployerInfo() {
 
   return (
     <>
-      {showAddCompanyInfo && <AddCompanyInfo />}
-      {showAddEmployerJobLead && <AddEmployerJobLead />}
-      {!showAddCompanyInfo && !showAddEmployerJobLead && (
+      {page === 1 && <AddCompanyInfo />}
+      {page === 3 && <AddEmployerJobLead />}
+      {page === 2 && (
         <Container>
           <H1>Adding a New Employer</H1>
           <Body>
@@ -130,7 +132,6 @@ function AddEmployerInfo() {
                   handleInputChange(input.target.value, lead.id, "jobTitle")
                 }
                 label="Job Title/Designation"
-                helperText="*Required"
               />
               <TextField
                 fullWidth
@@ -177,7 +178,8 @@ function AddEmployerInfo() {
               shape="rounded"
               hidePrevButton
               hideNextButton
-              page={2}
+              onChange={(event, value) => handlePageChange(event, value)}
+              page={page}
               sx={{
                 "& .MuiPaginationItem-page.Mui-selected": {
                   backgroundColor: "#3568E5",
