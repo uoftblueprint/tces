@@ -31,7 +31,9 @@ import AddEmployerJobLead from "../job-lead-component";
 function AddCompanyInfo() {
   const [open, setOpen] = React.useState(false);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(() => {
-    const sessionStorageValue = sessionStorage.getItem("showAddSecondaryButton");
+    const sessionStorageValue = sessionStorage.getItem(
+      "showAddSecondaryButton",
+    );
     return sessionStorageValue === null || sessionStorageValue === undefined
       ? true
       : sessionStorageValue === "true";
