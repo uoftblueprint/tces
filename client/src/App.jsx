@@ -7,6 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import RouteGuard from "./components/route-guard-component";
+import AuthGuard from "./components/auth-guard-component";
 import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
@@ -39,7 +40,7 @@ function App() {
   // Reset all states (when user logs out)
   const resetState = () => {
     setCurrUser({
-      userID: 1,
+      userID: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -47,6 +48,18 @@ function App() {
     });
     setIsAuthenticated(false);
     setManagedUsers([]);
+  };
+
+  // Setting state (when user logs in)
+  const loginUser = (userData) => {
+    setCurrUser({
+      userID: userData.userID || userData.user_id || 1,
+      firstName: userData.firstName || userData.first_name || "",
+      lastName: userData.lastName || userData.last_name || "",
+      email: userData.email || userData.last_name,
+      isAdmin: userData.isAdmin ? userData.isAdmin : false,
+    });
+    setIsAuthenticated(true);
   };
 
   // declaring routes here
@@ -69,7 +82,7 @@ function App() {
             <RouteGuard isPermitted={!isAuthenticated} redirect={AuthRedirect}>
               <LoginPage
                 setIsAuthenticated={setIsAuthenticated}
-                setCurrUser={setCurrUser}
+                loginUser={loginUser}
               />
             </RouteGuard>
           }
@@ -78,21 +91,15 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <RouteGuard
-              isPermitted={isAuthenticated}
-              redirect={notAuthRedirect}
-            >
+            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
               <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
-            </RouteGuard>
+            </AuthGuard>
           }
         />
         <Route
           path="/admin"
           element={
-            <RouteGuard
-              isPermitted={isAuthenticated}
-              redirect={notAuthRedirect}
-            >
+            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
               <RouteGuard
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
@@ -102,7 +109,7 @@ function App() {
                   setManagedUsers={setManagedUsers}
                 />
               </RouteGuard>
-            </RouteGuard>
+            </AuthGuard>
           }
         />
         <Route

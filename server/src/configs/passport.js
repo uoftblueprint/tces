@@ -34,7 +34,7 @@ passport.use(
 // Set up serialization and deserialization for the user's session
 passport.serializeUser((user, cb) => {
   process.nextTick(() => {
-    cb(null, { id: user.id, username: user.email, is_admin: user.is_admin });
+    cb(null, { id: user.id, first_name: user.first_name, last_name: user.last_name, username: user.email, is_admin: user.is_admin });
   });
 });
 passport.deserializeUser((user, cb) => {

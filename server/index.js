@@ -6,6 +6,7 @@ const port = 8000;
 
 const corsOption = {
   origin: "http://localhost:3000",
+  credentials: true
 };
 
 // Session storage imports

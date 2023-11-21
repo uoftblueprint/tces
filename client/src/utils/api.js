@@ -5,6 +5,7 @@ const login = async (email, password) => {
   try {
     const response = await fetch(`${REACT_APP_API_BASE_URL}/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,6 +23,7 @@ const logout = async () => {
   try {
     const response = await fetch(`${REACT_APP_API_BASE_URL}/logout`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -32,4 +34,20 @@ const logout = async () => {
   }
 };
 
-export { login, logout };
+const isUserLoggedIn = async () => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await fetch(`${REACT_APP_API_BASE_URL}/is_logged_in`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { login, logout, isUserLoggedIn };

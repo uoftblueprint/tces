@@ -1,16 +1,7 @@
 import PropTypes from "prop-types";
 import LoginComponent from "../../components/login-component";
 
-function Login({ setIsAuthenticated, setCurrUser }) {
-  const loginUser = (userData) => {
-    setCurrUser({
-      userID: userData.userID,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      isAdmin: userData.isAdmin ? userData.isAdmin : false,
-    });
-  };
+function Login({ setIsAuthenticated, loginUser }) {
   return (
     <LoginComponent
       setIsAuthenticated={setIsAuthenticated}
@@ -21,7 +12,7 @@ function Login({ setIsAuthenticated, setCurrUser }) {
 
 Login.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,
-  setCurrUser: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
 };
 
 export default Login;
