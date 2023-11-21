@@ -205,6 +205,7 @@ function AddJobLead() {
             multiline
             rows={4}
             value={lead.description}
+            helperText="*Required"
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "description")
             }
@@ -215,6 +216,11 @@ function AddJobLead() {
               id="creationDate"
               fullWidth
               sx={{ m: 1, width: "47%" }}
+              slotProps={{
+                textField: {
+                  required: true,
+                },
+              }}
               value={lead.creationDate}
               onChange={(e) => handleInputChange(e, lead.id, "creationDate")}
             />
@@ -246,7 +252,6 @@ function AddJobLead() {
               <MenuItem value="casual">Casual</MenuItem>
               <MenuItem value="on-call">On-Call</MenuItem>
             </Select>
-            <FormHelperText>*Required</FormHelperText>
           </FormControl>
         </JobLeadContainer>
       ))}
