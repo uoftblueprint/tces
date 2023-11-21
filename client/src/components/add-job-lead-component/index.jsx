@@ -39,9 +39,9 @@ function AddJobLead() {
     setOpen(false);
   };
 
-  // Initialize state from local storage or use default if not present
+  // Initialize state from session storage or use default if not present
   const initialJobLeads = () =>
-    JSON.parse(localStorage.getItem("jobLeads")) || [
+    JSON.parse(sessionStorage.getItem("jobLeads")) || [
       {
         id: 0,
         employer: "",
@@ -60,8 +60,8 @@ function AddJobLead() {
   const [jobLeads, setJobLeads] = useState(initialJobLeads);
 
   useEffect(() => {
-    // Save state to local storage whenever it changes
-    localStorage.setItem("jobLeads", JSON.stringify(jobLeads));
+    // Save state to session storage whenever it changes
+    sessionStorage.setItem("jobLeads", JSON.stringify(jobLeads));
   }, [jobLeads]);
 
   const handleAddJobLead = () => {
@@ -93,8 +93,8 @@ function AddJobLead() {
   };
 
   const handleResetInputs = () => {
-    // Clear local storage
-    localStorage.removeItem("jobLeads");
+    // Clear session storage
+    sessionStorage.removeItem("jobLeads");
 
     // Reset the inputs to initial values
     setJobLeads(initialJobLeads());
