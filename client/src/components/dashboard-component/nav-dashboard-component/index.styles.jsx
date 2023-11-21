@@ -26,7 +26,7 @@ const MainNavButton = styled(Button)`
   .MuiButton-startIcon {
     position: absolute;
     left: 16px;
-    background-color: ${(props) => props.iconBackgroundColour || "black"};
+    background-color: ${(props) => props.iconbackgroundcolour || "black"};
     color: #0000008a;
     border-radius: 50%;
     padding: 15px;
