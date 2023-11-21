@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 import {
   TextField,
   Select,
@@ -183,7 +182,7 @@ function AddEmployerJobLead({ onPageChange }) {
                   required: true,
                 },
               }}
-              value={dayjs(lead.creationDate)}
+              value={lead.creationDate}
               helperText="*Required"
               onChange={(date) =>
                 handleInputChange(date, lead.id, "creationDate")
@@ -202,7 +201,7 @@ function AddEmployerJobLead({ onPageChange }) {
                   error: false,
                 },
               }}
-              value={dayjs(lead.expirationDate)}
+              value={lead.expirationDate}
               helperText="*Required"
               onChange={(date) =>
                 handleInputChange(date, lead.id, "expirationDate")
