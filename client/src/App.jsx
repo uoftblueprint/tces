@@ -22,6 +22,8 @@ import mockManagedUsers from "./mock-data/mockManagedUsers";
 const { REACT_APP_BYPASS_AUTH } = process.env;
 
 function App() {
+  // by pass auth
+  const devByPassAuth = REACT_APP_BYPASS_AUTH !== "false";
   // redirect urls in-case user has a cached login or not
   const notAuthRedirect = "/signin";
   const AuthRedirect = "/dashboard";
@@ -29,7 +31,7 @@ function App() {
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
   const [currUser, setCurrUser] = useState(mockUser);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(devByPassAuth);
 
   // Job Updates State
   const [jobUpdates] = useState(mockJobUpdates);
@@ -91,7 +93,10 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
+            <AuthGuard
+              isAuthenticated={isAuthenticated || devByPassAuth}
+              loginUser={loginUser}
+            >
               <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
             </AuthGuard>
           }
@@ -99,7 +104,10 @@ function App() {
         <Route
           path="/admin"
           element={
-            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
+            <AuthGuard
+              isAuthenticated={isAuthenticated || devByPassAuth}
+              loginUser={loginUser}
+            >
               <RouteGuard
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}

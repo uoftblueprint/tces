@@ -1,6 +1,5 @@
 const isLoggedInRequestHandler = (req, res) => {
   if (req.user) {
-    console.log(req.user);
     if (req.user.is_admin) {
       res.json({
         status: "success",
