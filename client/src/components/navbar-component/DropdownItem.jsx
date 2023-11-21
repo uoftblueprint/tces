@@ -27,6 +27,9 @@ function DropdownItem({ keyword }) {
     admin: "/admin",
   };
 
+  const onClickRoute = () => {
+    navigate(routes[keyword]);
+  };
   const icon = icons[keyword];
   const label = labels[keyword];
 
@@ -35,7 +38,7 @@ function DropdownItem({ keyword }) {
       variant="text"
       className="dropdown-item-button"
       style={{ color: "rgba(0, 0, 0, 0.6)" }}
-      onClick={() => navigate(routes[keyword])}
+      onClick={onClickRoute}
     >
       <div className="dropdown-item-container">
         <div className="dropdown-item-left-content">

@@ -17,4 +17,19 @@ const login = async (email, password) => {
   }
 };
 
-export default login;
+const logout = async () => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await fetch(`${REACT_APP_API_BASE_URL}/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { login, logout };

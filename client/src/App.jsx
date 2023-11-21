@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
+import LogoutPage from "./pages/logout";
 
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 import mockUser from "./mock-data/mockUser";
@@ -34,6 +35,19 @@ function App() {
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState(mockManagedUsers);
+
+  // Reset all states (when user logs out)
+  const resetState = () => {
+    setCurrUser({
+      userID: 1,
+      firstName: "",
+      lastName: "",
+      email: "",
+      isAdmin: false,
+    });
+    setIsAuthenticated(false);
+    setManagedUsers([]);
+  };
 
   // declaring routes here
   return (
@@ -60,6 +74,7 @@ function App() {
             </RouteGuard>
           }
         />
+        <Route path="/logout" element={<LogoutPage onLogout={resetState} />} />
         <Route
           path="/dashboard"
           element={

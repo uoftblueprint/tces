@@ -12,7 +12,7 @@ import {
   P,
   ErrorMessage,
 } from "./index.styles";
-import login from "../../utils/api";
+import { login } from "../../utils/api";
 
 function LoginComponent({ setIsAuthenticated, loginUser }) {
   const navigate = useNavigate();
