@@ -31,10 +31,10 @@ import AddEmployerJobLead from "../job-lead-component";
 function AddCompanyInfo() {
   const [open, setOpen] = React.useState(false);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(() => {
-    const localStorageValue = localStorage.getItem("showAddSecondaryButton");
-    return localStorageValue === null || localStorageValue === undefined
+    const sessionStorageValue = sessionStorage.getItem("showAddSecondaryButton");
+    return sessionStorageValue === null || sessionStorageValue === undefined
       ? true
-      : localStorageValue === "true";
+      : sessionStorageValue === "true";
   });
   const [page, setPage] = React.useState(1);
 
@@ -56,7 +56,7 @@ function AddCompanyInfo() {
 
   // Initialize state from local storage or use default if not present
   const initialContactInfo = () =>
-    JSON.parse(localStorage.getItem("contactInfo")) || [
+    JSON.parse(sessionStorage.getItem("contactInfo")) || [
       {
         id: 0,
         businessName: "",
@@ -76,13 +76,13 @@ function AddCompanyInfo() {
   const [contactInfo, setContactInfo] = useState(initialContactInfo);
 
   useEffect(() => {
-    // Save state to local storage whenever it changes
-    localStorage.setItem("contactInfo", JSON.stringify(contactInfo));
+    // Save state to session storage whenever it changes
+    sessionStorage.setItem("contactInfo", JSON.stringify(contactInfo));
   }, [contactInfo]);
 
   useEffect(() => {
-    // Save state to local storage whenever it changes
-    localStorage.setItem(
+    // Save state to session storage whenever it changes
+    sessionStorage.setItem(
       "showAddSecondaryButton",
       showAddSecondaryButton.toString(),
     );
@@ -117,9 +117,9 @@ function AddCompanyInfo() {
   };
 
   const handleResetInputs = () => {
-    // Clear local storage
-    localStorage.removeItem("contactInfo");
-    localStorage.removeItem("showAddSecondaryButton");
+    // Clear session storage
+    sessionStorage.removeItem("contactInfo");
+    sessionStorage.removeItem("showAddSecondaryButton");
 
     // Reset the inputs to initial values
     setContactInfo(initialContactInfo());

@@ -49,7 +49,7 @@ function AddEmployerInfo() {
 
   // Initialize state from local storage or use default if not present
   const initialContacts = () =>
-    JSON.parse(localStorage.getItem("contacts")) || [
+    JSON.parse(sessionStorage.getItem("contacts")) || [
       {
         id: 0,
         name: "",
@@ -63,8 +63,8 @@ function AddEmployerInfo() {
   const [contacts, setContacts] = useState(initialContacts);
 
   useEffect(() => {
-    // Save state to local storage whenever it changes
-    localStorage.setItem("contacts", JSON.stringify(contacts));
+    // Save state to session storage whenever it changes
+    sessionStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
 
   const handleAddContact = () => {
@@ -83,8 +83,8 @@ function AddEmployerInfo() {
   };
 
   const handleResetInputs = () => {
-    // Clear local storage
-    localStorage.removeItem("contacts");
+    // Clear session storage
+    sessionStorage.removeItem("contacts");
 
     // Reset the inputs to initial values
     setContacts(initialContacts());
