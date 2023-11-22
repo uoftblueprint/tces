@@ -4,11 +4,12 @@ const Client = require("../../models/client.model");
 const addClientsRequestHandler = async (req, res) => {
   try {
     if (req.body.client instanceof Array) {
-      for (const client in req.body.client) {
+      req.body.client.forEach(client => {
         // validate each client, and add values
         addDefaultDates(client);
         setOwnerAndCreator(client, req.user.id);
-      }
+        console.log(client);
+      });
 
       // bulk create clients
       const clients = await Client.bulkCreate(req.body.client);
