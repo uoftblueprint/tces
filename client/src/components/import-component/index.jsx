@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { filesize } from "filesize";
-import { Papa } from "papaparse";
+import Papa from "papaparse";
 import {
   Typography,
   Stack,
@@ -27,6 +27,7 @@ function importComponent() {
   const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
+  const maxFileSize = 1 * 1024 * 1024; // 1 MB limit
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,34 +42,6 @@ function importComponent() {
     };
   }, []);
 
-  // const [progressArray, setProgressArray] = useState([]);
-
-  // useEffect(() => {
-  //   // Create an array with initial progress values for each file
-  //   const initialProgressArray = files.map(() => 0);
-  //   setProgressArray(initialProgressArray);
-
-  //   // Start timers for each file's progress
-  //   const timers = files.map((file, index) => {
-  //     return setInterval(() => {
-  //       setProgressArray((oldProgressArray) => {
-  //         const diff = Math.random() * 10;
-  //         const newProgressArray = [...oldProgressArray];
-  //         newProgressArray[index] = Math.min(
-  //           newProgressArray[index] + diff,
-  //           100,
-  //         );
-  //         return newProgressArray;
-  //       });
-  //     }, 500);
-  //   });
-
-  //   // Cleanup function to clear all timers
-  //   return () => {
-  //     timers.forEach((timer) => clearInterval(timer));
-  //   };
-  // }, [files]);
-
   const fileInputRef = useRef(null);
 
   const handleSectionClick = () => {
@@ -80,20 +53,11 @@ function importComponent() {
   const handleFileChange = (event) => {
     const uploadedFiles = event.target.files;
 
-    // Check file size before adding to the state
-    const validFiles = Array.from(uploadedFiles).filter(
-      (file) => file.size <= 1024 * 1024,
-    ); // 10 MB limit
-
-    if (uploadedFiles.length > 5) {
-      setError("Can only select 5 files at a time.");
-    } else if (validFiles.length === uploadedFiles.length) {
-      // Update state with new files
-      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
-      setError(null);
+    if (files.length + uploadedFiles.length > 4) {
+      setError("Can upload max 4 files at a time.");
     } else {
-      // Set an error message for invalid file sizes
-      setError("File too large (10 MB).");
+      setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+      setError(null);
     }
   };
 
@@ -127,27 +91,29 @@ function importComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validFiles = files.filter((file) => file.size <= maxFileSize);
+    let parsedDataArray = [];
+
     try {
-      const parsedDataArray = await Promise.all(
-        files.map(async (file) => {
+      parsedDataArray = await Promise.all(
+        validFiles.map(async (file) => {
           const data = await readFileAsText(file);
           return parseCSVToObjects(data);
         }),
       );
-      console.log(parsedDataArray);
     } catch (err) {
-      console.error("Error parsing CSV or sending data:", err);
       setError("Error parsing CSV or sending data");
     }
 
     // Replace url with target route
-    // fetch("http://localhost:8000/create", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: parsedDataArray,
-    // });
+    fetch("http://localhost:8000/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: parsedDataArray,
+    });
     // .then((response) => {
     //     if (response.ok) {
     //         // Handle success response (e.g., redirect or show a success message)
@@ -240,36 +206,51 @@ function importComponent() {
                   <Grid item>
                     <UploadIcon
                       variant="rounded"
-                      color={error !== null ? "error" : "primary"}
+                      color={file.size <= maxFileSize ? "primary" : "error"}
                     />
                   </Grid>
                   <Grid item xs>
-                    <Stack direction="column" spacing={2}>
-                      <Box>
-                        <Typography
-                          variant="subtitle1"
-                          color={error !== null ? "error" : "primary"}
-                        >
-                          {error !== null ? "Upload Failed" : file.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          style={{
-                            color:
-                              error !== null ? "red" : "rgba(0, 0, 0, 0.60)",
-                          }}
-                        >
-                          {error !== null
-                            ? `${error} • Failed`
-                            : `${filesize(file.size, {
-                                standard: "jedec",
-                              })} • ${
-                                progress === 100 ? "Complete" : "Loading"
-                              }`}
-                        </Typography>
-                      </Box>
-                      <LinearProgress variant="determinate" value={progress} />
-                    </Stack>
+                    {file.size <= maxFileSize ? (
+                      <Stack direction="column" spacing={2}>
+                        <Box>
+                          <Typography variant="subtitle1" color="primary">
+                            {file.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            style={{
+                              color: "rgba(0, 0, 0, 0.60)",
+                            }}
+                          >
+                            {`${filesize(file.size, { round: 0 })} • ${
+                              progress === 100 ? "Complete" : "Loading"
+                            }`}
+                          </Typography>
+                        </Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value={progress}
+                        />
+                      </Stack>
+                    ) : (
+                      <Stack direction="column" spacing={2}>
+                        <Box>
+                          <Typography variant="subtitle1" color="error">
+                            Upload Failed
+                          </Typography>
+                          <Typography variant="body2" color="error">
+                            {`File exceeds ${filesize(maxFileSize, {
+                              round: 0,
+                            })} • Failed`}
+                          </Typography>
+                        </Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value="0"
+                          color="error"
+                        />
+                      </Stack>
+                    )}
                   </Grid>
                   <Grid item>
                     <IconButton
