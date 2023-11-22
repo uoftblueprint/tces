@@ -43,7 +43,7 @@ router.post("/", isLoggedIn, addClientsRequestHandler);
  * Expected parameters:
  * @type string {params.client_id}
  * Expected body parameters:
- * @type Client {params.body.client}
+ * @type Client {params.body.values}
  */
 router.put("/:client_id", isLoggedIn, updateClientRequestHandler);
 
