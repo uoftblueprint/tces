@@ -38,18 +38,15 @@ describe("addClients test suite", () => {
     var mockReq = {
       body: {
         client: {
-          owner: 1,
-          creator: 1,
           name: "name",
           email: "email@gmail.com",
           phone_number: "289-555-5555",
           status: "open?",
           closure_date: new Date(),
-          status_at_exit: "active",
-          status_at_3_months: "active",
-          status_at_6_months: "active",
-          status_at_12_months: "active",
         },
+      },
+      user: {
+        id: 1,
       },
     };
 
@@ -78,32 +75,22 @@ describe("addClients test suite", () => {
       body: {
         client: [
           {
-            owner: 1,
-            creator: 1,
             name: "name",
             email: "email@gmail.com",
             phone_number: "289-555-5555",
-            status: "open?",
             closure_date: new Date(),
             status_at_exit: "active",
-            status_at_3_months: "active",
-            status_at_6_months: "active",
-            status_at_12_months: "active",
           },
           {
-            owner: 1,
-            creator: 2,
             name: "name",
             email: "email2@gmail.com",
             phone_number: "289-555-5555",
-            status: "open?",
             closure_date: new Date(),
-            status_at_exit: "active",
-            status_at_3_months: "active",
-            status_at_6_months: "active",
-            status_at_12_months: "active",
           },
         ],
+      },
+      user: {
+        id: 1
       },
     };
 
