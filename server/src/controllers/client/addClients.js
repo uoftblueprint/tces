@@ -4,8 +4,13 @@ const Client = require("../../models/client.model");
 const addClientsRequestHandler = async (req, res) => {
   try {
     if (req.body.client instanceof Array) {
-      // bulk create clients
+      for (const client in req.body.client) {
+        // validate each client, and add values
+        addDefaultDates(client);
+        setOwnerAndCreator(client, req.user.id);
+      }
 
+      // bulk create clients
       const clients = await Client.bulkCreate(req.body.client);
 
       return res.status(200).json({
@@ -20,19 +25,25 @@ const addClientsRequestHandler = async (req, res) => {
       closure_date = new Date(req.body.client.closure_date);
     }
 
+    addDefaultDates(req.body.client);
+    setOwnerAndCreator(req.body.client, req.user.id);
+
     // create one client
     const client = await Client.create({
       owner: req.body.client.owner,
-      creator: req.body.client.creator,
-      name: req.body.client.name || null,
+      creator: req.user.id,
+      date_added: req.body.client.date_added,
+      date_updated: req.body.client.date_updated,
+      name: req.body.client.name,
       email: req.body.client.email || null,
       phone_number: req.body.client.phone_number || null,
       status: req.body.client.status || "active",
       closure_date: closure_date || null,
-      status_at_exit: "no_results",
-      status_at_3_months: "no_results",
-      status_at_6_months: "no_results",
-      status_at_12_months: "no_results",
+      status_at_exit: null,
+      status_at_3_months: null,
+      status_at_6_months: null,
+      status_at_9_months: null,
+      status_at_12_months: null,
     });
     return res
       .status(200)
@@ -52,5 +63,15 @@ const addClientsRequestHandler = async (req, res) => {
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 };
+
+const addDefaultDates = (client) => {
+  client.date_added = new Date();
+  client.date_updated = new Date();
+}
+
+const setOwnerAndCreator = (client, user_id) => {
+  client.creator = user_id;
+  client.owner = client.owner || user_id;
+}
 
 module.exports = addClientsRequestHandler;
