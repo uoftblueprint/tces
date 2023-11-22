@@ -5,6 +5,7 @@ const updateClientRequestHandler = async (req, res) => {
   try {
     const client_id = req.params.client_id;
     const client = await Client.findOne({ where: { id: client_id } });
+    
     if (!client) {
       return res
         .status(404)
@@ -36,6 +37,17 @@ const updateClientRequestHandler = async (req, res) => {
 
       req.body.values.closed_date = new Date();
     }
+    if (req.body.values.status == "active") {
+      // Case: we are setting a client back to active
+      req.body.values.status_at_exit = null;
+      req.body.values.status_at_3_months = null;
+      req.body.values.status_at_6_months = null;
+      req.body.values.status_at_9_months = null;
+      req.body.values.status_at_12_months = null;
+      req.body.values.closed_date = null;
+    }
+
+    req.body.values.date_updated = new Date();
 
     await client.set(req.body.values);
     await client.save();
