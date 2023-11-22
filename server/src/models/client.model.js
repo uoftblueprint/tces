@@ -39,9 +39,17 @@ const Client = sequelize.define("clients", {
       },
     },
   },
+  date_added: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  date_updated: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
@@ -52,7 +60,7 @@ const Client = sequelize.define("clients", {
     allowNull: true,
   },
   status: {
-    type: DataTypes.ENUM(["active", "closed"]),
+    type: DataTypes.ENUM(["active", "r_and_i", "closed"]),
     allowNull: true,
   },
   closure_date: {
@@ -69,6 +77,10 @@ const Client = sequelize.define("clients", {
     allowNull: true,
   },
   status_at_6_months: {
+    type: DataTypes.ENUM(["employed", "training", "no_results"]),
+    allowNull: true,
+  },
+  status_at_9_months: {
     type: DataTypes.ENUM(["employed", "training", "no_results"]),
     allowNull: true,
   },
