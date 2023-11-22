@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { filesize } from "filesize";
+import { Papa } from "papaparse";
 import {
   Typography,
   Stack,
@@ -24,6 +26,7 @@ function importComponent() {
   const [menu, setMenu] = useState("");
   const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,12 +41,104 @@ function importComponent() {
     };
   }, []);
 
-  const handleSubmit = (e) => {
+  // const [progressArray, setProgressArray] = useState([]);
+
+  // useEffect(() => {
+  //   // Create an array with initial progress values for each file
+  //   const initialProgressArray = files.map(() => 0);
+  //   setProgressArray(initialProgressArray);
+
+  //   // Start timers for each file's progress
+  //   const timers = files.map((file, index) => {
+  //     return setInterval(() => {
+  //       setProgressArray((oldProgressArray) => {
+  //         const diff = Math.random() * 10;
+  //         const newProgressArray = [...oldProgressArray];
+  //         newProgressArray[index] = Math.min(
+  //           newProgressArray[index] + diff,
+  //           100,
+  //         );
+  //         return newProgressArray;
+  //       });
+  //     }, 500);
+  //   });
+
+  //   // Cleanup function to clear all timers
+  //   return () => {
+  //     timers.forEach((timer) => clearInterval(timer));
+  //   };
+  // }, [files]);
+
+  const fileInputRef = useRef(null);
+
+  const handleSectionClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const uploadedFiles = event.target.files;
+
+    // Check file size before adding to the state
+    const validFiles = Array.from(uploadedFiles).filter(
+      (file) => file.size <= 1024 * 1024,
+    ); // 10 MB limit
+
+    if (uploadedFiles.length > 5) {
+      setError("Can only select 5 files at a time.");
+    } else if (validFiles.length === uploadedFiles.length) {
+      // Update state with new files
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setError(null);
+    } else {
+      // Set an error message for invalid file sizes
+      setError("File too large (10 MB).");
+    }
+  };
+
+  const handleDelete = (filename) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== filename));
+  };
+
+  const readFileAsText = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (err) => reject(err);
+      reader.readAsText(file);
+    });
+  };
+
+  const parseCSVToObjects = (csvContent) => {
+    return new Promise((resolve, reject) => {
+      Papa.parse(csvContent, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (result) => {
+          resolve(result.data);
+        },
+        error: (err) => {
+          reject(err);
+        },
+      });
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Create a new FormData object
-    const formData = new FormData();
-    // Add the file(s) to the FormData object
-    formData.append("files", files);
+    try {
+      const parsedDataArray = await Promise.all(
+        files.map(async (file) => {
+          const data = await readFileAsText(file);
+          return parseCSVToObjects(data);
+        }),
+      );
+      console.log(parsedDataArray);
+    } catch (err) {
+      console.error("Error parsing CSV or sending data:", err);
+      setError("Error parsing CSV or sending data");
+    }
 
     // Replace url with target route
     // fetch("http://localhost:8000/create", {
@@ -51,7 +146,7 @@ function importComponent() {
     //     headers: {
     //         "Content-Type": "application/json",
     //     },
-    //     body: userDataJSON,
+    //     body: parsedDataArray,
     // });
     // .then((response) => {
     //     if (response.ok) {
@@ -65,24 +160,6 @@ function importComponent() {
     // .catch((error) => {
     //     console.error('Error:', error);
     // });
-  };
-
-  const fileInputRef = useRef(null);
-
-  const handleSectionClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const uploadedFiles = event.target.files;
-    // Update state with new files
-    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
-  };
-
-  const handleDelete = (filename) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== filename));
   };
 
   return (
@@ -118,6 +195,15 @@ function importComponent() {
               style={{ cursor: "pointer", marginTop: "2rem" }}
               onClick={handleSectionClick}
             >
+              {error && (
+                <Typography
+                  variant="subtitle1"
+                  color="error"
+                  style={{ textAlign: "center" }}
+                >
+                  {error}
+                </Typography>
+              )}
               <Upload gap={1}>
                 <input
                   type="file"
@@ -152,18 +238,34 @@ function importComponent() {
               {files.map((file) => (
                 <Grid container spacing={2} alignItems="center" mt={1}>
                   <Grid item>
-                    <UploadIcon variant="rounded" color="primary" />
+                    <UploadIcon
+                      variant="rounded"
+                      color={error !== null ? "error" : "primary"}
+                    />
                   </Grid>
                   <Grid item xs>
                     <Stack direction="column" spacing={2}>
                       <Box>
-                        <Typography variant="subtitle1">{file.name}</Typography>
+                        <Typography
+                          variant="subtitle1"
+                          color={error !== null ? "error" : "primary"}
+                        >
+                          {error !== null ? "Upload Failed" : file.name}
+                        </Typography>
                         <Typography
                           variant="body2"
-                          style={{ color: "rgba(0, 0, 0, 0.60)" }}
+                          style={{
+                            color:
+                              error !== null ? "red" : "rgba(0, 0, 0, 0.60)",
+                          }}
                         >
-                          {file.size}kb •{" "}
-                          {progress === 100 ? "Complete" : "Loading"}
+                          {error !== null
+                            ? `${error} • Failed`
+                            : `${filesize(file.size, {
+                                standard: "jedec",
+                              })} • ${
+                                progress === 100 ? "Complete" : "Loading"
+                              }`}
                         </Typography>
                       </Box>
                       <LinearProgress variant="determinate" value={progress} />
