@@ -12,11 +12,14 @@ import { Header, Form, Discard, AddButton } from "./new-client.styles";
 import ClientCard from "./ClientCard";
 
 function NewClient() {
-  const [clients, setClients] = useState([{}]);
+  const [clients, setClients] = useState([
+    { fullName: "", phoneNumber: "", email: "" },
+  ]);
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const handleAddClient = () => {
-    setClients([...clients, {}]);
+  const handleAddClient = (e) => {
+    e.preventDefault();
+    setClients([...clients, { fullName: "", phoneNumber: "", email: "" }]);
   };
 
   return (
@@ -29,11 +32,9 @@ function NewClient() {
           </Typography>
         </Header>
         {clients.map((client) => (
-          <ClientCard key={client} />
+          <ClientCard key={client.id} />
         ))}
-        <AddButton variant="contained" onClick={handleAddClient}>
-          +Add Another Client
-        </AddButton>
+        <AddButton onClick={handleAddClient}>+ Add Another Client</AddButton>
         <Stack direction="row">
           <Discard
             variant="outlined"

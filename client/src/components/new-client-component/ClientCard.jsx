@@ -17,21 +17,27 @@ function ClientCard() {
               label="Full Name"
               fullWidth
               value={fullName}
+              helperText="*Required"
               onChange={(e) => setFullName(e.target.value)}
+              required
             />
             <TextField
               type="tel"
               label="Phone Number"
               fullWidth
               value={phoneNumber}
+              helperText="*Required"
               onChange={(e) => setPhoneNumber(e.target.value)}
+              required
             />
           </Stack>
           <TextField
             type="email"
             label="Email"
             value={email}
+            helperText="*Required"
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </Stack>
       </CardContent>
