@@ -81,7 +81,10 @@ function App() {
         <Route
           path="/signin"
           element={
-            <RouteGuard isPermitted={!isAuthenticated} redirect={AuthRedirect}>
+            <RouteGuard
+              isPermitted={!isAuthenticated && !devByPassAuth}
+              redirect={AuthRedirect}
+            >
               <LoginPage
                 setIsAuthenticated={setIsAuthenticated}
                 loginUser={loginUser}
@@ -89,7 +92,14 @@ function App() {
             </RouteGuard>
           }
         />
-        <Route path="/logout" element={<LogoutPage onLogout={resetState} />} />
+        <Route
+          path="/logout"
+          element={
+            <RouteGuard isPermitted={!devByPassAuth} redirect={AuthRedirect}>
+              <LogoutPage onLogout={resetState} />
+            </RouteGuard>
+          }
+        />
         <Route
           path="/dashboard"
           element={
