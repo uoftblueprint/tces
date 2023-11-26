@@ -1,9 +1,19 @@
 const logger = require("pino")();
 const Employer = require("../../models/employer.model");
+const {
+  addDefaultDates,
+  setOwnerAndCreator,
+} = require("../../utils/creation_util");
 
 const addEmployersRequestHandler = async (req, res) => {
   try {
     if (req.body.employer instanceof Array) {
+      req.body.employer.forEach((employer) => {
+        // validate each client, and add values
+        addDefaultDates(employer);
+        setOwnerAndCreator(employer, req.user.id);
+      });
+
       // bulk create employers
       const employers = await Employer.bulkCreate(req.body.employer);
 
@@ -14,11 +24,15 @@ const addEmployersRequestHandler = async (req, res) => {
       });
     }
 
+    addDefaultDates(req.body.employer);
+    setOwnerAndCreator(req.body.employer, req.user.id);
+
     // create one employer
     const employer = await Employer.create({
       owner: req.body.employer.owner,
       creator: req.body.employer.creator,
-      name: req.body.employer.name || null,
+      date_added: req.body.employer.date_added,
+      name: req.body.employer.name,
       legal_name: req.body.employer.legal_name || null,
       phone_number: req.body.employer.phone_number || null,
       fax: req.body.employer.fax || null,

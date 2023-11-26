@@ -17,6 +17,13 @@ const updateEmployerRequestHandler = async (req, res) => {
         data: null,
       });
     }
+    if (req.body.values.creator) {
+      return res.status(403).json({
+        status: "fail",
+        message: "You cannot change the creator of an employer.",
+        data: null,
+      });
+    }
 
     await employer.set(req.body.values);
     await employer.save();
