@@ -39,3 +39,4 @@ app.listen(port, () => {
 
 app.use("/", authRouter);
 app.use("/clients", clientRouter);
+app.use("/job_leads", jobLeadRouter)
