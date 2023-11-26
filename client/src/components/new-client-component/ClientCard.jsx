@@ -1,9 +1,47 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import * as React from "react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Card, CardHeader, CardContent, TextField, Stack } from "@mui/material";
+import { IMaskInput } from "react-imask";
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(
+  { onChange, name, ...other },
+  ref,
+) {
+  return (
+    <IMaskInput
+      {...other}
+      mask="(#00) 000-0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 function ClientCard() {
+  const [values, setValues] = React.useState({
+    textmask: "",
+    numberformat: "1320",
+  });
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
 
   return (
@@ -22,12 +60,15 @@ function ClientCard() {
               required
             />
             <TextField
-              type="tel"
               label="Phone Number"
+              value={values.textmask}
+              onChange={handleChange}
+              name="textmask"
               fullWidth
-              value={phoneNumber}
+              InputProps={{
+                inputComponent: TextMaskCustom,
+              }}
               helperText="*Required"
-              onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
           </Stack>
