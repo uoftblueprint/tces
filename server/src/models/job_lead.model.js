@@ -63,7 +63,7 @@ const JobLead = sequelize.define("job_leads", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  compensation_min: {
+  compensation_max: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
