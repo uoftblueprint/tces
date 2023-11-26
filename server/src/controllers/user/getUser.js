@@ -3,7 +3,7 @@ const User = require("../../models/user.model");
 const getUserHandler = async (req, res) => {
     try {
         const user_id = req.params.user_id;
-        const user = await User.findOne({ attributes: ['first_name', 'last_name', 'email', 'is_admin'], where: { id: user_id } })
+        const user = await User.findOne({ attributes: ['id', 'first_name', 'last_name', 'email', 'is_admin'], where: { id: user_id } })
 
         if (user) {
             return res.status(200).json({

@@ -12,6 +12,8 @@ const getUserAuth = require("../middlewares/user/getUser")
 
 const getAllUsersHandler = require("../controllers/user/getAllUsers")
 
+const updateUserHandler = require("../controllers/user/updateUser");
+
 // Get a singular user
 
 /**
@@ -30,5 +32,20 @@ router.get("/:user_id", isLoggedIn, getUserAuth, getUserHandler);
  * @type integer {query.limit}
 */
 router.get("", isAdmin, getAllUsersHandler)
+
+/*
+ * Update User
+
+ * Expected Parameters:
+ * @type integer {params.user_id}
+ * 
+ * Expected Body:
+ * @type string {user.body.first_name}
+ * @type string {user.body.last_name}
+ * @type string {user.body.email}
+ * @type string {user.body.password}
+ * @type boolean {user.body.is_admin}
+*/
+router.put("/:user_id", isAdmin, updateUserHandler)
 
 module.exports = router;

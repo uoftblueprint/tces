@@ -5,7 +5,7 @@ const getAllUsersHandler = async (req, res) => {
         const page = Number(req.query.page)
         const limit = Number(req.query.limit)
         const users = await User.findAndCountAll({
-            attributes: ['first_name', 'last_name', 'email', 'is_admin'],
+            attributes: ['id', 'first_name', 'last_name', 'email', 'is_admin'],
             limit: limit,
             offset: (page - 1) * limit
         });
