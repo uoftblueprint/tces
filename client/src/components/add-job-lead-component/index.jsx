@@ -29,14 +29,13 @@ import {
   ButtonL,
 } from "./index.styles";
 
-AddJobLead.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  jobLeadData: PropTypes.array.isRequired,
-  setJobLeadData: PropTypes.func.isRequired,
-  resetInitialState: PropTypes.func.isRequired,
-};
-
 function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
+  AddJobLead.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    jobLeadData: PropTypes.array.isRequired,
+    setJobLeadData: PropTypes.func.isRequired,
+    resetInitialState: PropTypes.func.isRequired,
+  };
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

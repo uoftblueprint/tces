@@ -1,16 +1,17 @@
 import { useState } from "react";
 import AddJobLead from "./index";
 
-
 function AddJobLeadParent() {
   const initialState = {
     jobLeads: [
       {
         id: 0,
-        jobTitle: "",
-        compensation: "",
+        employer: "",
+        title: "",
+        minCompensation: "",
+        maxCompensation: "",
         hoursPerWeek: "",
-        description: "",
+        nationalOC: "",
         creationDate: null,
         expirationDate: null,
         employmentType: "",
@@ -32,11 +33,11 @@ function AddJobLeadParent() {
 
   return (
     <div>
-        <AddJobLead
-            jobLeadData={jobLeadData.jobLeads}
-            setJobLeadData={updateJobLeadData}
-            resetInitialState={resetJobLeadData}
-        />
+      <AddJobLead
+        jobLeadData={jobLeadData.jobLeads}
+        setJobLeadData={updateJobLeadData}
+        resetInitialState={resetJobLeadData}
+      />
     </div>
   );
 }
