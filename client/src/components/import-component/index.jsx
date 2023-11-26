@@ -20,14 +20,12 @@ import {
   Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Form, Header, Upload, UploadIcon, Cancel } from "./index.styles";
+import { Section, Header, Upload, UploadIcon, Cancel } from "./index.styles";
 
 function importComponent() {
   const [menu, setMenu] = useState("");
   const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
-  const [error, setError] = useState(null);
-  const maxFileSize = 1 * 1024 * 1024; // 1 MB limit
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,13 +50,7 @@ function importComponent() {
 
   const handleFileChange = (event) => {
     const uploadedFiles = event.target.files;
-
-    if (files.length + uploadedFiles.length > 4) {
-      setError("Can upload max 4 files at a time.");
-    } else {
-      setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
-      setError(null);
-    }
+    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
   };
 
   const handleDelete = (filename) => {
@@ -92,22 +84,20 @@ function importComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validFiles = files.filter((file) => file.size <= maxFileSize);
     let parsedDataArray = [];
-
     try {
       parsedDataArray = await Promise.all(
-        validFiles.map(async (file) => {
+        files.map(async (file) => {
           const data = await readFileAsText(file);
           return parseCSVToObjects(data);
         }),
       );
     } catch (err) {
-      setError("Error parsing CSV or sending data");
+      // Handle error in backend
     }
 
     // Replace url with target route
-    fetch("http://localhost:8000/create", {
+    fetch("http://localhost:8000/import", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,88 +119,76 @@ function importComponent() {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Stack maxWidth="md" gap={4}>
-        <Header>
-          <Typography variant="h4">CSV File Import</Typography>
-          <Typography variant="body1">
-            Import CSV file with clients or employers.
-          </Typography>
-        </Header>
+    <Section>
+      <form onSubmit={handleSubmit}>
+        <Stack maxWidth="md" gap={4}>
+          <Header>
+            <Typography variant="h4">CSV File Import</Typography>
+            <Typography variant="body1">
+              Import CSV file with clients or employers.
+            </Typography>
+          </Header>
 
-        <Card>
-          <CardHeader title="Import Clients/Employers" />
-          <CardContent>
-            <FormControl fullWidth>
-              <InputLabel id="menu">Select</InputLabel>
-              <Select
-                labelId="menu"
-                id="menu"
-                value={menu}
-                label="Select"
-                onChange={(e) => setMenu(e.target.value)}
-                required
-              >
-                <MenuItem value="clients">Clients</MenuItem>
-                <MenuItem value="employers">Employers</MenuItem>
-              </Select>
-              <FormHelperText>Required*</FormHelperText>
-            </FormControl>
-            <Paper
-              elevation={0}
-              style={{ cursor: "pointer", marginTop: "2rem" }}
-              onClick={handleSectionClick}
-            >
-              {error && (
-                <Typography
-                  variant="subtitle1"
-                  color="error"
-                  style={{ textAlign: "center" }}
-                >
-                  {error}
-                </Typography>
-              )}
-              <Upload gap={1}>
-                <input
-                  type="file"
-                  accept=".csv"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                  multiple
+          <Card>
+            <CardHeader title="Import Clients/Employers" />
+            <CardContent>
+              <FormControl fullWidth>
+                <InputLabel id="menu">Select</InputLabel>
+                <Select
+                  labelId="menu"
+                  id="menu"
+                  value={menu}
+                  label="Select"
+                  onChange={(e) => setMenu(e.target.value)}
                   required
-                />
-                <UploadIcon variant="rounded" color="primary" />
-                <Typography variant="subtitle1">
-                  <Typography
-                    component="span"
-                    color="primary"
-                    variant="body1"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    Click to upload
-                  </Typography>{" "}
-                  a file
-                </Typography>
-                <Typography
-                  variant="body2"
-                  style={{ color: "rgba(0, 0, 0, 0.60)" }}
                 >
-                  CSV file only
-                </Typography>
-              </Upload>
-            </Paper>
-            <Stack gap={1} mx={1} mt={2}>
-              {files.map((file) => (
-                <Grid container spacing={2} alignItems="center" mt={1}>
-                  <Grid item>
-                    <UploadIcon
-                      variant="rounded"
-                      color={file.size <= maxFileSize ? "primary" : "error"}
-                    />
-                  </Grid>
-                  <Grid item xs>
-                    {file.size <= maxFileSize ? (
+                  <MenuItem value="clients">Clients</MenuItem>
+                  <MenuItem value="employers">Employers</MenuItem>
+                </Select>
+                <FormHelperText>Required*</FormHelperText>
+              </FormControl>
+              <Paper
+                elevation={0}
+                style={{ cursor: "pointer", marginTop: "2rem" }}
+                onClick={handleSectionClick}
+              >
+                <Upload gap={1}>
+                  <input
+                    type="file"
+                    accept=".csv"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                    multiple
+                    required
+                  />
+                  <UploadIcon variant="rounded" color="primary" />
+                  <Typography variant="subtitle1">
+                    <Typography
+                      component="span"
+                      color="primary"
+                      variant="body1"
+                      style={{ textDecoration: "underline" }}
+                    >
+                      Click to upload
+                    </Typography>{" "}
+                    a file
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    style={{ color: "rgba(0, 0, 0, 0.60)" }}
+                  >
+                    CSV file only
+                  </Typography>
+                </Upload>
+              </Paper>
+              <Stack gap={1} mx={1} mt={2}>
+                {files.map((file) => (
+                  <Grid container spacing={2} alignItems="center" mt={1}>
+                    <Grid item>
+                      <UploadIcon variant="rounded" color="primary" />
+                    </Grid>
+                    <Grid item xs>
                       <Stack direction="column" spacing={2}>
                         <Box>
                           <Typography variant="subtitle1" color="primary">
@@ -232,49 +210,31 @@ function importComponent() {
                           value={progress}
                         />
                       </Stack>
-                    ) : (
-                      <Stack direction="column" spacing={2}>
-                        <Box>
-                          <Typography variant="subtitle1" color="error">
-                            Upload Failed
-                          </Typography>
-                          <Typography variant="body2" color="error">
-                            {`File exceeds ${filesize(maxFileSize, {
-                              round: 0,
-                            })} • Failed`}
-                          </Typography>
-                        </Box>
-                        <LinearProgress
-                          variant="determinate"
-                          value="0"
-                          color="error"
-                        />
-                      </Stack>
-                    )}
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDelete(file.name)}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleDelete(file.name)}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              ))}
-            </Stack>
-          </CardContent>
-        </Card>
-        <Stack direction="row">
-          <Cancel variant="outlined" size="large">
-            Cancel
-          </Cancel>
-          <Button type="submit" variant="contained" size="large">
-            Submit
-          </Button>
+                ))}
+              </Stack>
+            </CardContent>
+          </Card>
+          <Stack direction="row">
+            <Cancel variant="outlined" size="large">
+              Cancel
+            </Cancel>
+            <Button type="submit" variant="contained" size="large">
+              Submit
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </Form>
+      </form>
+    </Section>
   );
 }
 

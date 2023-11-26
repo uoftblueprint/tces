@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Box, Button, Stack } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-const Form = styled.form`
+const Section = styled.section`
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,4 +45,4 @@ const Cancel = styled(Button)`
   margin-right: auto !important;
 `;
 
-export { Form, Header, Upload, UploadIcon, Cancel };
+export { Section, Header, Upload, UploadIcon, Cancel };
