@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   TextField,
@@ -26,19 +26,23 @@ import {
   ButtonL,
 } from "./index.styles";
 
-function AddCompanyInfo({ onPageChange }) {
+function AddCompanyInfo({
+  employerData,
+  setEmployerData,
+  onPageChange,
+  showAddSecondaryButton,
+  setShowAddSecondaryButton,
+}) {
   AddCompanyInfo.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    employerData: PropTypes.array.isRequired,
+    setEmployerData: PropTypes.func.isRequired,
     onPageChange: PropTypes.func.isRequired,
+    showAddSecondaryButton: PropTypes.bool.isRequired,
+    setShowAddSecondaryButton: PropTypes.func.isRequired,
   };
-  const [open, setOpen] = React.useState(false);
-  const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(() => {
-    const sessionStorageValue = sessionStorage.getItem(
-      "showAddSecondaryButton",
-    );
-    return sessionStorageValue === null || sessionStorageValue === undefined
-      ? true
-      : sessionStorageValue === "true";
-  });
+
+  const [open, setOpen] = useState(false);
 
   const handlePageChange = (event, value) => {
     onPageChange(value);
@@ -56,9 +60,33 @@ function AddCompanyInfo({ onPageChange }) {
     onPageChange(2);
   };
 
-  // Initialize state from local storage or use default if not present
-  const initialContactInfo = () =>
-    JSON.parse(sessionStorage.getItem("contactInfo")) || [
+  const handleAddSecondary = () => {
+    if (employerData.length <= 1) {
+      const newId = employerData.length;
+      setEmployerData([
+        ...employerData,
+        {
+          id: newId,
+          secondaryAddress: "",
+          secondaryCity: "",
+          secondaryProvince: "",
+          secondaryPostalCode: "",
+        },
+      ]);
+    }
+    setShowAddSecondaryButton(false);
+  };
+
+  const handleInputChange = (input, id, field) => {
+    const newEmployerData = [...employerData];
+    const index = newEmployerData.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      newEmployerData[index][field] = input;
+      setEmployerData(newEmployerData);
+    }
+  };
+  const handleResetInputs = () => {
+    setEmployerData([
       {
         id: 0,
         businessName: "",
@@ -73,58 +101,7 @@ function AddCompanyInfo({ onPageChange }) {
         province: "",
         postalCode: "",
       },
-    ];
-
-  const [contactInfo, setContactInfo] = useState(initialContactInfo);
-
-  useEffect(() => {
-    // Save state to session storage whenever it changes
-    sessionStorage.setItem("contactInfo", JSON.stringify(contactInfo));
-  }, [contactInfo]);
-
-  useEffect(() => {
-    // Save state to session storage whenever it changes
-    sessionStorage.setItem(
-      "showAddSecondaryButton",
-      showAddSecondaryButton.toString(),
-    );
-  }, [showAddSecondaryButton]);
-
-  const handleAddSecondary = () => {
-    // Check if the limit for additional secondary addresses is reached
-    if (contactInfo.length <= 1) {
-      const newId = contactInfo.length + 1;
-      setContactInfo((prevContactInfo) => [
-        ...prevContactInfo,
-        {
-          id: newId,
-          secondaryAddress: "",
-          secondaryCity: "",
-          secondaryProvince: "",
-          secondaryPostalCode: "",
-        },
-      ]);
-    }
-    // Hide the "Add Secondary Address" button after adding one secondary address
-    setShowAddSecondaryButton(false);
-  };
-
-  const handleInputChange = (input, id, field) => {
-    const newContactInfo = [...contactInfo];
-    const index = newContactInfo.findIndex((lead) => lead.id === id);
-    if (index !== -1) {
-      newContactInfo[index][field] = input;
-      setContactInfo(newContactInfo);
-    }
-  };
-
-  const handleResetInputs = () => {
-    // Clear session storage
-    sessionStorage.removeItem("contactInfo");
-    sessionStorage.removeItem("showAddSecondaryButton");
-
-    // Reset the inputs to initial values
-    setContactInfo(initialContactInfo());
+    ]);
     setShowAddSecondaryButton(true);
   };
 
@@ -132,9 +109,9 @@ function AddCompanyInfo({ onPageChange }) {
     <Container>
       <H1>Adding a New Employer</H1>
       <Body>Input information about the employer you are adding.</Body>
-      {contactInfo.map((lead) => (
+      {employerData.map((lead) => (
         <InfoContainer key={lead.id}>
-          {lead.id <= 1 && (
+          {lead.id === 0 && (
             <>
               <H3>Company Information</H3>
               <TextField
@@ -282,7 +259,7 @@ function AddCompanyInfo({ onPageChange }) {
               />
             </>
           )}
-          {lead.id > 1 && ( // Render secondary address inputs only for additional addresses
+          {lead.id > 0 && ( // Render secondary address inputs only for additional addresses
             <>
               <H3>Secondary Address</H3>
               <TextField
@@ -330,7 +307,22 @@ function AddCompanyInfo({ onPageChange }) {
                       "secondaryProvince",
                     )
                   }
-                />
+                >
+                  <MenuItem value="alberta">Alberta</MenuItem>
+                  <MenuItem value="british_columbia">British Columbia</MenuItem>
+                  <MenuItem value="manitoba">Manitoba</MenuItem>
+                  <MenuItem value="new_brunswick">New Brunswick</MenuItem>
+                  <MenuItem value="newfoundland_and_labrador">
+                    Newfoundland and Labrador
+                  </MenuItem>
+                  <MenuItem value="nova_scotia">Nova Scotia</MenuItem>
+                  <MenuItem value="ontario">Ontario</MenuItem>
+                  <MenuItem value="prince_edward_island">
+                    Prince Edward Island
+                  </MenuItem>
+                  <MenuItem value="quebec">Quebec</MenuItem>
+                  <MenuItem value="saskatchewan">Saskatchewan</MenuItem>
+                </Select>
               </FormControl>
               <TextField
                 fullWidth
