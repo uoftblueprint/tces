@@ -60,7 +60,7 @@ function AddEmployer() {
   };
 
   const resetEmployerData = () => {
-    setEmployerData(initialState);
+    // setEmployerData(initialState);
   };
 
   return (

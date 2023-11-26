@@ -197,8 +197,8 @@ function AddEmployerJobLead({
               id="employmentType"
               value={lead.employmentType}
               label="Employment Type"
-              onChange={(date) =>
-                handleInputChange(date, lead.id, "employmentType")
+              onChange={(input) =>
+                handleInputChange(input.target.value, lead.id, "employmentType")
               }
             >
               <MenuItem value="full-time">Full Time</MenuItem>
