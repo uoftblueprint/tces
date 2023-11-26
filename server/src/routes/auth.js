@@ -25,8 +25,6 @@ router.post(
   }),
 );
 
-
-
 // User logs out
 router.post("/logout", logoutRequestHandler);
 

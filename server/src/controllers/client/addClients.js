@@ -4,7 +4,7 @@ const Client = require("../../models/client.model");
 const addClientsRequestHandler = async (req, res) => {
   try {
     if (req.body.client instanceof Array) {
-      req.body.client.forEach(client => {
+      req.body.client.forEach((client) => {
         // validate each client, and add values
         addDefaultDates(client);
         setOwnerAndCreator(client, req.user.id);
@@ -68,11 +68,11 @@ const addClientsRequestHandler = async (req, res) => {
 const addDefaultDates = (client) => {
   client.date_added = new Date();
   client.date_updated = new Date();
-}
+};
 
 const setOwnerAndCreator = (client, user_id) => {
   client.creator = user_id;
   client.owner = client.owner || user_id;
-}
+};
 
 module.exports = addClientsRequestHandler;
