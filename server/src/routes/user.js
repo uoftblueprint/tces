@@ -14,6 +14,8 @@ const getAllUsersHandler = require("../controllers/user/getAllUsers")
 
 const updateUserHandler = require("../controllers/user/updateUser");
 
+const deleteUserHandler = require("../controllers/user/deleteUser")
+
 // Get a singular user
 
 /**
@@ -47,5 +49,13 @@ router.get("", isAdmin, getAllUsersHandler)
  * @type boolean {user.body.is_admin}
 */
 router.put("/:user_id", isAdmin, updateUserHandler)
+
+/*
+ * Delete A User
+
+ * Expected Params:
+ * @type integer {params.user_id}
+*/
+router.delete("/:user_id", isAdmin, deleteUserHandler)
 
 module.exports = router;
