@@ -16,26 +16,36 @@ const updateUserHandler = require("../controllers/user/updateUser");
 
 const deleteUserHandler = require("../controllers/user/deleteUser");
 
-// Get a singular user
+const createUserRequestHandler = require("../controllers/user/createUser")
 
-/*
+// Admin creates a user
+/**
+ * Expected body parameters:
+ * @type string {body.first_name}
+ * @type string {body.last_name}
+ * @type string {body.email}
+ * @type string {body.password}
+ */
+router.post("", isAdmin, createUserRequestHandler);
+
+/**
  * Get a singular user
 
  * Expected Parameters:
  * @type integer {params.user_id}
-*/
+**/
 router.get("/:user_id", isLoggedIn, getUserAuth, getUserHandler);
 
-/*
+/**
  * Get All Users
 
  * Expected Query Params:
  * @type integer {query.page}
  * @type integer {query.limit}
-*/
+**/
 router.get("", isAdmin, getAllUsersHandler);
 
-/*
+/**
  * Update User
 
  * Expected Parameters:
@@ -47,15 +57,15 @@ router.get("", isAdmin, getAllUsersHandler);
  * @type string {user.body.email}
  * @type string {user.body.password}
  * @type boolean {user.body.is_admin}
-*/
+**/
 router.put("/:user_id", isAdmin, updateUserHandler);
 
-/*
+/**
  * Delete A User
 
  * Expected Params:
  * @type integer {params.user_id}
-*/
+**/
 router.delete("/:user_id", isAdmin, deleteUserHandler);
 
 module.exports = router;
