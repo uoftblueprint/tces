@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { IMaskInput } from "react-imask";
 import {
   TextField,
   Button,
@@ -20,6 +21,29 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(
+  { onChange, name, ...other },
+  ref,
+) {
+  return (
+    <IMaskInput
+      {...other} // eslint-disable-line react/jsx-props-no-spreading
+      mask="(#00) 000-0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 function AddEmployerInfo({
   employerData,
@@ -116,13 +140,21 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="phoneMNumber"
+            id="phoneNumber"
             value={lead.phoneNumber}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "phoneNumber")
             }
             label="Phone Number"
             helperText="*Required"
+            InputProps={{
+              inputComponent: TextMaskCustom,
+              inputProps: {
+                name: "phoneNumber",
+                onChange: (input) =>
+                  handleInputChange(input.target.value, lead.id, "phoneNumber"),
+              },
+            }}
           />
           <TextField
             fullWidth
@@ -148,6 +180,18 @@ function AddEmployerInfo({
               )
             }
             label="Alternate Phone Number"
+            InputProps={{
+              inputComponent: TextMaskCustom,
+              inputProps: {
+                name: "alternatePhoneNumber",
+                onChange: (input) =>
+                  handleInputChange(
+                    input.target.value,
+                    lead.id,
+                    "alternatePhoneNumber",
+                  ),
+              },
+            }}
           />
         </EmployerContactContainer>
       ))}

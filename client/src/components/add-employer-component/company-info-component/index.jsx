@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { IMaskInput } from "react-imask";
 import {
   TextField,
   FormHelperText,
@@ -25,6 +26,29 @@ import {
   Body,
   ButtonL,
 } from "./index.styles";
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(
+  { onChange, name, ...other },
+  ref,
+) {
+  return (
+    <IMaskInput
+      {...other} // eslint-disable-line react/jsx-props-no-spreading
+      mask="(#00) 000-0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 function AddCompanyInfo({
   employerData,
@@ -146,6 +170,18 @@ function AddCompanyInfo({
                 }
                 label="Phone Number"
                 helperText="*Required"
+                InputProps={{
+                  inputComponent: TextMaskCustom,
+                  inputProps: {
+                    name: "phoneNumber",
+                    onChange: (input) =>
+                      handleInputChange(
+                        input.target.value,
+                        lead.id,
+                        "phoneNumber",
+                      ),
+                  },
+                }}
               />
               <TextField
                 fullWidth
@@ -156,6 +192,18 @@ function AddCompanyInfo({
                   handleInputChange(input.target.value, lead.id, "faxNumber")
                 }
                 label="Fax Number"
+                InputProps={{
+                  inputComponent: TextMaskCustom,
+                  inputProps: {
+                    name: "faxNumber",
+                    onChange: (input) =>
+                      handleInputChange(
+                        input.target.value,
+                        lead.id,
+                        "faxNumber",
+                      ),
+                  },
+                }}
               />
               <TextField
                 fullWidth
