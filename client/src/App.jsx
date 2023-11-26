@@ -4,17 +4,14 @@ import "./App.css";
 // import LoginPage from "./pages/login";
 // import CreatePage from "./pages/create-user/create-user";
 // import EditPage from "./pages/edit-user/edit-user";
-// import AddJobLead from "./components/add-job-lead-component";
-// import AddCompanyInfo from "./components/add-employer-component/company-info-component";
-// import AddEmployerJobLead from "./components/add-employer-component/job-lead-component";
 import Navbar from "./components/navbar-component/Navbar";
-import AddEmployer from "./components/add-employer-component/addEmployer";
+import AddEmployerPage from "./pages/add-employer";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <AddEmployer />
+      <AddEmployerPage />
     </div>
   );
 }
