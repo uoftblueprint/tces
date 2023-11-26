@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
-const userRouter = require("./src/routes/user")
+const userRouter = require("./src/routes/user");
 
 // Set up session for authorization
 app.use(
@@ -39,4 +39,4 @@ app.listen(port, () => {
 
 // All endpoints within this API will be found under the /auth subdirectory
 app.use("/", authRouter);
-app.use("/users", userRouter)
+app.use("/users", userRouter);
