@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   TextField,
@@ -21,11 +21,15 @@ import {
   ButtonL,
 } from "./index.styles";
 
-function AddEmployerInfo({ onPageChange }) {
+function AddEmployerInfo({ employerData, setEmployerData, onPageChange }) {
   AddEmployerInfo.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    employerData: PropTypes.array.isRequired,
+    setEmployerData: PropTypes.func.isRequired,
     onPageChange: PropTypes.func.isRequired,
   };
-  const [open, setOpen] = React.useState(false);
+
+  const [open, setOpen] = useState(false);
 
   const handlePageChange = (event, value) => {
     onPageChange(value);
@@ -47,30 +51,10 @@ function AddEmployerInfo({ onPageChange }) {
     onPageChange(3);
   };
 
-  // Initialize state from local storage or use default if not present
-  const initialContacts = () =>
-    JSON.parse(sessionStorage.getItem("contacts")) || [
-      {
-        id: 0,
-        name: "",
-        jobTitle: "",
-        phoneNumber: "",
-        email: "",
-        alternatePhoneNumber: "",
-      },
-    ];
-
-  const [contacts, setContacts] = useState(initialContacts);
-
-  useEffect(() => {
-    // Save state to session storage whenever it changes
-    sessionStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
-
   const handleAddContact = () => {
-    const newId = contacts.length + 1;
-    setContacts((prevContacts) => [
-      ...prevContacts,
+    const newId = employerData.length;
+    setEmployerData([
+      ...employerData,
       {
         id: newId,
         name: "",
@@ -83,20 +67,23 @@ function AddEmployerInfo({ onPageChange }) {
   };
 
   const handleResetInputs = () => {
-    // Clear session storage
-    sessionStorage.removeItem("contacts");
-
-    // Reset the inputs to initial values
-    setContacts(initialContacts());
+    setEmployerData([
+      {
+        id: 0,
+        name: "",
+        jobTitle: "",
+        phoneNumber: "",
+        email: "",
+        alternatePhoneNumber: "",
+      },
+    ]);
   };
 
   const handleInputChange = (input, id, field) => {
-    const newContacts = [...contacts];
-    const index = newContacts.findIndex((lead) => lead.id === id);
-    if (index !== -1) {
-      newContacts[index][field] = input;
-      setContacts(newContacts);
-    }
+    const newContacts = employerData.map((contact) =>
+      contact.id === id ? { ...contact, [field]: input } : contact,
+    );
+    setEmployerData(newContacts);
   };
 
   return (
@@ -105,7 +92,7 @@ function AddEmployerInfo({ onPageChange }) {
       <Body>
         Input information about the Employer/HR Contact(s) of the employer.
       </Body>
-      {contacts.map((lead) => (
+      {employerData.map((lead) => (
         <EmployerContactContainer key={lead.id}>
           <H3>Employer Contact</H3>
           <TextField
