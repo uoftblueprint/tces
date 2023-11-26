@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -28,8 +29,15 @@ import {
   ButtonL,
 } from "./index.styles";
 
-function AddJobLead() {
-  const [open, setOpen] = React.useState(false);
+AddJobLead.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  jobLeadData: PropTypes.array.isRequired,
+  setJobLeadData: PropTypes.func.isRequired,
+  resetInitialState: PropTypes.func.isRequired,
+};
+
+function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,35 +47,10 @@ function AddJobLead() {
     setOpen(false);
   };
 
-  // Initialize state from session storage or use default if not present
-  const initialJobLeads = () =>
-    JSON.parse(sessionStorage.getItem("jobLeads")) || [
-      {
-        id: 0,
-        employer: "",
-        title: "",
-        minCompensation: "",
-        maxCompensation: "",
-        hoursPerWeek: "",
-        nationalOC: "",
-        description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
-      },
-    ];
-
-  const [jobLeads, setJobLeads] = useState(initialJobLeads);
-
-  useEffect(() => {
-    // Save state to session storage whenever it changes
-    sessionStorage.setItem("jobLeads", JSON.stringify(jobLeads));
-  }, [jobLeads]);
-
   const handleAddJobLead = () => {
-    const newId = jobLeads.length + 1;
-    setJobLeads((prevJobLeads) => [
-      ...prevJobLeads,
+    const newId = jobLeadData.length;
+    setJobLeadData([
+      ...jobLeadData,
       {
         id: newId,
         employer: "",
@@ -83,28 +66,22 @@ function AddJobLead() {
     ]);
   };
 
-  const handleInputChange = (e, id, field) => {
-    const newJobLeads = [...jobLeads];
-    const index = newJobLeads.findIndex((lead) => lead.id === id);
-    if (index !== -1) {
-      newJobLeads[index][field] = e;
-      setJobLeads(newJobLeads);
-    }
+  const handleInputChange = (input, id, field) => {
+    const newJobLeads = jobLeadData.map((lead) =>
+      lead.id === id ? { ...lead, [field]: input } : lead,
+    );
+    setJobLeadData(newJobLeads);
   };
 
   const handleResetInputs = () => {
-    // Clear session storage
-    sessionStorage.removeItem("jobLeads");
-
-    // Reset the inputs to initial values
-    setJobLeads(initialJobLeads());
+    resetInitialState();
   };
 
   return (
     <Container>
       <H1>Adding a Job Lead</H1>
       <Body>Input information about the job lead.</Body>
-      {jobLeads.map((lead) => (
+      {jobLeadData.map((lead) => (
         <JobLeadContainer key={lead.id}>
           <H3>Job Lead</H3>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
