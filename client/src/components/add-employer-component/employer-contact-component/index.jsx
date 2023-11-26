@@ -119,7 +119,7 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="name"
+            id={`name${lead.id}`}
             value={lead.name}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "name")
@@ -130,7 +130,7 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="jobTitle"
+            id={`jobTitle${lead.id}`}
             value={lead.jobTitle}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "jobTitle")
@@ -140,7 +140,7 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="phoneNumber"
+            id={`phoneNumber${lead.id}`}
             value={lead.phoneNumber}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "phoneNumber")
@@ -159,7 +159,7 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="email"
+            id={`email${lead.id}`}
             value={lead.email}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "email")
@@ -170,7 +170,7 @@ function AddEmployerInfo({
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="alternatePhoneNumber"
+            id={`alternatePhoneNumber${lead.id}`}
             value={lead.alternatePhoneNumber}
             onChange={(input) =>
               handleInputChange(

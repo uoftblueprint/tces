@@ -128,7 +128,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="businessName"
+                id={`businessName${lead.id}`}
                 value={lead.businessName}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "businessName")
@@ -139,7 +139,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="businessLegalName"
+                id={`businessLegalName${lead.id}`}
                 label="Business Legal Name"
                 value={lead.businessLegalName}
                 onChange={(input) =>
@@ -153,7 +153,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="naicsCode"
+                id={`naicsCode${lead.id}`}
                 value={lead.naicsCode}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "naicsCode")
@@ -163,7 +163,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="phoneNumber"
+                id={`phoneNumber${lead.id}`}
                 value={lead.phoneNumber}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "phoneNumber")
@@ -186,7 +186,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="faxNumber"
+                id={`faxNumber${lead.id}`}
                 value={lead.faxNumber}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "faxNumber")
@@ -208,7 +208,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="outlined-helperText"
+                id={`generalEmail${lead.id}`}
                 value={lead.generalEmail}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "generalEmail")
@@ -219,7 +219,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="website"
+                id={`website${lead.id}`}
                 value={lead.website}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "website")
@@ -229,7 +229,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="employerAddress"
+                id={`employerAddress${lead.id}`}
                 value={lead.employerAddress}
                 onChange={(input) =>
                   handleInputChange(
@@ -244,7 +244,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "96%" }}
-                id="city"
+                id={`city${lead.id}`}
                 value={lead.city}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "city")
@@ -253,13 +253,13 @@ function AddCompanyInfo({
                 helperText="*Required"
               />
               <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-                <InputLabel id="demo-simple-select-label">Province</InputLabel>
+                <InputLabel id="province-label">Province</InputLabel>
                 <Select
                   sx={{ textAlign: "left" }}
-                  labelId="demo-simple-select-helper-label"
-                  id="province"
+                  labelId="province-label"
+                  id={`province${lead.id}`}
+                  name="province"
                   value={lead.province}
-                  label="Province"
                   onChange={(input) =>
                     handleInputChange(input.target.value, lead.id, "province")
                   }
@@ -284,7 +284,7 @@ function AddCompanyInfo({
               <TextField
                 fullWidth
                 sx={{ m: 1, width: "47%" }}
-                id="postalCode"
+                id={`postalCode${lead.id}`}
                 value={lead.postalCode}
                 onChange={(input) =>
                   handleInputChange(input.target.value, lead.id, "postalCode")
@@ -333,8 +333,8 @@ function AddCompanyInfo({
                   sx={{ textAlign: "left" }}
                   labelId={`secondaryProvinceLabel${lead.id}`}
                   id={`secondaryProvince${lead.id}`}
+                  name={`secondaryProvince${lead.id}`}
                   value={lead.secondaryProvince}
-                  label="Province"
                   onChange={(input) =>
                     handleInputChange(
                       input.target.value,

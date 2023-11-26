@@ -101,7 +101,7 @@ function AddEmployerJobLead({
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="jobTitle"
+            id={`jobTitle${lead.id}`}
             value={lead.jobTitle}
             onChange={(input) =>
               handleInputChange(input.target.value, lead.id, "jobTitle")
@@ -109,9 +109,9 @@ function AddEmployerJobLead({
             label="Job Title"
           />
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="compensation">Compensation</InputLabel>
+            <InputLabel id="compendationLabel">Compensation</InputLabel>
             <OutlinedInput
-              id="compensation"
+              id={`compensation${lead.id}`}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -128,7 +128,7 @@ function AddEmployerJobLead({
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="hoursPerWeek"
+            id={`hoursPerWeek${lead.id}`}
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
@@ -139,7 +139,7 @@ function AddEmployerJobLead({
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="description"
+            id={`description${lead.id}`}
             label="Job Description"
             multiline
             rows={4}
@@ -151,7 +151,7 @@ function AddEmployerJobLead({
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              id="creationDate"
+              id={`creationDate${lead.id}`}
               label="Creation Date"
               fullWidth
               sx={{ m: 1, width: "47%" }}
@@ -171,7 +171,7 @@ function AddEmployerJobLead({
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              id="expirationDate"
+              id={`expirationDate${lead.id}`}
               label="Expiration Date"
               fullWidth
               sx={{ m: 1, width: "47%" }}
@@ -189,14 +189,12 @@ function AddEmployerJobLead({
             />
           </LocalizationProvider>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-            <InputLabel id="demo-simple-select-label">
-              Employment Type
-            </InputLabel>
+            <InputLabel id="employmentTypeLabel">Employment Type</InputLabel>
             <Select
               sx={{ textAlign: "left" }}
-              id="employmentType"
+              labelId="employmentTypeLabel"
+              id={`employmentType${lead.id}`}
               value={lead.employmentType}
-              label="Employment Type"
               onChange={(input) =>
                 handleInputChange(input.target.value, lead.id, "employmentType")
               }
