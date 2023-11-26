@@ -12,7 +12,6 @@ const addClientsRequestHandler = async (req, res) => {
         // validate each client, and add values
         addDefaultDates(client);
         setOwnerAndCreator(client, req.user.id);
-        console.log(client);
       });
 
       // bulk create clients
