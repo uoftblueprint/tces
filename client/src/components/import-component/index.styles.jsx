@@ -12,7 +12,7 @@ const Form = styled.form`
   font-family: Helvetica;
   background-color: #f0f3f8;
   text-align: initial;
-  padding: 15rem 0;
+  padding: 16rem 0;
 `;
 
 const Header = styled(Box)`
