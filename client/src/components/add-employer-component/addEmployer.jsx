@@ -6,7 +6,7 @@ import AddEmployerJobLead from "./job-lead-component";
 function AddEmployer() {
   const [page, setPage] = useState(1);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(true);
-  const [employerData, setEmployerData] = useState({
+  const initialState = {
     companyInfo: [
       {
         id: 0,
@@ -45,7 +45,8 @@ function AddEmployer() {
         employmentType: "",
       },
     ],
-  });
+  };
+  const [employerData, setEmployerData] = useState(initialState);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -58,6 +59,10 @@ function AddEmployer() {
     }));
   };
 
+  const resetEmployerData = () => {
+    setEmployerData(initialState);
+  };
+
   return (
     <div>
       {page === 1 && (
@@ -67,6 +72,7 @@ function AddEmployer() {
           onPageChange={handlePageChange}
           showAddSecondaryButton={showAddSecondaryButton}
           setShowAddSecondaryButton={setShowAddSecondaryButton}
+          resetInitialState={resetEmployerData}
         />
       )}
       {page === 2 && (
@@ -76,6 +82,7 @@ function AddEmployer() {
             updateEmployerData("employerContacts", data)
           }
           onPageChange={handlePageChange}
+          resetInitialState={resetEmployerData}
         />
       )}
       {page === 3 && (
@@ -83,6 +90,7 @@ function AddEmployer() {
           employerData={employerData.jobLeads}
           setEmployerData={(data) => updateEmployerData("jobLeads", data)}
           onPageChange={handlePageChange}
+          resetInitialState={resetEmployerData}
         />
       )}
     </div>

@@ -21,12 +21,18 @@ import {
   ButtonL,
 } from "./index.styles";
 
-function AddEmployerInfo({ employerData, setEmployerData, onPageChange }) {
+function AddEmployerInfo({
+  employerData,
+  setEmployerData,
+  onPageChange,
+  resetInitialState,
+}) {
   AddEmployerInfo.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     employerData: PropTypes.array.isRequired,
     setEmployerData: PropTypes.func.isRequired,
     onPageChange: PropTypes.func.isRequired,
+    resetInitialState: PropTypes.func.isRequired,
   };
 
   const [open, setOpen] = useState(false);
@@ -67,16 +73,7 @@ function AddEmployerInfo({ employerData, setEmployerData, onPageChange }) {
   };
 
   const handleResetInputs = () => {
-    setEmployerData([
-      {
-        id: 0,
-        name: "",
-        jobTitle: "",
-        phoneNumber: "",
-        email: "",
-        alternatePhoneNumber: "",
-      },
-    ]);
+    resetInitialState();
   };
 
   const handleInputChange = (input, id, field) => {

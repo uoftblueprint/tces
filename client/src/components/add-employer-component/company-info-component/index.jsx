@@ -32,6 +32,7 @@ function AddCompanyInfo({
   onPageChange,
   showAddSecondaryButton,
   setShowAddSecondaryButton,
+  resetInitialState,
 }) {
   AddCompanyInfo.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
@@ -40,6 +41,7 @@ function AddCompanyInfo({
     onPageChange: PropTypes.func.isRequired,
     showAddSecondaryButton: PropTypes.bool.isRequired,
     setShowAddSecondaryButton: PropTypes.func.isRequired,
+    resetInitialState: PropTypes.func.isRequired,
   };
 
   const [open, setOpen] = useState(false);
@@ -86,22 +88,7 @@ function AddCompanyInfo({
     }
   };
   const handleResetInputs = () => {
-    setEmployerData([
-      {
-        id: 0,
-        businessName: "",
-        businessLegalName: "",
-        naicsCode: "",
-        phoneNumber: "",
-        faxNumber: "",
-        generalEmail: "",
-        website: "",
-        employerAddress: null,
-        city: null,
-        province: "",
-        postalCode: "",
-      },
-    ]);
+    resetInitialState();
     setShowAddSecondaryButton(true);
   };
 

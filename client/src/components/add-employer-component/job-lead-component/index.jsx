@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -30,11 +30,20 @@ import {
   ButtonL,
 } from "./index.styles";
 
-function AddEmployerJobLead({ onPageChange }) {
+function AddEmployerJobLead({
+  onPageChange,
+  employerData,
+  setEmployerData,
+  resetInitialState,
+}) {
   AddEmployerJobLead.propTypes = {
     onPageChange: PropTypes.func.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    employerData: PropTypes.array.isRequired,
+    setEmployerData: PropTypes.func.isRequired,
+    resetInitialState: PropTypes.func.isRequired,
   };
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handlePageChange = (event, value) => {
     onPageChange(value);
@@ -52,32 +61,10 @@ function AddEmployerJobLead({ onPageChange }) {
     onPageChange(2);
   };
 
-  // Initialize state from local storage or use default if not present
-  const initialJobLeads = () =>
-    JSON.parse(sessionStorage.getItem("employerJobLeads")) || [
-      {
-        id: 0,
-        jobTitle: "",
-        compensation: "",
-        hoursPerWeek: "",
-        description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
-      },
-    ];
-
-  const [jobLeads, setJobLeads] = useState(initialJobLeads);
-
-  useEffect(() => {
-    // Save state to local storage whenever it changes
-    sessionStorage.setItem("employerJobLeads", JSON.stringify(jobLeads));
-  }, [jobLeads]);
-
   const handleAddJobLead = () => {
-    const newId = jobLeads.length + 1;
-    setJobLeads((prevJobLeads) => [
-      ...prevJobLeads,
+    const newId = employerData.length;
+    setEmployerData([
+      ...employerData,
       {
         id: newId,
         jobTitle: "",
@@ -92,21 +79,14 @@ function AddEmployerJobLead({ onPageChange }) {
   };
 
   const handleInputChange = (input, id, field) => {
-    const newJobLeads = [...jobLeads];
-    const index = newJobLeads.findIndex((lead) => lead.id === id);
-    if (index !== -1) {
-      // Ensure that dates are converted to valid Date objects
-      newJobLeads[index][field] = input;
-      setJobLeads(newJobLeads);
-    }
+    const updatedJobLeads = employerData.map((lead) =>
+      lead.id === id ? { ...lead, [field]: input } : lead,
+    );
+    setEmployerData(updatedJobLeads);
   };
 
   const handleResetInputs = () => {
-    // Clear session storage
-    sessionStorage.removeItem("employerJobLeads");
-
-    // Reset the inputs to initial values
-    setJobLeads(initialJobLeads());
+    resetInitialState();
   };
 
   return (
@@ -115,7 +95,7 @@ function AddEmployerJobLead({ onPageChange }) {
       <Body>
         Input information about any job leads associated with the employer.
       </Body>
-      {jobLeads.map((lead) => (
+      {employerData.map((lead) => (
         <JobLeadContainer key={lead.id}>
           <H3>Job Lead</H3>
           <TextField
