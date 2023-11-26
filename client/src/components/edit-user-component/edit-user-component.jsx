@@ -72,7 +72,7 @@ function EditComponent() {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 label="First Name"
-                helperText="*Required"
+                helpertext="*Required"
                 required
               />
               <TextField
@@ -82,7 +82,7 @@ function EditComponent() {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 label="Last Name"
-                helperText="*Required"
+                helpertext="*Required"
                 required
               />
               <TextField
@@ -92,7 +92,7 @@ function EditComponent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 label="Email"
-                helperText="*Required"
+                helpertext="*Required"
                 required
               />
               <TextField
@@ -102,7 +102,7 @@ function EditComponent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 label="Password"
-                helperText="*Required"
+                helpertext="*Required"
                 required
               />
             </Stack>

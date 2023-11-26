@@ -46,7 +46,7 @@ const H1 = styled.h1`
   margin-bottom: -15px;
 `;
 
-const Body = styled.body`
+const Body = styled.p`
   font-size: 16px;
   font-weight: 400;
   align-self: flex-start;

@@ -112,10 +112,10 @@ function AddJobLead() {
             <Select
               sx={{ textAlign: "left" }}
               labelId="nameLabel"
-              id="employer"
+              id={`employer${lead.id}`}
               value={lead.employer}
               label="Employer Name"
-              helperText="*Required"
+              helpertext="*Required"
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "employer")
               }
@@ -129,20 +129,20 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="title"
+            id={`title${lead.id}`}
             value={lead.title}
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "title")
             }
             label="Job Title"
-            helperText="*Required"
+            helpertext="*Required"
           />
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="minCompensation">
+            <InputLabel id="minCompensationLabel">
               Compensation Minimum
             </InputLabel>
             <OutlinedInput
-              id="minCompensation"
+              id={`minCompensation${lead.id}`}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -157,11 +157,11 @@ function AddJobLead() {
             />
           </FormControl>
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel htmlFor="maxCompensation">
+            <InputLabel id="maxCompensationLabel">
               Compensation Maximum
             </InputLabel>
             <OutlinedInput
-              id="maxCompensation"
+              id={`maxCompensation${lead.id}`}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -178,7 +178,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="hoursPerWeek"
+            id={`hoursPerWeek${lead.id}`}
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
@@ -189,7 +189,7 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            id="nationalOC"
+            id={`nationalOC${lead.id}`}
             label="National Occupation Code"
             variant="outlined"
             value={lead.nationalOC}
@@ -200,12 +200,12 @@ function AddJobLead() {
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id="description"
+            id={`description${lead.id}`}
             label="Job Description"
             multiline
             rows={4}
             value={lead.description}
-            helperText="*Required"
+            helpertext="*Required"
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "description")
             }
@@ -213,7 +213,7 @@ function AddJobLead() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Creation Date"
-              id="creationDate"
+              id={`creationDate${lead.id}`}
               fullWidth
               sx={{ m: 1, width: "47%" }}
               slotProps={{
@@ -228,7 +228,7 @@ function AddJobLead() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Expiration Date"
-              id="expirationDate"
+              id={`expirationDate${lead.id}`}
               fullWidth
               sx={{ m: 1, width: "47%" }}
               value={lead.expirationDate}
@@ -240,7 +240,7 @@ function AddJobLead() {
             <Select
               sx={{ textAlign: "left" }}
               labelId="typeLabel"
-              id="employmentType"
+              id={`exmploymentType${lead.id}`}
               value={lead.employmentType}
               label="Employment Type"
               onChange={(e) =>
