@@ -34,13 +34,11 @@ const addEmployersRequestHandler = async (req, res) => {
       secondary_province: req.body.employer.secondary_province || null,
       secondary_postal_code: req.body.employer.secondary_postal_code || null,
     });
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "created employer",
-        data: { employer },
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "created employer",
+      data: { employer },
+    });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user

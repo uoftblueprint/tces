@@ -5,7 +5,7 @@ const updateClientRequestHandler = async (req, res) => {
   try {
     const client_id = req.params.client_id;
     const client = await Client.findOne({ where: { id: client_id } });
-    
+
     if (!client) {
       return res
         .status(404)
