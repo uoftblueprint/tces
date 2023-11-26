@@ -9,12 +9,6 @@ const getUserHandler = async (req, res) => {
             return res.status(200).json({
                 status: "success",
                 message: "Got user data successfully",
-                // data: {
-                //     "first_name": user.first_name,
-                //     "last_name": user.last_name,
-                //     "email": user.email,
-                //     "is_admin": user.is_admin
-                // },
                 data: { user }
             });
         }
