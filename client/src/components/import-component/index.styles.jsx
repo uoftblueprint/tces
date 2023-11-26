@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Box, Button, Stack } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-const Section = styled.section`
-  height: 100vh;
+const Form = styled.form`
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,6 +12,7 @@ const Section = styled.section`
   font-family: Helvetica;
   background-color: #f0f3f8;
   text-align: initial;
+  padding: 15rem 0;
 `;
 
 const Header = styled(Box)`
@@ -45,4 +46,4 @@ const Cancel = styled(Button)`
   margin-right: auto !important;
 `;
 
-export { Section, Header, Upload, UploadIcon, Cancel };
+export { Form, Header, Upload, UploadIcon, Cancel };
