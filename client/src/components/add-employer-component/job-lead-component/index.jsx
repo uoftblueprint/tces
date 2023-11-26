@@ -193,6 +193,7 @@ function AddEmployerJobLead({
             <Select
               sx={{ textAlign: "left" }}
               labelId="employmentTypeLabel"
+              label="Employment Type"
               id={`employmentType${lead.id}`}
               value={lead.employmentType}
               onChange={(input) =>

@@ -259,6 +259,7 @@ function AddCompanyInfo({
                   labelId="province-label"
                   id={`province${lead.id}`}
                   name="province"
+                  label="Province"
                   value={lead.province}
                   onChange={(input) =>
                     handleInputChange(input.target.value, lead.id, "province")
@@ -332,6 +333,7 @@ function AddCompanyInfo({
                 <Select
                   sx={{ textAlign: "left" }}
                   labelId={`secondaryProvinceLabel${lead.id}`}
+                  label="Secondary Province"
                   id={`secondaryProvince${lead.id}`}
                   name={`secondaryProvince${lead.id}`}
                   value={lead.secondaryProvince}
