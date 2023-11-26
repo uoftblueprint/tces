@@ -2,7 +2,6 @@ const isGivenUser = require("./helpers").isGivenUser;
 const isAdmin = require("../auth/helpers").isAdmin;
 
 const getUserAuth = async (req, res, next) => {
-  // First check the session, then check the database
   const current_user_id = req.user.id;
   const desired_user_id = Number(req.params.user_id);
   const is_admin = await isAdmin(current_user_id);
