@@ -41,6 +41,7 @@ router.get("/:user_id", isLoggedIn, getUserAuth, getUserHandler);
  * Expected Query Params:
  * @type integer {query.page}
  * @type integer {query.limit}
+ * @type string {query.name}
  */
 router.get("", isAdmin, getAllUsersHandler);
 
