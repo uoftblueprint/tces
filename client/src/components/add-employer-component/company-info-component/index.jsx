@@ -130,8 +130,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`businessName${lead.id}`}
                 value={lead.businessName}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "businessName")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "businessName")
                 }
                 label="Business Name"
                 helperText="*Required"
@@ -142,9 +142,9 @@ function AddCompanyInfo({
                 id={`businessLegalName${lead.id}`}
                 label="Business Legal Name"
                 value={lead.businessLegalName}
-                onChange={(input) =>
+                onChange={(e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "businessLegalName",
                   )
@@ -155,8 +155,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`naicsCode${lead.id}`}
                 value={lead.naicsCode}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "naicsCode")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "naicsCode")
                 }
                 label="NAICS Code"
               />
@@ -165,8 +165,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`phoneNumber${lead.id}`}
                 value={lead.phoneNumber}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "phoneNumber")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "phoneNumber")
                 }
                 label="Phone Number"
                 helperText="*Required"
@@ -174,9 +174,9 @@ function AddCompanyInfo({
                   inputComponent: TextMaskCustom,
                   inputProps: {
                     name: "phoneNumber",
-                    onChange: (input) =>
+                    onChange: (e) =>
                       handleInputChange(
-                        input.target.value,
+                        e.target.value,
                         lead.id,
                         "phoneNumber",
                       ),
@@ -188,17 +188,17 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`faxNumber${lead.id}`}
                 value={lead.faxNumber}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "faxNumber")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "faxNumber")
                 }
                 label="Fax Number"
                 InputProps={{
                   inputComponent: TextMaskCustom,
                   inputProps: {
                     name: "faxNumber",
-                    onChange: (input) =>
+                    onChange: (e) =>
                       handleInputChange(
-                        input.target.value,
+                        e.target.value,
                         lead.id,
                         "faxNumber",
                       ),
@@ -210,8 +210,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`generalEmail${lead.id}`}
                 value={lead.generalEmail}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "generalEmail")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "generalEmail")
                 }
                 label="General Email"
                 helperText="*Required"
@@ -221,8 +221,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`website${lead.id}`}
                 value={lead.website}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "website")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "website")
                 }
                 label="Website"
               />
@@ -231,9 +231,9 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`employerAddress${lead.id}`}
                 value={lead.employerAddress}
-                onChange={(input) =>
+                onChange={(e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "employerAddress",
                   )
@@ -246,8 +246,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`city${lead.id}`}
                 value={lead.city}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "city")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "city")
                 }
                 label="City"
                 helperText="*Required"
@@ -261,8 +261,8 @@ function AddCompanyInfo({
                   name="province"
                   label="Province"
                   value={lead.province}
-                  onChange={(input) =>
-                    handleInputChange(input.target.value, lead.id, "province")
+                  onChange={(e) =>
+                    handleInputChange(e.target.value, lead.id, "province")
                   }
                 >
                   <MenuItem value="alberta">Alberta</MenuItem>
@@ -287,8 +287,8 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`postalCode${lead.id}`}
                 value={lead.postalCode}
-                onChange={(input) =>
-                  handleInputChange(input.target.value, lead.id, "postalCode")
+                onChange={(e) =>
+                  handleInputChange(e.target.value, lead.id, "postalCode")
                 }
                 label="Postal Code"
                 helperText="*Required"
@@ -303,9 +303,9 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`secondaryAddress${lead.id}`}
                 value={lead.secondaryAddress}
-                onChange={(input) =>
+                onChange={(e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "secondaryAddress",
                   )
@@ -317,9 +317,9 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "96%" }}
                 id={`secondaryCity${lead.id}`}
                 value={lead.secondaryCity}
-                onChange={(input) =>
+                onChange={(e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "secondaryCity",
                   )
@@ -337,9 +337,9 @@ function AddCompanyInfo({
                   id={`secondaryProvince${lead.id}`}
                   name={`secondaryProvince${lead.id}`}
                   value={lead.secondaryProvince}
-                  onChange={(input) =>
+                  onChange={(e) =>
                     handleInputChange(
-                      input.target.value,
+                      e.target.value,
                       lead.id,
                       "secondaryProvince",
                     )
@@ -366,9 +366,9 @@ function AddCompanyInfo({
                 sx={{ m: 1, width: "47%" }}
                 id={`secondaryPostalCode${lead.id}`}
                 value={lead.secondaryPostalCode}
-                onChange={(input) =>
+                onChange={(e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "secondaryPostalCode",
                   )
@@ -383,9 +383,7 @@ function AddCompanyInfo({
         onClick={handleAddSecondary}
         style={{ display: showAddSecondaryButton ? "block" : "none" }}
       >
-        {showAddSecondaryButton
-          ? "+ Add Secondary Address"
-          : "Secondary Address Added"}
+        + Add Secondary Address
       </ButtonL>
       <Stack spacing={2}>
         <Pagination

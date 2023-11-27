@@ -121,8 +121,8 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "96%" }}
             id={`name${lead.id}`}
             value={lead.name}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "name")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "name")
             }
             label="Name"
             helperText="*Required"
@@ -132,8 +132,8 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "96%" }}
             id={`jobTitle${lead.id}`}
             value={lead.jobTitle}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "jobTitle")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "jobTitle")
             }
             label="Job Title/Designation"
           />
@@ -142,8 +142,8 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "47%" }}
             id={`phoneNumber${lead.id}`}
             value={lead.phoneNumber}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "phoneNumber")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "phoneNumber")
             }
             label="Phone Number"
             helperText="*Required"
@@ -151,8 +151,8 @@ function AddEmployerInfo({
               inputComponent: TextMaskCustom,
               inputProps: {
                 name: "phoneNumber",
-                onChange: (input) =>
-                  handleInputChange(input.target.value, lead.id, "phoneNumber"),
+                onChange: (e) =>
+                  handleInputChange(e.target.value, lead.id, "phoneNumber"),
               },
             }}
           />
@@ -161,8 +161,8 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "47%" }}
             id={`email${lead.id}`}
             value={lead.email}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "email")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "email")
             }
             label="Email"
             helperText="*Required"
@@ -172,9 +172,9 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "96%" }}
             id={`alternatePhoneNumber${lead.id}`}
             value={lead.alternatePhoneNumber}
-            onChange={(input) =>
+            onChange={(e) =>
               handleInputChange(
-                input.target.value,
+                e.target.value,
                 lead.id,
                 "alternatePhoneNumber",
               )
@@ -184,9 +184,9 @@ function AddEmployerInfo({
               inputComponent: TextMaskCustom,
               inputProps: {
                 name: "alternatePhoneNumber",
-                onChange: (input) =>
+                onChange: (e) =>
                   handleInputChange(
-                    input.target.value,
+                    e.target.value,
                     lead.id,
                     "alternatePhoneNumber",
                   ),

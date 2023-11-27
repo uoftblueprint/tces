@@ -103,8 +103,8 @@ function AddEmployerJobLead({
             sx={{ m: 1, width: "96%" }}
             id={`jobTitle${lead.id}`}
             value={lead.jobTitle}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "jobTitle")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "jobTitle")
             }
             label="Job Title"
           />
@@ -120,8 +120,8 @@ function AddEmployerJobLead({
               }
               label="Compensation"
               value={lead.compensation}
-              onChange={(input) =>
-                handleInputChange(input.target.value, lead.id, "compensation")
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "compensation")
               }
             />
           </FormControl>
@@ -132,8 +132,8 @@ function AddEmployerJobLead({
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "hoursPerWeek")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "hoursPerWeek")
             }
           />
           <TextField
@@ -145,8 +145,8 @@ function AddEmployerJobLead({
             rows={4}
             value={lead.description}
             helperText="*Required"
-            onChange={(input) =>
-              handleInputChange(input.target.value, lead.id, "description")
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "description")
             }
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -164,8 +164,8 @@ function AddEmployerJobLead({
               }}
               value={lead.creationDate}
               helperText="*Required"
-              onChange={(date) =>
-                handleInputChange(date, lead.id, "creationDate")
+              onChange={(e) =>
+                handleInputChange(e, lead.id, "creationDate")
               }
             />
           </LocalizationProvider>
@@ -183,8 +183,8 @@ function AddEmployerJobLead({
               }}
               value={lead.expirationDate}
               helperText="*Required"
-              onChange={(date) =>
-                handleInputChange(date, lead.id, "expirationDate")
+              onChange={(e) =>
+                handleInputChange(e, lead.id, "expirationDate")
               }
             />
           </LocalizationProvider>
@@ -196,8 +196,8 @@ function AddEmployerJobLead({
               label="Employment Type"
               id={`employmentType${lead.id}`}
               value={lead.employmentType}
-              onChange={(input) =>
-                handleInputChange(input.target.value, lead.id, "employmentType")
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employmentType")
               }
             >
               <MenuItem value="full-time">Full Time</MenuItem>
