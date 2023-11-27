@@ -28,17 +28,10 @@ TextMaskCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-function ClientCard() {
-  const [values, setValues] = React.useState({
-    textmask: "",
-    numberformat: "1320",
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
+function ClientCard({ i, clientData, setClientData }) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setClientData({ ...clientData, [name]: value });
   };
 
   const [fullName, setFullName] = useState("");
@@ -54,15 +47,15 @@ function ClientCard() {
               type="text"
               label="Full Name"
               fullWidth
-              value={fullName}
+              value={clientData.fullName}
               helperText="*Required"
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => handleChange(e)}
               required
             />
             <TextField
               label="Phone Number"
-              value={values.textmask}
-              onChange={handleChange}
+              value={clientData.phoneNumber}
+              onChange={(e) => handleChange(e)}
               name="textmask"
               fullWidth
               InputProps={{
@@ -75,9 +68,9 @@ function ClientCard() {
           <TextField
             type="email"
             label="Email"
-            value={email}
+            value={clientData.email}
             helperText="*Required"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleChange(e)}
             required
           />
         </Stack>

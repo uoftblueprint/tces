@@ -8,10 +8,10 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { Header, Form, Discard, AddButton } from "./new-client.styles";
+import { Header, Form, Discard, AddButton } from "./create-client.styles";
 import ClientCard from "./ClientCard";
 
-function NewClient() {
+function CreateClientComponent() {
   const [clients, setClients] = useState([
     { fullName: "", phoneNumber: "", email: "" },
   ]);
@@ -20,6 +20,14 @@ function NewClient() {
   const handleAddClient = (e) => {
     e.preventDefault();
     setClients([...clients, { fullName: "", phoneNumber: "", email: "" }]);
+  };
+
+  const handleClientChange = (i, updatedClient) => {
+    setClients((prevClients) => [
+      ...prevClients.slice(0, index),
+      newClientData,
+      ...prevClients.slice(index + 1),
+    ]);
   };
 
   return (
@@ -31,8 +39,15 @@ function NewClient() {
             Input information about the client
           </Typography>
         </Header>
-        {clients.map((client) => (
-          <ClientCard key={client.id} />
+        {clients.map((client, i) => (
+          <ClientCard
+           key={client.id}
+           i={i}
+           clientData={client}
+           setClientData={(updatedClient) =>
+            handleClientChange(i, updatedClient)
+          }
+          />
         ))}
         <AddButton onClick={handleAddClient}>+ Add Another Client</AddButton>
         <Stack direction="row">
@@ -69,4 +84,4 @@ function NewClient() {
   );
 }
 
-export default NewClient;
+export default CreateClientComponent;

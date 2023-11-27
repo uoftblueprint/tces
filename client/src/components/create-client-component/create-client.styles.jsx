@@ -35,6 +35,7 @@ const AddButton = styled.button`
   border-width: 0px;
   background: var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12));
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%233568E5FF' stroke-width='4' stroke-dasharray='20%2c 10' stroke-dashoffset='2' stroke-linecap='butt'/%3e%3c/svg%3e");
+  cursor: pointer;
 `;
 
 export { Form, Header, Discard, AddButton };
