@@ -22,6 +22,7 @@ app.use(express.json());
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
+const clientRouter = require("./src/routes/client");
 
 // Set up cors for local dev connection with frontend
 app.use(cors(corsOption));
@@ -41,9 +42,11 @@ app.get("/", (req, res) => {
   res.send("Helloooo World! Hi :)");
 });
 
-// All endpoints within this API will be found under the /auth subdirectory
 app.use("/", authRouter);
+
+app.use("/clients", clientRouter);
 
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
 });
+
