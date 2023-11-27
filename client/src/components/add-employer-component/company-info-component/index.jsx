@@ -175,11 +175,7 @@ function AddCompanyInfo({
                   inputProps: {
                     name: "phoneNumber",
                     onChange: (e) =>
-                      handleInputChange(
-                        e.target.value,
-                        lead.id,
-                        "phoneNumber",
-                      ),
+                      handleInputChange(e.target.value, lead.id, "phoneNumber"),
                   },
                 }}
               />
@@ -197,11 +193,7 @@ function AddCompanyInfo({
                   inputProps: {
                     name: "faxNumber",
                     onChange: (e) =>
-                      handleInputChange(
-                        e.target.value,
-                        lead.id,
-                        "faxNumber",
-                      ),
+                      handleInputChange(e.target.value, lead.id, "faxNumber"),
                   },
                 }}
               />
@@ -232,11 +224,7 @@ function AddCompanyInfo({
                 id={`employerAddress${lead.id}`}
                 value={lead.employerAddress}
                 onChange={(e) =>
-                  handleInputChange(
-                    e.target.value,
-                    lead.id,
-                    "employerAddress",
-                  )
+                  handleInputChange(e.target.value, lead.id, "employerAddress")
                 }
                 label="Employer Address"
                 helperText="*Required"
@@ -304,11 +292,7 @@ function AddCompanyInfo({
                 id={`secondaryAddress${lead.id}`}
                 value={lead.secondaryAddress}
                 onChange={(e) =>
-                  handleInputChange(
-                    e.target.value,
-                    lead.id,
-                    "secondaryAddress",
-                  )
+                  handleInputChange(e.target.value, lead.id, "secondaryAddress")
                 }
                 label="Secondary Address"
               />
@@ -318,11 +302,7 @@ function AddCompanyInfo({
                 id={`secondaryCity${lead.id}`}
                 value={lead.secondaryCity}
                 onChange={(e) =>
-                  handleInputChange(
-                    e.target.value,
-                    lead.id,
-                    "secondaryCity",
-                  )
+                  handleInputChange(e.target.value, lead.id, "secondaryCity")
                 }
                 label="City"
               />

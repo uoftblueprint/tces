@@ -112,6 +112,7 @@ function AddEmployerJobLead({
             <InputLabel id="compendationLabel">Compensation</InputLabel>
             <OutlinedInput
               id={`compensation${lead.id}`}
+              type="number"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -129,6 +130,7 @@ function AddEmployerJobLead({
             fullWidth
             sx={{ m: 1, width: "47%" }}
             id={`hoursPerWeek${lead.id}`}
+            type="number"
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
@@ -164,9 +166,7 @@ function AddEmployerJobLead({
               }}
               value={lead.creationDate}
               helperText="*Required"
-              onChange={(e) =>
-                handleInputChange(e, lead.id, "creationDate")
-              }
+              onChange={(e) => handleInputChange(e, lead.id, "creationDate")}
             />
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -183,9 +183,7 @@ function AddEmployerJobLead({
               }}
               value={lead.expirationDate}
               helperText="*Required"
-              onChange={(e) =>
-                handleInputChange(e, lead.id, "expirationDate")
-              }
+              onChange={(e) => handleInputChange(e, lead.id, "expirationDate")}
             />
           </LocalizationProvider>
           <FormControl fullWidth sx={{ m: 1, width: "96%" }}>

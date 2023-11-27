@@ -121,9 +121,7 @@ function AddEmployerInfo({
             sx={{ m: 1, width: "96%" }}
             id={`name${lead.id}`}
             value={lead.name}
-            onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "name")
-            }
+            onChange={(e) => handleInputChange(e.target.value, lead.id, "name")}
             label="Name"
             helperText="*Required"
           />
@@ -173,11 +171,7 @@ function AddEmployerInfo({
             id={`alternatePhoneNumber${lead.id}`}
             value={lead.alternatePhoneNumber}
             onChange={(e) =>
-              handleInputChange(
-                e.target.value,
-                lead.id,
-                "alternatePhoneNumber",
-              )
+              handleInputChange(e.target.value, lead.id, "alternatePhoneNumber")
             }
             label="Alternate Phone Number"
             InputProps={{
