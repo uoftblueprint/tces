@@ -17,19 +17,6 @@ function CreateClientComponent() {
   ]);
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const handleAddClient = (e) => {
-    e.preventDefault();
-    setClients([...clients, { fullName: "", phoneNumber: "", email: "" }]);
-  };
-
-  const handleClientChange = (i, updatedClient) => {
-    setClients((prevClients) => [
-      ...prevClients.slice(0, index),
-      newClientData,
-      ...prevClients.slice(index + 1),
-    ]);
-  };
-
   return (
     <Form>
       <Stack gap={4}>
@@ -41,15 +28,28 @@ function CreateClientComponent() {
         </Header>
         {clients.map((client, i) => (
           <ClientCard
-           key={client.id}
-           i={i}
-           clientData={client}
-           setClientData={(updatedClient) =>
-            handleClientChange(i, updatedClient)
-          }
+            key={client.id}
+            index={i}
+            setClientData={(newClientData) =>
+              setClients((prevClients) =>
+                prevClients
+                  .slice(0, i)
+                  .concat([newClientData])
+                  .concat(prevClients.slice(i + 1)),
+              )
+            }
           />
         ))}
-        <AddButton onClick={handleAddClient}>+ Add Another Client</AddButton>
+        <AddButton
+          onClick={() =>
+            setClients([
+              ...clients,
+              { fullName: "", phoneNumber: "", email: "" },
+            ])
+          }
+        >
+          + Add Another Client
+        </AddButton>
         <Stack direction="row">
           <Discard
             variant="outlined"
@@ -62,7 +62,6 @@ function CreateClientComponent() {
             Submit
           </Button>
         </Stack>
-
         <Dialog open={isDialogOpen} onClose={() => setDialogOpen(false)}>
           <DialogTitle>ARE YOU SURE?</DialogTitle>
           <DialogContent>

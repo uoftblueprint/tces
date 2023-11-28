@@ -1,4 +1,4 @@
-import CreateClientComponent from "../../components/create-client-component";
+import CreateClientComponent from "../../components/create-client-component/create-client-component";
 
 function CreateClient() {
   return <CreateClientComponent />;

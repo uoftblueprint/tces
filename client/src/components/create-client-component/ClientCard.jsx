@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { Card, CardHeader, CardContent, TextField, Stack } from "@mui/material";
 import { IMaskInput } from "react-imask";
 
@@ -28,14 +27,34 @@ TextMaskCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-function ClientCard({ i, clientData, setClientData }) {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setClientData({ ...clientData, [name]: value });
-  };
+function ClientCard({ setClientData, index }) {
+  const [values, setValues] = React.useState({
+    fullName: "",
+    textmask: "(100) 000-0000",
+    email: "",
+  });
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const handleChange = (event) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: event.target.value,
+    }));
+    setClientData(
+      {
+        fullName:
+          event.target.name === "fullName"
+            ? event.target.value
+            : values.fullName,
+        phoneNumber:
+          event.target.name === "textmask"
+            ? event.target.value
+            : values.textmask,
+        email:
+          event.target.name === "email" ? event.target.value : values.email,
+      },
+      index,
+    );
+  };
 
   return (
     <Card>
@@ -47,15 +66,16 @@ function ClientCard({ i, clientData, setClientData }) {
               type="text"
               label="Full Name"
               fullWidth
-              value={clientData.fullName}
+              value={values.fullName}
               helperText="*Required"
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               required
+              name="fullName"
             />
             <TextField
               label="Phone Number"
-              value={clientData.phoneNumber}
-              onChange={(e) => handleChange(e)}
+              value={values.textmask}
+              onChange={handleChange}
               name="textmask"
               fullWidth
               InputProps={{
@@ -68,15 +88,21 @@ function ClientCard({ i, clientData, setClientData }) {
           <TextField
             type="email"
             label="Email"
-            value={clientData.email}
+            value={values.email}
             helperText="*Required"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
+            name="email"
           />
         </Stack>
       </CardContent>
     </Card>
   );
 }
+
+ClientCard.propTypes = {
+  setClientData: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 export default ClientCard;
