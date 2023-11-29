@@ -19,6 +19,7 @@ import {
   DialogTitle,
   Stack,
   Pagination,
+  FormHelperText,
 } from "@mui/material";
 import {
   Container,
@@ -67,10 +68,12 @@ function AddEmployerJobLead({
       ...employerData,
       {
         id: newId,
-        jobTitle: "",
-        compensation: "",
+        employer: "",
+        title: "",
+        minCompensation: "",
+        maxCompensation: "",
         hoursPerWeek: "",
-        description: "",
+        nationalOC: "",
         creationDate: null,
         expirationDate: null,
         employmentType: "",
@@ -98,20 +101,41 @@ function AddEmployerJobLead({
       {employerData.map((lead) => (
         <JobLeadContainer key={lead.id}>
           <H3>Job Lead</H3>
+          <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
+            <InputLabel id="nameLabel">Employer Name</InputLabel>
+            <Select
+              sx={{ textAlign: "left" }}
+              labelId="nameLabel"
+              id={`employer${lead.id}`}
+              value={lead.employer}
+              label="Employer Name"
+              helpertext="*Required"
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employer")
+              }
+            >
+              <MenuItem value="name 1">Name 1</MenuItem>
+              <MenuItem value="name 2">Name 2</MenuItem>
+              <MenuItem value="name 3">Name 3</MenuItem>
+            </Select>
+            <FormHelperText>*Required</FormHelperText>
+          </FormControl>
           <TextField
-            fullWidth
             sx={{ m: 1, width: "96%" }}
-            id={`jobTitle${lead.id}`}
-            value={lead.jobTitle}
+            id={`title${lead.id}`}
+            value={lead.title}
             onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "jobTitle")
+              handleInputChange(e.target.value, lead.id, "title")
             }
             label="Job Title"
+            helpertext="*Required"
           />
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-            <InputLabel id="compendationLabel">Compensation</InputLabel>
+            <InputLabel id="minCompensationLabel">
+              Compensation Minimum
+            </InputLabel>
             <OutlinedInput
-              id={`compensation${lead.id}`}
+              id={`minCompensation${lead.id}`}
               type="number"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
@@ -119,10 +143,30 @@ function AddEmployerJobLead({
               endAdornment={
                 <InputAdornment position="end">/hour</InputAdornment>
               }
-              label="Compensation"
-              value={lead.compensation}
+              label="Compensation Minimum"
+              value={lead.minCompensation}
               onChange={(e) =>
-                handleInputChange(e.target.value, lead.id, "compensation")
+                handleInputChange(e.target.value, lead.id, "minCompensation")
+              }
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
+            <InputLabel id="maxCompensationLabel">
+              Compensation Maximum
+            </InputLabel>
+            <OutlinedInput
+              id={`maxCompensation${lead.id}`}
+              type="number"
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">/hour</InputAdornment>
+              }
+              label="Compensation Maximum"
+              value={lead.maxCompensation}
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "maxCompensation")
               }
             />
           </FormControl>
@@ -136,6 +180,17 @@ function AddEmployerJobLead({
             value={lead.hoursPerWeek}
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "hoursPerWeek")
+            }
+          />
+          <TextField
+            fullWidth
+            sx={{ m: 1, width: "47%" }}
+            id={`nationalOC${lead.id}`}
+            label="National Occupation Code"
+            variant="outlined"
+            value={lead.nationalOC}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "nationalOC")
             }
           />
           <TextField

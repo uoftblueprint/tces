@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddCompanyInfo from "./company-info-component";
 import AddEmployerInfo from "./employer-contact-component";
-import AddEmployerJobLead from "./job-lead-component";
+import AddEmployerJobLead from "../add-job-lead-component";
 
 function AddEmployer() {
   const [page, setPage] = useState(1);
@@ -36,10 +36,12 @@ function AddEmployer() {
     jobLeads: [
       {
         id: 0,
-        jobTitle: "",
-        compensation: "",
+        employer: "",
+        title: "",
+        minCompensation: "",
+        maxCompensation: "",
         hoursPerWeek: "",
-        description: "",
+        nationalOC: "",
         creationDate: null,
         expirationDate: null,
         employmentType: "",
