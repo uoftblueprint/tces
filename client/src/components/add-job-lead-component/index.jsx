@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-import { IMask } from "react-imask";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -38,29 +37,6 @@ function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
     resetInitialState: PropTypes.func.isRequired,
   };
   const [open, setOpen] = useState(false);
-  const minCompensationRef = useRef(null);
-  const maxCompensationRef = useRef(null);
-  const hoursRef = useRef(null);
-
-  useEffect(() => {
-    const maskOptions = {
-      mask: Number,
-      scale: 2, // two decimal places
-      signed: false, // no negative numbers
-      min: 0, // has to be greater than or equal to 0
-      radix: ".",
-    };
-
-    if (minCompensationRef.current) {
-      IMask(minCompensationRef.current, maskOptions);
-    }
-    if (maxCompensationRef.current) {
-      IMask(maxCompensationRef.current, maskOptions);
-    }
-    if (hoursRef.current) {
-      IMask(hoursRef.current, maskOptions);
-    }
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -143,7 +119,7 @@ function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
             </InputLabel>
             <OutlinedInput
               id={`minCompensation${lead.id}`}
-              inputRef={minCompensationRef}
+              type="number"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -163,7 +139,7 @@ function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
             </InputLabel>
             <OutlinedInput
               id={`maxCompensation${lead.id}`}
-              inputRef={maxCompensationRef}
+              type="number"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -181,7 +157,7 @@ function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
             fullWidth
             sx={{ m: 1, width: "47%" }}
             id={`hoursPerWeek${lead.id}`}
-            inputRef={hoursRef}
+            type="number"
             label="Hours per week"
             variant="outlined"
             value={lead.hoursPerWeek}
