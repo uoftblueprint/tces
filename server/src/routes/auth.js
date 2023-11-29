@@ -7,7 +7,6 @@ const router = express.Router();
 const createUserRequestHandler = require("../controllers/auth/createUser");
 const logoutRequestHandler = require("../controllers/auth/logout");
 const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
-const isAdmin = require("../middlewares/auth/isAdmin");
 
 // User logs in with password
 /**
@@ -47,16 +46,6 @@ router.post("/login", (req, res, next) => {
     });
   })(req, res, next); // IIFE to invoke the returned function immediately with req, res, and next
 });
-
-// Admin creates a user
-/**
- * Expected body parameters:
- * @type string {body.first_name}
- * @type string {body.last_name}
- * @type string {body.email}
- * @type string {body.password}
- */
-router.post("/create_user", isAdmin, createUserRequestHandler);
 
 // User logs out
 router.post("/logout", logoutRequestHandler);
