@@ -3,6 +3,7 @@ import "./App.css";
 // import LoginPage from "./pages/login";
 // import CreatePage from "./pages/create-user/create-user";
 // import EditPage from "./pages/edit-user/edit-user";
+// import ImportPage from "./pages/import";
 import AddJobLeadPage from "./pages/add-job-lead";
 import Navbar from "./components/navbar-component/Navbar";
 

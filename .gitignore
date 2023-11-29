@@ -23,6 +23,8 @@
 **/yarn-debug.log*
 **/yarn-error.log*
 
+**/sessions.db
+
 # Editor directories and files
 **/.idea
 **/.vscode
