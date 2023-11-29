@@ -30,7 +30,7 @@ TextMaskCustom.propTypes = {
 function ClientCard({ setClientData, index }) {
   const [values, setValues] = React.useState({
     fullName: "",
-    textmask: "(100) 000-0000",
+    textmask: "",
     email: "",
   });
 
