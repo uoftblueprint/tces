@@ -1,6 +1,5 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getAllClientsRequestHandler from "../../src/controllers/client/getAllClients";
-const Client = await require("../../src/models/client.model");
 const mock = require("mock-require");
 const mockGetManyClients = require("../mocks/mockGetAllClients");
 

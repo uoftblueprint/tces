@@ -1,9 +1,9 @@
 const express = require("express");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
-const getOneJobLeadRequestHandler = require("../controllers/job_leads/getOneJobLead");
-const getAllJobLeadsRequestHandler = require("../controllers/job_leads/getAllJobLeads");
-const addJobLeadsRequestHandler = require("../controllers/job_leads/addJobLeads");
-const updateJobLeadHandler = require("../controllers/job_leads/updateJobLead");
+const getOneJobLeadRequestHandler = require("../controllers/job_lead/getOneJobLead");
+const getAllJobLeadsRequestHandler = require("../controllers/job_lead/getAllJobLeads");
+const addJobLeadsRequestHandler = require("../controllers/job_lead/addJobLeads");
+const updateJobLeadHandler = require("../controllers/job_lead/updateJobLead");
 
 const router = express.Router();
 
@@ -40,9 +40,29 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
  *   @type string {params.body.job_lead.expiration_date} `YYYY-MM-DD`
  *   @type string {params.body.job_lead.employment_type} ["Full Time", "Part Time", "Casual", "On-Call"]
  */
+
+// Example Json body:
+
+// {
+//   "job_lead": {
+//     "employer_name": "Someone new",
+//     "job_title": "Software Developer In Test Intern",
+//     "compensation_max": 50000,
+//     "compensation_min": 40000,
+//     "hours_per_week": 40,
+//     "national_occupation_code": 231232,
+//     "job_description": "full-stack testing.",
+//     "creation_date": "2023-11-29",
+//     "expiration_date": "2023-12-31",
+//     "employment_type": "Full Time"
+//   },
+//   "client": {
+//     "owner": 1
+//   }
+// }
 router.post("/", isLoggedIn, addJobLeadsRequestHandler);
 
-/**x
+/**
  * Update a specific Job Lead's info, with id job_lead_id
  *
  * Expected parameters:
@@ -50,6 +70,22 @@ router.post("/", isLoggedIn, addJobLeadsRequestHandler);
  * Expected body parameters:
  * @type JobLead {params.body.values}
  */
+
+// Example json body:
+// {
+//   "values": {
+//     "employer_name": "First Name",
+//     "job_title": "Software Engineer Intern",
+//     "compensation_max": 50000,
+//     "compensation_min": 40000,
+//     "hours_per_week": 40,
+//     "national_occupation_code": 231232,
+//     "job_description": "full-stack testing.",
+//     "creation_date": "2023-11-29",
+//     "expiration_date": "2023-12-31",
+//     "employment_type": "Full Time"
+//   }
+// }
 router.put("/:job_lead_id", isLoggedIn, updateJobLeadHandler);
 
 module.exports = router;
