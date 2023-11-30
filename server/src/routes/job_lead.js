@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/:job_lead_id", isLoggedIn, getOneJobLeadRequestHandler);
 
 /**
- * Get all client's info
+ * Get all job lead's info
  *
  * Expected parameters:
  */
@@ -27,6 +27,8 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
  *
  * Expected body parameters:
  * @type JobLead || JobLead[] {params.body.job_lead}
+ *   @type integer {params.body.client.owner}
+ *   @type integer {params.body.client.creator}
  *   @type string {params.body.job_lead.employer_name}
  *   @type string {params.body.job_lead.job_title}
  *   @type integer {params.body.job_lead.compensation_max}
@@ -46,8 +48,8 @@ router.post("/", isLoggedIn, addJobLeadsRequestHandler);
  * Expected parameters:
  * @type string {params.job_lead_id}
  * Expected body parameters:
- * @type Client {params.body.values}
+ * @type JobLead {params.body.values}
  */
-router.put("/:client_id", isLoggedIn, updateJobLeadHandler);
+router.put("/:job_lead_id", isLoggedIn, updateJobLeadHandler);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+const logger = require("pino")();
 const JobLead = require("../../models/job_lead.model");
 
 const getAllJobLeadsRequestHandler = async (req, res) => {
