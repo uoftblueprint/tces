@@ -1,4 +1,4 @@
-// import * as React from "react";
+import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,9 +6,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import MuiPhoneNumber from "material-ui-phone-number";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TableFooter from "@mui/material/TableFooter";
+
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -21,6 +28,28 @@ export default function ClientPage() {
     firstName: "First Last",
     email: "email@email.com",
     phone: "+1 111 111 1111",
+    status: "Active",
+  };
+
+  const [editedName, setEditedName] = React.useState(userInfo.firstName);
+  const [editedEmail, seteditedEmail] = React.useState(userInfo.email);
+  const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
+  const [editedStatus, setEditedStatus] = React.useState(userInfo.status);
+
+  const handleNameChange = (event) => {
+    setEditedName(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    seteditedEmail(event.target.value);
+  };
+
+  const handlePhoneChange = (event) => {
+    setEditedPhone(event);
+  };
+
+  const handleStatusChange = (event) => {
+    setEditedStatus(event.target.value);
   };
 
   return (
@@ -82,6 +111,7 @@ export default function ClientPage() {
           </CardContent>
         </Card>
       </div>
+
       <Paper>
         <TableContainer>
           <Table>
@@ -91,7 +121,7 @@ export default function ClientPage() {
                   <Typography variant="h5">Personal Information</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <EditIcon />
+                  <EditIcon color="primary" />
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -100,19 +130,40 @@ export default function ClientPage() {
                 <TableCell component="th" scope="row">
                   Name
                 </TableCell>
-                <TableCell>{userInfo.firstName}</TableCell>
+                <TableCell>
+                  <TextField
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={editedName}
+                    onChange={handleNameChange}
+                  />
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Email
                 </TableCell>
-                <TableCell>{userInfo.email}</TableCell>
+                <TableCell>
+                  <TextField
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={editedEmail}
+                    onChange={handleEmailChange}
+                  />
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Phone Number
                 </TableCell>
-                <TableCell>{userInfo.phone}</TableCell>
+                <TableCell>
+                  <MuiPhoneNumber
+                    value={editedPhone}
+                    onChange={handlePhoneChange}
+                  />
+                </TableCell>
                 <TableCell align="right">
                   <ContentCopyIcon />
                 </TableCell>
@@ -122,10 +173,23 @@ export default function ClientPage() {
                   Status
                 </TableCell>
                 <TableCell>
-                  <Chip label="Active" />
+                  <Select value={editedStatus} onChange={handleStatusChange}>
+                    <MenuItem value="Active">
+                      {" "}
+                      <Chip label="Active" />
+                    </MenuItem>
+                    <MenuItem value="Not Active">
+                      <Chip label="Not Active" />
+                    </MenuItem>
+                  </Select>
                 </TableCell>
               </TableRow>
             </TableBody>
+            <TableFooter>
+              <TableCell colSpan={3} align="right">
+                <Button>Save Changes</Button>
+              </TableCell>
+            </TableFooter>
           </Table>
         </TableContainer>
       </Paper>

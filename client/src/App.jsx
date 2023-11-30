@@ -1,5 +1,6 @@
 import "./App.css";
-import ClientPage from "./components/client-page";
+// import ClientPage from "./components/client-page";
+import EditClientPage from "./components/edit-client-page";
 // import DashboardPage from "./pages/dashboard";
 // import LoginPage from "./pages/login";
 // import CreatePage from "./pages/create-user/create-user";
@@ -9,7 +10,8 @@ function App() {
   return (
     <div className="App">
       {/* <DashboardPage /> */}
-      <ClientPage />
+      <EditClientPage />
+      {/* <ClientPage /> */}
     </div>
   );
 }
