@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Form, Header, Cancel } from "./index.styles";
-import ConfirmDialog from "../confirm-dialog-component";
+import ConfirmDialog from "../shared/confirm-dialog-component";
 import { modifyUser } from "../../utils/api";
 import { ErrorMessage } from "../login-component/index.styles";
 

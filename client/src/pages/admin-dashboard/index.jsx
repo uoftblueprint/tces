@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import UserManagement from "../../components/user-management-component";
+import AdminDashboardComponent from "../../components/admin-dashboard-component";
 import UserType from "../../prop-types/UserType";
 
 function AdminDashboard({ managedUsers, setManagedUsers }) {
@@ -22,7 +22,7 @@ function AdminDashboard({ managedUsers, setManagedUsers }) {
   };
 
   return (
-    <UserManagement
+    <AdminDashboardComponent
       managedUsers={processedManagedUsers}
       removeUser={removeUser}
     />

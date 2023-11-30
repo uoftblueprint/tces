@@ -13,7 +13,7 @@ import DashboardNavigationComponent from "./nav-dashboard-component";
 import UpdatesCollection from "./update-collection-component";
 import UserType from "../../prop-types/UserType";
 import JobUpdateType from "../../prop-types/JobUpdateType";
-import Navbar from "../navbar-component/Navbar";
+import Navbar from "../shared/navbar-component/Navbar";
 
 function DashboardComponent({ currUser, jobUpdates }) {
   return (

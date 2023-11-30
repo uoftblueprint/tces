@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import LoadingComponent from "../../components/loading-screen-component";
+import LoadingComponent from "../../components/shared/loading-screen-component";
 import { logout } from "../../utils/api";
 
 function LogoutPage({ onLogout }) {

@@ -16,15 +16,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import UserType from "../../prop-types/UserType";
-import ConfirmDialog from "../confirm-dialog-component";
-import LoadingComponent from "../loading-screen-component";
+import ConfirmDialog from "../shared/confirm-dialog-component";
+import LoadingComponent from "../shared/loading-screen-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
-import Navbar from "../navbar-component/Navbar";
+import Navbar from "../shared/navbar-component/Navbar";
 import { deleteUser } from "../../utils/api";
-import ErrorComponent from "../error-screen-component";
+import ErrorComponent from "../shared/error-screen-component";
 
-function UserManagement({ managedUsers, removeUser }) {
+function AdminDashboardComponent({ managedUsers, removeUser }) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(managedUsers);
@@ -272,10 +272,10 @@ function UserManagement({ managedUsers, removeUser }) {
   );
 }
 
-UserManagement.propTypes = {
+AdminDashboardComponent.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   removeUser: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 
-export default UserManagement;
+export default AdminDashboardComponent;

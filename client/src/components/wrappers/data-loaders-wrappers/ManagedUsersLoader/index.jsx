@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import ErrorComponent from "../../error-screen-component";
-import LoadingComponent from "../../loading-screen-component";
-import { getAllUsers } from "../../../utils/api";
-import UserType from "../../../prop-types/UserType";
+import ErrorComponent from "../../../shared/error-screen-component";
+import LoadingComponent from "../../../shared/loading-screen-component";
+import { getAllUsers } from "../../../../utils/api";
+import UserType from "../../../../prop-types/UserType";
 
 function ManagedUsersLoader({ currUser, setManagedUsers, children }) {
   const [loading, setLoading] = useState(true);

@@ -21,11 +21,11 @@ import mockUser from "./mock-data/mockUser";
 import mockManagedUsers from "./mock-data/mockManagedUsers";
 
 // protected route wrappers
-import RouteGuard from "./components/route-guard-component";
-import AuthGuard from "./components/auth-guard-component";
+import RouteGuard from "./components/wrappers/route-guard-component";
+import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
-import ManagedUsersLoader from "./components/data-loaders-wrappers/ManagedUsersLoader";
+import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
 
 function App() {
   // redirect urls in-case user has a cached login or not

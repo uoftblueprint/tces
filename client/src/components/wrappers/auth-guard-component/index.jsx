@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingScreenComponent from "../loading-screen-component";
-import { isUserLoggedIn } from "../../utils/api";
+import LoadingScreenComponent from "../../shared/loading-screen-component";
+import { isUserLoggedIn } from "../../../utils/api";
 
 function AuthGuard({ children, isAuthenticated, loginUser, redirectUrl }) {
   const navigate = useNavigate();
