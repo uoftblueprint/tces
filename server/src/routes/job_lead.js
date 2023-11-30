@@ -33,12 +33,12 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
  *   @type string {params.body.job_lead.job_title}
  *   @type integer {params.body.job_lead.compensation_max}
  *   @type integer {params.body.job_lead.compensation_min}
- *   @type integer {params.body.job_lead.hour_per_week}
+ *   @type integer {params.body.job_lead.hours_per_week}
  *   @type string {params.body.job_lead.national_occupation_code}
  *   @type string {params.body.job_lead.job_description}
- *   @type string {params.body.job_lead.creation_date}
- *   @type string {params.body.job_lead.expiration_date}
- *   @type string {params.body.job_lead.employment_type}
+ *   @type string {params.body.job_lead.creation_date} `YYYY-MM-DD`
+ *   @type string {params.body.job_lead.expiration_date} `YYYY-MM-DD`
+ *   @type string {params.body.job_lead.employment_type} ["Full Time", "Part Time", "Casual", "On-Call"]
  */
 router.post("/", isLoggedIn, addJobLeadsRequestHandler);
 

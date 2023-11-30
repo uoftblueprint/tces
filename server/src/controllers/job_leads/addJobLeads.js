@@ -19,6 +19,12 @@ const addJobLeadsRequestHandler = async (req, res) => {
       });
     }
 
+    const creationDateStr = req.body.job_lead.creation_date || null;
+    const expirationDateStr = req.body.job_lead.expiration_date || null;
+
+    const creationDate = creationDateStr ? new Date(creationDateStr) : null;
+    const expirationDate = expirationDateStr ? new Date(expirationDateStr) : null;
+
     // create one job lead
     const job_lead = await JobLead.create({
       owner: req.body.client.owner,
@@ -27,11 +33,11 @@ const addJobLeadsRequestHandler = async (req, res) => {
       job_title: req.body.job_lead.job_title || null,
       compensation_max: req.body.job_lead.compensation_max || null,
       compensation_min: req.body.job_lead.compensation_min || null,
-      hour_per_week: req.body.job_lead.hour_per_week || null,
+      hours_per_week: req.body.job_lead.hours_per_week || null,
       national_occupation_code: req.body.job_lead.national_occupation_code || null,
       job_description: req.body.job_lead.job_description || null,
-      creation_date: new Date(),
-      expiration_date: req.body.job_lead.expiration_date || null,
+      creation_date: creationDate,
+      expiration_date: expirationDate,
       employment_type: req.body.job_lead.employment_type,
     });
     return res

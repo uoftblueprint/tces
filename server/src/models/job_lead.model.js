@@ -48,19 +48,19 @@ const JobLead = sequelize.define("job_leads", {
     allowNull: true,
   },
   compensation_max: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   compensation_min: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
-  hour_per_week: {
-    type: DataTypes.INTEGER,
+  hours_per_week: {
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   national_occupation_code: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   job_description: {
