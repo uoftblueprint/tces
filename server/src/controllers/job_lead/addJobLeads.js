@@ -6,6 +6,7 @@ const addJobLeadsRequestHandler = async (req, res) => {
     if (req.body.job_lead instanceof Array) {
       req.body.job_lead.forEach(job_lead => {
         // validate each job lead, and add values
+        setOwnerAndCreator(job_lead, req.user.id);
         console.log(job_lead);
       });
 
@@ -19,6 +20,8 @@ const addJobLeadsRequestHandler = async (req, res) => {
       });
     }
 
+    setOwnerAndCreator(req.body.job_lead, req.user.id);
+
     const creationDateStr = req.body.job_lead.creation_date || null;
     const expirationDateStr = req.body.job_lead.expiration_date || null;
 
@@ -27,7 +30,7 @@ const addJobLeadsRequestHandler = async (req, res) => {
 
     // create one job lead
     const job_lead = await JobLead.create({
-      owner: req.body.client.owner,
+      owner: req.body.job_lead.owner,
       creator: req.user.id,
       employer_name: req.body.job_lead.employer_name || null,
       job_title: req.body.job_lead.job_title || null,
@@ -57,6 +60,11 @@ const addJobLeadsRequestHandler = async (req, res) => {
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
+};
+
+const setOwnerAndCreator = (job_lead, user_id) => {
+  job_lead.creator = user_id;
+  job_lead.owner = job_lead.owner || user_id;
 };
 
 module.exports = addJobLeadsRequestHandler;
