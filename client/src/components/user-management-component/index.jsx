@@ -43,7 +43,7 @@ function UserManagement({ managedUsers, removeUser }) {
     setSearchQuery(query);
 
     const filtered = managedUsers.filter((row) => {
-      return row.name.toLowerCase().includes(query.toLowerCase());
+      return row.displayName.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredRows(filtered);
   };
