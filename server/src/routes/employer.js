@@ -56,7 +56,6 @@ router.post("/", isLoggedIn, addEmployersRequestHandler);
  *    <-- each key in .values is a part of the employer you wish to update
  *      for instance, if you wanted to update the city you would pass in params.body.values.city = ...
  *      note: any value you do not pass in will be left unchanged
- * 
  */
 router.put("/:employer_id", isLoggedIn, updateEmployerRequestHandler);
 

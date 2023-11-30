@@ -14,5 +14,5 @@ const setOwnerAndCreator = (requestObject, user_id) => {
 
 module.exports = {
   addDefaultDates,
-  setOwnerAndCreator
+  setOwnerAndCreator,
 };
