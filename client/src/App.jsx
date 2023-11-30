@@ -30,7 +30,8 @@ import ManagedUsersLoader from "./components/data-loaders-wrappers/ManagedUsersL
 function App() {
   // redirect urls in-case user has a cached login or not
   const notAuthRedirect = "/signin";
-  const AuthRedirect = "/dashboard";
+  const dashboardRedirect = "/dashboard";
+  const adminRedirect = "/admin";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -85,7 +86,10 @@ function App() {
         <Route
           path="/signin"
           element={
-            <RouteGuard isPermitted={!isAuthenticated} redirect={AuthRedirect}>
+            <RouteGuard
+              isPermitted={!isAuthenticated}
+              redirect={dashboardRedirect}
+            >
               <LoginPage
                 setIsAuthenticated={setIsAuthenticated}
                 loginUser={loginUser}
@@ -108,7 +112,7 @@ function App() {
             <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
               <RouteGuard
                 isPermitted={currUser.isAdmin}
-                redirect={AuthRedirect}
+                redirect={dashboardRedirect}
               >
                 <ManagedUsersLoader
                   currUser={currUser}
@@ -126,17 +130,18 @@ function App() {
         <Route
           path="/admin/create-user"
           element={
-            <RouteGuard
-              isPermitted={isAuthenticated}
-              redirect={notAuthRedirect}
+            <AuthGuard
+              isAuthenticated={isAuthenticated}
+              loginUser={loginUser}
+              redirectUrl={adminRedirect}
             >
               <RouteGuard
                 isPermitted={currUser.isAdmin}
-                redirect={AuthRedirect}
+                redirect={dashboardRedirect}
               >
                 <CreatePage />
               </RouteGuard>
-            </RouteGuard>
+            </AuthGuard>
           }
         />
         <Route
@@ -145,10 +150,11 @@ function App() {
             <RouteGuard
               isPermitted={isAuthenticated}
               redirect={notAuthRedirect}
+              redirectUrl={adminRedirect}
             >
               <RouteGuard
                 isPermitted={currUser.isAdmin}
-                redirect={AuthRedirect}
+                redirect={dashboardRedirect}
               >
                 <EditPage />
               </RouteGuard>
