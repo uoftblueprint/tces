@@ -5,8 +5,8 @@ const app = express();
 const port = 8000;
 
 const corsOption = {
-  origin: "http://localhost:3000",
-  credentials: true
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
 };
 
 // Session storage imports
@@ -39,10 +39,6 @@ app.use(
 );
 app.use(passport.authenticate("session"));
 
-app.get("/", (req, res) => {
-  res.send("Helloooo World! Hi :)");
-});
-
 app.use("/", authRouter);
 
 app.use("/users", userRouter);
@@ -51,4 +47,3 @@ app.use("/clients", clientRouter);
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
 });
-

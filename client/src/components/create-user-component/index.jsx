@@ -108,8 +108,8 @@ function CreateComponent() {
           <Button type="submit" variant="contained" size="large">
             {isLoading ? "Submitting..." : "Submit"}
           </Button>
-          <ErrorMessage>{errorMessage}</ErrorMessage>
         </Stack>
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </Stack>
     </Form>
   );

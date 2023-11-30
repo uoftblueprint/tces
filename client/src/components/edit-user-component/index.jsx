@@ -131,8 +131,8 @@ function EditComponent({ userID }) {
           <Button type="submit" variant="contained" size="large">
             {isLoading ? "Saving..." : "Save"}
           </Button>
-          <ErrorMessage>{errorMessage}</ErrorMessage>
         </Stack>
+        <ErrorMessage>{errorMessage}</ErrorMessage>
       </Stack>
       <ConfirmDialog
         open={confirmEditDialog}
