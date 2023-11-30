@@ -90,7 +90,7 @@ describe("addClients test suite", () => {
         ],
       },
       user: {
-        id: 1
+        id: 1,
       },
     };
 
