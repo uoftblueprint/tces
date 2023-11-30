@@ -26,13 +26,13 @@ const updateJobLeadRequestHandler = async (req, res) => {
       });
     }
 
-    await client.set(req.body.values);
-    await client.save();
+    await job_lead.set(req.body.values);
+    await job_lead.save();
 
     return res.status(200).json({
       status: "success",
-      message: "Client updated successfully",
-      data: client,
+      message: "Job lead updated successfully",
+      data: job_lead,
     });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
