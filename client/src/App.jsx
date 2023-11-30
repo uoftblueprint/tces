@@ -6,8 +6,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import RouteGuard from "./components/route-guard-component";
-import AuthGuard from "./components/auth-guard-component";
+
+// page components
 import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
@@ -15,11 +15,17 @@ import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 
+// mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 import mockUser from "./mock-data/mockUser";
 import mockManagedUsers from "./mock-data/mockManagedUsers";
 
-const { REACT_APP_BYPASS_AUTH } = process.env;
+// protected route wrappers
+import RouteGuard from "./components/route-guard-component";
+import AuthGuard from "./components/auth-guard-component";
+
+// data loading wrappers
+import ManagedUsersLoader from "./components/data-loaders-wrappers/ManagedUsersLoader";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -57,7 +63,7 @@ function App() {
       firstName: userData.firstName || userData.first_name || "",
       lastName: userData.lastName || userData.last_name || "",
       email: userData.email || userData.last_name,
-      isAdmin: userData.isAdmin ? userData.isAdmin : false,
+      isAdmin: userData.isAdmin || userData.is_admin || false,
     });
     setIsAuthenticated(true);
   };
@@ -69,7 +75,7 @@ function App() {
         <Route
           path="/"
           element={
-            isAuthenticated || REACT_APP_BYPASS_AUTH ? (
+            isAuthenticated ? (
               <Navigate to="/dashboard" />
             ) : (
               <Navigate to="/signin" />
@@ -104,10 +110,15 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <AdminDashboard
-                  managedUsers={managedUsers}
+                <ManagedUsersLoader
+                  currUser={currUser}
                   setManagedUsers={setManagedUsers}
-                />
+                >
+                  <AdminDashboard
+                    managedUsers={managedUsers}
+                    setManagedUsers={setManagedUsers}
+                  />
+                </ManagedUsersLoader>
               </RouteGuard>
             </AuthGuard>
           }
@@ -123,7 +134,7 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <CreatePage setManagedUsers={setManagedUsers} />
+                <CreatePage />
               </RouteGuard>
             </RouteGuard>
           }
@@ -139,7 +150,7 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={AuthRedirect}
               >
-                <EditPage setManagedUsers={setManagedUsers} />
+                <EditPage />
               </RouteGuard>
             </RouteGuard>
           }

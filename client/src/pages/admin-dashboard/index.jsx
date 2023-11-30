@@ -1,13 +1,19 @@
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 import UserManagement from "../../components/user-management-component";
 import UserType from "../../prop-types/UserType";
 
 function AdminDashboard({ managedUsers, setManagedUsers }) {
-  const processedManagedUsers = managedUsers.map((user) => ({
-    ...user,
-    id: user.userID,
-    displayName: `${user.firstName} ${user.lastName}`,
-  }));
+  const [processedManagedUsers, setProcessedManagedUsers] = useState([]);
+
+  useEffect(() => {
+    const processedUsers = managedUsers.map((user) => ({
+      ...user,
+      id: user.userID,
+      displayName: `${user.firstName} ${user.lastName}`,
+    }));
+    setProcessedManagedUsers(processedUsers);
+  }, [managedUsers]);
 
   const removeUser = (userID) => {
     setManagedUsers((prevUsers) => {
@@ -18,7 +24,7 @@ function AdminDashboard({ managedUsers, setManagedUsers }) {
   return (
     <UserManagement
       managedUsers={processedManagedUsers}
-      onRemoveUser={removeUser}
+      removeUser={removeUser}
     />
   );
 }

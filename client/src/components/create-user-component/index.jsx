@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import {
   TextField,
   Stack,
@@ -11,51 +10,36 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Form, Header, Cancel } from "./index.styles";
+import { createUser } from "../../utils/api";
+import { ErrorMessage } from "../login-component/index.styles";
 
-function CreateComponent({ onAddUser }) {
+function CreateComponent() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleCreate = (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
-    // Create a JSON object with the required keys and values
-    const userData = {
-      firstName,
-      lastName,
-      email,
-      isAdmin: false,
-    };
 
-    onAddUser(userData);
-
-    navigate("/admin");
-
-    // Convert the JSON object to a string
-    // const userDataJSON = JSON.stringify(userData);
-
-    // Replace url with target route
-    // fetch("http://localhost:8000/create", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: userDataJSON,
-    // });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('Login successful');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Login failed');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // });
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await createUser(firstName, lastName, email, password);
+      if (response.ok) {
+        navigate("/admin");
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "User creation failed.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during your request.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -122,15 +106,12 @@ function CreateComponent({ onAddUser }) {
             Cancel
           </Cancel>
           <Button type="submit" variant="contained" size="large">
-            Submit
+            {isLoading ? "Submitting..." : "Submit"}
           </Button>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         </Stack>
       </Stack>
     </Form>
   );
 }
-CreateComponent.propTypes = {
-  onAddUser: PropTypes.func.isRequired,
-};
-
 export default CreateComponent;

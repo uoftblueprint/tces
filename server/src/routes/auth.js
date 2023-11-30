@@ -4,7 +4,6 @@ const passport = require("passport");
 
 const router = express.Router();
 
-const createUserRequestHandler = require("../controllers/auth/createUser");
 const logoutRequestHandler = require("../controllers/auth/logout");
 const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
 

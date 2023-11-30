@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingComponent from "../loading-component";
+import LoadingScreenComponent from "../loading-screen-component";
 import { isUserLoggedIn } from "../../utils/api";
 
 function AuthGuard({ children, isAuthenticated, loginUser }) {
@@ -30,7 +30,11 @@ function AuthGuard({ children, isAuthenticated, loginUser }) {
     checkUserAuth();
   }, [isAuthenticated, navigate, loginUser]);
 
-  return <LoadingComponent isLoading={isLoading}>{children}</LoadingComponent>;
+  return (
+    <LoadingScreenComponent isLoading={isLoading}>
+      {children}
+    </LoadingScreenComponent>
+  );
 }
 
 AuthGuard.propTypes = {

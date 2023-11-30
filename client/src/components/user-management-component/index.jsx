@@ -17,16 +17,21 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import UserType from "../../prop-types/UserType";
 import ConfirmDialog from "../confirm-dialog-component";
+import LoadingComponent from "../loading-screen-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 import Navbar from "../navbar-component/Navbar";
+import { deleteUser } from "../../utils/api";
+import ErrorComponent from "../error-screen-component";
 
-function UserManagement({ managedUsers, onRemoveUser }) {
+function UserManagement({ managedUsers, removeUser }) {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(managedUsers);
   const [confirmDeleteDialog, setConfirmDeleteDialog] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const isAdmin = true;
 
   React.useEffect(() => {
@@ -57,9 +62,25 @@ function UserManagement({ managedUsers, onRemoveUser }) {
     setConfirmDeleteDialog(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (userToDelete !== null) {
-      onRemoveUser(userToDelete);
+      setIsLoading(true);
+      setErrorMessage("");
+      try {
+        const response = await deleteUser(userToDelete);
+        if (response.ok) {
+          // this will invoke a re-render so an api to fetch
+          // updated users will take place as soon as this is called
+          removeUser(userToDelete);
+        } else {
+          const errorData = await response.json();
+          setErrorMessage(errorData.message || "User deletion failed.");
+        }
+      } catch (error) {
+        setErrorMessage("An error occurred during your request.");
+      } finally {
+        setIsLoading(false);
+      }
       setUserToDelete(null);
     }
     setConfirmDeleteDialog(false);
@@ -114,6 +135,14 @@ function UserManagement({ managedUsers, onRemoveUser }) {
       },
     },
   ];
+
+  if (isLoading) {
+    return <LoadingComponent isLoading={isLoading} />;
+  }
+
+  if (errorMessage) {
+    return <ErrorComponent message={errorMessage} />;
+  }
 
   return (
     <div>
@@ -245,7 +274,7 @@ function UserManagement({ managedUsers, onRemoveUser }) {
 
 UserManagement.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
-  onRemoveUser: PropTypes.func.isRequired,
+  removeUser: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 
