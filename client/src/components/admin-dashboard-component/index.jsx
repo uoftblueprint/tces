@@ -20,7 +20,6 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 import LoadingComponent from "../shared/loading-screen-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
-import Navbar from "../shared/navbar-component/Navbar";
 import { deleteUser } from "../../utils/api";
 import ErrorComponent from "../shared/error-screen-component";
 
@@ -32,7 +31,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
   const [userToDelete, setUserToDelete] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
-  const isAdmin = true;
 
   React.useEffect(() => {
     setFilteredRows(managedUsers);
@@ -146,7 +144,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
 
   return (
     <div>
-      <Navbar isAdmin={isAdmin} />
       <DashboardContainer>
         <HeaderContainer>
           <ArrowBackIcon

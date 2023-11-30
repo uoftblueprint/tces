@@ -7,7 +7,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
 import Button from "@mui/material/Button";
 
-function DropdownItem({ keyword }) {
+function DropdownItem({ keyword, setIsDropdownVisible }) {
   const navigate = useNavigate();
   const icons = {
     settings: <SettingsIcon color="action" />,
@@ -28,6 +28,7 @@ function DropdownItem({ keyword }) {
   };
 
   const onClickRoute = () => {
+    setIsDropdownVisible(false);
     navigate(routes[keyword]);
   };
   const icon = icons[keyword];
@@ -53,6 +54,7 @@ function DropdownItem({ keyword }) {
 
 DropdownItem.propTypes = {
   keyword: PropTypes.string.isRequired,
+  setIsDropdownVisible: PropTypes.func.isRequired,
 };
 
 export default DropdownItem;

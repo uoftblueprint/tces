@@ -17,8 +17,6 @@ import LogoutPage from "./pages/logout";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
-import mockUser from "./mock-data/mockUser";
-import mockManagedUsers from "./mock-data/mockManagedUsers";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -26,23 +24,29 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
+import Navbar from "./components/shared/navbar-component/Navbar";
 
 function App() {
   // redirect urls in-case user has a cached login or not
-  const notAuthRedirect = "/signin";
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
-  const [currUser, setCurrUser] = useState(mockUser);
+  const [currUser, setCurrUser] = useState({
+    userID: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    isAdmin: false,
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Job Updates State
   const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
-  const [managedUsers, setManagedUsers] = useState(mockManagedUsers);
+  const [managedUsers, setManagedUsers] = useState([]);
 
   // Reset all states (when user logs out)
   const resetState = () => {
@@ -73,60 +77,66 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <Navigate to="/signin" />
-            )
-          }
-        />
+        <Route path="/" element={<Navigate to="/signin" />} />
         <Route
           path="/signin"
           element={
-            <RouteGuard
-              isPermitted={!isAuthenticated}
-              redirect={dashboardRedirect}
+            <AuthGuard
+              isAuthenticated={isAuthenticated}
+              loginUser={loginUser}
+              redirectUrl={dashboardRedirect}
+              signInRoute
             >
               <LoginPage
                 setIsAuthenticated={setIsAuthenticated}
                 loginUser={loginUser}
               />
-            </RouteGuard>
+            </AuthGuard>
           }
         />
         <Route path="/logout" element={<LogoutPage onLogout={resetState} />} />
         <Route
           path="/dashboard"
-          element={
-            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
-              <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <AuthGuard isAuthenticated={isAuthenticated} loginUser={loginUser}>
-              <RouteGuard
-                isPermitted={currUser.isAdmin}
-                redirect={dashboardRedirect}
+          element={<Navbar isAdmin={currUser.isAdmin} />}
+        >
+          <Route
+            index
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
               >
-                <ManagedUsersLoader
-                  currUser={currUser}
-                  setManagedUsers={setManagedUsers}
+                <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
+              </AuthGuard>
+            }
+          />
+        </Route>
+        <Route path="/admin" element={<Navbar isAdmin={currUser.isAdmin} />}>
+          <Route
+            index
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
                 >
-                  <AdminDashboard
-                    managedUsers={managedUsers}
+                  <ManagedUsersLoader
+                    currUser={currUser}
                     setManagedUsers={setManagedUsers}
-                  />
-                </ManagedUsersLoader>
-              </RouteGuard>
-            </AuthGuard>
-          }
-        />
+                  >
+                    <AdminDashboard
+                      managedUsers={managedUsers}
+                      setManagedUsers={setManagedUsers}
+                    />
+                  </ManagedUsersLoader>
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+        </Route>
         <Route
           path="/admin/create-user"
           element={
@@ -147,9 +157,9 @@ function App() {
         <Route
           path="/admin/edit-user/:userID"
           element={
-            <RouteGuard
-              isPermitted={isAuthenticated}
-              redirect={notAuthRedirect}
+            <AuthGuard
+              isAuthenticated={isAuthenticated}
+              loginUser={loginUser}
               redirectUrl={adminRedirect}
             >
               <RouteGuard
@@ -158,7 +168,7 @@ function App() {
               >
                 <EditPage />
               </RouteGuard>
-            </RouteGuard>
+            </AuthGuard>
           }
         />
       </Routes>

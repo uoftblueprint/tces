@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 import LoadingScreenComponent from "../../shared/loading-screen-component";
 import { isUserLoggedIn } from "../../../utils/api";
 
-function AuthGuard({ children, isAuthenticated, loginUser, redirectUrl }) {
+function AuthGuard({
+  children,
+  isAuthenticated,
+  loginUser,
+  redirectUrl,
+  signInRoute,
+}) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -18,14 +24,17 @@ function AuthGuard({ children, isAuthenticated, loginUser, redirectUrl }) {
         const authData = await response.json();
         if (response.ok && authData.status === "success") {
           loginUser(authData.data);
+
           if (redirectUrl) {
             navigate(redirectUrl);
           }
-        } else {
+        } else if (!signInRoute) {
           navigate("/logout");
         }
       } catch (error) {
-        navigate("/logout");
+        if (!signInRoute) {
+          navigate("/logout");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -45,10 +54,12 @@ AuthGuard.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   loginUser: PropTypes.func.isRequired,
   redirectUrl: PropTypes.string,
+  signInRoute: PropTypes.bool,
 };
 
 AuthGuard.defaultProps = {
   redirectUrl: null,
+  signInRoute: false,
 };
 
 export default AuthGuard;
