@@ -1,7 +1,7 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import addJobLeadsRequestHandler from "../../src/controllers/job_lead/addJobLeads";
 const mock = require("mock-require");
-const mockAddClients = require("../mocks/mockAddClients");
+const mockAddClients = require("../mocks/mockAddObject");
 
 beforeEach(() => {
   mock("../../src/models/job_lead.model", mockAddClients);

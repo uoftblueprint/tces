@@ -1,8 +1,8 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getOneJobLeadRequestHandler from "../../src/controllers/job_lead/getOneJobLead";
 const mock = require("mock-require");
-const mockGetOneClient = require("../mocks/mockGetOneClient");
-const mockGetOneClientInvalid = require("../mocks/mockGetOneClientInvalid");
+const mockGetOneClient = require("../mocks/mockGetOneObject");
+const mockGetOneClientInvalid = require("../mocks/mockGetOneObjectInvalid");
 
 const mockReq = {
   params: {
