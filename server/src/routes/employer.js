@@ -17,8 +17,6 @@ router.get("/:employer_id", isLoggedIn, getOneEmployerRequestHandler);
 
 /**
  * Get all employers' info
- *
- * Expected parameters:
  */
 router.get("/", isLoggedIn, getAllEmployersRequestHandler);
 
@@ -29,6 +27,7 @@ router.get("/", isLoggedIn, getAllEmployersRequestHandler);
  * @type Employer || Employer[] {params.body.employer}
  *   @type integer {params.body.employer.owner}
  *   @type integer {params.body.employer.creator}
+ *   @type string {params.body.employer.date_added} FORMAT YYYY-MM-DD
  *   @type string {params.body.employer.name}
  *   @type string {params.body.employer.legal_name}
  *   @type string {params.body.employer.phone_number}
@@ -53,7 +52,11 @@ router.post("/", isLoggedIn, addEmployersRequestHandler);
  * Expected parameters:
  * @type string {params.employer_id}
  * Expected body parameters:
- * @type Employer {params.body.employer}
+ * @type Employer {params.body.values}
+ *    <-- each key in .values is a part of the employer you wish to update
+ *      for instance, if you wanted to update the city you would pass in params.body.values.city = ...
+ *      note: any value you do not pass in will be left unchanged
+ * 
  */
 router.put("/:employer_id", isLoggedIn, updateEmployerRequestHandler);
 

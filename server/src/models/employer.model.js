@@ -39,6 +39,10 @@ const Employer = sequelize.define("employers", {
       },
     },
   },
+  date_added: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: true,

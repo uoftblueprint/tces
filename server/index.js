@@ -39,5 +39,5 @@ app.listen(port, () => {
 });
 
 app.use("/", authRouter);
-app.use("/employer", employerRouter);
+app.use("/employers", employerRouter);
 app.use("/clients", clientRouter);

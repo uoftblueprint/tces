@@ -16,9 +16,9 @@ const EmployerContact = sequelize.define("employer_contacts", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  job_type: {
+  job_title: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   phone_number: {
     type: DataTypes.STRING,
@@ -26,7 +26,7 @@ const EmployerContact = sequelize.define("employer_contacts", {
   },
   alt_phone_number: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
