@@ -18,6 +18,7 @@ app.use(express.json());
 const authRouter = require("./src/routes/auth");
 const userRouter = require("./src/routes/user");
 const clientRouter = require("./src/routes/client");
+const jobLeadRouter = require("./src/routes/job_lead");
 
 // Set up session for authorization
 app.use(

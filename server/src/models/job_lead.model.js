@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
+const User = require("./user.model");
 
 const JobLead = sequelize.define("job_leads", {
   id: {

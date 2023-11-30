@@ -21,6 +21,8 @@ const addJobLeadsRequestHandler = async (req, res) => {
 
     // create one job lead
     const job_lead = await JobLead.create({
+      owner: req.body.client.owner,
+      creator: req.user.id,
       employer_name: req.body.job_lead.employer_name || null,
       job_title: req.body.job_lead.job_title || null,
       compensation_max: req.body.job_lead.compensation_max || null,

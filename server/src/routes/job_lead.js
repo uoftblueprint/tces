@@ -2,7 +2,7 @@ const express = require("express");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 const getOneJobLeadRequestHandler = require("../controllers/job_leads/getOneJobLead");
 const getAllJobLeadsRequestHandler = require("../controllers/job_leads/getAllJobLeads");
-const addJobLeadsRequestHandler = require("../controllers/job_leads/addJobleads");
+const addJobLeadsRequestHandler = require("../controllers/job_leads/addJobLeads");
 const updateJobLeadHandler = require("../controllers/job_leads/updateJobLead");
 
 const router = express.Router();
