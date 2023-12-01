@@ -6,7 +6,7 @@ import "./App.css";
 // import EditPage from "./pages/edit-user/edit-user";
 // import ImportPage from "./pages/import";
 import Navbar from "./components/navbar-component/Navbar";
-import AddJobLeadPage from "./pages/add-job-lead";
+// import AddJobLeadPage from "./pages/add-job-lead";
 import AddEmployerPage from "./pages/add-employer";
 
 function App() {
