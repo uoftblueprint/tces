@@ -2,9 +2,8 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
-const Employer = require("./employer.model");
 
-const JobLead = sequelize.define("job_leads", {
+const Employer = sequelize.define("employers", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -40,47 +39,70 @@ const JobLead = sequelize.define("job_leads", {
       },
     },
   },
-  employer_name: {
-    type: DataTypes.STRING,
+  date_added: {
+    type: DataTypes.DATE,
     allowNull: false,
   },
-  job_title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  compensation_max: {
-    type: DataTypes.FLOAT,
+  legal_name: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
-  compensation_min: {
-    type: DataTypes.FLOAT,
+  phone_number: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
-  hours_per_week: {
-    type: DataTypes.FLOAT,
+  fax: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
-  national_occupation_code: {
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  website: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  naics_code: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  job_description: {
+  address: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  creation_date: {
-    // timestamp is a PSQL thing, in mysql it is DATE
-    type: DataTypes.DATE,
+  city: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
-  expiration_date: {
-    type: DataTypes.DATE,
+  province: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
-  employment_type: {
-    type: DataTypes.ENUM(["Full Time", "Part Time", "Casual", "On-Call"]),
+  postal_code: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  secondary_address: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  secondary_city: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  secondary_province: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  secondary_postal_code: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
 });
 
-module.exports = JobLead;
+module.exports = Employer;
