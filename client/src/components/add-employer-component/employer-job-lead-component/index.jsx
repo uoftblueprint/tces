@@ -7,22 +7,30 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
+  Pagination,
 } from "@mui/material";
-import JobLeadContent from "./jobLeadCard";
+import JobLeadContent from "../../add-job-lead-component/jobLeadCard";
 import { Container, ButtonContainer, H1, Body, ButtonL } from "./index.styles";
 
-function AddJobLead({
-  jobLeadData,
-  setJobLeadData,
+function AddEmployerJobLead({
+  onPageChange,
+  employerData,
+  setEmployerData,
   resetInitialState,
 }) {
-  AddJobLead.propTypes = {
+  AddEmployerJobLead.propTypes = {
+    onPageChange: PropTypes.func.isRequired,
     // eslint-disable-next-line react/forbid-prop-types
-    jobLeadData: PropTypes.array.isRequired,
-    setJobLeadData: PropTypes.func.isRequired,
+    employerData: PropTypes.array.isRequired,
+    setEmployerData: PropTypes.func.isRequired,
     resetInitialState: PropTypes.func.isRequired,
   };
   const [open, setOpen] = useState(false);
+
+  const handlePageChange = (event, value) => {
+    onPageChange(value);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,35 +41,31 @@ function AddJobLead({
   };
 
   const handleBackButtonClick = () => {
-    // tbd
+    onPageChange(2);
   };
 
   const handleAddJobLead = () => {
-    const newId = jobLeadData.length;
-    setJobLeadData([
-      ...jobLeadData,
+    const newId = employerData.length;
+    setEmployerData([
+      ...employerData,
       {
         id: newId,
-        employer: "",
         title: "",
-        minCompensation: "",
-        maxCompensation: "",
+        compensation: "",
         hoursPerWeek: "",
-        nationalOC: "",
         description: "",
         creationDate: null,
         expirationDate: null,
         employmentType: "",
-        numPositions: "",
       },
     ]);
   };
 
   const handleInputChange = (input, id, field) => {
-    const updatedJobLeads = jobLeadData.map((lead) =>
+    const updatedJobLeads = employerData.map((lead) =>
       lead.id === id ? { ...lead, [field]: input } : lead,
     );
-    setJobLeadData(updatedJobLeads);
+    setEmployerData(updatedJobLeads);
   };
 
   const handleResetInputs = () => {
@@ -73,11 +77,27 @@ function AddJobLead({
       <H1>Adding a Job Lead</H1>
       <Body>Input information about the job lead.</Body>
       <JobLeadContent
-        jobLeadData={jobLeadData}
+        employerData={employerData}
         handleInputChange={handleInputChange}
-        isAddEmployer={false}
+        isAddEmployer={true}
       />
       <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+      <Stack spacing={2}>
+        <Pagination
+          count={3}
+          shape="rounded"
+          hidePrevButton
+          hideNextButton
+          onChange={(event, value) => handlePageChange(event, value)}
+          page={3}
+          sx={{
+            "& .MuiPaginationItem-page.Mui-selected": {
+              backgroundColor: "#3568E5",
+              color: "white",
+            },
+          }}
+        />
+      </Stack>
       <ButtonContainer>
         <Button
           sx={{ justifySelf: "flex-end" }}
@@ -128,4 +148,4 @@ function AddJobLead({
   );
 }
 
-export default AddJobLead;
+export default AddEmployerJobLead;
