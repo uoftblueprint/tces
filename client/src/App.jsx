@@ -95,12 +95,9 @@ function App() {
           }
         />
         <Route path="/logout" element={<LogoutPage onLogout={resetState} />} />
-        <Route
-          path="/dashboard"
-          element={<Navbar isAdmin={currUser.isAdmin} />}
-        >
+        <Route element={<Navbar isAdmin={currUser.isAdmin} />}>
           <Route
-            index
+            path="/dashboard"
             element={
               <AuthGuard
                 isAuthenticated={isAuthenticated}
@@ -110,10 +107,8 @@ function App() {
               </AuthGuard>
             }
           />
-        </Route>
-        <Route path="/admin" element={<Navbar isAdmin={currUser.isAdmin} />}>
           <Route
-            index
+            path="/admin"
             element={
               <AuthGuard
                 isAuthenticated={isAuthenticated}
