@@ -22,6 +22,7 @@ app.use(express.json());
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
+const employerRouter = require("./src/routes/employer");
 const userRouter = require("./src/routes/user");
 const clientRouter = require("./src/routes/client");
 
@@ -40,7 +41,7 @@ app.use(
 app.use(passport.authenticate("session"));
 
 app.use("/", authRouter);
-
+app.use("/employers", employerRouter);
 app.use("/users", userRouter);
 app.use("/clients", clientRouter);
 

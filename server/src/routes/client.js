@@ -29,6 +29,7 @@ router.get("/", isLoggedIn, getAllClientsRequestHandler);
  * @type Client || Client[] {params.body.client}
  *   @type integer {params.body.client.owner}
  *   @type integer {params.body.client.creator}
+ *   @type string {params.body.client.date_added} FORMAT YYYY-MM-DD
  *   @type string {params.body.client.name}
  *   @type string {params.body.client.email}
  *   @type string {params.body.client.phone_number}
