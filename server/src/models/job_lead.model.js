@@ -2,7 +2,7 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
-const Employer = require("./employer.model");
+// TODO: incorporate employer into job_leads const Employer = require("./employer.model");
 
 const JobLead = sequelize.define("job_leads", {
   id: {
