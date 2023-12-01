@@ -40,7 +40,7 @@ router.post("/login", (req, res, next) => {
           isAdmin: user.is_admin,
         },
       });
-    })
+    });
   })(req, res, next); // IIFE to invoke the returned function immediately with req, res, and next
 });
 
