@@ -94,7 +94,7 @@ function AddEmployerJobLead({
 
   return (
     <Container>
-      <H1>Adding a new Employer</H1>
+      <H1>Adding a New Employer</H1>
       <Body>
         Input information about any job leads associated with the employer.
       </Body>
