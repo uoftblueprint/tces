@@ -7,13 +7,13 @@ import "./App.css";
 // import ImportPage from "./pages/import";
 import Navbar from "./components/navbar-component/Navbar";
 import AddJobLeadPage from "./pages/add-job-lead";
-// import AddEmployerPage from "./pages/add-employer";
+import AddEmployerPage from "./pages/add-employer";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <AddJobLeadPage />
+      <AddEmployerPage />
     </div>
   );
 }

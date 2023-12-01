@@ -4,20 +4,20 @@ import AddJobLead from "./index";
 function AddJobLeadParent() {
   const initialState = {
     jobLeads: [
-        {
-            id: 0,
-            employer: "",
-            title: "",
-            minCompensation: "",
-            maxCompensation: "",
-            hoursPerWeek: "",
-            nationalOC: "",
-            description: "",
-            creationDate: null,
-            expirationDate: null,
-            employmentType: "",
-            numPositions: "",
-          },
+      {
+        id: 0,
+        employer: "",
+        title: "",
+        minCompensation: "",
+        maxCompensation: "",
+        hoursPerWeek: "",
+        nationalOC: "",
+        description: "",
+        creationDate: null,
+        expirationDate: null,
+        employmentType: "",
+        numPositions: "",
+      },
     ],
   };
   const [jobLeadData, setJobLeadData] = useState(initialState);

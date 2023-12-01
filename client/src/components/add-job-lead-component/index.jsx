@@ -11,11 +11,7 @@ import {
 import JobLeadContent from "./jobLeadCard";
 import { Container, ButtonContainer, H1, Body, ButtonL } from "./index.styles";
 
-function AddJobLead({
-  jobLeadData,
-  setJobLeadData,
-  resetInitialState,
-}) {
+function AddJobLead({ jobLeadData, setJobLeadData, resetInitialState }) {
   AddJobLead.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     jobLeadData: PropTypes.array.isRequired,
@@ -75,7 +71,6 @@ function AddJobLead({
       <JobLeadContent
         jobLeadData={jobLeadData}
         handleInputChange={handleInputChange}
-        isAddEmployer={false}
       />
       <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
       <ButtonContainer>

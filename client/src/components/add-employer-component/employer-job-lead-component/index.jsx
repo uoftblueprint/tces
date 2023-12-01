@@ -77,9 +77,9 @@ function AddEmployerJobLead({
       <H1>Adding a Job Lead</H1>
       <Body>Input information about the job lead.</Body>
       <JobLeadContent
-        employerData={employerData}
+        jobLeadData={employerData}
         handleInputChange={handleInputChange}
-        isAddEmployer={true}
+        isAddEmployer
       />
       <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
       <Stack spacing={2}>
