@@ -74,8 +74,10 @@ function AddEmployerJobLead({
 
   return (
     <Container>
-      <H1>Adding a Job Lead</H1>
-      <Body>Input information about the job lead.</Body>
+      <H1>Adding a New Employer</H1>
+      <Body>
+        Input information about any job leads associated with the employer.
+      </Body>
       <JobLeadContent
         jobLeadData={employerData}
         handleInputChange={handleInputChange}
