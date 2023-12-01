@@ -27,21 +27,15 @@ router.post("/login", (req, res, next) => {
       return res.status(401).json({ message: info.message });
     }
 
-    req.logIn(user, () => {
-      if (err) {
-        return next(err);
-      }
-
-      return res.json({
-        message: "Login successful",
-        user: {
-          userID: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          email: user.email,
-          isAdmin: user.is_admin,
-        },
-      });
+    return res.json({
+      message: "Login successful",
+      user: {
+        userID: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        isAdmin: user.is_admin,
+      },
     });
   })(req, res, next); // IIFE to invoke the returned function immediately with req, res, and next
 });
