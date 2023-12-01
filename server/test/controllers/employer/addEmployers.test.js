@@ -44,6 +44,9 @@ describe("addEmployers test suite", () => {
           email: "email@gmail.com",
         },
       },
+      user: {
+        id: 1,
+      },
     };
 
     it("Calls create", async () => {
@@ -85,6 +88,9 @@ describe("addEmployers test suite", () => {
             phone_number: "289-555-5555",
           },
         ],
+      },
+      user: {
+        id: 1,
       },
     };
 
