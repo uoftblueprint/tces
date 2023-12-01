@@ -1,7 +1,7 @@
 import AddEmployerJobLead from "../../components/add-job-lead-component";
 
-function AddJobLead() {
+function AddJobLeadPage() {
   return <AddEmployerJobLead />;
 }
 
-export default AddJobLead;
+export default AddJobLeadPage;
