@@ -161,7 +161,7 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={dashboardRedirect}
               >
-                <EditPage />
+                <EditPage managedUsers={managedUsers} />
               </RouteGuard>
             </AuthGuard>
           }

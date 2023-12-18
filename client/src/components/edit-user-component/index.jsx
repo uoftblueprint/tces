@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,13 +13,19 @@ import { Form, Header, Cancel } from "./index.styles";
 import ConfirmDialog from "../shared/confirm-dialog-component";
 import { modifyUser } from "../../utils/api";
 import { ErrorMessage } from "../login-component/index.styles";
+import UserType from "../../prop-types/UserType";
 
-function EditComponent({ userID }) {
+function EditComponent({ currUser }) {
   const navigate = useNavigate();
+  const { userID } = currUser;
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState(
+    currUser.firstName ? currUser.firstName : "",
+  );
+  const [lastName, setLastName] = useState(
+    currUser.lastName ? currUser.lastName : "",
+  );
+  const [email, setEmail] = useState(currUser.email ? currUser.email : "");
   const [password, setPassword] = useState("");
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
 
@@ -146,7 +151,7 @@ function EditComponent({ userID }) {
 }
 
 EditComponent.propTypes = {
-  userID: PropTypes.number.isRequired,
+  currUser: UserType.isRequired,
 };
 
 export default EditComponent;
