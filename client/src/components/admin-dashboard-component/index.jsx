@@ -17,7 +17,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import UserType from "../../prop-types/UserType";
 import ConfirmDialog from "../shared/confirm-dialog-component";
-import LoadingComponent from "../shared/loading-screen-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 import { deleteUser } from "../../utils/api";
@@ -29,7 +28,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
   const [filteredRows, setFilteredRows] = React.useState(managedUsers);
   const [confirmDeleteDialog, setConfirmDeleteDialog] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   React.useEffect(() => {
@@ -62,7 +60,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
 
   const handleConfirmDelete = async () => {
     if (userToDelete !== null) {
-      setIsLoading(true);
       setErrorMessage("");
       try {
         const response = await deleteUser(userToDelete);
@@ -76,8 +73,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
         }
       } catch (error) {
         setErrorMessage("An error occurred during your request.");
-      } finally {
-        setIsLoading(false);
       }
       setUserToDelete(null);
     }
@@ -133,10 +128,6 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
       },
     },
   ];
-
-  if (isLoading) {
-    return <LoadingComponent isLoading={isLoading} />;
-  }
 
   if (errorMessage) {
     return <ErrorComponent message={errorMessage} />;

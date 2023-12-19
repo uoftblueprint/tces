@@ -68,6 +68,20 @@ const getAllUsers = async () => {
 };
 
 const modifyUser = async (modifiedUser) => {
+  const modifyUserBody = modifiedUser.password
+    ? {
+        first_name: modifiedUser.firstName,
+        last_name: modifiedUser.lastName,
+        email: modifiedUser.email,
+        password: modifiedUser.password,
+        is_admin: modifiedUser.isAdmin,
+      }
+    : {
+        first_name: modifiedUser.firstName,
+        last_name: modifiedUser.lastName,
+        email: modifiedUser.email,
+        is_admin: modifiedUser.isAdmin,
+      };
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/users/${modifiedUser.userID}`,
@@ -77,13 +91,7 @@ const modifyUser = async (modifiedUser) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        first_name: modifiedUser.firstName,
-        last_name: modifiedUser.lastName,
-        email: modifiedUser.email,
-        password: modifiedUser.password,
-        is_admin: modifiedUser.isAdmin,
-      }),
+      body: JSON.stringify(modifyUserBody),
     },
   );
   return response;

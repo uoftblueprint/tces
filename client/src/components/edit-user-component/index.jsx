@@ -119,8 +119,6 @@ function EditComponent({ currUser }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 label="Password"
-                helperText="*Required"
-                required
               />
             </Stack>
           </CardContent>
