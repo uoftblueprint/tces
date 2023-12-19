@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -6,7 +7,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
 import Button from "@mui/material/Button";
 
-function DropdownItem({ keyword }) {
+function DropdownItem({ keyword, setIsDropdownVisible }) {
+  const navigate = useNavigate();
   const icons = {
     settings: <SettingsIcon color="action" />,
     logout: <LogoutIcon color="action" />,
@@ -20,21 +22,24 @@ function DropdownItem({ keyword }) {
   };
 
   const routes = {
-    settings: "#",
-    logout: "#",
-    admin: "#",
+    settings: "/settings",
+    logout: "/logout",
+    admin: "/admin",
   };
 
+  const onClickRoute = () => {
+    setIsDropdownVisible(false);
+    navigate(routes[keyword]);
+  };
   const icon = icons[keyword];
   const label = labels[keyword];
-  const route = routes[keyword];
 
   return (
     <Button
       variant="text"
       className="dropdown-item-button"
       style={{ color: "rgba(0, 0, 0, 0.6)" }}
-      href={route}
+      onClick={onClickRoute}
     >
       <div className="dropdown-item-container">
         <div className="dropdown-item-left-content">
@@ -49,6 +54,7 @@ function DropdownItem({ keyword }) {
 
 DropdownItem.propTypes = {
   keyword: PropTypes.string.isRequired,
+  setIsDropdownVisible: PropTypes.func.isRequired,
 };
 
 export default DropdownItem;

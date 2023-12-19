@@ -1,7 +1,38 @@
-import UserManagement from "../../components/user-management-component/UserManagement";
+import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import AdminDashboardComponent from "../../components/admin-dashboard-component";
+import UserType from "../../prop-types/UserType";
 
-function AdminDashboard() {
-  return <UserManagement />;
+function AdminDashboard({ managedUsers, setManagedUsers }) {
+  const [processedManagedUsers, setProcessedManagedUsers] = useState([]);
+
+  useEffect(() => {
+    const processedUsers = managedUsers.map((user) => ({
+      ...user,
+      id: user.userID,
+      displayName: `${user.firstName} ${user.lastName}`,
+    }));
+    setProcessedManagedUsers(processedUsers);
+  }, [managedUsers]);
+
+  const removeUser = (userID) => {
+    setManagedUsers((prevUsers) => {
+      return prevUsers.filter((user) => user.userID !== userID);
+    });
+  };
+
+  return (
+    <AdminDashboardComponent
+      managedUsers={processedManagedUsers}
+      removeUser={removeUser}
+    />
+  );
 }
+
+AdminDashboard.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  setManagedUsers: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+};
 
 export default AdminDashboard;

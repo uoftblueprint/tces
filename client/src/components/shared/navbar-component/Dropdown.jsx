@@ -30,9 +30,20 @@ function Dropdown({ isAdmin, setIsDropdownVisible }) {
     <div className="dropdown-container" ref={wrapperRef}>
       <div className="dropdown-title">Profile</div>
       <div className="dropdown-items">
-        {isAdmin && <DropdownItem keyword="admin" />}
-        <DropdownItem keyword="settings" />
-        <DropdownItem keyword="logout" />
+        {isAdmin && (
+          <DropdownItem
+            keyword="admin"
+            setIsDropdownVisible={setIsDropdownVisible}
+          />
+        )}
+        <DropdownItem
+          keyword="settings"
+          setIsDropdownVisible={setIsDropdownVisible}
+        />
+        <DropdownItem
+          keyword="logout"
+          setIsDropdownVisible={setIsDropdownVisible}
+        />
       </div>
     </div>
   );
