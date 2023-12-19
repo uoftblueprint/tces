@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   Container,
   Logo,
@@ -8,42 +10,44 @@ import {
   Button,
   H3,
   P,
+  ErrorMessage,
 } from "./index.styles";
+import { login } from "../../utils/api";
 
-function LoginComponent() {
+function LoginComponent({ setIsAuthenticated, loginUser }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = () => {
-    // Create a JSON object with the required keys and values
-    const loginData = {
-      username: email,
-      password,
-    };
+  const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage(
+        // eslint-disable-next-line
+        "Please fill in your email and password before proceeding"
+      );
+      return;
+    }
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await login(email, password);
+      if (response.ok) {
+        const userData = await response.json();
+        loginUser(userData.user);
+        setIsAuthenticated(true);
 
-    // Convert the JSON object to a string
-    const loginDataJSON = JSON.stringify(loginData);
-
-    // Replace url with target route
-    fetch("http://localhost:8000/login", {
-      method: "POST", // Not sure which method
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: loginDataJSON,
-    });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('Login successful');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Login failed');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // });
+        navigate("/dashboard");
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Login failed");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred during login");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,9 +72,17 @@ function LoginComponent() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </InputContainer>
-      <Button onClick={handleLogin}>LOG IN</Button>
+      <Button onClick={handleLogin} disabled={isLoading}>
+        {isLoading ? "LOGGING IN..." : "LOG IN"}
+      </Button>
+      <ErrorMessage>{errorMessage}</ErrorMessage>
     </Container>
   );
 }
+
+LoginComponent.propTypes = {
+  setIsAuthenticated: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
+};
 
 export default LoginComponent;

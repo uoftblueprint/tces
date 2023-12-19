@@ -1,9 +1,8 @@
 const express = require("express");
-
-const router = express.Router();
-
 // PassportJS imports for auth
 const passport = require("passport");
+
+const router = express.Router();
 
 const logoutRequestHandler = require("../controllers/auth/logout");
 const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
@@ -16,14 +15,34 @@ const isLoggedInRequestHandler = require("../controllers/auth/isLoggedIn");
  * @type string {body.username}
  * @type string {body.password}
  */
-router.post(
-  "/login",
-  // auth middleware
-  passport.authenticate("local", {
-    successRedirect: `${process.env.FRONTEND_URL}/`,
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
-  }),
-);
+
+router.post("/login", (req, res, next) => {
+  // eslint-disable-next-line consistent-return
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      return res.status(401).json({ message: info.message });
+    }
+    req.logIn(user, () => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: "Login successful",
+        user: {
+          userID: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          isAdmin: user.is_admin,
+        },
+      });
+    });
+  })(req, res, next); // IIFE to invoke the returned function immediately with req, res, and next
+});
 
 // User logs out
 router.post("/logout", logoutRequestHandler);

@@ -5,6 +5,10 @@ const isLoggedInRequestHandler = (req, res) => {
         status: "success",
         message: `User ${req.user.username} is logged in as admin`,
         data: {
+          userID: req.user.id,
+          firstName: req.user.first_name,
+          lastName: req.user.last_name,
+          email: req.user.username,
           is_admin: true,
         },
       });
@@ -14,6 +18,10 @@ const isLoggedInRequestHandler = (req, res) => {
       status: "success",
       message: `User ${req.user} logged in, but not an admin`,
       data: {
+        userID: req.user.id,
+        firstName: req.user.first_name,
+        lastName: req.user.last_name,
+        email: req.user.username,
         is_admin: false,
       },
     });
