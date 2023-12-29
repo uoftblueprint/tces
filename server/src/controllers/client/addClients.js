@@ -1,14 +1,17 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
+const {
+  addDefaultDates,
+  setOwnerAndCreator,
+} = require("../../utils/creation_util");
 
 const addClientsRequestHandler = async (req, res) => {
   try {
     if (req.body.client instanceof Array) {
-      req.body.client.forEach(client => {
+      req.body.client.forEach((client) => {
         // validate each client, and add values
         addDefaultDates(client);
         setOwnerAndCreator(client, req.user.id);
-        console.log(client);
       });
 
       // bulk create clients
@@ -64,15 +67,5 @@ const addClientsRequestHandler = async (req, res) => {
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 };
-
-const addDefaultDates = (client) => {
-  client.date_added = new Date();
-  client.date_updated = new Date();
-}
-
-const setOwnerAndCreator = (client, user_id) => {
-  client.creator = user_id;
-  client.owner = client.owner || user_id;
-}
 
 module.exports = addClientsRequestHandler;

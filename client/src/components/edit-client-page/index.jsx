@@ -8,10 +8,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import MuiPhoneNumber from "material-ui-phone-number";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TableFooter from "@mui/material/TableFooter";
+import Grid from "@mui/material/Grid";
+// import { IMaskInput } from "react-imask";
 
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
@@ -33,7 +34,7 @@ export default function ClientPage() {
 
   const [editedName, setEditedName] = React.useState(userInfo.firstName);
   const [editedEmail, seteditedEmail] = React.useState(userInfo.email);
-  const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
+  // const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
   const [editedStatus, setEditedStatus] = React.useState(userInfo.status);
 
   const handleNameChange = (event) => {
@@ -44,12 +45,17 @@ export default function ClientPage() {
     seteditedEmail(event.target.value);
   };
 
-  const handlePhoneChange = (event) => {
-    setEditedPhone(event);
-  };
+  // const handlePhoneChange = (event) => {
+  //   setEditedPhone(event);
+  // };
 
   const handleStatusChange = (event) => {
     setEditedStatus(event.target.value);
+  };
+
+  // Just for now
+  const handleDelete = () => {
+    console.info("You clicked the edit icon.");
   };
 
   return (
@@ -68,46 +74,56 @@ export default function ClientPage() {
         </Box>
         <Card id="people-card" sx={{ marginLeft: "auto" }}>
           <CardContent>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell id="people-card-cell">Owner</TableCell>
-                  <TableCell id="people-card-cell">Creator</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell id="people-card-cell">
-                    <Chip
-                      variant="outlined"
-                      avatar={
-                        <Avatar
-                          sx={{
-                            background: "#E53568",
-                            color: "#FFFFFF",
-                          }}
-                        >
-                          OP
-                        </Avatar>
-                      }
-                      label="Owen Perth"
-                      deleteIcon={<EditIcon />}
-                    />
-                  </TableCell>
-                  <TableCell id="people-card-cell">
-                    <Chip
-                      variant="outlined"
-                      avatar={
-                        <Avatar sx={{ background: "blue", color: "white" }}>
-                          EG
-                        </Avatar>
-                      }
-                      label="Emily Gale"
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <Grid container spacing={1}>
+              <Grid
+                item
+                xs={6}
+                sx={{ textAlign: "center", fontFamily: "Arial" }}
+              >
+                Owner
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                sx={{ textAlign: "center", fontFamily: "Arial" }}
+              >
+                Creator
+              </Grid>
+
+              <Grid item xs={6}>
+                <Chip
+                  variant="outlined"
+                  avatar={
+                    <Avatar
+                      sx={{
+                        background: "#E53568",
+                        color: "#FFFFFF",
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      OP
+                    </Avatar>
+                  }
+                  label="Owen Perth"
+                  onDelete={handleDelete}
+                  deleteIcon={<EditIcon />}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Chip
+                  variant="outlined"
+                  avatar={
+                    <Avatar sx={{ background: "blue", color: "white" }}>
+                      EG
+                    </Avatar>
+                  }
+                  label="Emily Gale"
+                />
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </div>
@@ -159,10 +175,16 @@ export default function ClientPage() {
                   Phone Number
                 </TableCell>
                 <TableCell>
-                  <MuiPhoneNumber
-                    value={editedPhone}
-                    onChange={handlePhoneChange}
-                  />
+                  {/* <IMaskInput
+                   
+                    mask="(#00) 000-0000"
+                    definitions={{
+                      "#": /[1-9]/,
+                    }}
+                    inputRef={ref}
+                    onAccept={(value) => onChange({ target: { name, value } })}
+                    overwrite
+                  /> */}
                 </TableCell>
                 <TableCell align="right">
                   <ContentCopyIcon />

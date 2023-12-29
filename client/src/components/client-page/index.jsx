@@ -15,12 +15,18 @@ import CardContent from "@mui/material/CardContent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import { Avatar } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 export default function ClientPage() {
   const userInfo = {
     firstName: "First Last",
     email: "email@email.com",
     phone: "+1 111 111 1111",
+  };
+
+  // Just for now
+  const handleDelete = () => {
+    console.info("You clicked the edit icon.");
   };
 
   return (
@@ -39,46 +45,56 @@ export default function ClientPage() {
         </Box>
         <Card id="people-card" sx={{ marginLeft: "auto" }}>
           <CardContent>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell id="people-card-cell">Owner</TableCell>
-                  <TableCell id="people-card-cell">Creator</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell id="people-card-cell">
-                    <Chip
-                      variant="outlined"
-                      avatar={
-                        <Avatar
-                          sx={{
-                            background: "#E53568",
-                            color: "#FFFFFF",
-                          }}
-                        >
-                          OP
-                        </Avatar>
-                      }
-                      label="Owen Perth"
-                      deleteIcon={<EditIcon />}
-                    />
-                  </TableCell>
-                  <TableCell id="people-card-cell">
-                    <Chip
-                      variant="outlined"
-                      avatar={
-                        <Avatar sx={{ background: "blue", color: "white" }}>
-                          EG
-                        </Avatar>
-                      }
-                      label="Emily Gale"
-                    />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <Grid container spacing={1}>
+              <Grid
+                item
+                xs={6}
+                sx={{ textAlign: "center", fontFamily: "Arial" }}
+              >
+                Owner
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                sx={{ textAlign: "center", fontFamily: "Arial" }}
+              >
+                Creator
+              </Grid>
+
+              <Grid item xs={6}>
+                <Chip
+                  variant="outlined"
+                  avatar={
+                    <Avatar
+                      sx={{
+                        background: "#E53568",
+                        color: "#FFFFFF",
+                        textAlign: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      OP
+                    </Avatar>
+                  }
+                  label="Owen Perth"
+                  onDelete={handleDelete}
+                  deleteIcon={<EditIcon />}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Chip
+                  variant="outlined"
+                  avatar={
+                    <Avatar sx={{ background: "blue", color: "white" }}>
+                      EG
+                    </Avatar>
+                  }
+                  label="Emily Gale"
+                />
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </div>

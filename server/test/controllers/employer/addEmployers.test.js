@@ -1,22 +1,22 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
-import addClientsRequestHandler from "../../src/controllers/client/addClients";
-const Client = await require("../../src/models/client.model");
+import addEmployersRequestHandler from "../../../src/controllers/employer/addEmployers";
+const Employer = await require("../../../src/models/employer.model");
 const mock = require("mock-require");
-const mockAddClients = require("../mocks/mockAddClients");
+const mockAddEmployers = require("../../mocks/mockAddEmployers");
 
 beforeEach(() => {
-  mock("../../src/models/client.model", mockAddClients);
-  addClientsRequestHandler = mock.reRequire(
-    "../../src/controllers/client/addClients",
+  mock("../../../src/models/employer.model", mockAddEmployers);
+  addEmployersRequestHandler = mock.reRequire(
+    "../../../src/controllers/employer/addEmployers",
   );
 });
 
 afterEach(() => {
   // Reset mocks after every test
-  mock.stop("../../src/models/client.model");
+  mock.stop("../../../src/models/employer.model");
 });
 
-describe("addClients test suite", () => {
+describe("addEmployers test suite", () => {
   var mockRes = {
     status: (code) => {
       mockRes.statusCode = code;
@@ -34,15 +34,14 @@ describe("addClients test suite", () => {
     mockRes.statusCode = 0;
   });
 
-  describe("Add single client", () => {
+  describe("Add single employer", () => {
     var mockReq = {
       body: {
-        client: {
+        employer: {
+          owner: 1,
+          creator: 1,
           name: "name",
           email: "email@gmail.com",
-          phone_number: "289-555-5555",
-          status: "open?",
-          closure_date: new Date(),
         },
       },
       user: {
@@ -51,41 +50,42 @@ describe("addClients test suite", () => {
     };
 
     it("Calls create", async () => {
-      const spy = vi.spyOn(mockAddClients, "create");
+      const spy = vi.spyOn(mockAddEmployers, "create");
 
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call bulkCreate", async () => {
-      const spy = vi.spyOn(mockAddClients, "bulkCreate");
+      const spy = vi.spyOn(mockAddEmployers, "bulkCreate");
 
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
 
     it("Returns 200 on success", async () => {
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);
     });
   });
 
-  describe("Add multiple clients", () => {
+  describe("Add multiple employers", () => {
     const mockReq = {
       body: {
-        client: [
+        employer: [
           {
+            owner: 1,
+            creator: 1,
             name: "name",
             email: "email@gmail.com",
             phone_number: "289-555-5555",
-            closure_date: new Date(),
-            status_at_exit: "active",
           },
           {
+            owner: 1,
+            creator: 2,
             name: "name",
             email: "email2@gmail.com",
             phone_number: "289-555-5555",
-            closure_date: new Date(),
           },
         ],
       },
@@ -95,21 +95,21 @@ describe("addClients test suite", () => {
     };
 
     it("Calls bulkCreate", async () => {
-      const spy = vi.spyOn(mockAddClients, "bulkCreate");
+      const spy = vi.spyOn(mockAddEmployers, "bulkCreate");
 
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call create", async () => {
-      const spy = vi.spyOn(mockAddClients, "create");
+      const spy = vi.spyOn(mockAddEmployers, "create");
 
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
     });
 
     it("Returns 200 on success", async () => {
-      await addClientsRequestHandler(mockReq, mockRes);
+      await addEmployersRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);
     });
   });
