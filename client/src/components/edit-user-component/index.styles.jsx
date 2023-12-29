@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Box, Button } from "@mui/material";
 
 const Form = styled.form`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,6 +14,7 @@ const Form = styled.form`
 `;
 
 const Header = styled(Box)`
+  margin-top: 40px;
   display: flex;
   width: 47.5rem;
   padding-right: 0px;
