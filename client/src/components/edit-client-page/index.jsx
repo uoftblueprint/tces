@@ -12,7 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TableFooter from "@mui/material/TableFooter";
 import Grid from "@mui/material/Grid";
-// import { IMaskInput } from "react-imask";
+import { IMaskInput } from "react-imask";
+// import { useRef } from 'react';
+import PropTypes from "prop-types";
+/* eslint-disable react/jsx-props-no-spreading */
 
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
@@ -24,6 +27,29 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import { Avatar } from "@mui/material";
 
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(
+  { onChange, name, ...other },
+  ref,
+) {
+  return (
+    <IMaskInput
+      {...other}
+      mask="(#00) 000-0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default function ClientPage() {
   const userInfo = {
     firstName: "First Last",
@@ -34,7 +60,7 @@ export default function ClientPage() {
 
   const [editedName, setEditedName] = React.useState(userInfo.firstName);
   const [editedEmail, seteditedEmail] = React.useState(userInfo.email);
-  // const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
+  const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
   const [editedStatus, setEditedStatus] = React.useState(userInfo.status);
 
   const handleNameChange = (event) => {
@@ -45,9 +71,9 @@ export default function ClientPage() {
     seteditedEmail(event.target.value);
   };
 
-  // const handlePhoneChange = (event) => {
-  //   setEditedPhone(event);
-  // };
+  const handlePhoneChange = (event) => {
+    setEditedPhone(event.target.value);
+  };
 
   const handleStatusChange = (event) => {
     setEditedStatus(event.target.value);
@@ -175,16 +201,16 @@ export default function ClientPage() {
                   Phone Number
                 </TableCell>
                 <TableCell>
-                  {/* <IMaskInput
-                   
-                    mask="(#00) 000-0000"
-                    definitions={{
-                      "#": /[1-9]/,
+                  <TextField
+                    label="Phone Number"
+                    value={editedPhone}
+                    onChange={handlePhoneChange}
+                    name="textmask"
+                    fullWidth
+                    InputProps={{
+                      inputComponent: TextMaskCustom,
                     }}
-                    inputRef={ref}
-                    onAccept={(value) => onChange({ target: { name, value } })}
-                    overwrite
-                  /> */}
+                  />
                 </TableCell>
                 <TableCell align="right">
                   <ContentCopyIcon />
