@@ -1,13 +1,13 @@
 import "./App.css";
-import EditClientPage from "./components/edit-client-page";
+import ClientPage from "./components/client-page";
 
 function App() {
   return (
     <div className="App">
       {/* <DashboardPage /> */}
       {/* <EditClientPage /> */}
-      {/* <ClientPage /> */}
-      <EditClientPage />
+      <ClientPage />
+      {/* <EditClientPage /> */}
       {/* <ClientPage /> */}
     </div>
   );

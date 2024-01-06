@@ -116,13 +116,13 @@ export default function ClientPage() {
                 <TableCell component="th" scope="row">
                   Name
                 </TableCell>
-                <TableCell>{userInfo.firstName}</TableCell>
+                <TableCell colSpan={2}>{userInfo.firstName}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Email
                 </TableCell>
-                <TableCell>{userInfo.email}</TableCell>
+                <TableCell colSpan={2}>{userInfo.email}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">

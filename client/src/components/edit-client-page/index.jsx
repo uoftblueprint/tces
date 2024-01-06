@@ -172,7 +172,7 @@ export default function ClientPage() {
                 <TableCell component="th" scope="row">
                   Name
                 </TableCell>
-                <TableCell>
+                <TableCell colSpan={2}>
                   <TextField
                     type="text"
                     id="firstName"
@@ -186,7 +186,7 @@ export default function ClientPage() {
                 <TableCell component="th" scope="row">
                   Email
                 </TableCell>
-                <TableCell>
+                <TableCell colSpan={2}>
                   <TextField
                     type="text"
                     id="firstName"
@@ -220,7 +220,7 @@ export default function ClientPage() {
                 <TableCell component="th" scope="row">
                   Status
                 </TableCell>
-                <TableCell>
+                <TableCell colSpan={2}>
                   <Select value={editedStatus} onChange={handleStatusChange}>
                     <MenuItem value="Active">
                       {" "}
