@@ -1,13 +1,13 @@
 // import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableHead from "@mui/material/TableHead";
+// import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
@@ -16,12 +16,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
 
 export default function ClientPage() {
   const userInfo = {
     firstName: "First Last",
     email: "email@email.com",
     phone: "+1 111 111 1111",
+    status: "Active"
   };
 
   // Just for now
@@ -99,7 +101,87 @@ export default function ClientPage() {
         </Card>
       </div>
       <Paper>
-        <TableContainer>
+      <Box>
+      <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={10}>
+                <Typography variant="h5" align="left">
+                  Personal Information
+                </Typography>
+              </Grid>
+              <Grid item xs={1.6} align="right">
+                <EditIcon color="primary" />
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider />
+
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Name
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+              <Typography gutterBottom variant="body1" align="left">
+							{userInfo.firstName}
+						</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider variant="middle" />
+
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Email
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+              <Typography gutterBottom variant="body1" align="left">
+							{userInfo.email}
+						</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+          <Grid container direction="row" alignItems="center">
+            <Grid item xs={4}>
+              <Typography gutterBottom variant="body1" align="left">
+              Phone Number
+              </Typography>
+            </Grid>
+            <Grid item xs={7}>
+            <Typography gutterBottom variant="body1" align="left">
+							{userInfo.phone}
+						</Typography>
+            </Grid>
+            <Grid item xs={1} id="info-card-icon">
+              <ContentCopyIcon />
+            </Grid>
+          </Grid>
+        </Box>
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Status
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+              <Typography variant="body1" align="left">
+                <Chip variant="filled" label={userInfo.status}/>
+              </Typography>
+              
+              </Grid>
+            </Grid>
+          </Box>
+          </Box>
+        {/* <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -143,7 +225,7 @@ export default function ClientPage() {
               </TableRow>
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
       </Paper>
     </div>
   );

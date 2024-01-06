@@ -1,23 +1,23 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableHead from "@mui/material/TableHead";
+// import TableRow from "@mui/material/TableRow";
+// import TableFooter from "@mui/material/TableFooter";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import TableFooter from "@mui/material/TableFooter";
 import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
 import { IMaskInput } from "react-imask";
-// import { useRef } from 'react';
 import PropTypes from "prop-types";
 /* eslint-disable react/jsx-props-no-spreading */
 
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -155,7 +155,114 @@ export default function ClientPage() {
       </div>
 
       <Paper>
-        <TableContainer>
+      <Box>
+      <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={10}>
+                <Typography variant="h5" align="left">
+                  Personal Information
+                </Typography>
+              </Grid>
+              <Grid item xs={1.6} align="right">
+                <EditIcon color="primary" />
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider />
+
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Name
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={editedName}
+                  onChange={handleNameChange}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider variant="middle" />
+
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Email
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={editedEmail}
+                  onChange={handleEmailChange}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+          <Grid container direction="row" alignItems="center">
+            <Grid item xs={5}>
+              <Typography gutterBottom variant="body1" align="left">
+              Phone Number
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+            <TextField
+              value={editedPhone}
+              onChange={handlePhoneChange}
+              id="phone"
+              name="phone"
+              InputProps={{
+                inputComponent: TextMaskCustom,
+              }}
+            />
+            </Grid>
+            <Grid item xs={1} id="info-card-icon">
+              <ContentCopyIcon />
+            </Grid>
+          </Grid>
+        </Box>
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={4}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Status
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Select value={editedStatus} onChange={handleStatusChange}>
+                  <MenuItem value="Active">
+                    {" "}
+                    <Chip label="Active" />
+                  </MenuItem>
+                  <MenuItem value="Not Active">
+                    <Chip label="Not Active" />
+                  </MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={12} align="right">
+                <Button>Save Changes</Button>
+              </Grid>
+            </Grid>
+          </Box>
+          </Box>
+        {/* <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -239,7 +346,7 @@ export default function ClientPage() {
               </TableCell>
             </TableFooter>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
       </Paper>
     </div>
   );
