@@ -166,6 +166,12 @@ function App() {
             </AuthGuard>
           }
         />
+        <Route
+          path="/employer/:employerID"
+          element={
+            <h1>Hello world</h1>
+          }
+        />
       </Routes>
     </Router>
   );
