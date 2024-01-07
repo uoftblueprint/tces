@@ -32,6 +32,7 @@ function EmployerComponent({ currUser }) {
       <div
         style={{
           display: "flex",
+          marginRight: "40px",
         }}
       >
         <ArrowContainer>
