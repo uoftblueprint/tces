@@ -14,6 +14,7 @@ import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
+import EmployerPage from "./pages/employer";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -131,6 +132,17 @@ function App() {
               </AuthGuard>
             }
           />
+          <Route
+            path="/employer/:employerID"
+            element={
+              <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+              >
+                <EmployerPage currUser={currUser} />
+              </AuthGuard>
+            }
+          />
         </Route>
         <Route
           path="/admin/create-user"
@@ -164,12 +176,6 @@ function App() {
                 <EditPage managedUsers={managedUsers} />
               </RouteGuard>
             </AuthGuard>
-          }
-        />
-        <Route
-          path="/employer/:employerID"
-          element={
-            <h1>Hello world</h1>
           }
         />
       </Routes>
