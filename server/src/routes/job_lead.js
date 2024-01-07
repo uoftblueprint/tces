@@ -50,7 +50,7 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
 //     "job_title": "Software Developer In Test Intern",
 //     "compensation_max": 50000,
 //     "compensation_min": 40000,
-//     "num_of_positions": 2, 
+//     "num_of_positions": 2,
 //     "hours_per_week": 40,
 //     "national_occupation_code": 231232,
 //     "job_description": "full-stack testing.",
