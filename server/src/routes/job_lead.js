@@ -31,6 +31,7 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
  *   @type integer {params.body.client.creator}
  *   @type string {params.body.job_lead.employer_name}
  *   @type string {params.body.job_lead.job_title}
+ *   @type integer {params.body.job_lead.num_of_positions}
  *   @type integer {params.body.job_lead.compensation_max}
  *   @type integer {params.body.job_lead.compensation_min}
  *   @type integer {params.body.job_lead.hours_per_week}
@@ -49,6 +50,7 @@ router.get("/", isLoggedIn, getAllJobLeadsRequestHandler);
 //     "job_title": "Software Developer In Test Intern",
 //     "compensation_max": 50000,
 //     "compensation_min": 40000,
+//     "num_of_positions": 2, 
 //     "hours_per_week": 40,
 //     "national_occupation_code": 231232,
 //     "job_description": "full-stack testing.",

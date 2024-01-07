@@ -48,6 +48,10 @@ const JobLead = sequelize.define("job_leads", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  num_of_positions: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   compensation_max: {
     type: DataTypes.FLOAT,
     allowNull: true,

@@ -1,10 +1,10 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import addJobLeadsRequestHandler from "../../src/controllers/job_lead/addJobLeads";
 const mock = require("mock-require");
-const mockAddClients = require("../mocks/mockAddObject");
+const mockAddJobLeads = require("../mocks/mockAddObject");
 
 beforeEach(() => {
-  mock("../../src/models/job_lead.model", mockAddClients);
+  mock("../../src/models/job_lead.model", mockAddJobLeads);
   addJobLeadsRequestHandler = mock.reRequire(
     "../../src/controllers/job_lead/addJobLeads",
   );
@@ -55,14 +55,14 @@ describe("addJobLeads test suite", () => {
     };
 
     it("Calls create", async () => {
-      const spy = vi.spyOn(mockAddClients, "create");
+      const spy = vi.spyOn(mockAddJobLeads, "create");
 
       await addJobLeadsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it("Does not call bulkCreate", async () => {
-      const spy = vi.spyOn(mockAddClients, "bulkCreate");
+      const spy = vi.spyOn(mockAddJobLeads, "bulkCreate");
 
       await addJobLeadsRequestHandler(mockReq, mockRes);
       expect(spy).toHaveBeenCalledTimes(0);
@@ -109,18 +109,11 @@ describe("addJobLeads test suite", () => {
       },
     };
 
-    it("Calls bulkCreate", async () => {
-      const spy = vi.spyOn(mockAddClients, "bulkCreate");
+    it("Does call create multiple times", async () => {
+      const spy = vi.spyOn(mockAddJobLeads, "create");
 
       await addJobLeadsRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it("Does not call create", async () => {
-      const spy = vi.spyOn(mockAddClients, "create");
-
-      await addJobLeadsRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(0);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it("Returns 200 on success", async () => {
