@@ -1,19 +1,26 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import JobLeadDashboardComponent from "../../components/job-lead-dashboard-component";
 import UserType from "../../prop-types/UserType";
 
-function JobLeadDashboard({ managedJobLeads, setManagedJobLeads }) {
+function JobLeadDashboard({ managedJobLeads }) {
+  const [processedManagedJobLeads, setProcessedManagedJobLeads] = useState([]);
+
+  useEffect(() => {
+    const processedJobLeads = managedJobLeads.map((jobLead) => ({
+      ...jobLead,
+      id: jobLead.jobLeadID,
+    }));
+    setProcessedManagedJobLeads(processedJobLeads);
+  }, [managedJobLeads]);
+
   return (
-    <JobLeadDashboardComponent
-      managedJobLeads={managedJobLeads}
-      setManagedJobLeads={setManagedJobLeads}
-    />
+    <JobLeadDashboardComponent managedJobLeads={processedManagedJobLeads} />
   );
 }
 
 JobLeadDashboard.propTypes = {
   managedJobLeads: PropTypes.arrayOf(UserType).isRequired,
-  setManagedJobLeads: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

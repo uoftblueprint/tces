@@ -17,6 +17,7 @@ import LogoutPage from "./pages/logout";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
+import mockJobLeads from "./mock-data/mockJobLeads";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -50,7 +51,7 @@ function App() {
   const [managedUsers, setManagedUsers] = useState([]);
 
   // Job Leads State
-  const [managedJobLeads] = useState([]);
+  const [managedJobLeads] = useState(mockJobLeads);
 
   // Reset all states (when user logs out)
   const resetState = () => {
