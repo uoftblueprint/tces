@@ -10,4 +10,7 @@ const HeaderContainer = styled.div`
   align-items: center;
 `;
 
-export { EmployerContainer, HeaderContainer };
+const TopRowContainer = styled.div`
+`;
+
+export { EmployerContainer, HeaderContainer, TopRowContainer };
