@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
+const ArrowContainer = styled.div`
+  height: 100%;
+`;
+
 const EmployerContainer = styled.div`
-  margin-top: 20px;
   margin-right: 40px;
 `;
 
@@ -13,4 +16,7 @@ const HeaderContainer = styled.div`
 const TopRowContainer = styled.div`
 `;
 
-export { EmployerContainer, HeaderContainer, TopRowContainer };
+const MainContainer = styled.div`
+`;
+
+export { EmployerContainer, HeaderContainer, TopRowContainer, ArrowContainer, MainContainer };
