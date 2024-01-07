@@ -136,8 +136,8 @@ function App() {
             path="/employer/:employerID"
             element={
               <AuthGuard
-                  isAuthenticated={isAuthenticated}
-                  loginUser={loginUser}
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
               >
                 <EmployerPage currUser={currUser} />
               </AuthGuard>

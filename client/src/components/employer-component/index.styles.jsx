@@ -6,6 +6,7 @@ const ArrowContainer = styled.div`
 
 const EmployerContainer = styled.div`
   margin-right: 40px;
+  width: 100%;
 `;
 
 const HeaderContainer = styled.div`
@@ -13,10 +14,16 @@ const HeaderContainer = styled.div`
   align-items: center;
 `;
 
-const TopRowContainer = styled.div`
-`;
+const TopRowContainer = styled.div``;
 
 const MainContainer = styled.div`
+  width: 100%;
 `;
 
-export { EmployerContainer, HeaderContainer, TopRowContainer, ArrowContainer, MainContainer };
+export {
+  EmployerContainer,
+  HeaderContainer,
+  TopRowContainer,
+  ArrowContainer,
+  MainContainer,
+};
