@@ -21,7 +21,7 @@ function Navbar({ isAdmin }) {
           </div>
           <div className="left-content-buttons">
             <NavbarButton keyword="clients" />
-            <NavbarButton keyword="jobleads" />
+            <NavbarButton keyword="job-leads" />
             <NavbarButton keyword="employers" />
           </div>
         </div>

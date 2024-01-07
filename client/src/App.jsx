@@ -25,6 +25,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
+import JobLeadDashboard from "./pages/job-lead-dashboard";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -47,6 +48,9 @@ function App() {
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState([]);
+
+  // Job Leads State
+  const [managedJobLeads] = useState([]);
 
   // Reset all states (when user logs out)
   const resetState = () => {
@@ -95,6 +99,7 @@ function App() {
           }
         />
         <Route path="/logout" element={<LogoutPage onLogout={resetState} />} />
+        {/* Render navbar for child routes e.g dashboard, admin dashboard etc */}
         <Route element={<Navbar isAdmin={currUser.isAdmin} />}>
           <Route
             path="/dashboard"
@@ -127,6 +132,22 @@ function App() {
                       setManagedUsers={setManagedUsers}
                     />
                   </ManagedUsersLoader>
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/job-leads"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
+                >
+                  <JobLeadDashboard managedJobLeads={managedJobLeads} />
                 </RouteGuard>
               </AuthGuard>
             }

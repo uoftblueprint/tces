@@ -1,28 +1,36 @@
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function NavbarButton({ keyword }) {
+  const navigate = useNavigate();
+
   const titles = {
     clients: "CLIENTS",
-    jobleads: "JOB LEADS",
+    "job-leads": "JOB LEADS",
     employers: "EMPLOYERS",
   };
 
   const routes = {
-    clients: "#",
-    jobleads: "#",
-    employers: "#",
+    clients: "/clients",
+    "job-leads": "/job-leads",
+    employers: "/employers",
   };
 
   const title = titles[keyword];
   const route = routes[keyword];
+
+  const onRouteClick = () => {
+    navigate(route);
+  };
+
   return (
     <Button
       variant="text"
       className="nav-left-button"
       style={{ color: "rgba(0, 0, 0, 0.6)" }}
-      href={route}
+      onClick={onRouteClick}
     >
       {title}
     </Button>
