@@ -6,7 +6,9 @@ const DashboardContainer = styled.div`
 
 const HeaderContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  margin-bottom: 16px;
 `;
 
 export { DashboardContainer, HeaderContainer };

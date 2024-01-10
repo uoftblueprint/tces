@@ -26,18 +26,33 @@ function EmployerTable() {
               cursor: "pointer",
             }}
           />
-          <Typography
-            style={{
-              fontFamily: "Arial",
-              fontSize: "34px",
-              fontWeight: 500,
-              lineHeight: "42px",
-              letterSpacing: "0.25px",
-              textAlign: "left",
-            }}
-          >
-            All Employers
-          </Typography>
+          <div style={{ flexGrow: 1 }}>
+            <Typography
+              style={{
+                fontFamily: "Arial",
+                fontSize: "34px",
+                fontWeight: 500,
+                lineHeight: "60px",
+                letterSpacing: "0.25px",
+                textAlign: "left",
+              }}
+            >
+              All Employers
+            </Typography>
+            <Typography
+              style={{
+                fontFamily: "Arial",
+                fontSize: "14px",
+                fontWeight: 500,
+                lineHeight: "0px", // Corrected the unit for lineHeight
+                letterSpacing: "0.1px",
+                textAlign: "left",
+                color: "#00000099",
+              }}
+            >
+              ... Employers
+            </Typography>
+          </div>
           <Button
             sx={{
               marginLeft: "auto",
