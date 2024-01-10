@@ -43,6 +43,23 @@ function EmployerTable() {
               marginLeft: "auto",
               marginBottom: "30px",
               marginTop: "30px",
+              backgroundColor: "#ffffff0",
+              color: "#3568E5",
+              border: 1,
+              "&:hover": {
+                backgroundColor: "#ffffff0",
+                color: "#3568E5",
+              },
+            }}
+            startIcon={<AddIcon />}
+          >
+            EXPORT CURRENT FILTER VIEW (...)
+          </Button>
+          <Button
+            sx={{
+              marginLeft: "16px",
+              marginBottom: "30px",
+              marginTop: "30px",
               backgroundColor: "#3568E5",
               color: "white",
               "&:hover": {
