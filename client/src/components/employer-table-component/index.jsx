@@ -65,7 +65,7 @@ function EmployerTable() {
             width: "100%",
           }}
         >
-          <Card sx={{ width: 240, height:"fit-content", marginLeft: 2}}>
+          <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
             <CardContent>
               <Typography
                 sx={{ fontSize: 14, mb: 2 }}
@@ -92,7 +92,7 @@ function EmployerTable() {
                 />
               </Typography>
               <Typography
-                sx={{ fontSize: 14, mb: 2}}
+                sx={{ fontSize: 14, mb: 2 }}
                 color="text.secondary"
                 align="left"
                 gutterBottom
@@ -127,8 +127,8 @@ function EmployerTable() {
                 <DatePicker
                   label="From"
                   renderInput={(params) => (
-                      // eslint-disable-next-line
-                      <TextField {...params} error={false} helperText="" />
+                    // eslint-disable-next-line
+                    <TextField {...params} error={false} helperText="" />
                   )}
                   sx={{ mb: 2 }}
                 />
@@ -138,8 +138,8 @@ function EmployerTable() {
                 <DatePicker
                   label="To"
                   renderInput={(params) => (
-                      // eslint-disable-next-line
-                      <TextField {...params} error={false} helperText="" />
+                    // eslint-disable-next-line
+                    <TextField {...params} error={false} helperText="" />
                   )}
                   sx={{ mb: 2 }}
                 />
