@@ -3,7 +3,8 @@ import styled from "styled-components";
 const DashboardContainer = styled.div`
   margin-right: 40px;
   margin-left: 20px;
-  margin-top: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const HeaderContainer = styled.div`
