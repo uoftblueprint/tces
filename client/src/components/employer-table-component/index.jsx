@@ -23,6 +23,8 @@ function EmployerTable() {
               color: "gray",
               marginRight: 2,
               marginLeft: 2,
+              height: 35,
+              width: 35,
               cursor: "pointer",
             }}
           />
