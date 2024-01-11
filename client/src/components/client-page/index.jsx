@@ -1,10 +1,3 @@
-// import * as React from "react";
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TableRow from "@mui/material/TableRow";
 import { useNavigate } from 'react-router-dom';
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -317,51 +310,6 @@ export default function ClientPage() {
       )}
           </Box>
           </Box>
-        {/* <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Typography variant="h5">Personal Information</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon />
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Name
-                </TableCell>
-                <TableCell colSpan={2}>{userInfo.firstName}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Email
-                </TableCell>
-                <TableCell colSpan={2}>{userInfo.email}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Phone Number
-                </TableCell>
-                <TableCell>{userInfo.phone}</TableCell>
-                <TableCell align="right">
-                  <ContentCopyIcon />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Status
-                </TableCell>
-                <TableCell>
-                  <Chip label="Active" />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer> */}
       </Paper>
     </div>
   );

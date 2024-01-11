@@ -1,13 +1,5 @@
 import * as React from "react";
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TableRow from "@mui/material/TableRow";
-// import TableFooter from "@mui/material/TableFooter";
 import EditIcon from "@mui/icons-material/Edit";
-// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TextField from "@mui/material/TextField";
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from "@mui/material/Box";
@@ -220,9 +212,6 @@ export default function EditClientPage() {
               }}
             />
             </Grid>
-            {/* <Grid item xs={1} id="info-card-icon">
-              <ContentCopyIcon />
-            </Grid> */}
           </Grid>
         </Box>
           {/* <Divider variant="middle" />
@@ -282,91 +271,6 @@ export default function EditClientPage() {
             </Grid>
           </Box>
           </Box>
-        {/* <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <Typography variant="h5">Personal Information</Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <EditIcon color="primary" />
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Name
-                </TableCell>
-                <TableCell colSpan={2}>
-                  <TextField
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={editedName}
-                    onChange={handleNameChange}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Email
-                </TableCell>
-                <TableCell colSpan={2}>
-                  <TextField
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={editedEmail}
-                    onChange={handleEmailChange}
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Phone Number
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    label="Phone Number"
-                    value={editedPhone}
-                    onChange={handlePhoneChange}
-                    name="textmask"
-                    fullWidth
-                    InputProps={{
-                      inputComponent: TextMaskCustom,
-                    }}
-                  />
-                </TableCell>
-                <TableCell align="right">
-                  <ContentCopyIcon />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Status
-                </TableCell>
-                <TableCell colSpan={2}>
-                  <Select value={editedStatus} onChange={handleStatusChange}>
-                    <MenuItem value="Active">
-                      {" "}
-                      <Chip label="Active" />
-                    </MenuItem>
-                    <MenuItem value="Not Active">
-                      <Chip label="Not Active" />
-                    </MenuItem>
-                  </Select>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-            <TableFooter>
-              <TableCell colSpan={3} align="right">
-                <Button>Save Changes</Button>
-              </TableCell>
-            </TableFooter>
-          </Table>
-        </TableContainer> */}
       </Paper>
     </div>
   );
