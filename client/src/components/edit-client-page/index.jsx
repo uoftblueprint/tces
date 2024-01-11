@@ -7,11 +7,12 @@ import * as React from "react";
 // import TableRow from "@mui/material/TableRow";
 // import TableFooter from "@mui/material/TableFooter";
 import EditIcon from "@mui/icons-material/Edit";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TextField from "@mui/material/TextField";
+import Autocomplete from '@mui/material/Autocomplete';
 import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+// import MenuItem from "@mui/material/MenuItem";
+// import Select from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { IMaskInput } from "react-imask";
@@ -50,18 +51,18 @@ TextMaskCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default function ClientPage() {
-  const userInfo = {
+export default function EditClientPage() {
+  const clientInfo = {
     firstName: "First Last",
     email: "email@email.com",
     phone: "+1 111 111 1111",
     status: "Active",
   };
 
-  const [editedName, setEditedName] = React.useState(userInfo.firstName);
-  const [editedEmail, seteditedEmail] = React.useState(userInfo.email);
-  const [editedPhone, setEditedPhone] = React.useState(userInfo.phone);
-  const [editedStatus, setEditedStatus] = React.useState(userInfo.status);
+  const [editedName, setEditedName] = React.useState(clientInfo.firstName);
+  const [editedEmail, seteditedEmail] = React.useState(clientInfo.email);
+  const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
+  const [editedStatus, setEditedStatus] = React.useState(clientInfo.status);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
@@ -85,7 +86,7 @@ export default function ClientPage() {
   };
 
   return (
-    <div style={{ marginLeft: "40px", marginRight: "40px" }}>
+    <div style={{ marginLeft: "40px", marginRight: "40px", marginTop: "40px"  }}>
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
@@ -118,18 +119,9 @@ export default function ClientPage() {
 
               <Grid item xs={6}>
                 <Chip
-                  variant="outlined"
+                  variant="filled"
                   avatar={
-                    <Avatar
-                      sx={{
-                        background: "#E53568",
-                        color: "#FFFFFF",
-                        textAlign: "center",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
+                    <Avatar style={{ background: '#E53568', color: 'white' }}>
                       OP
                     </Avatar>
                   }
@@ -140,11 +132,9 @@ export default function ClientPage() {
               </Grid>
               <Grid item xs={6}>
                 <Chip
-                  variant="outlined"
+                  variant="filled"
                   avatar={
-                    <Avatar sx={{ background: "blue", color: "white" }}>
-                      EG
-                    </Avatar>
+                    <Avatar style={{ background: '#3568E5', color: 'white' }}>EG</Avatar>
                   }
                   label="Emily Gale"
                 />
@@ -163,7 +153,7 @@ export default function ClientPage() {
                   Personal Information
                 </Typography>
               </Grid>
-              <Grid item xs={1.6} align="right">
+              <Grid item xs={1.8} align="right">
                 <EditIcon color="primary" />
               </Grid>
             </Grid>
@@ -172,17 +162,18 @@ export default function ClientPage() {
 
           <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             <Grid container direction="row" alignItems="center">
-              <Grid item xs={4}>
+              <Grid item xs={1.5}>
                 <Typography gutterBottom variant="body1" align="left">
                   Name
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={10}>
                 <TextField
                   type="text"
                   id="firstName"
                   name="firstName"
                   value={editedName}
+                  fullWidth
                   onChange={handleNameChange}
                 />
               </Grid>
@@ -192,17 +183,18 @@ export default function ClientPage() {
 
           <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             <Grid container direction="row" alignItems="center">
-              <Grid item xs={4}>
+              <Grid item xs={1.5}>
                 <Typography gutterBottom variant="body1" align="left">
                   Email
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={10}>
                 <TextField
                   type="text"
                   id="firstName"
                   name="firstName"
                   value={editedEmail}
+                  fullWidth
                   onChange={handleEmailChange}
                 />
               </Grid>
@@ -211,15 +203,16 @@ export default function ClientPage() {
           <Divider variant="middle" />
           <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
           <Grid container direction="row" alignItems="center">
-            <Grid item xs={5}>
+            <Grid item xs={1.5}>
               <Typography gutterBottom variant="body1" align="left">
               Phone Number
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={10}>
             <TextField
               value={editedPhone}
               onChange={handlePhoneChange}
+              fullWidth
               id="phone"
               name="phone"
               InputProps={{
@@ -227,21 +220,21 @@ export default function ClientPage() {
               }}
             />
             </Grid>
-            <Grid item xs={1} id="info-card-icon">
+            {/* <Grid item xs={1} id="info-card-icon">
               <ContentCopyIcon />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
-          <Divider variant="middle" />
+          {/* <Divider variant="middle" />
           <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             <Grid container direction="row" alignItems="center">
-              <Grid item xs={4}>
+              <Grid item xs={1.5}>
                 <Typography gutterBottom variant="body1" align="left">
                   Status
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
-                <Select value={editedStatus} onChange={handleStatusChange}>
+              <Grid item xs={10}>
+                <Select fullWidth value={editedStatus} onChange={handleStatusChange}>
                   <MenuItem value="Active">
                     {" "}
                     <Chip label="Active" />
@@ -252,11 +245,38 @@ export default function ClientPage() {
                 </Select>
               </Grid>
             </Grid>
+          </Box> */}
+          <Divider variant="middle" />
+          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={1.5}>
+                <Typography gutterBottom variant="body1" align="left">
+                  Status
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Autocomplete
+                  multiple
+                  onChange={handleStatusChange}
+                  options={['Active', 'R and I', 'Closed']}
+                  defaultValue={[editedStatus]}
+                  // onChange={(event, newValue) => handleStatusChange(newValue)}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip label={option} {...getTagProps({ index })} />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} variant="outlined" fullWidth />
+                  )}
+                />
+              </Grid>
+            </Grid>
           </Box>
           <Divider variant="middle" />
           <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             <Grid container direction="row" alignItems="center">
-              <Grid item xs={12} align="right">
+              <Grid item xs={11.5} align="right">
                 <Button>Save Changes</Button>
               </Grid>
             </Grid>
