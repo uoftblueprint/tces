@@ -124,10 +124,7 @@ function App() {
                   isPermitted={currUser.isAdmin}
                   redirect={dashboardRedirect}
                 >
-                  <ManagedUsersLoader
-                    currUser={currUser}
-                    setManagedUsers={setManagedUsers}
-                  >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
                     <AdminDashboard
                       managedUsers={managedUsers}
                       setManagedUsers={setManagedUsers}
@@ -148,11 +145,16 @@ function App() {
                   isPermitted={currUser.isAdmin}
                   redirect={dashboardRedirect}
                 >
-                  <ManagedJobLeadsLoader
-                    setManagedJobLeads={setManagedJobLeads}
-                  >
-                    <JobLeadDashboard managedJobLeads={managedJobLeads} />
-                  </ManagedJobLeadsLoader>
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ManagedJobLeadsLoader
+                      setManagedJobLeads={setManagedJobLeads}
+                    >
+                      <JobLeadDashboard
+                        managedJobLeads={managedJobLeads}
+                        managedUsers={managedUsers}
+                      />
+                    </ManagedJobLeadsLoader>
+                  </ManagedUsersLoader>
                 </RouteGuard>
               </AuthGuard>
             }

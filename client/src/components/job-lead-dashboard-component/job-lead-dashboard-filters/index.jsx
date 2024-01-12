@@ -21,6 +21,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import JobLeadType from "../../../prop-types/JobLeadType";
 
 function valuetext(value) {
   return `$${value}`;
@@ -60,12 +61,12 @@ function findHoursPerWeekRange(managedJobLeads) {
   return [minHours, maxHours];
 }
 
-function getOwnerIds(managedJobLeads) {
-  const ownerIds = new Set(managedJobLeads.map((lead) => lead.creatorID));
-  return Array.from(ownerIds);
-}
-
-function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
+function JobLeadDashboardFiltersComponent({
+  handleFilter,
+  managedJobLeads,
+  getUserById,
+}) {
+  // min distance between thumbs of sliders
   const minDistance = 1;
 
   // get min and max to set boundary for compensation slider
@@ -75,8 +76,33 @@ function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
   // get min and max to set boundary for hours per week slider
   const [minHours, maxHours] = findHoursPerWeekRange(managedJobLeads);
 
+  // get all the Creator names to display in options filter tab
+  const getOwnerIds = () => {
+    const uniqueCreatorIDs = new Set();
+    const ownerDetails = [];
+
+    managedJobLeads.forEach((lead) => {
+      if (!uniqueCreatorIDs.has(lead.creatorID)) {
+        uniqueCreatorIDs.add(lead.creatorID);
+
+        const user = getUserById(lead.creatorID);
+
+        const userName = user
+          ? `${user.firstName} ${user.lastName}`
+          : `User ${lead.creatorID}`;
+
+        ownerDetails.push({
+          creatorID: lead.creatorID,
+          userName,
+        });
+      }
+    });
+
+    return ownerDetails;
+  };
+
   // get all owner ids for "creator" drop down options
-  const ownerIds = getOwnerIds(managedJobLeads);
+  const ownerIds = getOwnerIds();
 
   // setting local state for filter config
   const [searchTitleQuery, setSearchTitleQuery] = React.useState("");
@@ -435,9 +461,9 @@ function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
                 onChange={onOwnerIdChange}
               >
                 <MenuItem value={-1}>Any</MenuItem>
-                {ownerIds.map((id) => (
-                  <MenuItem key={id} value={id}>
-                    {id}
+                {ownerIds.map((owner) => (
+                  <MenuItem key={owner.creatorID} value={owner.creatorID}>
+                    {owner.userName}
                   </MenuItem>
                 ))}
               </Select>
@@ -537,7 +563,8 @@ function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
 
 JobLeadDashboardFiltersComponent.propTypes = {
   handleFilter: PropTypes.func.isRequired,
-  managedJobLeads: PropTypes.func.isRequired,
+  getUserById: PropTypes.func.isRequired,
+  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   // eslint-disable-next-line
 };
 
