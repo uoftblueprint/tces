@@ -1,7 +1,6 @@
 // import * as React from "react";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -15,11 +14,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import UserType from "../../prop-types/UserType";
 import {
   EmployerContainer,
-  HeaderContainer,
-  TopRowContainer,
   ArrowContainer,
   MainContainer,
+  Divider,
 } from "./index.styles";
+
+import EmployerInfoComponent from "./employer-info-component";
 
 function EmployerComponent({ currUser }) {
   return (
@@ -51,41 +51,7 @@ function EmployerComponent({ currUser }) {
         </ArrowContainer>
         <MainContainer>
           <EmployerContainer>
-            <TopRowContainer>
-              <HeaderContainer>
-                <Typography
-                  style={{
-                    fontFamily: "Arial",
-                    fontSize: "34px",
-                    fontWeight: 700,
-                    lineHeight: "42px",
-                    letterSpacing: "0.25px",
-                    textAlign: "left",
-                  }}
-                >
-                  Shoppers Drug Mart
-                </Typography>
-                <MoreVertIcon
-                  onClick={() => {
-                    console.log("clicked triple vertical dots");
-                  }}
-                  sx={{
-                    color: "gray",
-                    marginRight: 2,
-                    marginLeft: 2,
-                    cursor: "pointer",
-                  }}
-                />
-              </HeaderContainer>
-              <Typography
-                style={{
-                  fontFamily: "Arial",
-                  textAlign: "left",
-                }}
-              >
-                Employer
-              </Typography>
-            </TopRowContainer>
+            <EmployerInfoComponent />
 
             <Box
               sx={{
@@ -97,16 +63,21 @@ function EmployerComponent({ currUser }) {
                 width: "100%",
               }}
             >
-              <Card sx={{ width: 235, height: 175 }}>
+              <Card 
+                style={{
+                width: "33%",
+                }}>
                 <CardContent>
                   <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
+                    variant="h5"
                     align="left"
                     gutterBottom
                   >
-                    Name
+                    Information
                   </Typography>
+                </CardContent>
+                <Divider />
+                <CardContent>
                   <Typography sx={{ mb: 0.5 }} color="text.secondary">
                     <TextField
                       type="text"
@@ -136,13 +107,15 @@ function EmployerComponent({ currUser }) {
               <Card style={{ width: "100%" }} sx={{ height: 175 }}>
                 <CardContent>
                   <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
+                    variant="h5"
                     align="left"
                     gutterBottom
                   >
-                    Name
+                    Contacts
                   </Typography>
+                </CardContent>
+                <Divider />
+                <CardContent>
                   <Typography sx={{ mb: 0.5 }} color="text.secondary">
                     <TextField
                       type="text"

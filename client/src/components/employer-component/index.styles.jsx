@@ -1,3 +1,5 @@
+import { Box } from "@mui/material";
+
 import styled from "styled-components";
 
 const ArrowContainer = styled.div`
@@ -8,22 +10,19 @@ const EmployerContainer = styled.div`
   margin-right: 40px;
   width: 100%;
 `;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const TopRowContainer = styled.div``;
-
 const MainContainer = styled.div`
   width: 100%;
 `;
 
+const Divider = styled(Box)`
+  border-bottom: 2px solid #0000001f;
+  border-color: divider;
+  margin-bottom: 10px;
+`;
+
 export {
   EmployerContainer,
-  HeaderContainer,
-  TopRowContainer,
   ArrowContainer,
   MainContainer,
+  Divider,
 };
