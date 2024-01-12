@@ -28,6 +28,7 @@ import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/M
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
+import EditJobLead from "./pages/edit-job-lead";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -197,7 +198,7 @@ function App() {
           }
         />
         <Route
-          path="/job-lead/:jobLeadID"
+          path="/job-leads/:jobLeadID"
           element={
             <AuthGuard
               isAuthenticated={isAuthenticated}
@@ -207,8 +208,9 @@ function App() {
               <RouteGuard
                 isPermitted={currUser.isAdmin}
                 redirect={dashboardRedirect}
-              />
-              {/* to add job leads page here */}
+              >
+                <EditJobLead managedJobLeads={managedJobLeads} />
+              </RouteGuard>
             </AuthGuard>
           }
         />
