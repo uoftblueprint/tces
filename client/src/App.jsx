@@ -1,12 +1,5 @@
 import "./App.css";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Navigate
-  } from "react-router-dom";
-import ClientPage from "./components/client-page";
-import EditClientPage from "./components/edit-client-page";
+import ClientPage from "./pages/client-page";
 
 function App() {
   return (
@@ -15,14 +8,7 @@ function App() {
       {/* <EditClientPage /> */}
       {/* <ClientPage /> */}
       {/* <EditClientPage /> */}
-      {/* <ClientPage /> */}
-     <Router>
-      <Routes>
-          <Route path="/" element={<Navigate to="/signin" />} />
-          <Route path="/edit-client-page" element={<EditClientPage />} />
-          <Route path="/client-page" element={<ClientPage />} />
-      </Routes>
-    </Router>
+      <ClientPage />
     </div>
   );
 }
