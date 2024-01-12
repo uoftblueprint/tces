@@ -40,25 +40,8 @@ function ClientPage() {
   const [clientInfo, setClientInfo] = React.useState(initialClientInfo);
 
   const handleSave = (updatedClientInfo) => {
-    // Update the clientInfo state with the changes
     setClientInfo(updatedClientInfo);
-
-    // You can also send the updated data to a server or perform any other actions
   };
-
-  // const clientInfo = {
-  //   firstName: "First Name",
-  //   email: "email@email.com",
-  //   phone: "+1 111 111 1111",
-  //   status: "Closed",
-  //   closure_date: threeMonthsAgo,
-  //   time_since_closure: `${monthsSinceClosure} Months`,
-  //   status_at_exit: "Employed",
-  //   status_at_3: "Employed",
-  //   status_at_6: "Employed",
-  //   status_at_9: "Employed",
-  //   status_at_12: "Training",
-  // };
 
   return (
     <Router>

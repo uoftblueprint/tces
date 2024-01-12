@@ -71,12 +71,6 @@ export default function EditClientPage({
   const [editedName, setEditedName] = React.useState(clientInfo.firstName);
   const [editedEmail, seteditedEmail] = React.useState(clientInfo.email);
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
-  // const [editedStatus, setEditedStatus] = React.useState(clientInfo.status);
-  // const [editedStatusExit, setEditedStatusExit] = React.useState(clientInfo.status_at_exit);
-  // const [editedStatus3, setEditedStatus3] = React.useState(clientInfo.status_at_3);
-  // const [editedStatus6, setEditedStatus6] = React.useState(clientInfo.status_at_6);
-  // const [editedStatus9, setEditedStatus9] = React.useState(clientInfo.status_at_9);
-  // const [editedStatus12, setEditedStatus12] = React.useState(clientInfo.status_at_12);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
@@ -90,33 +84,9 @@ export default function EditClientPage({
     setEditedPhone(event.target.value);
   };
 
-  // const handleStatusChange = (event) => {
-  //   setEditedStatus(event.target.value);
-  // };
-
-  // const handleStatusExitChange = (event) => {
-  //   setEditedStatusExit(event.target.value);
-  // };
-
-  // const handleStatus3Change = (event) => {
-  //   setEditedStatus3(event.target.value);
-  // };
-
-  // const handleStatus6Change = (event) => {
-  //   setEditedStatus6(event.target.value);
-  // };
-
-  // const handleStatus9Change = (event) => {
-  //   setEditedStatus9(event.target.value);
-  // };
-
-  // const handleStatus12Change = (event) => {
-  //   setEditedStatus12(event.target.value);
-  // };
-
   // Just for now
-  const handleDelete = () => {
-    console.info("You clicked the edit icon.");
+  const handleClick = () => {
+    console.info("You clicked the me.");
   };
 
   const options = ["Employed", "Training", "No Results"];
@@ -209,7 +179,7 @@ export default function EditClientPage({
                     </Avatar>
                   }
                   label="Owen Perth"
-                  onDelete={handleDelete}
+                  onDelete={handleClick}
                   deleteIcon={<EditIcon />}
                 />
               </Grid>
@@ -359,10 +329,7 @@ export default function EditClientPage({
                     onInputChange={(event, newInputValue) => {
                       setInputValueExit(newInputValue);
                     }}
-                    // onChange={handleStatusExitChange}
                     options={options}
-                    // defaultValue={options.filter(option => editedStatus.includes(option))}
-                    // defaultValue={[editedStatusExit]}
                     getOptionLabel={(option) => option}
                     isOptionEqualToValue={(option, value) =>
                       option.id === value.id
