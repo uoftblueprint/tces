@@ -200,9 +200,10 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
               </Grid>
             </Grid>
           </Box>
-          {clientInfo.status === "Closed" ? <Divider variant="middle" /> : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -218,11 +219,16 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 <ContentCopyIcon onClick={handleClick} />
               </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {clientInfo.status === "Closed" ? <Divider variant="middle" /> : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+          
+    
             {clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -238,11 +244,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 <ContentCopyIcon onClick={handleClick} />
               </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {clientInfo.status === "Closed" ? <Divider variant="middle" /> : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -255,13 +263,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {monthsSinceClosure >= 3 && clientInfo.status === "Closed" ? (
-            <Divider variant="middle" />
-          ) : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {monthsSinceClosure >= 3 && clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -274,13 +282,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {monthsSinceClosure >= 6 && clientInfo.status === "Closed" ? (
-            <Divider variant="middle" />
-          ) : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {monthsSinceClosure >= 6 && clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -293,13 +301,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {monthsSinceClosure >= 9 && clientInfo.status === "Closed" ? (
-            <Divider variant="middle" />
-          ) : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {monthsSinceClosure >= 9 && clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -312,13 +320,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
-          {monthsSinceClosure >= 12 && clientInfo.status === "Closed" ? (
-            <Divider variant="middle" />
-          ) : null}
-          <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
             {monthsSinceClosure >= 12 && clientInfo.status === "Closed" && (
+              <>
+              <Divider variant="middle" />
+              <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -331,8 +339,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
+              </Box>
+              </>
             )}
-          </Box>
         </Box>
       </Paper>
     </div>
