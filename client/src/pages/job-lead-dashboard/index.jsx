@@ -11,6 +11,7 @@ function JobLeadDashboard({ managedJobLeads }) {
       ...jobLead,
       id: jobLead.jobLeadID,
     }));
+
     setProcessedManagedJobLeads(processedJobLeads);
   }, [managedJobLeads]);
 

@@ -11,7 +11,7 @@ const JobLeadType = PropTypes.shape({
   creationDate: PropTypes.string.isRequired,
   expirationDate: PropTypes.string.isRequired,
   employmentType: PropTypes.string.isRequired,
-  numOfPostions: PropTypes.number.isRequired
+  numOfPostions: PropTypes.number.isRequired,
   // eslint-disable-next-line
 });
 
