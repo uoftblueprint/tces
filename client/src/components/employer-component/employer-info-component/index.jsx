@@ -7,6 +7,7 @@ import {
 } from "./index.styles";
 
 function EmployerInfoComponent() {
+  return (
   <TopRowContainer>
     <HeaderContainer>
       <Typography
@@ -42,6 +43,7 @@ function EmployerInfoComponent() {
       Employer
     </Typography>
   </TopRowContainer>
+  );
 }
 
 export default EmployerInfoComponent;
