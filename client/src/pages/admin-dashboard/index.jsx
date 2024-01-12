@@ -5,10 +5,9 @@ import UserType from "../../prop-types/UserType";
 
 function AdminDashboard({ currUser, managedUsers, setManagedUsers }) {
   const [processedManagedUsers, setProcessedManagedUsers] = useState([]);
-
   useEffect(() => {
     const processedUsers = managedUsers
-      .filter((user) => !user.is_admin && user.email !== currUser?.email)
+      .filter((user) => !user.isAdmin && user.email !== currUser?.email)
       .map((user) => ({
         ...user,
         id: user.userID,

@@ -127,6 +127,7 @@ function App() {
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
                     <AdminDashboard
+                      currUser={currUser}
                       managedUsers={managedUsers}
                       setManagedUsers={setManagedUsers}
                     />
