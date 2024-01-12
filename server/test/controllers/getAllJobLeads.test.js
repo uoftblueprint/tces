@@ -1,24 +1,24 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
-import getAllClientsRequestHandler from "../../src/controllers/client/getAllClients";
+import getAllJobLeadsRequestHandler from "../../src/controllers/job_lead/getAllJobLeads";
 const mock = require("mock-require");
 const mockGetManyClients = require("../mocks/mockGetAllObjects");
 
 beforeEach(() => {
-  mock("../../src/models/client.model", mockGetManyClients);
-  getAllClientsRequestHandler = mock.reRequire(
-    "../../src/controllers/client/getAllClients",
+  mock("../../src/models/job_lead.model", mockGetManyClients);
+  getAllJobLeadsRequestHandler = mock.reRequire(
+    "../../src/controllers/job_lead/getAllJobLeads",
   );
 });
 
 afterEach(() => {
   // Reset mocks after every test
-  mock.stop("../../src/models/client.model");
+  mock.stop("../../src/models/job_lead.model");
 });
 
-describe("getOneClient test suite", () => {
+describe("getOneJobLead test suite", () => {
   const mockReq = {
     params: {
-      client_id: 1,
+      job_lead_id: 1,
     },
   };
 
@@ -42,19 +42,19 @@ describe("getOneClient test suite", () => {
   it("Does not call findOne", async () => {
     const spy = vi.spyOn(mockGetManyClients, "findOne");
 
-    await getAllClientsRequestHandler(mockReq, mockRes);
+    await getAllJobLeadsRequestHandler(mockReq, mockRes);
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it("Calls findAll", async () => {
     const spy = vi.spyOn(mockGetManyClients, "findAll");
 
-    await getAllClientsRequestHandler(mockReq, mockRes);
+    await getAllJobLeadsRequestHandler(mockReq, mockRes);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it("Returns 200 on success", async () => {
-    await getAllClientsRequestHandler(mockReq, mockRes);
+    await getAllJobLeadsRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
   });
 });
