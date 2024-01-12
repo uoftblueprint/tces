@@ -67,13 +67,18 @@ function getOwnerIds(managedJobLeads) {
 
 function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
   const minDistance = 1;
+
+  // get min and max to set boundary for compensation slider
   const [minCompensation, maxCompensation] =
     findCompensationRange(managedJobLeads);
 
+  // get min and max to set boundary for hours per week slider
   const [minHours, maxHours] = findHoursPerWeekRange(managedJobLeads);
 
+  // get all owner ids for "creator" drop down options
   const ownerIds = getOwnerIds(managedJobLeads);
 
+  // setting local state for filter config
   const [searchTitleQuery, setSearchTitleQuery] = React.useState("");
   const [startDateCreated, setStartDateCreated] = React.useState(null);
   const [endDateCreated, setEndDateCreated] = React.useState(null);
@@ -96,6 +101,7 @@ function JobLeadDashboardFiltersComponent({ handleFilter, managedJobLeads }) {
     "On Call": true,
   });
 
+  // triggers whenever any config changes to filter the job leads list and update accordingly
   React.useEffect(() => {
     const onFilterChange = () => {
       let filtered = managedJobLeads;

@@ -17,7 +17,6 @@ import LogoutPage from "./pages/logout";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
-import mockJobLeads from "./mock-data/mockJobLeads";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -25,6 +24,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
+import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 
@@ -51,7 +51,7 @@ function App() {
   const [managedUsers, setManagedUsers] = useState([]);
 
   // Job Leads State
-  const [managedJobLeads] = useState(mockJobLeads);
+  const [managedJobLeads, setManagedJobLeads] = useState([]);
 
   // Reset all states (when user logs out)
   const resetState = () => {
@@ -148,7 +148,11 @@ function App() {
                   isPermitted={currUser.isAdmin}
                   redirect={dashboardRedirect}
                 >
-                  <JobLeadDashboard managedJobLeads={managedJobLeads} />
+                  <ManagedJobLeadsLoader
+                    setManagedJobLeads={setManagedJobLeads}
+                  >
+                    <JobLeadDashboard managedJobLeads={managedJobLeads} />
+                  </ManagedJobLeadsLoader>
                 </RouteGuard>
               </AuthGuard>
             }

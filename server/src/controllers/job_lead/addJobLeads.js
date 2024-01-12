@@ -54,7 +54,7 @@ const createJobLead = async (jobLeadData, userId) => {
     } else {
         // by default set to the expiration date to a month from the current date
         expirationDate = new Date();
-        expirationDate.setMonth(expirationDate.getMonth() + 1); 
+        expirationDate.setMonth(expirationDate.getMonth() + 1, 0);
     }
 
     // create a single job lead
