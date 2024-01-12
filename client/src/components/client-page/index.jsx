@@ -209,11 +209,14 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                     Closure Date
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                   <Typography gutterBottom variant="body1" align="left">
                     {clientInfo.closure_date}
                   </Typography>
                 </Grid>
+                <Grid item xs={1} id="info-card-icon">
+                <ContentCopyIcon onClick={handleClick} />
+              </Grid>
               </Grid>
             )}
           </Box>
@@ -226,11 +229,14 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                     Time Since Closure
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                   <Typography gutterBottom variant="body1" align="left">
                     {clientInfo.time_since_closure}
                   </Typography>
                 </Grid>
+                <Grid item xs={1} id="info-card-icon">
+                <ContentCopyIcon onClick={handleClick} />
+              </Grid>
               </Grid>
             )}
           </Box>
