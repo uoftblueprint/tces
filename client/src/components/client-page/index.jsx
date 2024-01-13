@@ -7,6 +7,7 @@ import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
@@ -42,12 +43,31 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
     navigate("/edit-client-page");
   };
 
+  // Just for now
+  const handleBackClick = () => {
+    navigate("/");
+  };
+
+  const handleCopyClick = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log('Text copied to the dashboard');
+    } catch (error) {
+      console.error('Error copying text to the clipboard:', error);
+    }
+  };
+
   return (
     <div style={{ marginLeft: "40px", marginRight: "40px", marginTop: "40px" }}>
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <ArrowBackIcon sx={{ color: "gray", marginRight: 2, marginLeft: 2 }} />
+        <IconButton>
+        <ArrowBackIcon
+        onClick={handleBackClick} 
+        sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
+        />
+        </IconButton>
         <Box className="title">
           <Typography marginBottom={1} variant="h4" align="left">
             John Smith
@@ -112,7 +132,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Typography>
               </Grid>
               <Grid item xs={1.6} align="right">
-                <EditIcon color="default" onClick={handleEditClick} />
+                <IconButton>
+                  <EditIcon color="default" onClick={handleEditClick} />
+                </IconButton>
               </Grid>
             </Grid>
           </Box>
@@ -181,7 +203,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Typography>
               </Grid>
               <Grid item xs={1} id="info-card-icon">
-                <ContentCopyIcon onClick={handleClick} />
+                <IconButton>
+                <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.phone)} />
+                </IconButton>
               </Grid>
             </Grid>
           </Box>
@@ -216,19 +240,18 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
                 <Grid item xs={1} id="info-card-icon">
-                <ContentCopyIcon onClick={handleClick} />
+                <IconButton>
+                <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.closure_date)} />
+                </IconButton>
               </Grid>
               </Grid>
               </Box>
               </>
             )}
-          
-    
             {clientInfo.status === "Closed" && (
               <>
               <Divider variant="middle" />
               <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={4}>
                   <Typography gutterBottom variant="body1" align="left">
@@ -241,7 +264,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
                 <Grid item xs={1} id="info-card-icon">
-                <ContentCopyIcon onClick={handleClick} />
+                <IconButton>
+                <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.time_since_closure)} />
+                </IconButton>
               </Grid>
               </Grid>
               </Box>
@@ -266,6 +291,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
               </Box>
               </>
             )}
+
             {monthsSinceClosure >= 3 && clientInfo.status === "Closed" && (
               <>
               <Divider variant="middle" />
@@ -282,9 +308,10 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
               </Grid>
-              </Box>
-              </>
+            </Box>
+            </>
             )}
+
             {monthsSinceClosure >= 6 && clientInfo.status === "Closed" && (
               <>
               <Divider variant="middle" />
@@ -342,6 +369,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
               </Box>
               </>
             )}
+          
         </Box>
       </Paper>
     </div>
