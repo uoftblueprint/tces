@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import JobLeadDashboardComponent from "../../components/job-lead-dashboard-component";
-import UserType from "../../prop-types/UserType";
 import JobLeadType from "../../prop-types/JobLeadType";
 
-function JobLeadDashboard({ managedJobLeads, managedUsers }) {
+function JobLeadDashboard({
+  managedJobLeads,
+  setManagedJobLeads,
+  getUserById,
+}) {
   const [processedManagedJobLeads, setProcessedManagedJobLeads] = useState([]);
 
   useEffect(() => {
@@ -19,14 +22,16 @@ function JobLeadDashboard({ managedJobLeads, managedUsers }) {
   return (
     <JobLeadDashboardComponent
       managedJobLeads={processedManagedJobLeads}
-      managedUsers={managedUsers}
+      setManagedJobLeads={setManagedJobLeads}
+      getUserById={getUserById}
     />
   );
 }
 
 JobLeadDashboard.propTypes = {
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
-  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
+  getUserById: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

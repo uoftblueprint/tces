@@ -8,7 +8,14 @@ import Chip from "@mui/material/Chip";
 import Avatar from "@mui/material/Avatar";
 import UserType from "../../../prop-types/UserType";
 
-function JobLeadDashboardTableComponent({ managedJobLeads, getUserById }) {
+function JobLeadDashboardTableComponent({
+  managedJobLeads,
+  getUserById,
+  isLoading,
+  paginationModel,
+  setPaginationModel,
+  totalRowCount,
+}) {
   const navigate = useNavigate();
   const handleJobLeadNavClick = (jobLeadId) => {
     navigate(`/job-leads/${jobLeadId}`);
@@ -138,6 +145,7 @@ function JobLeadDashboardTableComponent({ managedJobLeads, getUserById }) {
           },
         },
       }}
+      rowCount={totalRowCount}
       rows={managedJobLeads}
       columns={columns}
       initialState={{
@@ -147,7 +155,11 @@ function JobLeadDashboardTableComponent({ managedJobLeads, getUserById }) {
           },
         },
       }}
+      loading={isLoading}
       pageSizeOptions={[10]}
+      paginationModel={paginationModel}
+      paginationMode="server"
+      onPaginationModelChange={setPaginationModel}
       disableColumnSelector
       disableColumnMenu
     />
@@ -157,6 +169,12 @@ function JobLeadDashboardTableComponent({ managedJobLeads, getUserById }) {
 JobLeadDashboardTableComponent.propTypes = {
   managedJobLeads: PropTypes.arrayOf(UserType).isRequired,
   getUserById: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
+  setPaginationModel: PropTypes.func.isRequired,
+  totalRowCount: PropTypes.number.isRequired,
+
   // eslint-disable-next-line
 };
 

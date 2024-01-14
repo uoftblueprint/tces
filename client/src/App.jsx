@@ -24,7 +24,6 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
-import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -54,6 +53,13 @@ function App() {
 
   // Job Leads State
   const [managedJobLeads, setManagedJobLeads] = useState([]);
+
+  // Helper Utils
+
+  // Get user object given user ID
+  const getUserById = (userID) => {
+    return managedUsers.find((user) => user.userID === userID);
+  };
 
   // Reset all states (when user logs out)
   const resetState = () => {
@@ -149,14 +155,11 @@ function App() {
                   redirect={dashboardRedirect}
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <ManagedJobLeadsLoader
+                    <JobLeadDashboard
+                      managedJobLeads={managedJobLeads}
                       setManagedJobLeads={setManagedJobLeads}
-                    >
-                      <JobLeadDashboard
-                        managedJobLeads={managedJobLeads}
-                        managedUsers={managedUsers}
-                      />
-                    </ManagedJobLeadsLoader>
+                      getUserById={getUserById}
+                    />
                   </ManagedUsersLoader>
                 </RouteGuard>
               </AuthGuard>

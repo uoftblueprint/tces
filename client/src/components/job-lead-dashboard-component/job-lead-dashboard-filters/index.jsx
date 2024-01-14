@@ -22,87 +22,29 @@ import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import JobLeadType from "../../../prop-types/JobLeadType";
-
-function valuetext(value) {
-  return `$${value}`;
-}
-
-function findCompensationRange(managedJobLeads) {
-  let minCompensation = managedJobLeads[0]?.compensationMin ?? 0;
-  let maxCompensation = managedJobLeads[0]?.compensationMax ?? 0;
-
-  managedJobLeads.forEach((lead) => {
-    if (lead.compensationMin < minCompensation)
-      minCompensation = lead.compensationMin;
-    if (lead.compensationMax > maxCompensation)
-      maxCompensation = lead.compensationMax;
-  });
-
-  if (minCompensation === maxCompensation) {
-    minCompensation = 0;
-  }
-
-  return [minCompensation, maxCompensation];
-}
-
-function findHoursPerWeekRange(managedJobLeads) {
-  let minHours = managedJobLeads[0]?.hoursPerWeek ?? 0;
-  let maxHours = managedJobLeads[0]?.hoursPerWeek ?? 0;
-
-  managedJobLeads.forEach((lead) => {
-    if (lead.hoursPerWeek < minHours) minHours = lead.hoursPerWeek;
-    if (lead.hoursPerWeek > maxHours) maxHours = lead.hoursPerWeek;
-  });
-
-  if (minHours === maxHours) {
-    minHours = 0;
-  }
-
-  return [minHours, maxHours];
-}
+import {
+  valuetext,
+  findHoursPerWeekRange,
+  findCompensationRange,
+  getOwnerIds,
+} from "../../../utils/jobLeads";
 
 function JobLeadDashboardFiltersComponent({
-  handleFilter,
   managedJobLeads,
   getUserById,
+  handleApplyFilter,
 }) {
-  // min distance between thumbs of sliders
-  const minDistance = 1;
-
-  // get min and max to set boundary for compensation slider
-  const [minCompensation, maxCompensation] =
-    findCompensationRange(managedJobLeads);
-
-  // get min and max to set boundary for hours per week slider
-  const [minHours, maxHours] = findHoursPerWeekRange(managedJobLeads);
-
-  // get all the Creator names to display in options filter tab
-  const getOwnerIds = () => {
-    const uniqueCreatorIDs = new Set();
-    const ownerDetails = [];
-
-    managedJobLeads.forEach((lead) => {
-      if (!uniqueCreatorIDs.has(lead.creatorID)) {
-        uniqueCreatorIDs.add(lead.creatorID);
-
-        const user = getUserById(lead.creatorID);
-
-        const userName = user
-          ? `${user.firstName} ${user.lastName}`
-          : `User ${lead.creatorID}`;
-
-        ownerDetails.push({
-          creatorID: lead.creatorID,
-          userName,
-        });
-      }
-    });
-
-    return ownerDetails;
-  };
-
-  // get all owner ids for "creator" drop down options
-  const ownerIds = getOwnerIds();
+  // setting and persisting initial state for option selection and slider ranges
+  const [initialLoad, setInitialLoad] = React.useState(true);
+  const [minMaxCompensation, setMinMaxCompensation] = React.useState([
+    null,
+    null,
+  ]);
+  const [minMaxHoursPerWeek, setMinMaxHoursPerWeek] = React.useState([
+    null,
+    null,
+  ]);
+  const [ownerOptions, setOwnerOptions] = React.useState([]);
 
   // setting local state for filter config
   const [searchTitleQuery, setSearchTitleQuery] = React.useState("");
@@ -111,12 +53,12 @@ function JobLeadDashboardFiltersComponent({
   const [startDateExpired, setStartDateExpired] = React.useState(null);
   const [endDateExpired, setEndDateExpired] = React.useState(null);
   const [compensationRange, setCompensationRange] = React.useState([
-    minCompensation,
-    maxCompensation,
+    null,
+    null,
   ]);
   const [hoursPerWeekRange, setHoursPerWeekRange] = React.useState([
-    minHours,
-    maxHours,
+    null,
+    null,
   ]);
   const [ownerId, setOwnerId] = React.useState(-1);
   const [searchNOCQuery, setSearchNOCQuery] = React.useState("");
@@ -127,89 +69,36 @@ function JobLeadDashboardFiltersComponent({
     "On Call": true,
   });
 
-  // triggers whenever any config changes to filter the job leads list and update accordingly
-  React.useEffect(() => {
-    const onFilterChange = () => {
-      let filtered = managedJobLeads;
+  const minCompensation = minMaxCompensation[0];
+  const maxCompensation = minMaxCompensation[1];
+  const minHoursPerWeek = minMaxHoursPerWeek[0];
+  const maxHoursPerWeek = minMaxHoursPerWeek[1];
 
-      if (searchTitleQuery) {
-        filtered = filtered.filter((row) => {
-          return row.jobTitle
-            .toLowerCase()
-            .includes(searchTitleQuery.toLowerCase());
-        });
-      }
+  const compensationSliderMarks = [
+    {
+      value: minCompensation,
+      label: `$${minCompensation}`,
+    },
+    {
+      value: maxCompensation,
+      label: `$${maxCompensation}`,
+    },
+  ];
 
-      if (startDateCreated) {
-        filtered = filtered.filter(
-          (row) => new Date(row.creationDate) >= new Date(startDateCreated),
-        );
-      }
+  const hourSliderMarks = [
+    {
+      value: minHoursPerWeek,
+      label: `${minHoursPerWeek}`,
+    },
+    {
+      value: maxHoursPerWeek,
+      label: `${maxHoursPerWeek}`,
+    },
+  ];
 
-      if (endDateCreated) {
-        filtered = filtered.filter(
-          (row) => new Date(row.creationDate) <= new Date(endDateCreated),
-        );
-      }
+  // min distance between thumbs of sliders
+  const minDistance = 1;
 
-      if (startDateExpired) {
-        filtered = filtered.filter(
-          (row) => new Date(row.expirationDate) >= new Date(startDateExpired),
-        );
-      }
-
-      if (endDateExpired) {
-        filtered = filtered.filter(
-          (row) => new Date(row.expirationDate) <= new Date(endDateExpired),
-        );
-      }
-
-      if (compensationRange) {
-        filtered = filtered.filter(
-          (row) =>
-            row.compensationMin >= compensationRange[0] &&
-            row.compensationMax <= compensationRange[1],
-        );
-      }
-
-      if (hoursPerWeekRange) {
-        filtered = filtered.filter(
-          (row) =>
-            row.hoursPerWeek >= hoursPerWeekRange[0] &&
-            row.hoursPerWeek <= hoursPerWeekRange[1],
-        );
-      }
-
-      if (ownerId !== -1) {
-        filtered = filtered.filter((row) => row.creatorID === ownerId);
-      }
-
-      if (searchNOCQuery) {
-        filtered = filtered.filter((row) =>
-          String(row.noc).toLowerCase().includes(searchNOCQuery.toLowerCase()),
-        );
-      }
-
-      if (jobTypeSelect) {
-        filtered = filtered.filter((row) => jobTypeSelect[row.employmentType]);
-      }
-
-      handleFilter(filtered);
-    };
-
-    onFilterChange();
-  }, [
-    searchTitleQuery,
-    startDateCreated,
-    endDateCreated,
-    startDateExpired,
-    endDateExpired,
-    compensationRange,
-    hoursPerWeekRange,
-    ownerId,
-    searchNOCQuery,
-    jobTypeSelect,
-  ]);
   const onTitleSearch = (event) => {
     const query = event.target.value;
     setSearchTitleQuery(query);
@@ -264,14 +153,31 @@ function JobLeadDashboardFiltersComponent({
       [event.target.name]: event.target.checked,
     });
   };
+
+  const applyFilters = () => {
+    const filterParams = {
+      searchTitleQuery,
+      startDateCreated,
+      endDateCreated,
+      startDateExpired,
+      endDateExpired,
+      compensationRange,
+      hoursPerWeekRange,
+      ownerId,
+      searchNOCQuery,
+      jobTypeSelect,
+    };
+    handleApplyFilter(filterParams);
+  };
+
   const onFilterReset = () => {
     setSearchTitleQuery("");
     setStartDateCreated(null);
     setEndDateCreated(null);
     setStartDateExpired(null);
     setEndDateExpired(null);
-    setCompensationRange([minCompensation, maxCompensation]);
-    setHoursPerWeekRange([minHours, maxHours]);
+    setCompensationRange(minMaxCompensation);
+    setHoursPerWeekRange(minMaxHoursPerWeek);
     setOwnerId(-1);
     setSearchNOCQuery("");
     setJobTypeSelect({
@@ -280,33 +186,23 @@ function JobLeadDashboardFiltersComponent({
       Casual: true,
       "On Call": true,
     });
+
+    handleApplyFilter(null);
   };
 
+  // triggers whenever the job leads list changes (e.g page change, filter change etc)
   React.useEffect(() => {
-    onFilterReset();
+    if (initialLoad && managedJobLeads?.length > 0) {
+      const compensationValues = findCompensationRange(managedJobLeads);
+      const hoursPerWeekValues = findHoursPerWeekRange(managedJobLeads);
+      setMinMaxCompensation(compensationValues);
+      setMinMaxHoursPerWeek(hoursPerWeekValues);
+      setCompensationRange(compensationValues);
+      setHoursPerWeekRange(hoursPerWeekValues);
+      setOwnerOptions(getOwnerIds(managedJobLeads, getUserById));
+      setInitialLoad(false);
+    }
   }, [managedJobLeads]);
-
-  const compensationMarks = [
-    {
-      value: minCompensation,
-      label: `$${minCompensation}`,
-    },
-    {
-      value: maxCompensation,
-      label: `$${maxCompensation}`,
-    },
-  ];
-
-  const hoursPerWeekMarks = [
-    {
-      value: minHours,
-      label: `${minHours}`,
-    },
-    {
-      value: maxHours,
-      label: `${minHours}`,
-    },
-  ];
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -415,11 +311,11 @@ function JobLeadDashboardFiltersComponent({
                 step={1}
                 min={minCompensation}
                 max={maxCompensation}
-                marks={compensationMarks}
+                marks={compensationSliderMarks}
               />
             </Box>
 
-            {/* Compensation Filter */}
+            {/* Hours Per Week Filter */}
             <Typography
               sx={{ fontSize: 14 }}
               color="text.secondary"
@@ -430,16 +326,15 @@ function JobLeadDashboardFiltersComponent({
             </Typography>
             <Box marginBottom={2}>
               <Slider
-                getAriaLabel={() => "Minimum distance"}
                 value={hoursPerWeekRange}
                 onChange={onHoursPerWeekRangeChange}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
                 disableSwap
                 step={1}
-                min={minHours}
-                max={maxHours}
-                marks={hoursPerWeekMarks}
+                min={minHoursPerWeek}
+                max={maxHoursPerWeek}
+                marks={hourSliderMarks}
               />
             </Box>
 
@@ -461,7 +356,7 @@ function JobLeadDashboardFiltersComponent({
                 onChange={onOwnerIdChange}
               >
                 <MenuItem value={-1}>Any</MenuItem>
-                {ownerIds.map((owner) => (
+                {ownerOptions.map((owner) => (
                   <MenuItem key={owner.creatorID} value={owner.creatorID}>
                     {owner.userName}
                   </MenuItem>
@@ -555,6 +450,9 @@ function JobLeadDashboardFiltersComponent({
           <Button size="small" onClick={onFilterReset}>
             Reset Filters
           </Button>
+          <Button size="small" onClick={applyFilters} variant="contained">
+            Apply Filters
+          </Button>
         </CardActions>
       </Card>
     </LocalizationProvider>
@@ -562,9 +460,9 @@ function JobLeadDashboardFiltersComponent({
 }
 
 JobLeadDashboardFiltersComponent.propTypes = {
-  handleFilter: PropTypes.func.isRequired,
   getUserById: PropTypes.func.isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  handleApplyFilter: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 
