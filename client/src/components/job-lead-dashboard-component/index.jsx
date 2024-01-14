@@ -16,7 +16,6 @@ function JobLeadDashboardComponent({
   setManagedJobLeads,
   getUserById,
 }) {
-  // defining states
   const [initialLoading, setInitialLoading] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [errorOb, setError] = React.useState(null);

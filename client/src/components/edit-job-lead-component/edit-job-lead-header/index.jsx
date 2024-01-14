@@ -2,16 +2,20 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 
+import PropTypes from "prop-types";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
 
-function EditJobLeadHeaderComponent({ jobLead }) {
+import UserChipComponent from "../../shared/user-chip-component";
+
+function EditJobLeadHeaderComponent({ jobLead, getUserById }) {
   const navigate = useNavigate();
+
+  const owner = getUserById(jobLead.creatorID);
+  const creator = getUserById(jobLead.creatorID);
 
   const handleBackClick = () => {
     navigate("/job-leads/");
@@ -56,24 +60,28 @@ function EditJobLeadHeaderComponent({ jobLead }) {
         </Typography>
       </div>
 
-      <Box sx={{ marginLeft: "auto", display: "flex" }}>
-        <Button
-          sx={{
-            marginLeft: "auto",
-            marginBottom: "30px",
-            marginTop: "30px",
-            backgroundColor: "#3568E5",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#3568E5",
-              color: "white",
-            },
-          }}
-          startIcon={<AddIcon />}
-          onClick={() => navigate("/job-lead/add")}
-        >
-          ADD NEW JOB LEAD
-        </Button>
+      <Box
+        sx={{
+          marginLeft: "auto",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "8px",
+          boxShadow: 2,
+          p: 3,
+        }}
+      >
+        <Box sx={{ textAlign: "center", mr: 2 }}>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Owner
+          </Typography>
+          <UserChipComponent user={owner} />
+        </Box>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            Creator
+          </Typography>
+          <UserChipComponent user={creator} />
+        </Box>
       </Box>
     </HeaderContainer>
   );
@@ -81,6 +89,7 @@ function EditJobLeadHeaderComponent({ jobLead }) {
 
 EditJobLeadHeaderComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
+  getUserById: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

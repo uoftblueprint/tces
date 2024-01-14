@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Avatar from "@mui/material/Avatar";
 import UserType from "../../../prop-types/UserType";
+import UserChipComponent from "../../shared/user-chip-component";
 
 function JobLeadDashboardTableComponent({
   managedJobLeads,
@@ -105,20 +104,7 @@ function JobLeadDashboardTableComponent({
       filterable: false,
       renderCell: (params) => {
         const user = getUserById(params.row.creatorID);
-        const initials = user
-          ? `${user.firstName[0]}${user.lastName[0]}`
-          : "NA";
-        const fullName = user
-          ? `${user.firstName} ${user.lastName}`
-          : "Unknown";
-
-        return (
-          <Chip
-            avatar={<Avatar>{initials}</Avatar>}
-            label={fullName}
-            variant="outlined"
-          />
-        );
+        return <UserChipComponent user={user} />;
       },
     },
     {

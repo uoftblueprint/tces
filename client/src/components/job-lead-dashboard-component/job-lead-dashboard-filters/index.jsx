@@ -34,7 +34,7 @@ function JobLeadDashboardFiltersComponent({
   getUserById,
   handleApplyFilter,
 }) {
-  // setting and persisting initial state for option selection and slider ranges
+  // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
   const [minMaxCompensation, setMinMaxCompensation] = React.useState([
     null,
@@ -444,8 +444,14 @@ function JobLeadDashboardFiltersComponent({
             </FormControl>
           </Stack>
         </CardContent>
-        <CardActions sx={{ justifyContent: 'center', p: 2 }}>
-          <Button size="small" onClick={onFilterReset} color="warning" variant="outlined" sx={{ mr: 1 }}>
+        <CardActions sx={{ justifyContent: "center", p: 2 }}>
+          <Button
+            size="small"
+            onClick={onFilterReset}
+            color="warning"
+            variant="outlined"
+            sx={{ mr: 1 }}
+          >
             Reset
           </Button>
           <Button size="small" onClick={applyFilters} variant="contained">

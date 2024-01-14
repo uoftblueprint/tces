@@ -29,10 +29,14 @@ import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
 import EditJobLead from "./pages/edit-job-lead";
 
+// helper functions
+import { getUserByIdHelper } from "./utils/users";
+
 function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
+  const jobLeadRedirect = "/job-lead";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -58,7 +62,7 @@ function App() {
 
   // Get user object given user ID
   const getUserById = (userID) => {
-    return managedUsers.find((user) => user.userID === userID);
+    return getUserByIdHelper(managedUsers, userID);
   };
 
   // Reset all states (when user logs out)
@@ -206,13 +210,16 @@ function App() {
             <AuthGuard
               isAuthenticated={isAuthenticated}
               loginUser={loginUser}
-              redirectUrl={adminRedirect}
+              redirectUrl={jobLeadRedirect}
             >
               <RouteGuard
                 isPermitted={currUser.isAdmin}
                 redirect={dashboardRedirect}
               >
-                <EditJobLead managedJobLeads={managedJobLeads} />
+                <EditJobLead
+                  managedJobLeads={managedJobLeads}
+                  getUserById={getUserById}
+                />
               </RouteGuard>
             </AuthGuard>
           }
