@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 
-function NavbarButton({ keyword }) {
+function NavbarButton({ keyword, setLocalExitRoute }) {
   const navigate = useNavigate();
 
   const titles = {
@@ -22,7 +22,11 @@ function NavbarButton({ keyword }) {
   const route = routes[keyword];
 
   const onRouteClick = () => {
-    navigate(route);
+    if (setLocalExitRoute !== null) {
+      setLocalExitRoute(route);
+    } else {
+      navigate(route);
+    }
   };
 
   return (
@@ -39,6 +43,11 @@ function NavbarButton({ keyword }) {
 
 NavbarButton.propTypes = {
   keyword: PropTypes.string.isRequired,
+  setLocalExitRoute: PropTypes.func,
+};
+
+NavbarButton.defaultProps = {
+  setLocalExitRoute: null,
 };
 
 export default NavbarButton;

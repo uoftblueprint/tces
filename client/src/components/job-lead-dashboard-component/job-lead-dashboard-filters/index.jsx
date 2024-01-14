@@ -355,7 +355,7 @@ function JobLeadDashboardFiltersComponent({
               >
                 <MenuItem value={-1}>Any</MenuItem>
                 {ownerOptions.map((owner) => (
-                  <MenuItem key={owner.creatorID} value={owner.creatorID}>
+                  <MenuItem key={owner.ownerID} value={owner.ownerID}>
                     {owner.userName}
                   </MenuItem>
                 ))}

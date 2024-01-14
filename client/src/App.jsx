@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 // page components
+import * as React from "react";
 import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
@@ -62,6 +63,9 @@ function App() {
 
   // Employer State
   const [employers, setEmployers] = useState([]);
+
+  // Navbar Navigation Protection
+  const [localExitRoute, setLocalExitRoute] = React.useState(null);
 
   // Helper Utils
 
@@ -180,6 +184,58 @@ function App() {
             }
           />
         </Route>
+        {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
+        <Route
+          element={
+            <Navbar
+              isAdmin={currUser.isAdmin}
+              setLocalExitRoute={setLocalExitRoute}
+            />
+          }
+        >
+          <Route
+            path="/job-leads/:jobLeadID"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+                redirectUrl={jobLeadRedirect}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
+                >
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <EditJobLead
+                      managedJobLeads={managedJobLeads}
+                      getEmployerById={getEmployerById}
+                      getUserById={getUserById}
+                      localExitRoute={localExitRoute}
+                      setLocalExitRoute={setLocalExitRoute}
+                    />
+                  </EmployersLoader>
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/job-leads/add"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+                redirectUrl={jobLeadRedirect}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
+                >
+                  <AddJobLeadPage />
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+        </Route>
         <Route
           path="/admin/create-user"
           element={
@@ -210,47 +266,6 @@ function App() {
                 redirect={dashboardRedirect}
               >
                 <EditPage managedUsers={managedUsers} />
-              </RouteGuard>
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/job-leads/:jobLeadID"
-          element={
-            <AuthGuard
-              isAuthenticated={isAuthenticated}
-              loginUser={loginUser}
-              redirectUrl={jobLeadRedirect}
-            >
-              <RouteGuard
-                isPermitted={currUser.isAdmin}
-                redirect={dashboardRedirect}
-              >
-                <EmployersLoader setEmployers={setEmployers}>
-                  <EditJobLead
-                    managedJobLeads={managedJobLeads}
-                    employers={employers}
-                    getEmployerById={getEmployerById}
-                    getUserById={getUserById}
-                  />
-                </EmployersLoader>
-              </RouteGuard>
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/job-leads/add"
-          element={
-            <AuthGuard
-              isAuthenticated={isAuthenticated}
-              loginUser={loginUser}
-              redirectUrl={jobLeadRedirect}
-            >
-              <RouteGuard
-                isPermitted={currUser.isAdmin}
-                redirect={dashboardRedirect}
-              >
-                <AddJobLeadPage />
               </RouteGuard>
             </AuthGuard>
           }

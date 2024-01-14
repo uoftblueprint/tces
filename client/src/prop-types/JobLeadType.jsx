@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 const JobLeadType = PropTypes.shape({
   jobLeadID: PropTypes.number.isRequired,
+  ownerID: PropTypes.number.isRequired,
   employerID: PropTypes.number.isRequired,
   creatorID: PropTypes.number.isRequired,
   jobTitle: PropTypes.string.isRequired,

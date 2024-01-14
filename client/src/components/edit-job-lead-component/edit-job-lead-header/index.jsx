@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
@@ -11,14 +10,15 @@ import JobLeadType from "../../../prop-types/JobLeadType";
 
 import UserChipComponent from "../../shared/user-chip-component";
 
-function EditJobLeadHeaderComponent({ jobLead, getUserById }) {
-  const navigate = useNavigate();
-
-  const owner = getUserById(jobLead.creatorID);
+function EditJobLeadHeaderComponent({
+  jobLead,
+  getUserById,
+  setLocalExitRoute,
+}) {
+  const owner = getUserById(jobLead.ownerID);
   const creator = getUserById(jobLead.creatorID);
-
   const handleBackClick = () => {
-    navigate("/job-leads/");
+    setLocalExitRoute("/job-leads/");
   };
 
   return (
@@ -68,6 +68,7 @@ function EditJobLeadHeaderComponent({ jobLead, getUserById }) {
           borderRadius: "8px",
           boxShadow: 2,
           p: 3,
+          mr: 6.5,
         }}
       >
         <Box sx={{ textAlign: "center", mr: 2 }}>
@@ -90,6 +91,7 @@ function EditJobLeadHeaderComponent({ jobLead, getUserById }) {
 EditJobLeadHeaderComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
+  setLocalExitRoute: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

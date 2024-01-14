@@ -102,6 +102,7 @@ function JobLeadDashboardComponent({
         const formattedJobLeads = jobLeadsData.data.map((jobLead) => ({
           id: jobLead.id,
           jobLeadID: jobLead.id,
+          ownerID: jobLead.owner,
           creatorID: jobLead.creator,
           employerID: jobLead.employer,
           jobTitle: jobLead.job_title,

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const EditContainer = styled.div`
-  margin-right: 40px;
   overflow: "auto";
 `;
 

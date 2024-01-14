@@ -25,15 +25,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import { displayCompensationRange } from "../../../utils/jobLeads";
 import { formateDateObjToStr } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
+import ConfirmDialog from "../../shared/confirm-dialog-component";
 
 function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
   const employer = getEmployerById(jobLead.employerID);
+  const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
   const [isEditMode, setIsEditMode] = React.useState(false);
@@ -136,6 +139,15 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
     );
   };
 
+  const commitEdit = (e) => {
+    e.preventDefault();
+    setConfirmEditDialog(true);
+  };
+
+  const cancelEdit = () => {
+    setConfirmEditDialog(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -168,6 +180,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
     } finally {
       setIsLoading(false);
       setSnackbarOpen(true);
+      setConfirmEditDialog(false);
     }
   };
 
@@ -185,7 +198,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
           border: "1px solid #e0e0e0",
         }}
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={commitEdit}>
           <HeaderContainer>
             <Typography variant="h5" sx={{ flexGrow: 1 }}>
               Information
@@ -422,6 +435,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                     slotProps={{ textField: { fullWidth: true } }}
                     value={expirationDate}
                     onChange={(newValue) => setExpirationDate(newValue)}
+                    minDate={dayjs()}
                     renderInput={(params) => (
                       <TextField
                         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -522,6 +536,13 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
         autoHideDuration={1500}
         onClose={handleSnackbarClose}
         message={snackbarMessage}
+      />
+      <ConfirmDialog
+        open={confirmEditDialog}
+        title="Confirm Edit"
+        message="Are you sure you want to save these changes?"
+        onConfirm={handleSubmit}
+        onCancel={cancelEdit}
       />
     </LocalizationProvider>
   );

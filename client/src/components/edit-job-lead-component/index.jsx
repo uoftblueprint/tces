@@ -1,20 +1,23 @@
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
+import { Typography, Box } from "@mui/material";
 import JobLeadType from "../../prop-types/JobLeadType";
 import { EditContainer } from "./index.styles";
 import EditJobLeadHeaderComponent from "./edit-job-lead-header";
 import EditJobLeadFormComponent from "./edit-job-lead-form";
-import EmployerType from "../../prop-types/EmployerType";
 
 function EditJobLeadComponent({
   jobLead,
   getUserById,
   getEmployerById,
-  employers,
+  setLocalExitRoute,
 }) {
   return (
     <EditContainer>
-      <EditJobLeadHeaderComponent jobLead={jobLead} getUserById={getUserById} />
+      <EditJobLeadHeaderComponent
+        jobLead={jobLead}
+        getUserById={getUserById}
+        setLocalExitRoute={setLocalExitRoute}
+      />
       <Box
         sx={{
           display: "flex",
@@ -26,8 +29,22 @@ function EditJobLeadComponent({
         <EditJobLeadFormComponent
           jobLead={jobLead}
           getEmployerById={getEmployerById}
-          employers={employers}
         />
+        <Box
+          sx={{
+            width: "33%",
+            borderRadius: 2,
+            boxShadow: 3,
+            mr: 9,
+            mb: 9,
+            p: 3,
+            border: "1px solid #e0e0e0",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Temp Timeline
+          </Typography>
+        </Box>
       </Box>
     </EditContainer>
   );
@@ -37,7 +54,7 @@ EditJobLeadComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,
-  employers: PropTypes.arrayOf(EmployerType).isRequired,
+  setLocalExitRoute: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

@@ -5,7 +5,7 @@ import Dropdown from "./Dropdown";
 import NavbarProfile from "./NavbarProfile";
 import NavbarButton from "./NavbarButton";
 
-function Navbar({ isAdmin }) {
+function Navbar({ isAdmin, setLocalExitRoute }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -20,9 +20,18 @@ function Navbar({ isAdmin }) {
             <img src="./img/tcesLogo.svg" alt="logo" width="46" height="50" />
           </div>
           <div className="left-content-buttons">
-            <NavbarButton keyword="clients" />
-            <NavbarButton keyword="job-leads" />
-            <NavbarButton keyword="employers" />
+            <NavbarButton
+              keyword="clients"
+              setLocalExitRoute={setLocalExitRoute}
+            />
+            <NavbarButton
+              keyword="job-leads"
+              setLocalExitRoute={setLocalExitRoute}
+            />
+            <NavbarButton
+              keyword="employers"
+              setLocalExitRoute={setLocalExitRoute}
+            />
           </div>
         </div>
         <div className="right-content">
@@ -32,6 +41,7 @@ function Navbar({ isAdmin }) {
           <Dropdown
             isAdmin={isAdmin}
             setIsDropdownVisible={setIsDropdownVisible}
+            setLocalExitRoute={setLocalExitRoute}
           />
         )}
       </div>
@@ -42,6 +52,11 @@ function Navbar({ isAdmin }) {
 
 Navbar.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  setLocalExitRoute: PropTypes.func,
+};
+
+Navbar.defaultProps = {
+  setLocalExitRoute: null,
 };
 
 export default Navbar;

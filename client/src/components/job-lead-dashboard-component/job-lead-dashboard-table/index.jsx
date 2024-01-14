@@ -96,14 +96,14 @@ function JobLeadDashboardTableComponent({
       filterable: false,
     },
     {
-      field: "creatorID",
+      field: "ownerID",
       headerName: "Owner",
       width: 150,
       editable: false,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        const user = getUserById(params.row.creatorID);
+        const user = getUserById(params.row.ownerID);
         return <UserChipComponent user={user} />;
       },
     },

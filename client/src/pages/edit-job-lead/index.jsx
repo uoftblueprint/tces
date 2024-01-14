@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import ErrorComponent from "../../components/shared/error-screen-component";
 import EditJobLeadComponent from "../../components/edit-job-lead-component";
 import JobLeadType from "../../prop-types/JobLeadType";
-import EmployerType from "../../prop-types/EmployerType";
+import UnsavedConfirmDialogComponent from "../../components/shared/unsaved-confirm-dialog-component";
 
 function EditJobLead({
   managedJobLeads,
   getUserById,
-  employers,
   getEmployerById,
+  localExitRoute,
+  setLocalExitRoute,
 }) {
   const errorMessage = "Job lead to edit not found.";
   const { jobLeadID } = useParams();
@@ -20,20 +21,27 @@ function EditJobLead({
 
   if (!jobLeadToEdit) return <ErrorComponent message={errorMessage} />;
   return (
-    <EditJobLeadComponent
-      jobLead={jobLeadToEdit}
-      employers={employers}
-      getUserById={getUserById}
-      getEmployerById={getEmployerById}
-    />
+    <>
+      <EditJobLeadComponent
+        jobLead={jobLeadToEdit}
+        getUserById={getUserById}
+        getEmployerById={getEmployerById}
+        setLocalExitRoute={setLocalExitRoute}
+      />
+      <UnsavedConfirmDialogComponent
+        localExitRoute={localExitRoute}
+        setLocalExitRoute={setLocalExitRoute}
+      />
+    </>
   );
 }
 
 EditJobLead.propTypes = {
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
-  employers: PropTypes.arrayOf(EmployerType).isRequired,
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,
+  localExitRoute: PropTypes.string.isRequired,
+  setLocalExitRoute: PropTypes.func.isRequired,
 };
 
 export default EditJobLead;
