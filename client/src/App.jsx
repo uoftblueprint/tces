@@ -24,6 +24,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
+import EmployersLoader from "./components/wrappers/data-loaders-wrappers/EmployersLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -31,6 +32,7 @@ import EditJobLead from "./pages/edit-job-lead";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
+import getEmployerByIdHelper from "./utils/employers";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -58,7 +60,15 @@ function App() {
   // Job Leads State
   const [managedJobLeads, setManagedJobLeads] = useState([]);
 
+  // Employer State
+  const [employers, setEmployers] = useState([]);
+
   // Helper Utils
+
+  // Get employer object given employer ID
+  const getEmployerById = (employerID) => {
+    return getEmployerByIdHelper(employers, employerID);
+  };
 
   // Get user object given user ID
   const getUserById = (userID) => {
@@ -216,10 +226,14 @@ function App() {
                 isPermitted={currUser.isAdmin}
                 redirect={dashboardRedirect}
               >
-                <EditJobLead
-                  managedJobLeads={managedJobLeads}
-                  getUserById={getUserById}
-                />
+                <EmployersLoader setEmployers={setEmployers}>
+                  <EditJobLead
+                    managedJobLeads={managedJobLeads}
+                    employers={employers}
+                    getEmployerById={getEmployerById}
+                    getUserById={getUserById}
+                  />
+                </EmployersLoader>
               </RouteGuard>
             </AuthGuard>
           }

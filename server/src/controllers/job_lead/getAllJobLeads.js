@@ -4,8 +4,8 @@ const JobLead = require("../../models/job_lead.model");
 
 const getAllJobLeadsRequestHandler = async (req, res) => {
   try {
-    const page = parseInt(req.query.page, 10) || 1;
-    const pageSize = parseInt(req.query.pageSize, 10) || 10;
+    const page = req?.query?.page ? parseInt(req.query.page, 10) : 1;
+    const pageSize = req?.query?.page ? parseInt(req.query.pageSize, 10) : 10;
     const offsetSize = (page - 1) * pageSize;
 
     const {

@@ -61,7 +61,7 @@ const createJobLead = async (jobLeadData, userId) => {
     return await JobLead.create({
       owner: jobLeadData.owner,
       creator: userId,
-      employer_name: jobLeadData.employer_name || null,
+      employer: jobLeadData.employer,
       job_title: jobLeadData.job_title || null,
       num_of_positions: jobLeadData.num_of_positions || null,
       compensation_max: jobLeadData.compensation_max || null,

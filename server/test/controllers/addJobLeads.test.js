@@ -39,7 +39,7 @@ describe("addJobLeads test suite", () => {
     const mockReq = {
       body: {
         job_lead: {
-          employer_name: "someone",
+          employer: 1,
           job_title: "software developer intern",
           compensation_max: 50000,
           compensation_max: 40000,
@@ -48,7 +48,7 @@ describe("addJobLeads test suite", () => {
           job_description: "full-stack testing.",
           creation_date: "2023-11-29",
           expiration_date: "2023-12-31",
-          employment_type: "Full Time"
+          employment_type: "Full Time",
         },
       },
       user: {

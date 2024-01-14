@@ -21,7 +21,7 @@ function JobLeadDashboardComponent({
   const [errorOb, setError] = React.useState(null);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 25,
-    page: 0,
+    page: 1,
   });
   const [rowCount, setRowCount] = React.useState(managedJobLeads.length);
 
@@ -103,6 +103,7 @@ function JobLeadDashboardComponent({
           id: jobLead.id,
           jobLeadID: jobLead.id,
           creatorID: jobLead.creator,
+          employerID: jobLead.employer,
           jobTitle: jobLead.job_title,
           jobDescription: jobLead.job_description,
           compensationMax: jobLead.compensation_max,

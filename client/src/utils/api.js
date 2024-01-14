@@ -109,9 +109,9 @@ const deleteUser = async (userID) => {
   return response;
 };
 
-const getAllJobLeads = async () => {
+const getAllEmployers = async () => {
   // eslint-disable-next-line no-useless-catch
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -144,6 +144,6 @@ export {
   getAllUsers,
   modifyUser,
   deleteUser,
-  getAllJobLeads,
+  getAllEmployers,
   getFilteredJobLeads,
 };
