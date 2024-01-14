@@ -206,9 +206,7 @@ function JobLeadDashboardFiltersComponent({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Card
-        sx={{ width: 235, marginLeft: 2, maxHeight: "none", marginBottom: 2 }}
-      >
+      <Card sx={{ width: 250, marginLeft: 2, marginBottom: 2 }}>
         <CardContent>
           <Stack spacing={2}>
             {/* Title Filter */}
@@ -301,7 +299,7 @@ function JobLeadDashboardFiltersComponent({
             >
               Compensation
             </Typography>
-            <Box marginBottom={2}>
+            <Box sx={{ px: 2 }}>
               <Slider
                 value={compensationRange}
                 onChange={onCompensationRangeChange}
@@ -324,7 +322,7 @@ function JobLeadDashboardFiltersComponent({
             >
               Hours/week
             </Typography>
-            <Box marginBottom={2}>
+            <Box sx={{ px: 2 }}>
               <Slider
                 value={hoursPerWeekRange}
                 onChange={onHoursPerWeekRangeChange}
@@ -446,12 +444,12 @@ function JobLeadDashboardFiltersComponent({
             </FormControl>
           </Stack>
         </CardContent>
-        <CardActions>
-          <Button size="small" onClick={onFilterReset}>
-            Reset Filters
+        <CardActions sx={{ justifyContent: 'center', p: 2 }}>
+          <Button size="small" onClick={onFilterReset} color="warning" variant="outlined" sx={{ mr: 1 }}>
+            Reset
           </Button>
           <Button size="small" onClick={applyFilters} variant="contained">
-            Apply Filters
+            Apply
           </Button>
         </CardActions>
       </Card>
