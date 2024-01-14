@@ -136,6 +136,36 @@ const getFilteredJobLeads = async (queryParams) => {
   return response;
 };
 
+const modifyJobLead = async (modifiedJobLead) => {
+  const modifyJobLeadBody = {
+    values: {
+      job_title: modifiedJobLead.jobTitle,
+      compensation_min: modifiedJobLead.minCompensation,
+      compensation_max: modifiedJobLead.maxCompensation,
+      employment_type: modifiedJobLead.employmentType,
+      hours_per_week: modifiedJobLead.hoursPerWeek,
+      national_occupation_code: modifiedJobLead.noc,
+      expiration_date: modifiedJobLead.expirationDate,
+      number_of_positions: modifiedJobLead.numberOfPositions,
+      job_description: modifiedJobLead.jobDescription,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_leads/${modifiedJobLead.jobLeadID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyJobLeadBody),
+    },
+  );
+  return response;
+};
+
 export {
   login,
   logout,
@@ -146,4 +176,5 @@ export {
   deleteUser,
   getAllEmployers,
   getFilteredJobLeads,
+  modifyJobLead,
 };

@@ -11,4 +11,8 @@ function formatDateStr(dateStr) {
     .padStart(2, "0")}/${year}`;
 }
 
-export default formatDateStr;
+function formateDateObjToStr(date) {
+  return date ? date.format("MM/DD/YYYY") : "";
+}
+
+export { formatDateStr, formateDateObjToStr };

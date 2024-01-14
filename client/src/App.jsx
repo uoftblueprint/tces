@@ -38,7 +38,7 @@ function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
-  const jobLeadRedirect = "/job-lead";
+  const jobLeadRedirect = "/job-leads";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -239,12 +239,12 @@ function App() {
           }
         />
         <Route
-          path="/job-lead/add"
+          path="/job-leads/add"
           element={
             <AuthGuard
               isAuthenticated={isAuthenticated}
               loginUser={loginUser}
-              redirectUrl={adminRedirect}
+              redirectUrl={jobLeadRedirect}
             >
               <RouteGuard
                 isPermitted={currUser.isAdmin}

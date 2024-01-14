@@ -91,7 +91,7 @@ function JobLeadDashboardHeaderComponent({ managedJobLeads }) {
             },
           }}
           startIcon={<AddIcon />}
-          onClick={() => navigate("/job-lead/add")}
+          onClick={() => navigate("/job-leads/add")}
         >
           ADD NEW JOB LEAD
         </Button>

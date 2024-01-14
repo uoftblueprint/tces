@@ -134,13 +134,6 @@ function JobLeadDashboardTableComponent({
       rowCount={totalRowCount}
       rows={managedJobLeads}
       columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 10,
-          },
-        },
-      }}
       loading={isLoading}
       pageSizeOptions={[10]}
       paginationModel={paginationModel}

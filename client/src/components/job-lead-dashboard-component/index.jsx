@@ -8,7 +8,7 @@ import JobLeadDashboardTableComponent from "./job-lead-dashboard-table";
 import JobLeadDashboardFiltersComponent from "./job-lead-dashboard-filters";
 import ErrorComponent from "../shared/error-screen-component";
 import { getFilteredJobLeads } from "../../utils/api";
-import formatDateStr from "../../utils/date";
+import { formatDateStr } from "../../utils/date";
 import LoadingScreenComponent from "../shared/loading-screen-component";
 
 function JobLeadDashboardComponent({
@@ -20,7 +20,7 @@ function JobLeadDashboardComponent({
   const [loading, setLoading] = React.useState(false);
   const [errorOb, setError] = React.useState(null);
   const [paginationModel, setPaginationModel] = React.useState({
-    pageSize: 25,
+    pageSize: 10,
     page: 1,
   });
   const [rowCount, setRowCount] = React.useState(managedJobLeads.length);
@@ -31,7 +31,7 @@ function JobLeadDashboardComponent({
     // we initially include pagination model first
     const queryParams = new URLSearchParams({
       pageSize,
-      page,
+      page: page < 1 ? 1 : page,
     });
 
     // early return if no filter params are provided

@@ -24,6 +24,12 @@ function findCompensationRange(managedJobLeads) {
   return [minCompensation, maxCompensation];
 }
 
+function displayCompensationRange(min, max, postfix = "") {
+  const minComp = min || "0";
+  const maxComp = max || "0";
+  return `$${minComp}${postfix} - $${maxComp}${postfix}`;
+}
+
 function findHoursPerWeekRange(managedJobLeads) {
   if (managedJobLeads.length < 1) return [null, null];
   let minHoursPerWeek = managedJobLeads[0]?.hoursPerWeek ?? 0;
@@ -72,4 +78,10 @@ function getOwnerIds(managedJobLeads, getUserById) {
   return ownerDetails;
 }
 
-export { valuetext, findHoursPerWeekRange, findCompensationRange, getOwnerIds };
+export {
+  valuetext,
+  findHoursPerWeekRange,
+  findCompensationRange,
+  getOwnerIds,
+  displayCompensationRange,
+};
