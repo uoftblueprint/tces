@@ -75,10 +75,8 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       );
     }
 
-    console.log("YOO JOB TYYPES", jobTypes);
     if (jobTypes) {
       const jobTypesFilter = JSON.parse(jobTypes);
-      console.log("YOO", jobTypesFilter);
       query.employment_type = {
         [Op.or]: Object.entries(jobTypesFilter)
           .filter(([, value]) => value)

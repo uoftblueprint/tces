@@ -15,10 +15,14 @@ afterEach(() => {
   mock.stop("../../src/models/job_lead.model");
 });
 
-describe("getOneJobLead test suite", () => {
+describe("getAllJobLeads test suite", () => {
   const mockReq = {
     params: {
       job_lead_id: 1,
+    },
+    query: {
+      page: '2',
+      pageSize: '10'
     },
   };
 
