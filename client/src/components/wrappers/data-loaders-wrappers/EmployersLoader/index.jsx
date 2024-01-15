@@ -15,6 +15,7 @@ function EmployersLoader({ setEmployers, children }) {
         if (response.ok) {
           const employersData = await response.json();
 
+          // this was set up to get data for job leads (will populate rest of attributes in future ticket) but this will suffice for now
           const formattedEmployers = employersData.data.map((employer) => ({
             employerID: employer.id,
             name: employer.name,

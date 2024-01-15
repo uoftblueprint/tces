@@ -33,6 +33,7 @@ import { formateDateObjToStr } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
+import JOB_TYPES from "../../../utils/contants";
 
 function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
   const employer = getEmployerById(jobLead.employerID);
@@ -269,30 +270,6 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                       <InputLabel
                         id={`minCompensationLabel-${jobLead.jobLeadID}`}
                       >
-                        Compensation Maximum
-                      </InputLabel>
-                      <OutlinedInput
-                        id={`maxCompensation-${jobLead.jobLeadID}`}
-                        type="number"
-                        fullWidth
-                        startAdornment={
-                          <InputAdornment position="start">$</InputAdornment>
-                        }
-                        endAdornment={
-                          <InputAdornment position="end">/hours</InputAdornment>
-                        }
-                        label="Compensation Maximum"
-                        value={maxCompensation}
-                        onChange={handleMaxCompensationChange}
-                        required
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={4.5}>
-                    <FormControl fullWidth>
-                      <InputLabel
-                        id={`minCompensationLabel-${jobLead.jobLeadID}`}
-                      >
                         Compensation Minimum
                       </InputLabel>
                       <OutlinedInput
@@ -308,6 +285,30 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4.5}>
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id={`minCompensationLabel-${jobLead.jobLeadID}`}
+                      >
+                        Compensation Maximum
+                      </InputLabel>
+                      <OutlinedInput
+                        id={`maxCompensation-${jobLead.jobLeadID}`}
+                        type="number"
+                        fullWidth
+                        startAdornment={
+                          <InputAdornment position="start">$</InputAdornment>
+                        }
+                        endAdornment={
+                          <InputAdornment position="end">/hours</InputAdornment>
+                        }
+                        label="Compensation Maximum"
+                        value={maxCompensation}
+                        onChange={handleMaxCompensationChange}
                         required
                       />
                     </FormControl>
@@ -358,10 +359,11 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                       }
                       required
                     >
-                      <MenuItem value="Full Time">Full Time</MenuItem>
-                      <MenuItem value="Part Time">Part Time</MenuItem>
-                      <MenuItem value="Casual">Casual</MenuItem>
-                      <MenuItem value="On-Call">On-Call</MenuItem>
+                      {JOB_TYPES.map((jobType) => (
+                        <MenuItem key={jobType} value={jobType}>
+                          {jobType}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 ) : (

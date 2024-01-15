@@ -29,13 +29,17 @@ import {
   getOwnerIds,
 } from "../../../utils/jobLeads";
 
+import JOB_TYPES from "../../../utils/contants";
+
 function JobLeadDashboardFiltersComponent({
   managedJobLeads,
   getUserById,
+  paginationModel,
   handleApplyFilter,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
+  const [noFilterMode, setNoFilterMode] = React.useState(true);
   const [minMaxCompensation, setMinMaxCompensation] = React.useState([
     null,
     null,
@@ -62,12 +66,12 @@ function JobLeadDashboardFiltersComponent({
   ]);
   const [ownerId, setOwnerId] = React.useState(-1);
   const [searchNOCQuery, setSearchNOCQuery] = React.useState("");
-  const [jobTypeSelect, setJobTypeSelect] = React.useState({
-    "Full Time": true,
-    "Part Time": true,
-    Casual: true,
-    "On Call": true,
-  });
+  const initialJobTypeSelect = JOB_TYPES.reduce((acc, jobType) => {
+    acc[jobType] = true;
+    return acc;
+  }, {});
+  const [jobTypeSelect, setJobTypeSelect] =
+    React.useState(initialJobTypeSelect);
 
   const minCompensation = minMaxCompensation[0];
   const maxCompensation = minMaxCompensation[1];
@@ -171,6 +175,7 @@ function JobLeadDashboardFiltersComponent({
   };
 
   const onFilterReset = () => {
+    setNoFilterMode(true);
     setSearchTitleQuery("");
     setStartDateCreated(null);
     setEndDateCreated(null);
@@ -190,6 +195,11 @@ function JobLeadDashboardFiltersComponent({
     handleApplyFilter(null);
   };
 
+  const onApplyFilterClick = () => {
+    setNoFilterMode(false);
+    applyFilters();
+  };
+
   // triggers whenever the job leads list changes (e.g page change, filter change etc)
   React.useEffect(() => {
     if (initialLoad && managedJobLeads?.length > 0) {
@@ -203,6 +213,16 @@ function JobLeadDashboardFiltersComponent({
       setInitialLoad(false);
     }
   }, [managedJobLeads]);
+
+  React.useEffect(() => {
+    if (!initialLoad) {
+      if (noFilterMode) {
+        handleApplyFilter(null);
+      } else {
+        applyFilters();
+      }
+    }
+  }, [paginationModel]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -400,46 +420,19 @@ function JobLeadDashboardFiltersComponent({
             </Typography>
             <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
               <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={jobTypeSelect["Full Time"]}
-                      onChange={handleJobTypeFilterChange}
-                      name="Full Time"
-                    />
-                  }
-                  label="Full Time"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={jobTypeSelect["Part Time"]}
-                      onChange={handleJobTypeFilterChange}
-                      name="Part Time"
-                    />
-                  }
-                  label="Part Time"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={jobTypeSelect.Casual}
-                      onChange={handleJobTypeFilterChange}
-                      name="Casual"
-                    />
-                  }
-                  label="Casual"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={jobTypeSelect["On Call"]}
-                      onChange={handleJobTypeFilterChange}
-                      name="On Call"
-                    />
-                  }
-                  label="On Call"
-                />
+                {JOB_TYPES.map((jobType) => (
+                  <FormControlLabel
+                    key={jobType}
+                    control={
+                      <Checkbox
+                        checked={jobTypeSelect[jobType]}
+                        onChange={handleJobTypeFilterChange}
+                        name={jobType}
+                      />
+                    }
+                    label={jobType}
+                  />
+                ))}
               </FormGroup>
             </FormControl>
           </Stack>
@@ -454,7 +447,7 @@ function JobLeadDashboardFiltersComponent({
           >
             Reset
           </Button>
-          <Button size="small" onClick={applyFilters} variant="contained">
+          <Button size="small" onClick={onApplyFilterClick} variant="contained">
             Apply
           </Button>
         </CardActions>
@@ -466,6 +459,8 @@ function JobLeadDashboardFiltersComponent({
 JobLeadDashboardFiltersComponent.propTypes = {
   getUserById: PropTypes.func.isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
   handleApplyFilter: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };

@@ -12,12 +12,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import dayjs from "dayjs";
 import JobLeadContent from "./jobLeadCard";
 import { Container, ButtonContainer, ButtonL } from "./index.styles";
 import EmployerType from "../../prop-types/EmployerType";
 import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
+import ConfirmDialog from "../shared/confirm-dialog-component";
 
 function AddJobLead({
   jobLeadData,
@@ -31,6 +33,7 @@ function AddJobLead({
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,17 +53,17 @@ function AddJobLead({
       ...jobLeadData,
       {
         id: newId,
-        employer: "",
+        employer: NaN,
         title: "",
-        minCompensation: "",
-        maxCompensation: "",
-        hoursPerWeek: "",
-        nationalOC: "",
+        minCompensation: NaN,
+        maxCompensation: NaN,
+        hoursPerWeek: NaN,
+        nationalOC: NaN,
         description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
-        numPositions: "",
+        creationDate: dayjs(),
+        expirationDate: dayjs().add(1, "month"),
+        employmentType: NaN,
+        numPositions: NaN,
       },
     ]);
   };
@@ -82,12 +85,12 @@ function AddJobLead({
     try {
       const response = await createJobLeads(
         jobLeadData,
-        currUser.id,
-        currUser.id,
+        currUser.userID,
+        currUser.userID,
       );
 
       if (response.ok) {
-        navigate("/job_leads");
+        navigate("/job-leads");
       } else {
         setErrorObj(response);
       }
@@ -98,6 +101,14 @@ function AddJobLead({
     }
   };
 
+  const confirmSubmit = (e) => {
+    e.preventDefault();
+    setConfirmDialog(true);
+  };
+
+  const cancelSubmit = () => {
+    setConfirmDialog(false);
+  };
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
@@ -120,7 +131,7 @@ function AddJobLead({
             width: "63%",
           }}
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={confirmSubmit}>
             <JobLeadContent
               jobLeadData={jobLeadData}
               employers={employers}
@@ -180,6 +191,13 @@ function AddJobLead({
           </form>
         </Box>
       </Stack>
+      <ConfirmDialog
+        open={confirmDialog}
+        title="Confirm Submit"
+        message="Are you sure you want to submit these changes?"
+        onConfirm={handleSubmit}
+        onCancel={cancelSubmit}
+      />
     </Container>
   );
 }

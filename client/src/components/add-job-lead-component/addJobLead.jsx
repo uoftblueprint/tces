@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import dayjs from "dayjs";
 import AddJobLead from "./index";
 import UserType from "../../prop-types/UserType";
 import EmployerType from "../../prop-types/EmployerType";
@@ -9,17 +10,17 @@ function AddJobLeadParent({ employers, setLocalExitRoute, currUser }) {
     jobLeads: [
       {
         id: 0,
-        employer: "",
+        employer: NaN,
         title: "",
-        minCompensation: "",
-        maxCompensation: "",
-        hoursPerWeek: "",
-        nationalOC: "",
+        minCompensation: NaN,
+        maxCompensation: NaN,
+        hoursPerWeek: NaN,
+        nationalOC: NaN,
         description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
-        numPositions: "",
+        creationDate: dayjs(),
+        expirationDate: dayjs().add(1, "month"),
+        employmentType: NaN,
+        numPositions: NaN,
       },
     ],
   };

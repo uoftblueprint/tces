@@ -21,7 +21,7 @@ function JobLeadDashboardComponent({
   const [errorOb, setError] = React.useState(null);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 10,
-    page: 1,
+    page: 0,
   });
   const [rowCount, setRowCount] = React.useState(managedJobLeads.length);
 
@@ -31,7 +31,7 @@ function JobLeadDashboardComponent({
     // we initially include pagination model first
     const queryParams = new URLSearchParams({
       pageSize,
-      page: page < 1 ? 1 : page,
+      page,
     });
 
     // early return if no filter params are provided
@@ -156,6 +156,7 @@ function JobLeadDashboardComponent({
           <JobLeadDashboardFiltersComponent
             managedJobLeads={managedJobLeads}
             getUserById={getUserById}
+            paginationModel={paginationModel}
             handleApplyFilter={handleApplyFilter}
           />
           <JobLeadDashboardTableComponent

@@ -10,6 +10,11 @@ function JobLeadDashboard({
 }) {
   const [processedManagedJobLeads, setProcessedManagedJobLeads] = useState([]);
 
+  // scroll to the top on initialization
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const processedJobLeads = managedJobLeads.map((jobLead) => ({
       ...jobLead,

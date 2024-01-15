@@ -122,27 +122,52 @@ const getAllEmployers = async () => {
 };
 
 const createJobLeads = async (jobLeads, ownerID, creatorID) => {
-  const formattedJobLeads = jobLeads.map((jobLead) => ({
-    employer_name: jobLead.employer,
-    job_title: jobLead.title,
-    num_of_positions: parseInt(jobLead.numPositions, 10),
-    compensation_max: parseInt(jobLead.maxCompensation, 10),
-    compensation_min: parseInt(jobLead.minCompensation, 10),
-    hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
-    national_occupation_code: jobLead.nationalOC,
-    job_description: jobLead.description,
-    creation_date: jobLead.creationDate
-      ? jobLead.creationDate.toISOString().split("T")[0]
-      : null,
-    expiration_date: jobLead.expirationDate
-      ? jobLead.expirationDate.toISOString().split("T")[0]
-      : null,
-    employment_type: jobLead.employmentType,
+  console.log(jobLeads)
+  const formattedJobLeads = jobLeads.map((jobLead) => {
+    // validation to ensure min and max compensations are not swapped, if so we ensure correct values are passed into respective params
+    const validateCompensation = (minCompensation, maxCompensation) => {
+      if (minCompensation > maxCompensation) {
+        return {
+          minCompensation: maxCompensation,
+          maxCompensation: minCompensation,
+        };
+      }
+      return { minCompensation, maxCompensation };
+    };
+
+    const { minCompensation, maxCompensation } = validateCompensation(
+      parseInt(jobLead.minCompensation, 10),
+      parseInt(jobLead.maxCompensation, 10),
+    );
+
+    return {
+      employer: jobLead.employer,
+      job_title: jobLead.title,
+      num_of_positions: parseInt(jobLead.numPositions, 10),
+      compensation_max: maxCompensation,
+      compensation_min: minCompensation,
+      hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
+      national_occupation_code: parseInt(jobLead.nationalOC, 10),
+      job_description: jobLead.description,
+      creation_date: jobLead.creationDate
+        ? jobLead.creationDate.toISOString().split("T")[0]
+        : null,
+      expiration_date: jobLead.expirationDate
+        ? jobLead.expirationDate.toISOString().split("T")[0]
+        : null,
+      employment_type: jobLead.employmentType,
+    };
+  });
+
+  const jobLeadsCreateBody = {
     client: {
       owner: ownerID,
       creator: creatorID,
     },
-  }));
+    job_lead: formattedJobLeads,
+  };
+
+  console.log(jobLeadsCreateBody);
 
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
@@ -151,7 +176,7 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formattedJobLeads),
+    body: JSON.stringify(jobLeadsCreateBody),
   });
   return response;
 };
