@@ -269,7 +269,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                       <InputLabel
                         id={`minCompensationLabel-${jobLead.jobLeadID}`}
                       >
-                        Maximum Compensation
+                        Compensation Maximum
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobLead.jobLeadID}`}
@@ -281,7 +281,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                         endAdornment={
                           <InputAdornment position="end">/hours</InputAdornment>
                         }
-                        label="Maximum Compensation"
+                        label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
                         required
@@ -293,7 +293,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                       <InputLabel
                         id={`minCompensationLabel-${jobLead.jobLeadID}`}
                       >
-                        Minimum Compensation
+                        Compensation Minimum
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobLead.jobLeadID}`}
@@ -305,7 +305,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
                         endAdornment={
                           <InputAdornment position="end">/hours</InputAdornment>
                         }
-                        label="Minimum Compensation"
+                        label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
                         required

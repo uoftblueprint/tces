@@ -12,13 +12,19 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { JobLeadContainer, H3 } from "./index.styles";
+import EmployerType from "../../prop-types/EmployerType";
 
-function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
+function JobLeadContent({
+  jobLeadData,
+  handleInputChange,
+  isAddEmployer,
+  employers,
+}) {
   return (
     <>
       {jobLeadData.map((lead) => (
         <JobLeadContainer key={lead.id}>
-          <H3>Job Lead</H3>
+          <H3>Job Lead {lead.id + 1}</H3>
 
           {/* Employer Name Field */}
           {!isAddEmployer && (
@@ -33,10 +39,16 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "employer")
                 }
+                required
               >
-                <MenuItem value="name 1">Name 1</MenuItem>
-                <MenuItem value="name 2">Name 2</MenuItem>
-                <MenuItem value="name 3">Name 3</MenuItem>
+                {employers.map((employer) => (
+                  <MenuItem
+                    key={employer.employerID}
+                    value={employer.employerID}
+                  >
+                    {employer.name}
+                  </MenuItem>
+                ))}
               </Select>
               <FormHelperText>*Required</FormHelperText>
             </FormControl>
@@ -53,6 +65,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               handleInputChange(e.target.value, lead.id, "title")
             }
             helperText={isAddEmployer ? "" : "*Required"}
+            required
           />
 
           {/* Compensation Minimum Field */}
@@ -71,6 +84,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "minCompensation")
               }
+              required
             />
           </FormControl>
 
@@ -90,6 +104,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "maxCompensation")
               }
+              required
             />
           </FormControl>
 
@@ -104,6 +119,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "hoursPerWeek")
             }
+            required
           />
 
           {/* National Occupation Code Field */}
@@ -116,6 +132,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "nationalOC")
             }
+            required
           />
 
           {/* Job Description Field */}
@@ -130,6 +147,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "description")
             }
+            required
           />
 
           {/* Creation Date Picker */}
@@ -145,8 +163,9 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               }
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText="" />
+                <TextField {...params} error={false} helperText=""  required/>
               )}
+              required
             />
           </LocalizationProvider>
 
@@ -163,8 +182,9 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               }
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText="" />
+                <TextField {...params} error={false} helperText=""  required/>
               )}
+              required
             />
           </LocalizationProvider>
 
@@ -182,6 +202,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "employmentType")
               }
+              required
             >
               <MenuItem value="full-time">Full Time</MenuItem>
               <MenuItem value="part-time">Part Time</MenuItem>
@@ -203,6 +224,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               handleInputChange(e.target.value, lead.id, "numPositions")
             }
             helperText={isAddEmployer ? "" : "*Required"}
+            required
           />
         </JobLeadContainer>
       ))}
@@ -215,6 +237,7 @@ JobLeadContent.propTypes = {
   jobLeadData: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
+  employers: PropTypes.arrayOf(EmployerType).isRequired,
 };
 
 JobLeadContent.defaultProps = {

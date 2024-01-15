@@ -230,7 +230,14 @@ function App() {
                   isPermitted={currUser.isAdmin}
                   redirect={dashboardRedirect}
                 >
-                  <AddJobLeadPage />
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddJobLeadPage
+                      employers={employers}
+                      currUser={currUser}
+                      localExitRoute={localExitRoute}
+                      setLocalExitRoute={setLocalExitRoute}
+                    />
+                  </EmployersLoader>
                 </RouteGuard>
               </AuthGuard>
             }

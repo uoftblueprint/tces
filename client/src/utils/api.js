@@ -121,6 +121,41 @@ const getAllEmployers = async () => {
   return response;
 };
 
+const createJobLeads = async (jobLeads, ownerID, creatorID) => {
+  const formattedJobLeads = jobLeads.map((jobLead) => ({
+    employer_name: jobLead.employer,
+    job_title: jobLead.title,
+    num_of_positions: parseInt(jobLead.numPositions, 10),
+    compensation_max: parseInt(jobLead.maxCompensation, 10),
+    compensation_min: parseInt(jobLead.minCompensation, 10),
+    hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
+    national_occupation_code: jobLead.nationalOC,
+    job_description: jobLead.description,
+    creation_date: jobLead.creationDate
+      ? jobLead.creationDate.toISOString().split("T")[0]
+      : null,
+    expiration_date: jobLead.expirationDate
+      ? jobLead.expirationDate.toISOString().split("T")[0]
+      : null,
+    employment_type: jobLead.employmentType,
+    client: {
+      owner: ownerID,
+      creator: creatorID,
+    },
+  }));
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formattedJobLeads),
+  });
+  return response;
+};
+
 const getFilteredJobLeads = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
@@ -175,6 +210,7 @@ export {
   modifyUser,
   deleteUser,
   getAllEmployers,
+  createJobLeads,
   getFilteredJobLeads,
   modifyJobLead,
 };
