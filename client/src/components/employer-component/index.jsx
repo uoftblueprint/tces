@@ -195,7 +195,7 @@ function EmployerComponent({ currUser }) {
                   >
                     Job Leads
                   </Typography>
-                  <EditIcon
+                  <AddIcon
                   sx={{
                     color: "gray",
                     cursor: "pointer",
