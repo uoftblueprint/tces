@@ -117,7 +117,25 @@ const getEmployer = async (employerID) => {
       "Content-Type": "application/json",
     },
   });
+
   return response;
+}
+
+const getUserName = async (userID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status !== 200) {
+    return "";
+  } 
+
+  const json = await response.json();
+  return json.data ? `${json.data.user.first_name} ${json.data.user.last_name}` : "";
 }
 
 export {
@@ -129,4 +147,5 @@ export {
   modifyUser,
   deleteUser,
   getEmployer,
+  getUserName,
 };

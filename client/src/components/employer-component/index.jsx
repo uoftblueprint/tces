@@ -14,7 +14,7 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getEmployer } from "../../utils/api";
+import { getEmployer, getUserName } from "../../utils/api";
 
 import UserType from "../../prop-types/UserType";
 import {
@@ -40,6 +40,10 @@ function EmployerComponent({ currUser }) {
       const json = await res.json();
       if (json.status === "success") {
         const data = json.data.employer;
+
+        data.owner = await getUserName(data.owner);
+        data.creator = await getUserName(data.creator);
+
         await setEmployer(data);
       }
     }
