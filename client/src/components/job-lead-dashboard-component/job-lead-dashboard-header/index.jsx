@@ -8,11 +8,10 @@ import AddIcon from "@mui/icons-material/Add";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import UserType from "../../../prop-types/UserType";
 
 import { HeaderContainer } from "../index.styles";
 
-function JobLeadDashboardHeaderComponent({ managedJobLeads }) {
+function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -54,7 +53,7 @@ function JobLeadDashboardHeaderComponent({ managedJobLeads }) {
             textAlign: "left",
           }}
         >
-          {managedJobLeads.length} Job Leads
+          {jobLeadsResultsCount} Job Leads
         </Typography>
       </div>
 
@@ -76,7 +75,7 @@ function JobLeadDashboardHeaderComponent({ managedJobLeads }) {
           startIcon={<DownloadIcon />}
           onClick={() => {}}
         >
-          EXPORT CURRENT FILTER VIEW ({managedJobLeads.length} Job Leads)
+          EXPORT CURRENT FILTER VIEW ({jobLeadsResultsCount} Job Leads)
         </Button>
         <Button
           sx={{
@@ -101,7 +100,7 @@ function JobLeadDashboardHeaderComponent({ managedJobLeads }) {
 }
 
 JobLeadDashboardHeaderComponent.propTypes = {
-  managedJobLeads: PropTypes.arrayOf(UserType).isRequired,
+  jobLeadsResultsCount: PropTypes.number.isRequired,
   // eslint-disable-next-line
 };
 

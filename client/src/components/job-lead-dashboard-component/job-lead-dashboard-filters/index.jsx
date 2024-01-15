@@ -185,12 +185,7 @@ function JobLeadDashboardFiltersComponent({
     setHoursPerWeekRange(minMaxHoursPerWeek);
     setOwnerId(-1);
     setSearchNOCQuery("");
-    setJobTypeSelect({
-      "Full Time": true,
-      "Part Time": true,
-      Casual: true,
-      "On Call": true,
-    });
+    setJobTypeSelect(initialJobTypeSelect);
 
     handleApplyFilter(null);
   };

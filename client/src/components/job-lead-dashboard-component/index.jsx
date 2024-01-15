@@ -144,7 +144,7 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent managedJobLeads={managedJobLeads} />
+        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} />
         <Box
           sx={{
             display: "flex",
