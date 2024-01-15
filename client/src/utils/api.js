@@ -109,6 +109,17 @@ const deleteUser = async (userID) => {
   return response;
 };
 
+const getEmployer = async (employerID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers/${employerID}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+}
+
 export {
   login,
   logout,
@@ -117,4 +128,5 @@ export {
   getAllUsers,
   modifyUser,
   deleteUser,
+  getEmployer,
 };

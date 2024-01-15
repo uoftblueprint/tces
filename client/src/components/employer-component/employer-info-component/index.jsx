@@ -7,8 +7,9 @@ import {
   HeaderContainer,
   TopRowContainer,
 } from "./index.styles";
+import EmployerType from '../../../prop-types/EmployerType';
 
-function EmployerInfoComponent() {
+function EmployerInfoComponent({ employer }) {
   return (
   <TopRowContainer style={{display: "flex", justifyContent: "space-between"}}>
     <div>
@@ -23,7 +24,7 @@ function EmployerInfoComponent() {
             textAlign: "left",
           }}
         >
-          Shoppers Drug Mart
+          {employer.name}
         </Typography>
         <MoreVertIcon
           onClick={() => {
@@ -66,7 +67,7 @@ function EmployerInfoComponent() {
         <Typography
           variant="body2"
         >
-          Owen Perth
+          {employer.owner ? employer.owner : ""}
         </Typography>
       </div>
       <div style={{width: "50%"}}>
@@ -81,7 +82,7 @@ function EmployerInfoComponent() {
         <Typography
           variant="body2"
         >
-          Emily Gale
+          { employer.creator ? employer.creator : "" }
         </Typography>
       </div>
 
@@ -91,5 +92,9 @@ function EmployerInfoComponent() {
   </TopRowContainer>
   );
 }
+
+EmployerInfoComponent.propTypes = {
+  employer: EmployerType.isRequired,
+};
 
 export default EmployerInfoComponent;

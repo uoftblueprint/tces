@@ -12,7 +12,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getEmployer } from "../../utils/api";
 
 import UserType from "../../prop-types/UserType";
 import {
@@ -27,6 +29,22 @@ import BoxRowComponent from "./box-row-component";
 
 function EmployerComponent({ currUser }) {
   const navigate = useNavigate();
+
+  const [employer, setEmployer] = useState({});
+
+  const { employerID } = useParams();
+
+  useEffect(() => {
+    const updateEmployer = async () => {
+      const res = await getEmployer(employerID);
+      const json = await res.json();
+      if (json.status === "success") {
+        const data = json.data.employer;
+        await setEmployer(data);
+      }
+    }
+    updateEmployer();
+  }, []);
 
   return (
     <div
@@ -57,7 +75,7 @@ function EmployerComponent({ currUser }) {
         </ArrowContainer>
         <MainContainer>
           <EmployerContainer>
-            <EmployerInfoComponent />
+            <EmployerInfoComponent employer={employer} />
 
             <Box
               sx={{
@@ -95,13 +113,13 @@ function EmployerComponent({ currUser }) {
                 <Divider />
                 <CardContent>
                 
-                <BoxRowComponent leftSide="Name" rightSide="Employer Name" />
-                <BoxRowComponent leftSide="Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 1111</a>} />
-                <BoxRowComponent leftSide="Fax" rightSide={<a href="tel:111-111-1111">+1 111 1111</a>} />
-                <BoxRowComponent leftSide="Email" rightSide={<a href="mailto:example@example.com">example@example.com</a>} copyable />
-                <BoxRowComponent leftSide="Website" rightSide={<a href="example.com">example.com</a>} />
-                <BoxRowComponent leftSide="NAICS Code" rightSide="111111" />
-                <BoxRowComponent leftSide="Address" rightSide="1, Street Name, Toronto, ABC 123" />
+                <BoxRowComponent leftSide="Name" rightSide={employer.name ? employer.name : ""} />
+                <BoxRowComponent leftSide="Phone Number" rightSide={employer.phone_number ? <a href={`tel:${employer.phone_number}`}>{employer.phone_number}</a> : ""} />
+                <BoxRowComponent leftSide="Fax" rightSide={employer.fax ? <a href={`tel:${employer.fax}`}>{employer.fax}</a> : ""} />
+                <BoxRowComponent leftSide="Email" rightSide={employer.email ? <a href={`mailto:${employer.email}`}>{employer.email}</a> : ""} copyable />
+                <BoxRowComponent leftSide="Website" rightSide={employer.website ? <a href={employer.website}>{employer.website}</a> : ""} />
+                <BoxRowComponent leftSide="NAICS Code" rightSide={employer.naics_code ? employer.naics_code : "" } />
+                <BoxRowComponent leftSide="Address" rightSide={employer.address ? employer.address : ""} />
 
                 </CardContent>
               </Card>

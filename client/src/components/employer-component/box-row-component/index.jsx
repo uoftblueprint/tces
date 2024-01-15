@@ -37,7 +37,7 @@ function BoxRowComponent({ leftSide, rightSide, copyable }) {
               <ContentCopyIcon 
                 sx={{color: "gray", cursor: "pointer",}} 
                 align="right" 
-                onClick={() => {navigator.clipboard.writeText(rightSide.props.children)}}
+                onClick={() => {if (rightSide.props) {navigator.clipboard.writeText(rightSide.props.children) } }}
               />}
           </div>
         </Grid>
