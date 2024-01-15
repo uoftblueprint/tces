@@ -23,6 +23,7 @@ import {
 } from "./index.styles";
 
 import EmployerInfoComponent from "./employer-info-component";
+import BoxRowComponent from "./box-row-component";
 
 function EmployerComponent({ currUser }) {
   const navigate = useNavigate();
@@ -93,30 +94,16 @@ function EmployerComponent({ currUser }) {
                 </CardContent>
                 <Divider />
                 <CardContent>
-                  <Typography sx={{ mb: 0.5 }} color="text.secondary">
-                    <TextField
-                      type="text"
-                      value="aaa"
-                      onChange={() => {}}
-                      size="small"
-                      style={{
-                        borderWidth: "10px",
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Typography>
+                
+                <BoxRowComponent leftSide="Name" rightSide="Employer Name" />
+                <BoxRowComponent leftSide="Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 1111</a>} />
+                <BoxRowComponent leftSide="Fax" rightSide={<a href="tel:111-111-1111">+1 111 1111</a>} />
+                <BoxRowComponent leftSide="Email" rightSide={<a href="mailto:example@example.com">example@example.com</a>} copyable />
+                <BoxRowComponent leftSide="Website" rightSide={<a href="example.com">example.com</a>} />
+                <BoxRowComponent leftSide="NAICS Code" rightSide="111111" />
+                <BoxRowComponent leftSide="Address" rightSide="1, Street Name, Toronto, ABC 123" />
+
                 </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={() => {}}>
-                    Reset Filters
-                  </Button>
-                </CardActions>
               </Card>
 
               <Card 
@@ -155,30 +142,12 @@ function EmployerComponent({ currUser }) {
                 </CardContent>
                 <Divider />
                 <CardContent>
-                  <Typography sx={{ mb: 0.5 }} color="text.secondary">
-                    <TextField
-                      type="text"
-                      value="aaa"
-                      onChange={() => {}}
-                      size="small"
-                      style={{
-                        borderWidth: "10px",
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Typography>
+                  <BoxRowComponent leftSide="Name" rightSide="Name" />
+                  <BoxRowComponent leftSide="Job Title" rightSide="Job Title" />
+                  <BoxRowComponent leftSide="Email" rightSide={<a href="mailto:example@example.com">example@example.com</a>} copyable />
+                  <BoxRowComponent leftSide="Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 111 1111</a>} />
+                  <BoxRowComponent leftSide="Alternative Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 111 1111</a>} />
                 </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={() => {}}>
-                    Reset Filters
-                  </Button>
-                </CardActions>
               </Card>
 
               <Card style={{ width: "33%" }} sx={{ height: 800 }}>

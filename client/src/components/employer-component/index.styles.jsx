@@ -20,9 +20,16 @@ const Divider = styled(Box)`
   margin-bottom: 10px;
 `;
 
+const BoxDivider = styled(Box)`
+  border-bottom: 1px solid #0000001f;
+  border-color: divider;
+  margin-bottom: 10px;
+`;
+
 export {
   EmployerContainer,
   ArrowContainer,
   MainContainer,
   Divider,
+  BoxDivider,
 };
