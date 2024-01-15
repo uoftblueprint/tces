@@ -75,7 +75,7 @@ function EditJobLeadHeaderComponent({
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Owner
           </Typography>
-          <UserChipComponent user={owner} />
+          <UserChipComponent user={owner} edit />
         </Box>
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
