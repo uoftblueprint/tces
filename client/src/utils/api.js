@@ -122,7 +122,6 @@ const getAllEmployers = async () => {
 };
 
 const createJobLeads = async (jobLeads, ownerID, creatorID) => {
-  console.log(jobLeads)
   const formattedJobLeads = jobLeads.map((jobLead) => {
     // validation to ensure min and max compensations are not swapped, if so we ensure correct values are passed into respective params
     const validateCompensation = (minCompensation, maxCompensation) => {
@@ -166,8 +165,6 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
     },
     job_lead: formattedJobLeads,
   };
-
-  console.log(jobLeadsCreateBody);
 
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
