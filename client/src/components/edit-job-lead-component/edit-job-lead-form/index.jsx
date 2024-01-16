@@ -16,7 +16,6 @@ import {
   InputAdornment,
   OutlinedInput,
   InputLabel,
-  Snackbar,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopy from "@mui/icons-material/ContentCopy";
@@ -35,7 +34,11 @@ import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
 import JOB_TYPES from "../../../utils/contants";
 
-function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
+function EditJobLeadFormComponent({
+  jobLead,
+  getEmployerById,
+  setSnackBarMessage,
+}) {
   const employer = getEmployerById(jobLead.employerID);
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -64,9 +67,6 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
   const [jobDescription, setJobDescription] = React.useState(
     jobLead.jobDescription || "",
   );
-
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -103,10 +103,6 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
     }
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   const copyCompensationToClipboard = () => {
     const text = displayCompensationRange(
       minCompensation,
@@ -115,12 +111,10 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
     );
     navigator.clipboard.writeText(text).then(
       () => {
-        setSnackbarMessage("Copied to clipboard");
-        setSnackbarOpen(true);
+        setSnackBarMessage("Copied to clipboard");
       },
       () => {
-        setSnackbarMessage("Failed to copy");
-        setSnackbarOpen(true);
+        setSnackBarMessage("Failed to copy");
       },
     );
   };
@@ -170,17 +164,16 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
       const response = await modifyJobLead(modifiedJobLead);
 
       if (response.ok) {
-        setSnackbarMessage("Job lead updated successfully.");
+        setSnackBarMessage("Job lead updated successfully.");
         setIsEditMode(false);
       } else {
-        setSnackbarMessage("Failed to update job lead.");
+        setSnackBarMessage("Failed to update job lead.");
       }
     } catch (error) {
       setErrorObj(error);
-      setSnackbarMessage("An error occurred.");
+      setSnackBarMessage("An error occurred.");
     } finally {
       setIsLoading(false);
-      setSnackbarOpen(true);
       setConfirmEditDialog(false);
     }
   };
@@ -533,12 +526,6 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
           </Stack>
         </form>
       </Box>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={1500}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-      />
       <ConfirmDialog
         open={confirmEditDialog}
         title="Confirm Edit"
@@ -553,6 +540,7 @@ function EditJobLeadFormComponent({ jobLead, getEmployerById }) {
 EditJobLeadFormComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
   getEmployerById: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

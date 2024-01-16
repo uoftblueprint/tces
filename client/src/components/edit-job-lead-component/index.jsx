@@ -10,6 +10,7 @@ function EditJobLeadComponent({
   getUserById,
   getEmployerById,
   setLocalExitRoute,
+  setSnackBarMessage,
 }) {
   return (
     <EditContainer>
@@ -29,6 +30,7 @@ function EditJobLeadComponent({
         <EditJobLeadFormComponent
           jobLead={jobLead}
           getEmployerById={getEmployerById}
+          setSnackBarMessage={setSnackBarMessage}
         />
         <Box
           sx={{
@@ -55,6 +57,7 @@ EditJobLeadComponent.propTypes = {
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 
