@@ -7,10 +7,9 @@ import {
 } from "react-router-dom";
 
 import Client from "../../components/client-page";
-import EditClientPage from "../../components/edit-client-page";
+
 
 function ClientPage() {
-  // return <Client />;
 
   const today = new Date();
   today.setMonth(today.getMonth() - 3);
@@ -51,15 +50,6 @@ function ClientPage() {
           path="/client-page"
           element={
             <Client
-              clientInfo={clientInfo}
-              monthsSinceClosure={monthsSinceClosure}
-            />
-          }
-        />
-        <Route
-          path="/edit-client-page"
-          element={
-            <EditClientPage
               clientInfo={clientInfo}
               monthsSinceClosure={monthsSinceClosure}
               onSaveChanges={handleSave}
