@@ -1,5 +1,6 @@
+import { useState } from 'react';
+import TablePagination from '@mui/material/TablePagination';
 import Box from "@mui/material/Box";
-// import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -23,9 +24,23 @@ import PropTypes from "prop-types";
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
 function EmployerTableComponent({employerData}) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const formatDate = (date) => {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const slicedData = employerData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   
   return (
     <div>
@@ -217,7 +232,7 @@ function EmployerTableComponent({employerData}) {
               </Typography>
             </CardContent>
           </Card>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 'fit-content' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -229,8 +244,8 @@ function EmployerTableComponent({employerData}) {
                   <TableCell align="left">Owner</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {employerData.map(({ employerName, date, phoneNumber, email, primaryContact, owner }, index) => (
+              <TableBody sx={{ overflowY: 'auto' }}>
+                {slicedData.map(({ employerName, date, phoneNumber, email, primaryContact, owner }, index) => (
                   <TableRow
                     // eslint-disable-next-line react/no-array-index-key
                     key={`${employerName}-${index}`}
@@ -251,6 +266,14 @@ function EmployerTableComponent({employerData}) {
                 ))}
               </TableBody>
             </Table>
+            <TablePagination
+              component="div"
+              count={employerData.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </TableContainer>
         </Box>
       </DashboardContainer>

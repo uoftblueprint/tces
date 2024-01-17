@@ -10,6 +10,16 @@ function EmployerTable() {
     const mockData = [
         createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
         createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
+        createData('Emily Zhou', new Date('11/23/2003'), '+1 111 111 1111', 'email@email.com', 'First Last', 'Emily Zhou'),
     ];
 
     // Set the initial state with the mock data
