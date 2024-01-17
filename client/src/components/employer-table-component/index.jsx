@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import TablePagination from '@mui/material/TablePagination';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -26,6 +28,11 @@ import { Container, DashboardContainer, HeaderContainer } from "./index.styles";
 function EmployerTableComponent({employerData}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate("/dashboard");
+  };
 
   const formatDate = (date) => {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
@@ -46,16 +53,21 @@ function EmployerTableComponent({employerData}) {
     <Container>
       <DashboardContainer>
         <HeaderContainer>
-          <ArrowBackIcon
+          <IconButton
             sx={{
-              color: "gray",
               marginRight: 2,
               marginLeft: 2,
-              height: 35,
-              width: 35,
-              cursor: "pointer",
             }}
-          />
+            onClick={handleBackClick}
+            size="small"
+          >
+            <ArrowBackIcon
+              sx={{
+                color: "gray",
+                cursor: "pointer",
+              }}
+            />
+          </IconButton>
           <div style={{ flexGrow: 1 }}>
             <Typography
               style={{
