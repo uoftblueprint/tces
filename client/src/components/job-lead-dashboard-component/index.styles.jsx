@@ -6,6 +6,7 @@ const DashboardContainer = styled.div`
 `;
 
 const HeaderContainer = styled.div`
+  margin: 20px;
   display: flex;
   align-items: center;
 `;

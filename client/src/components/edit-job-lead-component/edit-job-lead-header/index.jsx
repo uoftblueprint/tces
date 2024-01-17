@@ -5,6 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 
 import PropTypes from "prop-types";
+import { IconButton } from "@mui/material";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import UserType from "../../../prop-types/UserType";
@@ -44,16 +45,21 @@ function EditJobLeadHeaderComponent({
 
   return (
     <HeaderContainer>
-      <ArrowBackIcon
-        onClick={handleBackClick}
+      <IconButton
         sx={{
-          color: "gray",
           marginRight: 2,
           marginLeft: 2,
-          cursor: "pointer",
         }}
-      />
-
+        onClick={handleBackClick}
+        size="small"
+      >
+        <ArrowBackIcon
+          sx={{
+            color: "gray",
+            cursor: "pointer",
+          }}
+        />
+      </IconButton>
       <div>
         <Typography
           style={{

@@ -9,6 +9,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 
+import IconButton from "@mui/material/IconButton";
 import { HeaderContainer } from "../index.styles";
 
 function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
@@ -20,15 +21,21 @@ function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
 
   return (
     <HeaderContainer>
-      <ArrowBackIcon
-        onClick={handleBackClick}
+      <IconButton
         sx={{
-          color: "gray",
           marginRight: 2,
           marginLeft: 2,
-          cursor: "pointer",
         }}
-      />
+        onClick={handleBackClick}
+        size="small"
+      >
+        <ArrowBackIcon
+          sx={{
+            color: "gray",
+            cursor: "pointer",
+          }}
+        />
+      </IconButton>
 
       <div>
         <Typography

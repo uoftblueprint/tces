@@ -221,7 +221,7 @@ function JobLeadDashboardFiltersComponent({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Card sx={{ width: 250, marginLeft: 2, marginBottom: 2 }}>
+      <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4 }}>
         <CardContent>
           <Stack spacing={2}>
             {/* Title Filter */}
