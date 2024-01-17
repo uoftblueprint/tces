@@ -11,6 +11,7 @@ import UserType from "../../../prop-types/UserType";
 
 import UserChipComponent from "../../shared/user-chip-component";
 import ChangeOwnerDialog from "../../shared/change-owner-dialog";
+import ErrorScreenComponent from "../../shared/error-screen-component";
 
 function EditJobLeadHeaderComponent({
   managedUsers,
@@ -19,8 +20,8 @@ function EditJobLeadHeaderComponent({
   setLocalExitRoute,
   setSnackBarMessage,
 }) {
-  const redirectRoute = `/job-leads/${jobLead.jobLeadID}`;
   const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
+  const [error, setError] = React.useState(null);
   const owner = getUserById(jobLead.ownerID);
   const creator = getUserById(jobLead.creatorID);
   const handleBackClick = () => {
@@ -38,6 +39,8 @@ function EditJobLeadHeaderComponent({
   const onChangeOwnerCancel = () => {
     setOwnerChangeDialog(false);
   };
+
+  if (error) return <ErrorScreenComponent message={error} />;
 
   return (
     <HeaderContainer>
@@ -103,14 +106,15 @@ function EditJobLeadHeaderComponent({
         </Box>
       </Box>
       <ChangeOwnerDialog
-        jobLead={jobLead}
-        currEntity={owner}
+        type="job-lead"
+        entity={jobLead}
+        currOwner={owner}
         onCancel={onChangeOwnerCancel}
         onConfirm={onOwnerChangeConfirm}
         open={ownerChangeDialog}
-        owners={managedUsers}
+        users={managedUsers}
         setSnackBarMessage={setSnackBarMessage}
-        redirect={redirectRoute}
+        setError={setError}
       />
     </HeaderContainer>
   );

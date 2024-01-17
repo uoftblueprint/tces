@@ -13,52 +13,80 @@ import {
   FormHelperText,
   FormControl,
 } from "@mui/material";
-import EmployerType from "../../../prop-types/EmployerType";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import UserType from "../../../prop-types/UserType";
-import { getUserByIdHelper } from "../../../utils/users";
+import EmployerType from "../../../prop-types/EmployerType";
+import {
+  getInitialsAndDisplayName,
+  getUserByIdHelper,
+} from "../../../utils/users";
 import { modifyJobLead } from "../../../utils/api";
 
 function ChangeOwnerDialog({
-  jobLead,
-  currEntity,
-  owners,
+  type,
+  entity,
+  currOwner,
+  users,
   open,
   onCancel,
   onConfirm,
   setSnackBarMessage,
-  redirect,
+  setError,
 }) {
   const navigate = useNavigate();
-  const [owner, setOwner] = React.useState(currEntity.userID);
+  const [owner, setOwner] = React.useState(currOwner.userID);
+  const [isLoading, setIsLoading] = React.useState(false);
   const getDisplayUserName = (userID) => {
-    const user = getUserByIdHelper(owners, userID);
-    const { firstName, lastName } = user;
-    return `${firstName} ${lastName}`;
+    const user = getUserByIdHelper(users, userID);
+    const { fullName } = getInitialsAndDisplayName(user);
+    return fullName;
   };
   const handleInputChange = (e) => {
     setOwner(e.target.value);
   };
 
   const handleSubmit = async () => {
-    const modifiedJobLead = {
-      jobLeadID: jobLead.jobLeadID,
-      owner,
-    };
-
+    setIsLoading(true);
     try {
-      const response = await modifyJobLead(modifiedJobLead);
+      let modifiedEntity;
+      let response;
+
+      if (type === "job-lead") {
+        modifiedEntity = {
+          jobLeadID: entity.jobLeadID,
+          owner,
+        };
+        response = await modifyJobLead(modifiedEntity);
+      }
+
+      if (type === "employer") {
+        modifiedEntity = {
+          employerID: entity.employerID,
+          owner,
+        };
+        // to add modifyEmployer when it is set up
+      }
+
+      if (type === "client") {
+        modifiedEntity = {
+          clientID: entity.clientID,
+          owner,
+        };
+        // to add modifyClient when it is set up
+      }
+
       if (response.ok) {
-        setSnackBarMessage("Job lead updated successfully.");
+        setSnackBarMessage("Owner updated successfully.");
       } else {
-        setSnackBarMessage("Failed to update job lead.");
+        setSnackBarMessage("Failed to update owner.");
+        setError(response);
       }
     } catch (error) {
       setSnackBarMessage("An error occurred.");
+      setError(error);
     } finally {
       onConfirm();
       navigate(0);
-      navigate(redirect);
     }
   };
 
@@ -77,19 +105,21 @@ function ChangeOwnerDialog({
       <DialogTitle>Change Owner</DialogTitle>
       <DialogContent>
         <FormControl fullWidth sx={{ m: 1, width: "300px" }}>
-          <InputLabel id={`nameLabel-${currEntity.id}`}>Owner Name</InputLabel>
+          <InputLabel id={`nameLabel-${currOwner.userID}`}>
+            Owner Name
+          </InputLabel>
           <Select
             sx={{ textAlign: "left" }}
-            labelId={`nameLabel-${currEntity.id}`}
-            id={`owner-${currEntity.id}`}
+            labelId={`nameLabel-${currOwner.id}`}
+            id={`owner-${currOwner.id}`}
             value={owner}
             label="Owner Name"
             onChange={handleInputChange}
             required
           >
-            {owners.map((currOwner) => (
-              <MenuItem key={currOwner.userID} value={currOwner.userID}>
-                {getDisplayUserName(currOwner.userID)}
+            {users.map((user) => (
+              <MenuItem key={user.userID} value={user.userID}>
+                {getDisplayUserName(user.userID)}
               </MenuItem>
             ))}
           </Select>
@@ -98,23 +128,30 @@ function ChangeOwnerDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button type="submit">Confirm</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? `Confirming` : `Confirm`}
+        </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
 ChangeOwnerDialog.propTypes = {
-  jobLead: JobLeadType.isRequired,
-  currEntity: PropTypes.arrayOf(EmployerType || JobLeadType || UserType)
-    .isRequired, // any entity that has EmployerID
-  owners: PropTypes.arrayOf(UserType).isRequired,
+  type: ("job-lead" || "client" || "employer").isRequired,
+  entity: (JobLeadType || EmployerType).isRequired, // add ClientType when it's implemeneted
+  currOwner: UserType.isRequired, // any entity that has EmployerID
+  users: PropTypes.arrayOf(UserType).isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
-  setSnackBarMessage: PropTypes.func.isRequired,
-  redirect: PropTypes.string.isRequired,
+  setSnackBarMessage: PropTypes.func,
+  setError: PropTypes.func,
   // eslint-disable-next-line
+};
+
+ChangeOwnerDialog.defaultProps = {
+  setSnackBarMessage: () => {},
+  setError: () => {},
 };
 
 export default ChangeOwnerDialog;
