@@ -52,8 +52,8 @@ function JobLeadDashboardTableComponent({
       sortable: false,
       filterable: false,
       valueGetter: (params) => {
-        const min = params.row.compensationMin.toFixed(2);
-        const max = params.row.compensationMax.toFixed(2);
+        const min = params.row.compensationMin ? params.row.compensationMin.toFixed(2) : 0;
+        const max = params.row.compensationMax ? params.row.compensationMax.toFixed(2) : 0;
         if (min && max) {
           return `$${min}-$${max}`;
         }

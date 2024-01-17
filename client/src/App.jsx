@@ -182,18 +182,13 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <RouteGuard
-                    isPermitted={currUser.isAdmin}
-                    redirect={dashboardRedirect}
-                  >
-                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                      <JobLeadDashboard
-                        managedJobLeads={managedJobLeads}
-                        setManagedJobLeads={setManagedJobLeads}
-                        getUserById={getUserById}
-                      />
-                    </ManagedUsersLoader>
-                  </RouteGuard>
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <JobLeadDashboard
+                      managedJobLeads={managedJobLeads}
+                      setManagedJobLeads={setManagedJobLeads}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
                 </AuthGuard>
               }
             />
@@ -215,20 +210,15 @@ function App() {
                   loginUser={loginUser}
                   redirectUrl={jobLeadRedirect}
                 >
-                  <RouteGuard
-                    isPermitted={currUser.isAdmin}
-                    redirect={dashboardRedirect}
-                  >
-                    <EmployersLoader setEmployers={setEmployers}>
-                      <EditJobLead
-                        managedJobLeads={managedJobLeads}
-                        getEmployerById={getEmployerById}
-                        getUserById={getUserById}
-                        setLocalExitRoute={setLocalExitRoute}
-                        setSnackBarMessage={setSnackBarMessage}
-                      />
-                    </EmployersLoader>
-                  </RouteGuard>
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <EditJobLead
+                      managedJobLeads={managedJobLeads}
+                      getEmployerById={getEmployerById}
+                      getUserById={getUserById}
+                      setLocalExitRoute={setLocalExitRoute}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </EmployersLoader>
                 </AuthGuard>
               }
             />
@@ -240,18 +230,13 @@ function App() {
                   loginUser={loginUser}
                   redirectUrl={jobLeadRedirect}
                 >
-                  <RouteGuard
-                    isPermitted={currUser.isAdmin}
-                    redirect={dashboardRedirect}
-                  >
-                    <EmployersLoader setEmployers={setEmployers}>
-                      <AddJobLeadPage
-                        employers={employers}
-                        currUser={currUser}
-                        setLocalExitRoute={setLocalExitRoute}
-                      />
-                    </EmployersLoader>
-                  </RouteGuard>
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddJobLeadPage
+                      employers={employers}
+                      currUser={currUser}
+                      setLocalExitRoute={setLocalExitRoute}
+                    />
+                  </EmployersLoader>
                 </AuthGuard>
               }
             />

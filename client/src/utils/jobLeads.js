@@ -11,9 +11,9 @@ function findCompensationRange(managedJobLeads) {
   let maxCompensation = managedJobLeads[0]?.compensationMax ?? 0;
 
   managedJobLeads.forEach((lead) => {
-    if (lead.compensationMin < minCompensation)
+    if (lead.compensationMin && lead.compensationMin < minCompensation)
       minCompensation = lead.compensationMin;
-    if (lead.compensationMax > maxCompensation)
+    if (lead.compensationMin && lead.compensationMax > maxCompensation)
       maxCompensation = lead.compensationMax;
   });
 
