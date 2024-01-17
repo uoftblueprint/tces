@@ -21,7 +21,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Chip, Avatar } from '@mui/material';
 import PropTypes from "prop-types";
-import { DashboardContainer, HeaderContainer } from "./index.styles";
+import { Container, DashboardContainer, HeaderContainer } from "./index.styles";
 
 function EmployerTableComponent({employerData}) {
   const [page, setPage] = useState(0);
@@ -43,7 +43,7 @@ function EmployerTableComponent({employerData}) {
   const slicedData = employerData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   
   return (
-    <div>
+    <Container>
       <DashboardContainer>
         <HeaderContainer>
           <ArrowBackIcon
@@ -123,14 +123,15 @@ function EmployerTableComponent({employerData}) {
             display: "flex",
             flexDirection: "row",
             gridColumnGap: "30px",
-            height: 400,
+            height: "fit-content",
+            paddingBottom: "16px",
             width: "100%",
           }}
         >
           <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
             <CardContent>
               <Typography
-                sx={{ fontSize: 14, mb: 2 }}
+                sx={{ fontSize: 14, mb: 4 }}
                 color="text.secondary"
                 align="left"
                 gutterBottom
@@ -277,7 +278,7 @@ function EmployerTableComponent({employerData}) {
           </TableContainer>
         </Box>
       </DashboardContainer>
-    </div>
+    </Container>
   );
 }
 

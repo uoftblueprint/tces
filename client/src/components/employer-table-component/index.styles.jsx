@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
+const Container = styled.div`
+  background-color: #FAFAFA;
+`;
+
 const DashboardContainer = styled.div`
-  margin-right: 40px;
-  margin-left: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background-color: #FAFAFA;;
+  padding-right: 40px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 `;
 
 const HeaderContainer = styled.div`
@@ -15,4 +18,4 @@ const HeaderContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-export { DashboardContainer, HeaderContainer };
+export { Container, DashboardContainer, HeaderContainer };
