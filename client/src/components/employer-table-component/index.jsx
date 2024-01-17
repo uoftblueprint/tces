@@ -31,11 +31,6 @@ import { Container, DashboardContainer, HeaderContainer } from './index.styles';
 function EmployerTableComponent({employerData}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const navigate = useNavigate();
-
-  const handleBackClick = () => {
-    navigate("/dashboard");
-  };
 
   const formatDate = (date) => {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
@@ -56,21 +51,16 @@ function EmployerTableComponent({employerData}) {
     <Container>
       <DashboardContainer>
         <HeaderContainer>
-          <IconButton
+          <ArrowBackIcon
             sx={{
+              color: "gray",
               marginRight: 2,
               marginLeft: 2,
+              height: 35,
+              width: 35,
+              cursor: "pointer",
             }}
-            onClick={handleBackClick}
-            size="small"
-          >
-            <ArrowBackIcon
-              sx={{
-                color: "gray",
-                cursor: "pointer",
-              }}
-            />
-          </IconButton>
+          />
           <div style={{ flexGrow: 1 }}>
             <Typography
               style={{
