@@ -1,29 +1,33 @@
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import TablePagination from '@mui/material/TablePagination';
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Typography from "@mui/material/Typography";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Chip, Avatar } from '@mui/material';
-import PropTypes from "prop-types";
-import { Container, DashboardContainer, HeaderContainer } from "./index.styles";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  TablePagination,
+  Box,
+  Button,
+  IconButton,
+  AddIcon,
+  Card,
+  CardContent,
+  TextField,
+  InputAdornment,
+  SearchIcon,
+  ArrowBackIcon,
+  Typography,
+  AdapterDayjs,
+  LocalizationProvider,
+  DatePicker,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Chip,
+  Avatar,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import { Container, DashboardContainer, HeaderContainer } from './index.styles';
 
 function EmployerTableComponent({employerData}) {
   const [page, setPage] = useState(0);
