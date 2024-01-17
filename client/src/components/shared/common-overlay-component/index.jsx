@@ -30,7 +30,7 @@ function CommonOverlayComponent({
 
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={1500}
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         message={snackBarMessage}
       />

@@ -47,6 +47,7 @@ function ChangeOwnerDialog({
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    let redirectUrl = "";
     try {
       let modifiedEntity;
       let response;
@@ -56,6 +57,7 @@ function ChangeOwnerDialog({
           jobLeadID: entity.jobLeadID,
           owner,
         };
+        redirectUrl = "/job-leads/";
         response = await modifyJobLead(modifiedEntity);
       }
 
@@ -86,7 +88,7 @@ function ChangeOwnerDialog({
       setError(error);
     } finally {
       onConfirm();
-      navigate(0);
+      navigate(redirectUrl);
     }
   };
 
@@ -138,20 +140,15 @@ function ChangeOwnerDialog({
 
 ChangeOwnerDialog.propTypes = {
   type: ("job-lead" || "client" || "employer").isRequired,
-  entity: (JobLeadType || EmployerType).isRequired, // add ClientType when it's implemeneted
+  entity: (JobLeadType || EmployerType).isRequired, // add ClientType when it's implemented
   currOwner: UserType.isRequired, // any entity that has EmployerID
   users: PropTypes.arrayOf(UserType).isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
-  setSnackBarMessage: PropTypes.func,
-  setError: PropTypes.func,
+  setSnackBarMessage: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
   // eslint-disable-next-line
-};
-
-ChangeOwnerDialog.defaultProps = {
-  setSnackBarMessage: () => {},
-  setError: () => {},
 };
 
 export default ChangeOwnerDialog;
