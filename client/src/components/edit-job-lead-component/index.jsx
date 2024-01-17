@@ -4,8 +4,10 @@ import JobLeadType from "../../prop-types/JobLeadType";
 import { EditContainer } from "./index.styles";
 import EditJobLeadHeaderComponent from "./edit-job-lead-header";
 import EditJobLeadFormComponent from "./edit-job-lead-form";
+import UserType from "../../prop-types/UserType";
 
 function EditJobLeadComponent({
+  managedUsers,
   jobLead,
   getUserById,
   getEmployerById,
@@ -15,9 +17,11 @@ function EditJobLeadComponent({
   return (
     <EditContainer>
       <EditJobLeadHeaderComponent
+        managedUsers={managedUsers}
         jobLead={jobLead}
         getUserById={getUserById}
         setLocalExitRoute={setLocalExitRoute}
+        setSnackBarMessage={setSnackBarMessage}
       />
       <Box
         sx={{
@@ -53,6 +57,7 @@ function EditJobLeadComponent({
 }
 
 EditJobLeadComponent.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,

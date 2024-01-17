@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import ErrorComponent from "../../components/shared/error-screen-component";
 import EditJobLeadComponent from "../../components/edit-job-lead-component";
 import JobLeadType from "../../prop-types/JobLeadType";
+import UserType from "../../prop-types/UserType";
 
 function EditJobLead({
   managedJobLeads,
+  managedUsers,
   getUserById,
   getEmployerById,
   setLocalExitRoute,
@@ -21,6 +23,7 @@ function EditJobLead({
   if (!jobLeadToEdit) return <ErrorComponent message={errorMessage} />;
   return (
     <EditJobLeadComponent
+      managedUsers={managedUsers}
       jobLead={jobLeadToEdit}
       getUserById={getUserById}
       getEmployerById={getEmployerById}
@@ -31,6 +34,7 @@ function EditJobLead({
 }
 
 EditJobLead.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,

@@ -212,6 +212,7 @@ function App() {
                 >
                   <EmployersLoader setEmployers={setEmployers}>
                     <EditJobLead
+                      managedUsers={managedUsers}
                       managedJobLeads={managedJobLeads}
                       getEmployerById={getEmployerById}
                       getUserById={getUserById}

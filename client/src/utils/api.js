@@ -196,6 +196,7 @@ const getFilteredJobLeads = async (queryParams) => {
 const modifyJobLead = async (modifiedJobLead) => {
   const modifyJobLeadBody = {
     values: {
+      owner: modifiedJobLead.owner,
       job_title: modifiedJobLead.jobTitle,
       compensation_min: modifiedJobLead.minCompensation,
       compensation_max: modifiedJobLead.maxCompensation,

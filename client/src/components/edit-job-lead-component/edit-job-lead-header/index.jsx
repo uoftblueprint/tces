@@ -7,18 +7,36 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
+import UserType from "../../../prop-types/UserType";
 
 import UserChipComponent from "../../shared/user-chip-component";
+import ChangeOwnerDialog from "../../shared/change-owner-dialog";
 
 function EditJobLeadHeaderComponent({
+  managedUsers,
   jobLead,
   getUserById,
   setLocalExitRoute,
+  setSnackBarMessage,
 }) {
+  const redirectRoute = `/job-leads/${jobLead.jobLeadID}`;
+  const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
   const owner = getUserById(jobLead.ownerID);
   const creator = getUserById(jobLead.creatorID);
   const handleBackClick = () => {
     setLocalExitRoute("/job-leads/");
+  };
+
+  const onEditOwnerClick = () => {
+    setOwnerChangeDialog(true);
+  };
+
+  const onOwnerChangeConfirm = () => {
+    setOwnerChangeDialog(false);
+  };
+
+  const onChangeOwnerCancel = () => {
+    setOwnerChangeDialog(false);
   };
 
   return (
@@ -75,7 +93,7 @@ function EditJobLeadHeaderComponent({
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Owner
           </Typography>
-          <UserChipComponent user={owner} edit />
+          <UserChipComponent user={owner} onClick={onEditOwnerClick} edit />
         </Box>
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
@@ -84,14 +102,26 @@ function EditJobLeadHeaderComponent({
           <UserChipComponent user={creator} />
         </Box>
       </Box>
+      <ChangeOwnerDialog
+        jobLead={jobLead}
+        currEntity={owner}
+        onCancel={onChangeOwnerCancel}
+        onConfirm={onOwnerChangeConfirm}
+        open={ownerChangeDialog}
+        owners={managedUsers}
+        setSnackBarMessage={setSnackBarMessage}
+        redirect={redirectRoute}
+      />
     </HeaderContainer>
   );
 }
 
 EditJobLeadHeaderComponent.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { getInitialsAndDisplayName } from "../../../utils/users";
 import UserType from "../../../prop-types/UserType";
 
-function UserChipComponent({ user, edit }) {
+function UserChipComponent({ user, edit, onClick }) {
   const { initials, fullName } = getInitialsAndDisplayName(user);
 
   return (
@@ -13,7 +13,7 @@ function UserChipComponent({ user, edit }) {
       avatar={<Avatar>{initials}</Avatar>}
       label={fullName}
       variant="outlined"
-      onDelete={edit ? () => {} : undefined}
+      onDelete={edit ? onClick : undefined}
       deleteIcon={edit ? <Edit /> : undefined}
     />
   );
@@ -22,10 +22,12 @@ function UserChipComponent({ user, edit }) {
 UserChipComponent.propTypes = {
   user: UserType.isRequired,
   edit: PropTypes.bool,
+  onClick: PropTypes.func,
   // eslint-disable-next-line
 };
 UserChipComponent.defaultProps = {
   edit: false,
+  onClick: () => {},
 };
 
 export default UserChipComponent;
