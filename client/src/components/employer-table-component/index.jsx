@@ -131,7 +131,7 @@ function EmployerTableComponent({employerData}) {
           <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
             <CardContent>
               <Typography
-                sx={{ fontSize: 14, mb: 4 }}
+                sx={{ fontSize: 14, mb: 2 }}
                 color="text.secondary"
                 align="left"
                 gutterBottom
