@@ -2,6 +2,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import IconButton from '@mui/material/IconButton';
 
 import {
   HeaderContainer,
@@ -26,17 +27,17 @@ function EmployerInfoComponent({ employer }) {
         >
           {employer.name}
         </Typography>
-        <MoreVertIcon
-          onClick={() => {
-            console.log("clicked triple vertical dots");
-          }}
-          sx={{
-            color: "gray",
-            marginRight: 2,
-            marginLeft: 2,
-            cursor: "pointer",
-          }}
-        />
+        <IconButton>
+          <MoreVertIcon
+            onClick={() => {
+              console.log("clicked triple vertical dots");
+            }}
+            sx={{
+              color: "gray",
+              cursor: "pointer",
+            }}
+          />
+        </IconButton>
       </HeaderContainer>
       <Typography
         style={{

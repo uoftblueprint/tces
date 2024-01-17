@@ -4,6 +4,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -106,13 +107,15 @@ function EmployerComponent({ currUser }) {
                   >
                     Information
                   </Typography>
-                  <EditIcon
-                  sx={{
-                    color: "gray",
-                    cursor: "pointer",
-                    align: "center",
-                  }}
-                  />
+                  <IconButton>
+                    <EditIcon
+                    sx={{
+                      color: "gray",
+                      cursor: "pointer",
+                      align: "center",
+                    }}
+                    />
+                  </IconButton>
                 </CardContent>
                 <Divider />
                 <CardContent>
@@ -144,22 +147,24 @@ function EmployerComponent({ currUser }) {
                     Contacts
                   </Typography>
                   <div className="iconContainer">
-                    <EditIcon
-                    sx={{
-                      color: "gray",
-                      cursor: "pointer",
-                      align: "center",
-                      marginRight: 2,
-                    }}
-                    />
-
-                    <AddIcon
-                    sx={{
-                      color: "gray",
-                      cursor: "pointer",
-                      align: "center",
-                    }}
-                    />
+                    <IconButton>
+                      <EditIcon
+                      sx={{
+                        color: "gray",
+                        cursor: "pointer",
+                        align: "center",
+                      }}
+                      />
+                    </IconButton>
+                    <IconButton>
+                      <AddIcon
+                      sx={{
+                        color: "gray",
+                        cursor: "pointer",
+                        align: "center",
+                      }}
+                      />
+                    </IconButton>
                   </div>
                 </CardContent>
                 <Divider />
@@ -217,13 +222,15 @@ function EmployerComponent({ currUser }) {
                   >
                     Job Leads
                   </Typography>
-                  <AddIcon
-                  sx={{
-                    color: "gray",
-                    cursor: "pointer",
-                    align: "center",
-                  }}
-                  />
+                  <IconButton>
+                    <AddIcon
+                    sx={{
+                      color: "gray",
+                      cursor: "pointer",
+                      align: "center",
+                    }}
+                    />
+                  </IconButton>
                 </CardContent>
                 <Divider />
                 <CardContent>
