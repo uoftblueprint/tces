@@ -62,15 +62,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <IconButton>
-        <ArrowBackIcon
-        onClick={handleBackClick} 
-        sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
-        />
+        <IconButton onClick={handleBackClick} 
+        sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}>
+        <ArrowBackIcon/>
         </IconButton>
         <Box className="title">
           <Typography marginBottom={1} variant="h4" align="left">
-            John Smith
+            {clientInfo.firstName}
           </Typography>
           <Typography variant="subtitle2" align="left">
             Client
@@ -219,7 +217,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="body1" align="left">
-                  <Chip variant="filled" label={clientInfo.status} />
+                {clientInfo.status
+                    ? <Chip variant="filled" label={clientInfo.status} />
+                    : "Unknown"}
                 </Typography>
               </Grid>
             </Grid>
@@ -284,7 +284,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="body1" align="left">
-                    <Chip variant="filled" label={clientInfo.status_at_exit} />
+                  {clientInfo.status_at_exit
+                    ? <Chip variant="filled" label={clientInfo.status_at_exit} />
+                    : "Unknown"}
                   </Typography>
                 </Grid>
               </Grid>
@@ -303,9 +305,11 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="body1" align="left">
-                    {clientInfo.status_at_3}
-                  </Typography>
+                <Typography variant="body1" align="left">
+                {clientInfo.status_at_3
+                    ? <Chip variant="filled" label={clientInfo.status_at_3} />
+                    : "Unknown"}
+                </Typography>
                 </Grid>
               </Grid>
             </Box>
@@ -324,7 +328,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="body1" align="left">
-                    <Chip variant="filled" label={clientInfo.status_at_6} />
+                  {clientInfo.status_at_6
+                    ? <Chip variant="filled" label={clientInfo.status_at_6} />
+                    : "Unknown"}
                   </Typography>
                 </Grid>
               </Grid>
@@ -343,7 +349,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="body1" align="left">
-                    <Chip variant="filled" label={clientInfo.status_at_9} />
+                  {clientInfo.status_at_9
+                    ? <Chip variant="filled" label={clientInfo.status_at_9} />
+                    : "Unknown"}
                   </Typography>
                 </Grid>
               </Grid>
@@ -362,7 +370,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure }) {
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="body1" align="left">
-                    <Chip variant="filled" label={clientInfo.status_at_12} />
+                  {clientInfo.status_at_12
+                    ? <Chip variant="filled" label={clientInfo.status_at_12} />
+                    : "Unknown"}
                   </Typography>
                 </Grid>
               </Grid>

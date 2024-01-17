@@ -76,7 +76,7 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
   const [editedStatus9, setEditedStatus9] = React.useState(clientInfo.status_at_9);
   const [editedStatus12, setEditedStatus12] = React.useState(clientInfo.status_at_12);
 
-  const [isStatusClosed, setIsStatusClosed] = React.useState(false);
+  // const [isStatusClosed, setIsStatusClosed] = React.useState(false);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
@@ -93,7 +93,8 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
   const handleStatusChange = (event) => {
     const selectedStatus = event.target.value;
     setEditedStatus(selectedStatus);
-    setIsStatusClosed(selectedStatus === 'Closed');
+    // setIsStatusClosed(selectedStatus === 'Closed');
+    // setEditedStatusExit('');
   };
 
   const handleStatusExitChange = (event) => {
@@ -125,9 +126,22 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
     switch (chipType) {
       case 'status':
         setEditedStatus('');
+        // setEditedStatusExit('');
         break;
       case 'statusExit':
         setEditedStatusExit('');
+        break;
+      case 'status3':
+        setEditedStatus3('');
+        break;
+      case 'status6':
+        setEditedStatus6('');
+        break;
+      case 'status9':
+        setEditedStatus9('');
+        break;
+      case 'status12':
+        setEditedStatus12('');
         break;
       default:
         break;
@@ -158,21 +172,20 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
     navigate('/client-page');
   };
 
+  const isStatusExitVisible = editedStatus === 'Closed';
+
 
   return (
     <div style={{ marginLeft: "40px", marginRight: "40px", marginTop: "40px"  }}>
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <IconButton>
-        <ArrowBackIcon
-        onClick={handleBackClick} 
-        sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
-        />
+        <IconButton onClick={handleBackClick} sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}>
+          <ArrowBackIcon/>
         </IconButton>
         <Box className="title">
           <Typography marginBottom={1} variant="h4" align="left">
-            John Smith
+            {editedName}
           </Typography>
           <Typography variant="subtitle2" align="left">
             Client
@@ -323,18 +336,21 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                     <Chip
                       label={editedStatus}
                       onDelete={() => handleChipDelete('status')}
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
                     />
                   )}
                 >
               
                 <MenuItem value="Active">Active</MenuItem>
-                <MenuItem value="R & I">R & I</MenuItem>
+                <MenuItem value="R&I">R&I</MenuItem>
                 <MenuItem value="Closed">Closed</MenuItem>
               </Select>
               </Grid>
             </Grid>
           </Box>
-          {clientInfo.status === 'Closed' || isStatusClosed ? (
+          {isStatusExitVisible && (
             <>
             <Divider variant="middle" />
             <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
@@ -354,6 +370,9 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                     <Chip
                       label={editedStatusExit}
                       onDelete={() => handleChipDelete('statusExit')}
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
                     />
                   )}
                 >
@@ -366,8 +385,8 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
             </Grid>
             </Box>
             </>
-            ) : null}
-          {monthsSinceClosure >= 3 && clientInfo.status === 'Closed' && (
+            )}
+          {monthsSinceClosure >= 3 && clientInfo.status === 'Closed' && isStatusExitVisible && (
             <>
             <Divider variant="middle" />
             <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
@@ -378,7 +397,21 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                 </Typography>
               </Grid>
               <Grid item xs={10} sx={{ '& .MuiOutlinedInput-input': { display: 'flex', alignItems: 'flex-start' }}}>
-              <Select fullWidth value={editedStatus3} onChange={handleStatus3Change}>
+              <Select 
+              fullWidth 
+              value={editedStatus3} 
+              onChange={handleStatus3Change}
+              renderValue={() =>
+                editedStatus3 && (
+                  <Chip
+                    label={editedStatus3}
+                    onDelete={() => handleChipDelete('status3')}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                )}
+                >
                 <MenuItem value="Employed">Employed</MenuItem>
                 <MenuItem value="Training">Training</MenuItem>
                 <MenuItem value="No Results">No Results</MenuItem>
@@ -388,7 +421,7 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
             </Box>
             </>
             )}      
-          {monthsSinceClosure >= 6 && clientInfo.status === 'Closed' && (
+          {monthsSinceClosure >= 6 && clientInfo.status === 'Closed' && isStatusExitVisible && (
             <>
             <Divider variant="middle" /> 
             <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
@@ -399,7 +432,21 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                 </Typography>
               </Grid>
               <Grid item xs={10} sx={{ '& .MuiOutlinedInput-input': { display: 'flex', alignItems: 'flex-start' }}}>
-              <Select fullWidth value={editedStatus6} onChange={handleStatus6Change}>
+              <Select 
+              fullWidth 
+              value={editedStatus6} 
+              onChange={handleStatus6Change}
+              renderValue={() =>
+                editedStatus6 && (
+                  <Chip
+                    label={editedStatus6}
+                    onDelete={() => handleChipDelete('status6')}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                )}
+                >
                 <MenuItem value="Employed">Employed</MenuItem>
                 <MenuItem value="Training">Training</MenuItem>
                 <MenuItem value="No Results">No Results</MenuItem>
@@ -409,7 +456,7 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
             </Box>
             </>
             )}
-          {monthsSinceClosure >= 9 && clientInfo.status === 'Closed' && (
+          {monthsSinceClosure >= 9 && clientInfo.status === 'Closed' && isStatusExitVisible && (
             <>
             <Divider variant="middle" />
             <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
@@ -420,7 +467,21 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                 </Typography>
               </Grid>
               <Grid item xs={10} sx={{ '& .MuiOutlinedInput-input': { display: 'flex', alignItems: 'flex-start' }}}>
-              <Select fullWidth value={editedStatus9} onChange={handleStatus9Change}>
+              <Select 
+              fullWidth 
+              value={editedStatus9} 
+              onChange={handleStatus9Change}
+              renderValue={() =>
+                editedStatus9 && (
+                  <Chip
+                    label={editedStatus9}
+                    onDelete={() => handleChipDelete('status9')}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                )}
+                >
                 <MenuItem value="Employed">Employed</MenuItem>
                 <MenuItem value="Training">Training</MenuItem>
                 <MenuItem value="No Results">No Results</MenuItem>
@@ -431,7 +492,7 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
             </>
             )}
          
-          {monthsSinceClosure >= 12 && clientInfo.status === 'Closed' && (
+          {monthsSinceClosure >= 12 && clientInfo.status === 'Closed' && isStatusExitVisible && (
             <>
             <Divider variant="middle" />
             <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
@@ -442,7 +503,21 @@ export default function EditClientPage({ clientInfo, monthsSinceClosure, onSaveC
                 </Typography>
               </Grid>
               <Grid item xs={10} sx={{ '& .MuiOutlinedInput-input': { display: 'flex', alignItems: 'flex-start' }}}>
-              <Select fullWidth value={editedStatus12} onChange={handleStatus12Change}>
+              <Select 
+              fullWidth 
+              value={editedStatus12} 
+              onChange={handleStatus12Change}
+              renderValue={() =>
+                editedStatus12 && (
+                  <Chip
+                    label={editedStatus12}
+                    onDelete={() => handleChipDelete('status12')}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                )}
+              >
                 <MenuItem value="Employed">Employed</MenuItem>
                 <MenuItem value="Training">Training</MenuItem>
                 <MenuItem value="No Results">No Results</MenuItem>

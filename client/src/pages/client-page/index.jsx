@@ -31,7 +31,7 @@ function ClientPage() {
     closure_date: threeMonthsAgo,
     time_since_closure: `${monthsSinceClosure} Months`,
     status_at_exit: "Employed",
-    status_at_3: "Employed",
+    status_at_3: "",
     status_at_6: "Employed",
     status_at_9: "Employed",
     status_at_12: "Training",
