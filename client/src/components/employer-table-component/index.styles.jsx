@@ -5,6 +5,7 @@ const DashboardContainer = styled.div`
   margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+  background-color: #FAFAFA;;
 `;
 
 const HeaderContainer = styled.div`

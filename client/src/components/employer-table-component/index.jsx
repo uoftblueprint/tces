@@ -11,9 +11,22 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Chip, Avatar } from '@mui/material';
+import PropTypes from "prop-types";
 import { DashboardContainer, HeaderContainer } from "./index.styles";
 
-function EmployerTable() {
+function EmployerTableComponent({employerData}) {
+  const formatDate = (date) => {
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  };
+  
   return (
     <div>
       <DashboardContainer>
@@ -46,13 +59,13 @@ function EmployerTable() {
                 fontFamily: "Arial",
                 fontSize: "14px",
                 fontWeight: 500,
-                lineHeight: "0px", // Corrected the unit for lineHeight
+                lineHeight: "0px",
                 letterSpacing: "0.1px",
                 textAlign: "left",
                 color: "#00000099",
               }}
             >
-              ... Employers
+              {employerData.length} Employers
             </Typography>
           </div>
           <Button
@@ -70,7 +83,7 @@ function EmployerTable() {
             }}
             startIcon={<AddIcon />}
           >
-            EXPORT CURRENT FILTER VIEW (...)
+            EXPORT CURRENT FILTER VIEW ({employerData.length} EMPLOYERS)
           </Button>
           <Button
             sx={{
@@ -204,10 +217,50 @@ function EmployerTable() {
               </Typography>
             </CardContent>
           </Card>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Employer Name</TableCell>
+                  <TableCell align="left">Date</TableCell>
+                  <TableCell align="left">Phone Number</TableCell>
+                  <TableCell align="left">Email</TableCell>
+                  <TableCell align="left">Primary Contact</TableCell>
+                  <TableCell align="left">Owner</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employerData.map(({ employerName, date, phoneNumber, email, primaryContact, owner }, index) => (
+                  <TableRow
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${employerName}-${index}`}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell align="left">{employerName}</TableCell>
+                    <TableCell align="left">{formatDate(date)}</TableCell>
+                    <TableCell align="left">{phoneNumber}</TableCell>
+                    <TableCell align="left">{email}</TableCell>
+                    <TableCell align="left">{primaryContact}</TableCell>
+                    <TableCell align="left">
+                      <Chip
+                        avatar={<Avatar>{/* photo */}</Avatar>} 
+                        label={owner}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </DashboardContainer>
     </div>
   );
 }
 
-export default EmployerTable;
+EmployerTableComponent.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  employerData: PropTypes.array.isRequired,
+}
+
+export default EmployerTableComponent;
