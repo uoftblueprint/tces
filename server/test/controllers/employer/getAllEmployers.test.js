@@ -16,7 +16,7 @@ afterEach(() => {
   mock.stop("../../../src/models/employer.model");
 });
 
-describe("getOneEmployer test suite", () => {
+describe("getAllEmployers test suite", () => {
   const mockReq = {
     params: {
       employer_id: 1,
