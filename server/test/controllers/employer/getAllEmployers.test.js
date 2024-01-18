@@ -22,8 +22,8 @@ describe("getOneEmployer test suite", () => {
       employer_id: 1,
     },
     query: {
-      page: "2",
-      pageSize: "10",
+      page: '2',
+      pageSize: '10'
     },
   };
 
