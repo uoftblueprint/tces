@@ -14,10 +14,10 @@ const createUserRequestHandler = async (req, res, next) => {
       salt,
       310000,
       32,
-      "sha256",
+      "sha256"
     );
 
-    await User.create({
+    const newUser = await User.create({
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
@@ -30,8 +30,9 @@ const createUserRequestHandler = async (req, res, next) => {
       message: "User created successfully",
       data: {
         user: {
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
+          userID: newUser.id,
+          firstName: req.body.first_name,
+          lastName: req.body.last_name,
           email: req.body.email,
         },
       },

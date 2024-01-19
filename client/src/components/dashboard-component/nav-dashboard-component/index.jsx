@@ -7,7 +7,7 @@ import { NavigationContainer, MainNavButton } from "./index.styles";
 function DashboardNavigationComponent() {
   return (
     <NavigationContainer
-      sx={{
+      $sx={{
         display: "flex",
         flexDirection: "column",
         height: "100%",
@@ -18,7 +18,7 @@ function DashboardNavigationComponent() {
           <MainNavButton
             variant="contained"
             startIcon={<PeopleIcon />}
-            iconBackgroundColour="#3568E5"
+            iconbackgroundcolour="#3568E5"
           >
             My Clients
           </MainNavButton>
@@ -27,7 +27,7 @@ function DashboardNavigationComponent() {
           <MainNavButton
             variant="contained"
             startIcon={<StarIcon />}
-            iconBackgroundColour="#1AA66A"
+            iconbackgroundcolour="#1AA66A"
           >
             Job Leads
           </MainNavButton>
@@ -36,7 +36,7 @@ function DashboardNavigationComponent() {
           <MainNavButton
             variant="contained"
             startIcon={<WorkIcon />}
-            iconBackgroundColour="#E53568"
+            iconbackgroundcolour="#E53568"
           >
             Employers
           </MainNavButton>

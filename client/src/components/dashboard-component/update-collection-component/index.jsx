@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Box } from "@mui/material";
+import JobUpdateType from "../../../prop-types/JobUpdateType";
 import { JobUpdatesContainer, UpdateDivider } from "./index.styles";
 import JobUpdateCardComponent from "../update-card-component";
 
@@ -33,16 +34,7 @@ function UpdatesCollection({ jobUpdates }) {
 }
 
 UpdatesCollection.propTypes = {
-  jobUpdates: PropTypes.arrayOf(
-    PropTypes.shape({
-      action: PropTypes.string.isRequired,
-      adminName: PropTypes.string.isRequired,
-      userName: PropTypes.string.isRequired,
-      companyName: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-      // eslint-disable-next-line
-    }),
-  ).isRequired,
+  jobUpdates: PropTypes.arrayOf(JobUpdateType).isRequired,
 };
 
 export default UpdatesCollection;

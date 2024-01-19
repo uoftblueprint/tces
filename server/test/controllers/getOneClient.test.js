@@ -1,9 +1,8 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getOneClientRequestHandler from "../../src/controllers/client/getOneClient";
-const Client = await require("../../src/models/client.model");
 const mock = require("mock-require");
-const mockGetOneClient = require("../mocks/mockGetOneClient");
-const mockGetOneClientInvalid = require("../mocks/mockGetOneClientInvalid");
+const mockGetOneClient = require("../mocks/mockGetOneObject");
+const mockGetOneClientInvalid = require("../mocks/mockGetOneObjectInvalid");
 
 const mockReq = {
   params: {
