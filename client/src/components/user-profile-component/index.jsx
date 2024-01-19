@@ -7,20 +7,31 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 
 export default function UserProfile() {
+    
+    const handleBackClick = () => {
+        console.log('You clicked me');
+    };
+
+
   return (
     <div style={{ marginTop: "40px" }}>
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
         <IconButton sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}>
-          <ArrowBackIcon fontSize="large" />
+          <ArrowBackIcon fontSize="large" onClick={handleBackClick} />
         </IconButton>
         <Box className="title">
           <Typography
             marginBottom={1}
-            variant="h3"
+            variant="h4"
             align="left"
-            style={{ fontSize: 48 }}
+            style={{ 
+            fontSize: "48px",
+            fontFamily: "Arial",
+            fontWeight: 545,
+            lineHeight: "56px",
+            }}
           >
             Your Profile
           </Typography>
