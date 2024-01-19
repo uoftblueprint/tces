@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+// import { useNavigate } from 'react-router-dom';
+import PropTypes from "prop-types";
 import {
   TablePagination,
   Box,
   Button,
-  IconButton,
+  // IconButton,
   Card,
   CardContent,
   TextField,
@@ -20,15 +20,15 @@ import {
   Paper,
   Chip,
   Avatar,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { Container, DashboardContainer, HeaderContainer } from './index.styles';
+import { Container, DashboardContainer, HeaderContainer } from "./index.styles";
 
-function EmployerTableComponent({employerData}) {
+function EmployerTableComponent({ employerData }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -45,8 +45,11 @@ function EmployerTableComponent({employerData}) {
     setPage(0);
   };
 
-  const slicedData = employerData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  
+  const slicedData = employerData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
+
   return (
     <Container>
       <DashboardContainer>
@@ -238,7 +241,15 @@ function EmployerTableComponent({employerData}) {
               </Typography>
             </CardContent>
           </Card>
-          <TableContainer component={Paper} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 'fit-content' }}>
+          <TableContainer
+            component={Paper}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "fit-content",
+            }}
+          >
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -250,26 +261,38 @@ function EmployerTableComponent({employerData}) {
                   <TableCell align="left">Owner</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody sx={{ overflowY: 'auto' }}>
-                {slicedData.map(({ employerName, date, phoneNumber, email, primaryContact, owner }, index) => (
-                  <TableRow
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${employerName}-${index}`}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell align="left">{employerName}</TableCell>
-                    <TableCell align="left">{formatDate(date)}</TableCell>
-                    <TableCell align="left">{phoneNumber}</TableCell>
-                    <TableCell align="left">{email}</TableCell>
-                    <TableCell align="left">{primaryContact}</TableCell>
-                    <TableCell align="left">
-                      <Chip
-                        avatar={<Avatar>{/* photo */}</Avatar>} 
-                        label={owner}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+              <TableBody sx={{ overflowY: "auto" }}>
+                {slicedData.map(
+                  (
+                    {
+                      employerName,
+                      date,
+                      phoneNumber,
+                      email,
+                      primaryContact,
+                      owner,
+                    },
+                    index,
+                  ) => (
+                    <TableRow
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={`${employerName}-${index}`}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell align="left">{employerName}</TableCell>
+                      <TableCell align="left">{formatDate(date)}</TableCell>
+                      <TableCell align="left">{phoneNumber}</TableCell>
+                      <TableCell align="left">{email}</TableCell>
+                      <TableCell align="left">{primaryContact}</TableCell>
+                      <TableCell align="left">
+                        <Chip
+                          avatar={<Avatar>{/* photo */}</Avatar>}
+                          label={owner}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ),
+                )}
               </TableBody>
             </Table>
             <TablePagination
@@ -290,6 +313,6 @@ function EmployerTableComponent({employerData}) {
 EmployerTableComponent.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   employerData: PropTypes.array.isRequired,
-}
+};
 
 export default EmployerTableComponent;
