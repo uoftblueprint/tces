@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EmployerDashboardComponent from "../../components/employer-dahsboard-component";
+import EmployerDashboardComponent from "../../components/employer-dashboard-component";
 
 function EmployerDashboard() {
   function createData(
