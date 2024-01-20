@@ -28,7 +28,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { Container, DashboardContainer, HeaderContainer } from "./index.styles";
 
-function EmployerTableComponent({ employerData }) {
+function EmployerDashboardComponent({ employerData }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -315,9 +315,9 @@ function EmployerTableComponent({ employerData }) {
   );
 }
 
-EmployerTableComponent.propTypes = {
+EmployerDashboardComponent.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   employerData: PropTypes.array.isRequired,
 };
 
-export default EmployerTableComponent;
+export default EmployerDashboardComponent;

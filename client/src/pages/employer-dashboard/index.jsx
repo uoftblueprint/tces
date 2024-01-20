@@ -1,7 +1,7 @@
 import { useState } from "react";
-import EmployerTableComponent from "../../components/employer-table-component";
+import EmployerDashboardComponent from "../../components/employer-dahsboard-component";
 
-function EmployerTable() {
+function EmployerDashboard() {
   function createData(
     employerName,
     date,
@@ -116,7 +116,7 @@ function EmployerTable() {
   // eslint-disable-next-line no-unused-vars
   const [employerData, setEmployerData] = useState(mockData);
 
-  return <EmployerTableComponent employerData={employerData} />;
+  return <EmployerDashboardComponent employerData={employerData} />;
 }
 
-export default EmployerTable;
+export default EmployerDashboard;

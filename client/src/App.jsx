@@ -1,12 +1,12 @@
 import "./App.css";
 import Navbar from "./components/shared/navbar-component/Navbar";
-import EmployerTable from "./pages/employer-table";
+import EmployerDashboard from "./pages/employer-dashboard";
 
 function App() {
   return (
     <>
       <Navbar />
-      <EmployerTable />
+      <EmployerDashboard />
     </>
   );
 }
