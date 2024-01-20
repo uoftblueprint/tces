@@ -8,4 +8,13 @@ module.exports = {
   count: () => {
     return {};
   },
+  min: () => {
+    return {};
+  },
+  max: () => {
+    return {};
+  },
+  map: () => {
+    return {};
+  },
 };
