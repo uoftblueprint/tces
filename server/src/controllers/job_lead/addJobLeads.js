@@ -5,12 +5,12 @@ const addJobLeadsRequestHandler = async (req, res) => {
   try {
     if (req.body.job_lead instanceof Array) {
       // store all the job leads
-      let jobLeads = []
+      let jobLeads = [];
       // create each job lead while doing the needed checks for each one as well
       for (let jobLeadData of req.body.job_lead) {
         const jobLead = await createJobLead(jobLeadData, req.user.id);
         jobLeads.push(jobLead);
-      };
+      }
 
       return res.status(200).json({
         status: "success",
@@ -20,8 +20,12 @@ const addJobLeadsRequestHandler = async (req, res) => {
     } else {
       const jobLead = await createJobLead(req.body.job_lead, req.user.id);
       return res
-      .status(200)
-      .json({ status: "success", message: "created job lead", data: { jobLead } })
+        .status(200)
+        .json({
+          status: "success",
+          message: "created job lead",
+          data: { jobLead },
+        });
     }
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
@@ -50,11 +54,11 @@ const createJobLead = async (jobLeadData, userId) => {
     let expirationDate;
 
     if (expirationDateStr) {
-        expirationDate = new Date(jobLeadData.expiration_date);
+      expirationDate = new Date(jobLeadData.expiration_date);
     } else {
-        // by default set to the expiration date to a month from the current date
-        expirationDate = new Date();
-        expirationDate.setMonth(expirationDate.getMonth() + 1); 
+      // by default set to the expiration date to a month from the current date
+      expirationDate = new Date();
+      expirationDate.setMonth(expirationDate.getMonth() + 1);
     }
 
     // create a single job lead
