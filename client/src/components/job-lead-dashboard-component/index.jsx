@@ -30,6 +30,7 @@ function JobLeadDashboardComponent({
     minHoursPerWeek: 0,
     maxHoursPerWeek: 100,
   });
+  const [owners, setOwners] = React.useState([]);
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (filterParams) => {
@@ -122,7 +123,8 @@ function JobLeadDashboardComponent({
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
         }));
-        setAggregates(jobLeadsData.aggregates)
+        setOwners(jobLeadsData.uniqueOwners);
+        setAggregates(jobLeadsData.aggregates);
         setManagedJobLeads(formattedJobLeads);
         setRowCount(jobLeadsData.total);
       } else {
@@ -166,6 +168,7 @@ function JobLeadDashboardComponent({
             paginationModel={paginationModel}
             handleApplyFilter={handleApplyFilter}
             jobLeadAggregates={aggregates}
+            owners={owners}
           />
           <JobLeadDashboardTableComponent
             managedJobLeads={managedJobLeads}

@@ -22,10 +22,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import {
-  valuetext,
-  getOwnerIds,
-} from "../../../utils/jobLeads";
+import { valuetext, getOwnerIds } from "../../../utils/jobLeads";
 
 import JOB_TYPES from "../../../utils/contants";
 
@@ -35,6 +32,7 @@ function JobLeadDashboardFiltersComponent({
   paginationModel,
   handleApplyFilter,
   jobLeadAggregates,
+  owners,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -186,7 +184,7 @@ function JobLeadDashboardFiltersComponent({
     if (initialLoad && managedJobLeads?.length > 0) {
       setCompensationRange([minCompensation, maxCompensation]);
       setHoursPerWeekRange([minHoursPerWeek, maxHoursPerWeek]);
-      setOwnerOptions(getOwnerIds(managedJobLeads, getUserById));
+      setOwnerOptions(getOwnerIds(owners, getUserById));
       setInitialLoad(false);
     }
   }, [managedJobLeads]);
@@ -440,6 +438,7 @@ JobLeadDashboardFiltersComponent.propTypes = {
   paginationModel: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadAggregates: PropTypes.object.isRequired,
+  owners: PropTypes.arrayOf(PropTypes.number).isRequired,
   handleApplyFilter: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };

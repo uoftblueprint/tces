@@ -123,28 +123,12 @@ const getAllEmployers = async () => {
 
 const createJobLeads = async (jobLeads, ownerID, creatorID) => {
   const formattedJobLeads = jobLeads.map((jobLead) => {
-    // validation to ensure min and max compensations are not swapped, if so we ensure correct values are passed into respective params
-    const validateCompensation = (minCompensation, maxCompensation) => {
-      if (minCompensation > maxCompensation) {
-        return {
-          minCompensation: maxCompensation,
-          maxCompensation: minCompensation,
-        };
-      }
-      return { minCompensation, maxCompensation };
-    };
-
-    const { minCompensation, maxCompensation } = validateCompensation(
-      parseInt(jobLead.minCompensation, 10),
-      parseInt(jobLead.maxCompensation, 10),
-    );
-
     return {
       employer: jobLead.employer,
       job_title: jobLead.title,
       num_of_positions: parseInt(jobLead.numPositions, 10),
-      compensation_max: maxCompensation ?? 0,
-      compensation_min: minCompensation ?? 0,
+      compensation_max: jobLead.maxCompensation ?? 0,
+      compensation_min: jobLead.minCompensation ?? 0,
       hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
       national_occupation_code: parseInt(jobLead.nationalOC, 10),
       job_description: jobLead.description,

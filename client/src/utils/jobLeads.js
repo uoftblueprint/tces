@@ -54,22 +54,22 @@ function findHoursPerWeekRange(managedJobLeads) {
 }
 
 // get all the Creator names to display in options filter tab
-function getOwnerIds(managedJobLeads, getUserById) {
+function getOwnerIds(ownerIDList, getUserById) {
   const uniqueOwnerIDs = new Set();
   const ownerDetails = [];
 
-  managedJobLeads.forEach((lead) => {
-    if (!uniqueOwnerIDs.has(lead.ownerID)) {
-      uniqueOwnerIDs.add(lead.ownerID);
+  ownerIDList.forEach((ownerID) => {
+    if (!uniqueOwnerIDs.has(ownerID)) {
+      uniqueOwnerIDs.add(ownerID);
 
-      const user = getUserById(lead.ownerID);
+      const user = getUserById(ownerID);
 
       const userName = user
         ? `${user.firstName} ${user.lastName}`
-        : `User ${lead.ownerID}`;
+        : `User ${ownerID}`;
 
       ownerDetails.push({
-        ownerID: lead.ownerID,
+        ownerID,
         userName,
       });
     }

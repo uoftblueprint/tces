@@ -78,13 +78,9 @@ function EditJobLeadFormComponent({
       if (newValue < 0) {
         newValue = 0;
       }
-
       setMinCompensation(newValue);
-      if (maxCompensation !== "" && newValue > maxCompensation) {
-        setMaxCompensation(newValue);
-      }
     } else {
-      setMinCompensation(null);
+      setMinCompensation(NaN);
     }
   };
 
@@ -95,9 +91,6 @@ function EditJobLeadFormComponent({
         newValue = 0;
       }
       setMaxCompensation(newValue);
-      if (minCompensation && newValue < minCompensation) {
-        setMinCompensation(NaN);
-      }
     } else {
       setMaxCompensation(NaN);
     }
@@ -308,27 +301,28 @@ function EditJobLeadFormComponent({
                   </Grid>
                 </>
               ) : (
+                // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  <Grid item xs={8} md={7}>
-                    {minCompensation && maxCompensation ? (
-                      <Typography>
-                        {displayCompensationRange(
-                          minCompensation,
-                          maxCompensation,
-                          "/hour",
-                        )}
-                      </Typography>
-                    ) : (
-                      renderViewValue("Compensation", null)
-                    )}
-                  </Grid>
-                  <Grid item xs={1} md={2} sx={{ textAlign: "right" }}>
-                    {minCompensation && maxCompensation && (
-                      <IconButton onClick={copyCompensationToClipboard}>
-                        <ContentCopy />
-                      </IconButton>
-                    )}
-                  </Grid>
+                  {minCompensation && maxCompensation ? (
+                    <>
+                      <Grid item xs={8} md={7}>
+                        <Typography>
+                          {displayCompensationRange(
+                            minCompensation,
+                            maxCompensation,
+                            "/hour",
+                          )}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={1} md={2} sx={{ textAlign: "right" }}>
+                        <IconButton onClick={copyCompensationToClipboard}>
+                          <ContentCopy />
+                        </IconButton>
+                      </Grid>
+                    </>
+                  ) : (
+                    renderViewValue("Compensation", null)
+                  )}
                 </>
               )}
             </Grid>

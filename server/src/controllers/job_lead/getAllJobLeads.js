@@ -1,5 +1,5 @@
 const logger = require("pino")();
-const { Op, literal } = require("sequelize");
+const { Op, literal, Sequelize } = require("sequelize");
 const JobLead = require("../../models/job_lead.model");
 
 const getAllJobLeadsRequestHandler = async (req, res) => {
@@ -116,6 +116,11 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
 
     const totalJobLeads = await JobLead.count({ where: query });
 
+    const uniqueOwners = await JobLead.findAll({
+      attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
+      raw: true,
+    });
+
     return res.status(200).json({
       status: "success",
       message: "All Job Leads found successfully",
@@ -127,6 +132,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
         minHoursPerWeek: minHoursPerWeekSoFar,
         maxHoursPerWeek: maxHoursPerWeekSoFar,
       },
+      uniqueOwners: uniqueOwners.map((owner) => owner.owner),
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);
