@@ -5,7 +5,7 @@ import {
   TablePagination,
   Box,
   Button,
-  // IconButton,
+  IconButton,
   Card,
   CardContent,
   TextField,
@@ -54,16 +54,21 @@ function EmployerTableComponent({ employerData }) {
     <Container>
       <DashboardContainer>
         <HeaderContainer>
-          <ArrowBackIcon
+          <IconButton
             sx={{
-              color: "gray",
               marginRight: 2,
               marginLeft: 2,
-              height: 35,
-              width: 35,
-              cursor: "pointer",
             }}
-          />
+            // onClick={}
+            size="small"
+          >
+            <ArrowBackIcon
+              sx={{
+                color: "gray",
+                cursor: "pointer",
+              }}
+            />
+          </IconButton>
           <div style={{ flexGrow: 1 }}>
             <Typography
               style={{
