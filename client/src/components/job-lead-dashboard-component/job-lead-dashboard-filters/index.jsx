@@ -37,6 +37,8 @@ function JobLeadDashboardFiltersComponent({
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
   const [noFilterMode, setNoFilterMode] = React.useState(true);
+  const [ignorePaginationChange, setIgnorePaginationChange] =
+    React.useState(false);
   const [ownerOptions, setOwnerOptions] = React.useState([]);
 
   // setting local state for filter config
@@ -144,7 +146,7 @@ function JobLeadDashboardFiltersComponent({
     });
   };
 
-  const applyFilters = () => {
+  const applyFilters = (isInvokedByPageChange = false) => {
     const filterParams = {
       searchTitleQuery,
       startDateCreated,
@@ -157,7 +159,16 @@ function JobLeadDashboardFiltersComponent({
       searchNOCQuery,
       jobTypeSelect,
     };
-    handleApplyFilter(filterParams);
+    setIgnorePaginationChange(true);
+    let customPageModel = null;
+    if (!isInvokedByPageChange) {
+      customPageModel = {
+        pageSize: 10,
+        page: 0,
+      };
+    }
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(filterParams, customPageModel);
   };
 
   const onFilterReset = () => {
@@ -170,8 +181,12 @@ function JobLeadDashboardFiltersComponent({
     setOwnerId(-1);
     setSearchNOCQuery("");
     setJobTypeSelect(initialJobTypeSelect);
-
-    handleApplyFilter(null);
+    setIgnorePaginationChange(true);
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(null, {
+      pageSize: 10,
+      page: 0,
+    });
   };
 
   const onApplyFilterClick = () => {
@@ -190,12 +205,14 @@ function JobLeadDashboardFiltersComponent({
   }, [managedJobLeads]);
 
   React.useEffect(() => {
-    if (!initialLoad) {
+    if (!initialLoad && !ignorePaginationChange) {
       if (noFilterMode) {
         handleApplyFilter(null);
       } else {
-        applyFilters();
+        applyFilters(true);
       }
+    } else {
+      setIgnorePaginationChange(false);
     }
   }, [paginationModel]);
 

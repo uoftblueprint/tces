@@ -75,7 +75,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     }
 
     if (ownerId && ownerId !== "-1") {
-      query.creator = ownerId;
+      query.owner = ownerId;
     }
 
     query[Op.and] = [...(query[Op.and] || [])];

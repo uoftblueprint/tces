@@ -124,6 +124,7 @@ function JobLeadDashboardTableComponent({
   return (
     <DataGrid
       sx={{
+        minHeight: "500px",
         "& .actionButton": {
           display: "none",
         },

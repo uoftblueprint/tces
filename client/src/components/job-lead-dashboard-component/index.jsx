@@ -33,8 +33,16 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
 
   // helper to generate query params based on pagination model state and filter configs
-  const declareFilterJobLeadsQueryParams = (filterParams) => {
-    const { pageSize, page } = paginationModel;
+  const declareFilterJobLeadsQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+      setPaginationModel(customPageModel);
+    }
     // we initially include pagination model first
     const queryParams = new URLSearchParams({
       pageSize,
@@ -97,8 +105,11 @@ function JobLeadDashboardComponent({
   };
 
   // function to handle the apply filter button
-  const handleApplyFilter = async (filterParams) => {
-    const queryParams = declareFilterJobLeadsQueryParams(filterParams);
+  const handleApplyFilter = async (filterParams, customPageModel = null) => {
+    const queryParams = declareFilterJobLeadsQueryParams(
+      filterParams,
+      customPageModel,
+    );
 
     // fetch the data
     try {
@@ -168,6 +179,7 @@ function JobLeadDashboardComponent({
             paginationModel={paginationModel}
             handleApplyFilter={handleApplyFilter}
             jobLeadAggregates={aggregates}
+            setPaginationModel={setPaginationModel}
             owners={owners}
           />
           <JobLeadDashboardTableComponent

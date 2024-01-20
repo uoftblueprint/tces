@@ -62,7 +62,7 @@ describe("getAllJobLeads test suite", () => {
     getAllJobLeadsRequestHandler = mock.reRequire(
         "../../src/controllers/job_lead/getAllJobLeads",
     );
-    
+
     const spy = vi.spyOn(mockGetManyClients, "findAll");
 
     await getAllJobLeadsRequestHandler(mockReq, mockRes);
