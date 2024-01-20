@@ -71,6 +71,7 @@ function EmployerDashboardTable({
 }
 
 EmployerDashboardTable.propTypes = {
+  // eslint-disable-next-line
   slicedData: PropTypes.arrayOf(PropTypes.object).isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
