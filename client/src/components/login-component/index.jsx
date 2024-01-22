@@ -25,7 +25,7 @@ function LoginComponent({ setIsAuthenticated, loginUser }) {
     if (!email.trim() || !password.trim()) {
       setErrorMessage(
         // eslint-disable-next-line
-        "Please fill in your email and password before proceeding"
+        "Please fill in your email and password before proceeding",
       );
       return;
     }
