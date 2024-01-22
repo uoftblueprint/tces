@@ -53,13 +53,13 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     }
 
     if (startDateExpired) {
-      const startDate = new Date(startDateCreated);
+      const startDate = new Date(startDateExpired);
       startDate.setHours(0, 0, 0, 0);
       query.expiration_date = { [Op.gte]: startDate };
     }
 
     if (endDateExpired) {
-      const endDate = new Date(endDateCreated);
+      const endDate = new Date(endDateExpired);
       endDate.setHours(23, 59, 59, 999);
       query.expiration_date = {
         ...query.expiration_date,
