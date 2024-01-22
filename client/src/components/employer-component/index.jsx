@@ -2,7 +2,6 @@
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchIcon from "@mui/icons-material/Search";
-import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
@@ -26,7 +25,8 @@ import {
 } from "./index.styles";
 
 import EmployerInfoComponent from "./employer-info-component";
-import BoxRowComponent from "./box-row-component";
+import EmployerInformationCard from "./employer-information-card";
+import ContactsInformationCard from "./contacts-information-card";
 
 function EmployerComponent({ currUser }) {
   const navigate = useNavigate();
@@ -92,90 +92,9 @@ function EmployerComponent({ currUser }) {
                 width: "100%",
               }}
             >
-              <Card 
-                style={{
-                width: "33%",
-                }}>
-                <CardContent style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}>
-                  <Typography
-                    variant="h5"
-                    align="left"
-                    gutterBottom
-                  >
-                    Information
-                  </Typography>
-                  <IconButton>
-                    <EditIcon
-                    sx={{
-                      color: "gray",
-                      cursor: "pointer",
-                      align: "center",
-                    }}
-                    />
-                  </IconButton>
-                </CardContent>
-                <Divider />
-                <CardContent>
-                
-                <BoxRowComponent leftSide="Name" rightSide={employer.name ? employer.name : ""} />
-                <BoxRowComponent leftSide="Phone Number" rightSide={employer.phone_number ? <a href={`tel:${employer.phone_number}`}>{employer.phone_number}</a> : ""} />
-                <BoxRowComponent leftSide="Fax" rightSide={employer.fax ? <a href={`tel:${employer.fax}`}>{employer.fax}</a> : ""} />
-                <BoxRowComponent leftSide="Email" rightSide={employer.email ? <a href={`mailto:${employer.email}`}>{employer.email}</a> : ""} copyable />
-                <BoxRowComponent leftSide="Website" rightSide={employer.website ? <a href={employer.website}>{employer.website}</a> : ""} />
-                <BoxRowComponent leftSide="NAICS Code" rightSide={employer.naics_code ? employer.naics_code : "" } />
-                <BoxRowComponent leftSide="Address" rightSide={employer.address ? employer.address : ""} />
+              <EmployerInformationCard employer={employer} />
 
-                </CardContent>
-              </Card>
-
-              <Card 
-                style={{
-                width: "33%",
-                }}>
-                <CardContent style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}>
-                  <Typography
-                    variant="h5"
-                    align="left"
-                    gutterBottom
-                  >
-                    Contacts
-                  </Typography>
-                  <div className="iconContainer">
-                    <IconButton>
-                      <EditIcon
-                      sx={{
-                        color: "gray",
-                        cursor: "pointer",
-                        align: "center",
-                      }}
-                      />
-                    </IconButton>
-                    <IconButton>
-                      <AddIcon
-                      sx={{
-                        color: "gray",
-                        cursor: "pointer",
-                        align: "center",
-                      }}
-                      />
-                    </IconButton>
-                  </div>
-                </CardContent>
-                <Divider />
-                <CardContent>
-                  <BoxRowComponent leftSide="Name" rightSide="Name" />
-                  <BoxRowComponent leftSide="Job Title" rightSide="Job Title" />
-                  <BoxRowComponent leftSide="Email" rightSide={<a href="mailto:example@example.com">example@example.com</a>} copyable />
-                  <BoxRowComponent leftSide="Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 111 1111</a>} />
-                  <BoxRowComponent leftSide="Alternative Phone Number" rightSide={<a href="tel:111-111-1111">+1 111 111 1111</a>} />
-                </CardContent>
-              </Card>
+              <ContactsInformationCard />
 
               <Card style={{ width: "33%" }} sx={{ height: 800 }}>
                 <CardContent>

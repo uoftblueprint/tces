@@ -1,8 +1,15 @@
+import { useState, useRef } from "react";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Typography,
+  Menu,
+  MenuItem,
+  Card,
+  CardContent,
+  IconButton
+} from "@mui/material";
 
 import {
   HeaderContainer,
@@ -11,6 +18,18 @@ import {
 import EmployerType from '../../../prop-types/EmployerType';
 
 function EmployerInfoComponent({ employer }) {
+  const vertButtonRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = () => {
+    setAnchorEl(vertButtonRef.current);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
   <TopRowContainer style={{display: "flex", justifyContent: "space-between"}}>
     <div>
@@ -27,17 +46,39 @@ function EmployerInfoComponent({ employer }) {
         >
           {employer.name}
         </Typography>
-        <IconButton>
+        <IconButton onClick={handleClick}>
           <MoreVertIcon
-            onClick={() => {
-              console.log("clicked triple vertical dots");
-            }}
             sx={{
               color: "gray",
               cursor: "pointer",
             }}
+            ref={vertButtonRef}
           />
         </IconButton>
+
+        <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "split-button",
+        }}
+        PaperProps={{
+          style: {
+            width: vertButtonRef
+              ? 190
+              : null,
+          },
+        }}
+        
+        >
+        <MenuItem onClick={handleClose}>
+          <IconButton><DownloadIcon /></IconButton> Export as JSON
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <IconButton><DeleteIcon /></IconButton>Delete
+        </MenuItem>
+      </Menu>
       </HeaderContainer>
       <Typography
         style={{
