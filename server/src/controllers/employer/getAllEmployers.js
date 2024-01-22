@@ -36,7 +36,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
     }
 
     if (ownerId && ownerId !== "-1") {
-      query.creator = ownerId;
+      query.owner = ownerId;
     }
 
     if (postalCode) {
@@ -50,11 +50,17 @@ const getAllEmployersRequestHandler = async (req, res) => {
 
     const totalEmployers = await Employer.count({ where: query });
 
+    const uniqueOwners = await Employer.findAll({
+      attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
+      raw: true,
+    });
+
     return res.status(200).json({
       status: "success",
       message: "All employers found successfully",
       data: employers,
       total: totalEmployers,
+      uniqueOwners: uniqueOwners.map((owner) => owner.owner),
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);
