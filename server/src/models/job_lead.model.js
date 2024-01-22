@@ -2,7 +2,7 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
-// TODO: incorporate employer into job_leads const Employer = require("./employer.model");
+const Employer = require("./employer.model");
 
 const JobLead = sequelize.define("job_leads", {
   id: {
@@ -40,9 +40,20 @@ const JobLead = sequelize.define("job_leads", {
       },
     },
   },
-  employer_name: {
-    type: DataTypes.STRING,
+  employer: {
+    type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: Employer,
+      key: "id",
+    },
+    validate: {
+      isInEmployer(value) {
+        if (!Employer.findByPk(value)) {
+          throw new Error("Employer does not exist");
+        }
+      },
+    },
   },
   job_title: {
     type: DataTypes.STRING,
