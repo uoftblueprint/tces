@@ -249,9 +249,15 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <EmployerPage currUser={currUser} />
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployerPage
+                      getUserById={getUserById}
+                      managedUsers={managedUsers}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
                 </AuthGuard>
-            }
+              }
             />
           </Route>
           <Route

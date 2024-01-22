@@ -2,8 +2,8 @@
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from '@mui/icons-material/Add';
-import IconButton from '@mui/material/IconButton';
+import AddIcon from "@mui/icons-material/Add";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,7 +14,10 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getEmployer, getUserName } from "../../utils/api";
+
+import PropTypes from "prop-types";
+
+import { getEmployer } from "../../utils/api";
 
 import UserType from "../../prop-types/UserType";
 import {
@@ -28,10 +31,11 @@ import EmployerInfoComponent from "./employer-info-component";
 import EmployerInformationCard from "./employer-information-card";
 import ContactsInformationCard from "./contacts-information-card";
 
-function EmployerComponent({ currUser }) {
+function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
   const navigate = useNavigate();
 
-  const [employer, setEmployer] = useState({});
+  // default, this gets overriden once the useEffect() finishes. to avoid a not available error.
+  const [employer, setEmployer] = useState({ owner: 1, creator: 1 });
 
   const { employerID } = useParams();
 
@@ -42,21 +46,18 @@ function EmployerComponent({ currUser }) {
       if (json.status === "success") {
         const data = json.data.employer;
 
-        data.owner = await getUserName(data.owner);
-        data.creator = await getUserName(data.creator);
-
         await setEmployer(data);
       }
-    }
+    };
     updateEmployer();
   }, []);
 
   return (
     <div
-    style={{
-      marginTop: "20px",
-      width: "100%",
-    }}
+      style={{
+        marginTop: "20px",
+        width: "100%",
+      }}
     >
       <div
         style={{
@@ -80,7 +81,12 @@ function EmployerComponent({ currUser }) {
         </ArrowContainer>
         <MainContainer>
           <EmployerContainer>
-            <EmployerInfoComponent employer={employer} />
+            <EmployerInfoComponent
+              employer={employer}
+              getUserById={getUserById}
+              setSnackBarMessage={setSnackBarMessage}
+              managedUsers={managedUsers}
+            />
 
             <Box
               sx={{
@@ -98,11 +104,7 @@ function EmployerComponent({ currUser }) {
 
               <Card style={{ width: "33%" }} sx={{ height: 800 }}>
                 <CardContent>
-                  <Typography
-                    variant="h5"
-                    align="left"
-                    gutterBottom
-                  >
+                  <Typography variant="h5" align="left" gutterBottom>
                     Activity Timeline (placeholder)
                   </Typography>
                 </CardContent>
@@ -115,7 +117,6 @@ function EmployerComponent({ currUser }) {
               </Card>
             </Box>
 
-
             <Box
               sx={{
                 display: "flex",
@@ -126,28 +127,27 @@ function EmployerComponent({ currUser }) {
                 width: "100%",
               }}
             >
-              <Card 
+              <Card
                 style={{
-                width: "66%",
-                }}>
-                <CardContent style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}>
-                  <Typography
-                    variant="h5"
-                    align="left"
-                    gutterBottom
-                  >
+                  width: "66%",
+                }}
+              >
+                <CardContent
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="h5" align="left" gutterBottom>
                     Job Leads
                   </Typography>
                   <IconButton>
                     <AddIcon
-                    sx={{
-                      color: "gray",
-                      cursor: "pointer",
-                      align: "center",
-                    }}
+                      sx={{
+                        color: "gray",
+                        cursor: "pointer",
+                        align: "center",
+                      }}
                     />
                   </IconButton>
                 </CardContent>
@@ -178,11 +178,8 @@ function EmployerComponent({ currUser }) {
                   </Button>
                 </CardActions>
               </Card>
-
             </Box>
           </EmployerContainer>
-
-          {currUser.firstName}
         </MainContainer>
       </div>
     </div>
@@ -190,7 +187,9 @@ function EmployerComponent({ currUser }) {
 }
 
 EmployerComponent.propTypes = {
-  currUser: UserType.isRequired,
+  getUserById: PropTypes.func.isRequired,
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
 };
 
 export default EmployerComponent;
