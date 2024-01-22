@@ -45,7 +45,10 @@ describe("getAllEmployers test suite", () => {
   });
 
   it("Does not call findOne", async () => {
-    mock("../../../src/models/employer.model", mockGetManyEmployers);
+    mock("../../src/models/job_lead.model", {
+      ...mockGetManyClients,
+      findAll: vi.fn().mockResolvedValue(mockUniqueOwners),
+    });
     getAllEmployersRequestHandler = mock.reRequire(
         "../../../src/controllers/employer/getAllEmployers",
     );
@@ -77,6 +80,7 @@ describe("getAllEmployers test suite", () => {
     getAllEmployersRequestHandler = mock.reRequire(
         "../../../src/controllers/employer/getAllEmployers",
     );
+
     await getAllEmployersRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
   });
