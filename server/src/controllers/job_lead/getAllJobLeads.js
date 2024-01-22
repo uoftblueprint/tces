@@ -2,6 +2,13 @@ const logger = require("pino")();
 const { Op, literal, Sequelize } = require("sequelize");
 const JobLead = require("../../models/job_lead.model");
 
+function isValidNOCQuery(query) {
+  // only numbers
+  const regex = /^\d+$/;
+
+  return regex.test(query);
+}
+
 const getAllJobLeadsRequestHandler = async (req, res) => {
   try {
     const page = req?.query?.page ? parseInt(req.query.page, 10) : 0;
@@ -82,7 +89,8 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
 
     query[Op.and] = [...(query[Op.and] || [])];
 
-    if (searchNOCQuery) {
+    // make sure to only query if it is a valid NOC query (only numbers)
+    if (searchNOCQuery && isValidNOCQuery(searchNOCQuery)) {
       query[Op.and].push(
         literal(
           `CAST(national_occupation_code AS CHAR) LIKE '%${searchNOCQuery}%'`,
