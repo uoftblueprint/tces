@@ -1,17 +1,32 @@
+import { useState } from 'react';
 import {
   Card,
   CardContent,
   TextField,
   InputAdornment,
   Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 function EmployerDashboardFilter() {
+  const [employerName, setEmployerName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+  const [postalCode, setPostalCode] = useState('');
+
+  const handleInputChange = (setter) => (event) => {
+    setter(event.target.value);
+  };
+
+  const handleDateChange = (setter) => (newValue) => {
+    setter(newValue);
+  };
+
   return (
-    <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
+    <Card sx={{ width: 240, height: 'fit-content', marginLeft: 2 }}>
       <CardContent>
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
@@ -21,22 +36,21 @@ function EmployerDashboardFilter() {
         >
           Employer Name
         </Typography>
-        <Typography sx={{ mb: 2 }} color="text.secondary">
-          <TextField
-            type="text"
-            size="small"
-            style={{
-              borderWidth: "10px",
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Typography>
+        <TextField
+          type="text"
+          size="small"
+          value={employerName}
+          onChange={handleInputChange(setEmployerName)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mb: 2 }}
+        />
+
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
           color="text.secondary"
@@ -45,22 +59,21 @@ function EmployerDashboardFilter() {
         >
           Phone Number
         </Typography>
-        <Typography sx={{ mb: 2 }} color="text.secondary">
-          <TextField
-            type="text"
-            size="small"
-            style={{
-              borderWidth: "10px",
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Typography>
+        <TextField
+          type="text"
+          size="small"
+          value={phoneNumber}
+          onChange={handleInputChange(setPhoneNumber)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mb: 2 }}
+        />
+
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
           color="text.secondary"
@@ -72,24 +85,22 @@ function EmployerDashboardFilter() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="From"
-            renderInput={(params) => (
-              // eslint-disable-next-line
-              <TextField {...params} error={false} helperText="" />
-            )}
+            value={dateFrom}
+            onChange={handleDateChange(setDateFrom)}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ mb: 2 }}
+          />
+          <DatePicker
+            label="To"
+            value={dateTo}
+            onChange={handleDateChange(setDateTo)}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
             sx={{ mb: 2 }}
           />
         </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="To"
-            renderInput={(params) => (
-              // eslint-disable-next-line
-              <TextField {...params} error={false} helperText="" />
-            )}
-            sx={{ mb: 2 }}
-          />
-        </LocalizationProvider>
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
           color="text.secondary"
@@ -98,22 +109,19 @@ function EmployerDashboardFilter() {
         >
           Postal Code
         </Typography>
-        <Typography color="text.secondary">
-          <TextField
-            type="text"
-            size="small"
-            style={{
-              borderWidth: "10px",
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Typography>
+        <TextField
+          type="text"
+          size="small"
+          value={postalCode}
+          onChange={handleInputChange(setPostalCode)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
       </CardContent>
     </Card>
   );
