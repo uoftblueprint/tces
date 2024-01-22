@@ -1,3 +1,5 @@
+import mockEmployerContacts from "../mock-data/mockEmployerContacts";
+
 const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
@@ -92,7 +94,7 @@ const modifyUser = async (modifiedUser) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(modifyUserBody),
-    },
+    }
   );
   return response;
 };
@@ -172,7 +174,7 @@ const getFilteredJobLeads = async (queryParams) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response;
 };
@@ -203,22 +205,25 @@ const modifyJobLead = async (modifiedJobLead) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(modifyJobLeadBody),
-    },
+    }
   );
   return response;
 };
 
 const getEmployer = async (employerID) => {
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers/${employerID}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${employerID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return response;
-}
+};
 
 const getUserName = async (userID) => {
   const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
@@ -231,11 +236,20 @@ const getUserName = async (userID) => {
 
   if (response.status !== 200) {
     return "";
-  } 
+  }
 
   const json = await response.json();
-  return json.data ? `${json.data.user.first_name} ${json.data.user.last_name}` : "";
-}
+  return json.data
+    ? `${json.data.user.first_name} ${json.data.user.last_name}`
+    : "";
+};
+
+// eslint-disable-next-line no-unused-vars
+const getEmployerContacts = async (employerID) => {
+  const response = mockEmployerContacts;
+
+  return response;
+};
 
 export {
   login,
@@ -251,4 +265,5 @@ export {
   modifyJobLead,
   getEmployer,
   getUserName,
+  getEmployerContacts,
 };

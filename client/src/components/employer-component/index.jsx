@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
 
-import { getEmployer } from "../../utils/api";
+import { getEmployer, getEmployerContacts } from "../../utils/api";
 
 import UserType from "../../prop-types/UserType";
 import {
@@ -36,6 +36,7 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
 
   // default, this gets overriden once the useEffect() finishes. to avoid a not available error.
   const [employer, setEmployer] = useState({ owner: 1, creator: 1 });
+  const [contacts, setContacts] = useState({});
 
   const { employerID } = useParams();
 
@@ -49,7 +50,15 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
         await setEmployer(data);
       }
     };
+
+    const updateContacts = async () => {
+      const res = await getEmployerContacts(employerID);
+
+      await setContacts(res);
+    };
+
     updateEmployer();
+    updateContacts();
   }, []);
 
   return (
@@ -93,16 +102,15 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
                 display: "flex",
                 flexDirection: "row",
                 gridColumnGap: "30px",
-                height: 400,
                 marginTop: "10px",
                 width: "100%",
               }}
             >
               <EmployerInformationCard employer={employer} />
 
-              <ContactsInformationCard />
+              <ContactsInformationCard contacts={contacts} />
 
-              <Card style={{ width: "33%" }} sx={{ height: 800 }}>
+              <Card style={{ width: "33%" }}>
                 <CardContent>
                   <Typography variant="h5" align="left" gutterBottom>
                     Activity Timeline (placeholder)
