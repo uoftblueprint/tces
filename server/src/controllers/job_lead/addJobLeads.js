@@ -21,7 +21,11 @@ const addJobLeadsRequestHandler = async (req, res) => {
       const jobLead = await createJobLead(req.body.job_lead, req.user.id);
       return res
         .status(200)
-        .json({ status: "success", message: "created job lead", data: { jobLead } })
+        .json({
+          status: "success",
+          message: "created job lead",
+          data: { jobLead },
+        });
     }
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
