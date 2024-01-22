@@ -12,7 +12,6 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: 62.5%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -23,12 +22,11 @@ const JobLeadContainer = styled.div`
   display: flex-wrap;
   flex-direction: column;
   align-items: center;
-  width: 60%;
   height: auto;
   background-color: white;
-  margin: 10px;
-  padding: 16px;
   border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
@@ -55,7 +53,7 @@ const Body = styled.p`
 `;
 
 const ButtonL = styled.button`
-  width: 62.5%;
+  width: 100%;
   padding: 16px;
   font-size: 20px;
   font-weight: 500;
@@ -63,6 +61,8 @@ const ButtonL = styled.button`
   border-radius: 8px;
   cursor: pointer;
   border-width: 0px;
+  margin-top: 16px;
+  margin-bottom: 16px;
   background: var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12));
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%233568E5FF' stroke-width='4' stroke-dasharray='20%2c 10' stroke-dashoffset='2' stroke-linecap='butt'/%3e%3c/svg%3e");
 `;

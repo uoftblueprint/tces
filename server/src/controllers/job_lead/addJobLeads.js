@@ -5,24 +5,25 @@ const addJobLeadsRequestHandler = async (req, res) => {
   try {
     if (req.body.job_lead instanceof Array) {
       // store all the job leads
-      let jobLeads = []
+      const jobLeads = [];
       // create each job lead while doing the needed checks for each one as well
-      for (let jobLeadData of req.body.job_lead) {
+      for (const jobLeadData of req.body.job_lead) {
         const jobLead = await createJobLead(jobLeadData, req.user.id);
         jobLeads.push(jobLead);
-      };
+      }
 
       return res.status(200).json({
         status: "success",
         message: "created job leads",
         data: { jobLeads },
       });
-    } else {
-      const jobLead = await createJobLead(req.body.job_lead, req.user.id);
-      return res
-      .status(200)
-      .json({ status: "success", message: "created job lead", data: { jobLead } })
     }
+    const jobLead = await createJobLead(req.body.job_lead, req.user.id);
+    return res.status(200).json({
+      status: "success",
+      message: "created job lead",
+      data: { jobLead },
+    });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
@@ -50,25 +51,25 @@ const createJobLead = async (jobLeadData, userId) => {
     let expirationDate;
 
     if (expirationDateStr) {
-        expirationDate = new Date(jobLeadData.expiration_date);
+      expirationDate = new Date(jobLeadData.expiration_date);
     } else {
-        // by default set to the expiration date to a month from the current date
-        expirationDate = new Date();
-        expirationDate.setMonth(expirationDate.getMonth() + 1); 
+      // by default set to the expiration date to a month from the current date
+      expirationDate = new Date();
+      expirationDate.setMonth(expirationDate.getMonth() + 1, 0);
     }
 
     // create a single job lead
     return await JobLead.create({
       owner: jobLeadData.owner,
       creator: userId,
-      employer_name: jobLeadData.employer_name || null,
-      job_title: jobLeadData.job_title || null,
-      num_of_positions: jobLeadData.num_of_positions || null,
-      compensation_max: jobLeadData.compensation_max || null,
-      compensation_min: jobLeadData.compensation_min || null,
+      employer: jobLeadData.employer,
+      job_title: jobLeadData.job_title || "",
+      num_of_positions: jobLeadData.num_of_positions || 0,
+      compensation_max: jobLeadData.compensation_max || 0,
+      compensation_min: jobLeadData.compensation_min || 0,
       hours_per_week: jobLeadData.hours_per_week || null,
       national_occupation_code: jobLeadData.national_occupation_code || null,
-      job_description: jobLeadData.job_description || null,
+      job_description: jobLeadData.job_description || "",
       creation_date: creationDate,
       expiration_date: expirationDate,
       employment_type: jobLeadData.employment_type,

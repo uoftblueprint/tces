@@ -52,7 +52,7 @@ function LoginComponent({ setIsAuthenticated, loginUser }) {
 
   return (
     <Container>
-      <Logo src="./img/tcesLogo.svg" alt="TCES Logo" />
+      <Logo src="/img/tcesLogo.svg" alt="TCES Logo" />
       <MessageContainer>
         <H3>Welcome back to TCES!</H3>
         <P>Log in below with your details.</P>
