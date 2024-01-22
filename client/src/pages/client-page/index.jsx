@@ -26,6 +26,22 @@ function ClientPage() {
   );
   console.log(monthsSinceClosure);
 
+  const dummyOwner = {
+    userID: 1,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    isAdmin: true,
+  };
+
+  const dummyCreator = {
+    userID: 2,
+    firstName: 'Selin',
+    lastName: 'Tasman',
+    email: 'selin.doe@example.com',
+    isAdmin: true,
+  };
+
   const initialClientInfo = {
     firstName: "First Name",
     email: "email@email.com",
@@ -38,19 +54,17 @@ function ClientPage() {
     status_at_6: "Employed",
     status_at_9: "Employed",
     status_at_12: "Training",
-    // ownerID: 0,
-    // creatorID: 1,
+    owner: dummyOwner,
+    creator: dummyCreator,
   };
 
   const [clientInfo, setClientInfo] = React.useState(initialClientInfo);
+  const { owner, creator } = clientInfo;
+
 
   const handleSave = (updatedClientInfo) => {
     setClientInfo(updatedClientInfo);
   };
-
-  // const getUserById = (userID) => {
-  //     return getUserByIdHelper(managedUsers, userID);
-  //   };
 
   return (
     <Router>
@@ -63,7 +77,8 @@ function ClientPage() {
               clientInfo={clientInfo}
               monthsSinceClosure={monthsSinceClosure}
               onSaveChanges={handleSave}
-              // getUserById={getUserById}
+              owner={owner}
+              creator={creator}
             />
           }
         />

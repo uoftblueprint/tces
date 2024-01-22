@@ -4,12 +4,10 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
@@ -20,8 +18,8 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-
-// import UserChipComponent from "../shared/user-chip-component";
+import UserType from "../../prop-types/UserType";
+import UserChipComponent from "../shared/user-chip-component";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -46,7 +44,7 @@ TextMaskCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChanges }) {
+export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChanges, owner, creator }) {
   ClientPage.propTypes = {
     clientInfo: PropTypes.shape({
       firstName: PropTypes.string,
@@ -63,13 +61,9 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
     }).isRequired,
     monthsSinceClosure: PropTypes.number.isRequired,
     onSaveChanges: PropTypes.func.isRequired,
-    // getUserById: PropTypes.func.isRequired,
-    // ownerID: PropTypes.number.isRequired,
-    // creatorID: PropTypes.number.isRequired,
+    owner: UserType.isRequired,
+    creator: UserType.isRequired,
   };
-
-  // const owner = getUserById(clientInfo.ownerID);
-  // const creator = getUserById(clientInfo.creatorID);
 
   const [isEditMode, setIsEditMode] = React.useState(true);
 
@@ -81,7 +75,6 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
   const navigate = useNavigate();
 
   const handleEditClick = () => {
-    // navigate("/edit-client-page")
     setIsEditMode(!isEditMode);
   };
 
@@ -111,7 +104,6 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
   const [editedStatus9, setEditedStatus9] = React.useState(clientInfo.status_at_9);
   const [editedStatus12, setEditedStatus12] = React.useState(clientInfo.status_at_12);
 
-  // const [isStatusClosed, setIsStatusClosed] = React.useState(false);
 
   const handleNameChange = (event) => {
     setEditedName(event.target.value);
@@ -128,8 +120,6 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
   const handleStatusChange = (event) => {
     const selectedStatus = event.target.value;
     setEditedStatus(selectedStatus);
-    // setIsStatusClosed(selectedStatus === 'Closed');
-    // setEditedStatusExit('');
   };
 
   const handleStatusExitChange = (event) => {
@@ -157,7 +147,6 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
     switch (chipType) {
       case 'status':
         setEditedStatus('');
-        // setEditedStatusExit('');
         break;
       case 'statusExit':
         setEditedStatusExit('');
@@ -218,53 +207,29 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
             Client
           </Typography>
         </Box>
-        <Card id="people-card" sx={{ marginLeft: "auto" }}>
-          <CardContent>
-            <Grid container spacing={1}>
-              <Grid
-                item
-                xs={6}
-                sx={{ textAlign: "center", fontFamily: "Arial" }}
-              >
+              <Box
+            sx={{
+              marginLeft: "auto",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "8px",
+              boxShadow: 2,
+              p: 3,
+            }}
+          >
+            <Box sx={{ textAlign: "center", mr: 2 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 Owner
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                sx={{ textAlign: "center", fontFamily: "Arial" }}
-              >
+              </Typography>
+              <UserChipComponent user={owner} onClick={handleClick} edit />
+            </Box>
+            <Box sx={{ textAlign: "center" }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 Creator
-              </Grid>
-
-              <Grid item xs={6}>
-                <Chip
-                  variant="filled"
-                  avatar={
-                    <Avatar style={{ background: "#E53568", color: "white" }}>
-                      OP
-                    </Avatar>
-                  }
-                  label="Owen Perth"
-                  onDelete={handleClick}
-                  deleteIcon={<EditIcon />}
-                />
-                {/* <UserChipComponent user={owner} onClick edit /> */}
-              </Grid>
-              <Grid item xs={6}>
-                <Chip
-                  variant="filled"
-                  avatar={
-                    <Avatar style={{ background: "#3568E5", color: "white" }}>
-                      EG
-                    </Avatar>
-                  }
-                  label="Emily Gale"
-                />
-                {/* <UserChipComponent user={creator} /> */}
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+              </Typography>
+              <UserChipComponent user={creator} />
+            </Box>
+          </Box>
       </div>
       <Paper>
         <Box>
@@ -275,7 +240,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                   Personal Information
                 </Typography>
               </Grid>
-              <Grid item xs={1.6} align="right">
+              <Grid item xs={1.9} align="right">
                 <IconButton>
                   <EditIcon color="default" onClick={handleEditClick} />
                 </IconButton>
@@ -382,7 +347,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                   Phone Number
                 </Typography>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={7.5}>
                 <Typography
                   gutterBottom
                   variant="body1"
@@ -394,7 +359,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                     : "Enter Phone Number..."}
                 </Typography>
               </Grid>
-              <Grid item xs={1} id="info-card-icon">
+              <Grid item xs={0.5} id="info-card-icon">
                 <IconButton>
                 <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.phone)} />
                 </IconButton>
@@ -488,12 +453,12 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                     Closure Date
                   </Typography>
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item xs={7.5}>
                   <Typography gutterBottom variant="body1" align="left">
                     {clientInfo.closure_date}
                   </Typography>
                 </Grid>
-                <Grid item xs={1} id="info-card-icon">
+                <Grid item xs={0.5} id="info-card-icon">
                 <IconButton>
                 <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.closure_date)} />
                 </IconButton>
@@ -517,12 +482,12 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                     Time Since Closure
                   </Typography>
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item xs={7.5}>
                   <Typography gutterBottom variant="body1" align="left">
                     {clientInfo.time_since_closure}
                   </Typography>
                 </Grid>
-                <Grid item xs={1} id="info-card-icon">
+                <Grid item xs={0.5} id="info-card-icon">
                 <IconButton>
                 <ContentCopyIcon onClick={() => handleCopyClick(clientInfo.time_since_closure)} />
                 </IconButton>
