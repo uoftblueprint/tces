@@ -1,11 +1,13 @@
 const logger = require("pino")();
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const Employer = require("../../models/employer.model");
 
 const getAllEmployersRequestHandler = async (req, res) => {
   try {
     const page = req?.query?.page ? parseInt(req.query.page, 10) : 0;
-    const pageSize = req?.query?.page ? parseInt(req.query.pageSize, 10) : 10;
+    const pageSize = req?.query?.pageSize
+      ? parseInt(req.query.pageSize, 10)
+      : 10;
     const offsetSize = page * pageSize;
 
     const {
@@ -25,12 +27,16 @@ const getAllEmployersRequestHandler = async (req, res) => {
       query.phone_number = { [Op.like]: `%${phoneNumber}%` };
     }
     if (startDateAdded) {
-      query.creation_date = { [Op.gte]: new Date(startDateAdded) };
+      const startDate = new Date(startDateAdded);
+      startDate.setHours(0, 0, 0, 0);
+      query.date_added = { [Op.gte]: new Date(startDateAdded) };
     }
 
     if (endDateAdded) {
-      query.creation_date = {
-        ...query.creation_date,
+      const endDate = new Date(endDateAdded);
+      endDate.setHours(23, 59, 59, 999);
+      query.date_added = {
+        ...query.date_added,
         [Op.lte]: new Date(endDateAdded),
       };
     }
@@ -42,7 +48,8 @@ const getAllEmployersRequestHandler = async (req, res) => {
     if (postalCode) {
       query.postal_code = { [Op.like]: `%${postalCode}%` };
     }
-    const employers = await JobLead.findAll({
+
+    const employers = await Employer.findAll({
       where: query,
       limit: pageSize,
       offset: offsetSize,
