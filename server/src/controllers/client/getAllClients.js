@@ -12,7 +12,7 @@ const getAllClientsRequestHandler = async (req, res) => {
       date_updated_to,
       date_registered_from,
       date_registered_to,
-      owner_id,
+      owner,
       active,
       r_and_i,
       closed,
@@ -33,7 +33,7 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (phone_number) {
-      query.phone_number = { [Op.like]: `%${phone_number}` };
+      query.phone_number = { [Op.like]: `%${phone_number}%` };
     }
 
     if (date_updated_from) {
@@ -46,6 +46,7 @@ const getAllClientsRequestHandler = async (req, res) => {
       const date = new Date(date_updated_to);
       date.setUTCHours(23, 59, 59, 999);
       query.date_updated = {
+        ...query.date_updated,
         [Op.lte]: date,
       };
     }
@@ -60,12 +61,13 @@ const getAllClientsRequestHandler = async (req, res) => {
       const date = new Date(date_registered_to);
       date.setHours(23, 59, 59, 999);
       query.date_registered = {
+        ...query.date_registered,
         [Op.lte]: date,
       };
     }
 
-    if (owner_id) {
-      query.owner = owner_id;
+    if (owner) {
+      query.owner = owner;
     }
     let status_options = [];
     if (active === "true") {
@@ -87,15 +89,15 @@ const getAllClientsRequestHandler = async (req, res) => {
       where: query,
     };
     const page = Number(req.query.page);
-    const limit = Number(req.query.limit);
-    if (page && limit) {
+    const pageSize = Number(req.query.pageSize);
+    if (page && pageSize) {
       query_options = {
         ...query_options,
-        limit: limit,
-        offset: (page - 1) * limit,
+        limit: pageSize,
+        offset: page * pageSize,
       };
     }
-    console.log(query_options);
+
     const clients = await Client.findAndCountAll(query_options);
 
     return res.status(200).json({
