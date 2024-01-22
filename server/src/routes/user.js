@@ -37,13 +37,18 @@ router.get("/:user_id", isLoggedIn, getUserAuth, getUserHandler);
 
 /**
  * Get All Users
-
+ *
+ *
+ * Note: Removing isAdmin to getAllUsers handler to generate user
+ *       options in other pages (e.g Job Leads Table Owner Filter)  that non-admins have access to
+ *
+ *
  * Expected Query Params:
  * @type integer {query.page}
  * @type integer {query.limit}
  * @type string {query.name}
  */
-router.get("", isAdmin, getAllUsersHandler);
+router.get("", isLoggedIn, getAllUsersHandler);
 
 /**
  * Update User
