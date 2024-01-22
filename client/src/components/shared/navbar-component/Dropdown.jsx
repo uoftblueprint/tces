@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import "./Dropdown.css";
 import DropdownItem from "./DropdownItem";
 
-function Dropdown({ isAdmin, setIsDropdownVisible }) {
+function Dropdown({ isAdmin, setIsDropdownVisible, setLocalExitRoute }) {
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -34,15 +34,18 @@ function Dropdown({ isAdmin, setIsDropdownVisible }) {
           <DropdownItem
             keyword="admin"
             setIsDropdownVisible={setIsDropdownVisible}
+            setLocalExitRoute={setLocalExitRoute}
           />
         )}
         <DropdownItem
           keyword="settings"
           setIsDropdownVisible={setIsDropdownVisible}
+          setLocalExitRoute={setLocalExitRoute}
         />
         <DropdownItem
           keyword="logout"
           setIsDropdownVisible={setIsDropdownVisible}
+          setLocalExitRoute={setLocalExitRoute}
         />
       </div>
     </div>
@@ -52,6 +55,11 @@ function Dropdown({ isAdmin, setIsDropdownVisible }) {
 Dropdown.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   setIsDropdownVisible: PropTypes.func.isRequired,
+  setLocalExitRoute: PropTypes.func,
+};
+
+Dropdown.defaultProps = {
+  setLocalExitRoute: null,
 };
 
 export default Dropdown;

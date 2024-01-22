@@ -3,11 +3,13 @@ import getAllJobLeadsRequestHandler from "../../src/controllers/job_lead/getAllJ
 const mock = require("mock-require");
 const mockGetManyClients = require("../mocks/mockGetAllObjects");
 
-beforeEach(() => {
-  mock("../../src/models/job_lead.model", mockGetManyClients);
-  getAllJobLeadsRequestHandler = mock.reRequire(
-    "../../src/controllers/job_lead/getAllJobLeads",
-  );
+const mockUniqueOwners = [
+  { owner: "Owner1" },
+  { owner: "Owner2" },
+];
+
+mockUniqueOwners.map = vi.fn().mockImplementation(function (callback) {
+  return Array.prototype.map.call(this, callback);
 });
 
 afterEach(() => {
@@ -15,10 +17,14 @@ afterEach(() => {
   mock.stop("../../src/models/job_lead.model");
 });
 
-describe("getOneJobLead test suite", () => {
+describe("getAllJobLeads test suite", () => {
   const mockReq = {
     params: {
       job_lead_id: 1,
+    },
+    query: {
+      page: '2',
+      pageSize: '10'
     },
   };
 
@@ -40,6 +46,11 @@ describe("getOneJobLead test suite", () => {
   });
 
   it("Does not call findOne", async () => {
+    mock("../../src/models/job_lead.model", mockGetManyClients);
+    getAllJobLeadsRequestHandler = mock.reRequire(
+        "../../src/controllers/job_lead/getAllJobLeads",
+    );
+
     const spy = vi.spyOn(mockGetManyClients, "findOne");
 
     await getAllJobLeadsRequestHandler(mockReq, mockRes);
@@ -47,13 +58,25 @@ describe("getOneJobLead test suite", () => {
   });
 
   it("Calls findAll", async () => {
+    mock("../../src/models/job_lead.model", mockGetManyClients);
+    getAllJobLeadsRequestHandler = mock.reRequire(
+        "../../src/controllers/job_lead/getAllJobLeads",
+    );
+
     const spy = vi.spyOn(mockGetManyClients, "findAll");
 
     await getAllJobLeadsRequestHandler(mockReq, mockRes);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it("Returns 200 on success", async () => {
+    mock("../../src/models/job_lead.model", {
+      ...mockGetManyClients,
+      findAll: vi.fn().mockResolvedValue(mockUniqueOwners),
+    });
+    getAllJobLeadsRequestHandler = mock.reRequire(
+        "../../src/controllers/job_lead/getAllJobLeads",
+    );
     await getAllJobLeadsRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
   });

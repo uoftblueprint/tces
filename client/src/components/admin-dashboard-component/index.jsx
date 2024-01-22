@@ -15,6 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import UserType from "../../prop-types/UserType";
 import ConfirmDialog from "../shared/confirm-dialog-component";
 
@@ -137,15 +138,24 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
     <div>
       <DashboardContainer>
         <HeaderContainer>
-          <ArrowBackIcon
-            onClick={handleBackClick}
+          <IconButton
             sx={{
-              color: "gray",
               marginRight: 2,
               marginLeft: 2,
-              cursor: "pointer",
             }}
-          />
+            onClick={handleBackClick}
+            size="small"
+          >
+            <ArrowBackIcon
+              onClick={handleBackClick}
+              sx={{
+                color: "gray",
+
+                cursor: "pointer",
+              }}
+            />
+          </IconButton>
+
           <Typography
             style={{
               fontFamily: "Arial",
