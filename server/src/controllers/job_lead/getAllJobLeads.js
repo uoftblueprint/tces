@@ -38,24 +38,32 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       query.job_title = { [Op.like]: `%${searchTitleQuery}%` };
     }
     if (startDateCreated) {
-      query.creation_date = { [Op.gte]: new Date(startDateCreated) };
+      const startDate = new Date(startDateCreated);
+      startDate.setHours(0, 0, 0, 0);
+      query.creation_date = { [Op.gte]: startDate };
     }
 
     if (endDateCreated) {
+      const endDate = new Date(endDateCreated);
+      endDate.setHours(23, 59, 59, 999);
       query.creation_date = {
         ...query.creation_date,
-        [Op.lte]: new Date(endDateCreated),
+        [Op.lte]: endDate,
       };
     }
 
     if (startDateExpired) {
-      query.expiration_date = { [Op.gte]: new Date(startDateExpired) };
+      const startDate = new Date(startDateCreated);
+      startDate.setHours(0, 0, 0, 0);
+      query.expiration_date = { [Op.gte]: startDate };
     }
 
     if (endDateExpired) {
+      const endDate = new Date(endDateCreated);
+      endDate.setHours(23, 59, 59, 999);
       query.expiration_date = {
         ...query.expiration_date,
-        [Op.lte]: new Date(endDateExpired),
+        [Op.lte]: endDate,
       };
     }
 
