@@ -173,6 +173,22 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
               marginLeft: "auto",
               marginBottom: "30px",
               marginTop: "30px",
+              backgroundColor: "#47B787",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#47B787",
+                color: "white",
+              },
+            }}
+            onClick={() => {}}
+          >
+            Import CSV
+          </Button>
+          <Button
+            sx={{
+              marginLeft: "30px",
+              marginBottom: "30px",
+              marginTop: "30px",
               backgroundColor: "#3568E5",
               color: "white",
               "&:hover": {
