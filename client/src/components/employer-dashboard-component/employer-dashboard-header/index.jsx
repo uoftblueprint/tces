@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { IconButton, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import DownloadIcon from "@mui/icons-material/Download";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { HeaderContainer } from "../index.styles";
 
@@ -69,7 +70,7 @@ function EmployerDashboardHeader({ numEntries }) {
             color: "white",
           },
         }}
-        startIcon={<AddIcon />}
+        startIcon={<DownloadIcon />}
         onClick={() => {}}
       >
         EXPORT CURRENT FILTER VIEW ({numEntries} EMPLOYERS)
