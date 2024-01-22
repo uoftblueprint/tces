@@ -49,25 +49,23 @@ function EmployerDashboardTable({
   }));
 
   return (
-    <div style={{ minHeight: 500, minWidth: "80%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={rowsPerPage}
-        page={page - 1}
-        onPageSizeChange={(newPageSize) =>
-          handleChangeRowsPerPage({ target: { value: newPageSize } })
-        }
-        onPageChange={(newPage) => handleChangePage(null, newPage)}
-        rowCount={count}
-        pagination
-        paginationMode="server"
-        sx={{
-          background: "white",
-        }}
-      />
-    </div>
-  );
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      pageSize={rowsPerPage}
+      page={page - 1}
+      onPageSizeChange={(newPageSize) =>
+        handleChangeRowsPerPage({ target: { value: newPageSize } })
+      }
+      onPageChange={(newPage) => handleChangePage(null, newPage)}
+      rowCount={count}
+      pagination
+      paginationMode="server"
+      sx={{
+        background: "white",
+      }}
+    />
+);
 }
 
 EmployerDashboardTable.propTypes = {

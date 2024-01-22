@@ -58,8 +58,8 @@ function EmployerDashboardHeader({ numEntries }) {
           color: "#3568E5",
           border: 1,
           "&:hover": {
-            backgroundColor: "#ffffff0",
-            color: "#3568E5",
+            backgroundColor: "#3568E5",
+            color: "white",
           },
         }}
         startIcon={<AddIcon />}
@@ -72,10 +72,11 @@ function EmployerDashboardHeader({ numEntries }) {
           marginBottom: "30px",
           marginTop: "30px",
           backgroundColor: "#3568E5",
+          border: 1,
           color: "white",
           "&:hover": {
-            backgroundColor: "#3568E5",
-            color: "white",
+            backgroundColor: "white",
+            color: "#3568E5",
           },
         }}
         startIcon={<AddIcon />}
