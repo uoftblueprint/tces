@@ -15,20 +15,20 @@ function EmployerDashboardTable({
   };
 
   const columns = [
-    { field: "employerName", headerName: "Employer Name", width: 200 },
+    { field: "employerName", headerName: "Employer Name", flex: 1 },
     {
       field: "date",
       headerName: "Date",
-      width: 200,
+      flex: 1,
       valueFormatter: ({ value }) => formatDate(value),
     },
-    { field: "phoneNumber", headerName: "Phone Number", width: 200 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "primaryContact", headerName: "Primary Contact", width: 200 },
+    { field: "phoneNumber", headerName: "Phone Number", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "primaryContact", headerName: "Primary Contact", flex: 1 },
     {
       field: "owner",
       headerName: "Owner",
-      width: 150,
+      flex: 1,
       renderCell: (params) => (
         <Chip
           avatar={<Avatar>{/* logic for the avatar */}</Avatar>}
