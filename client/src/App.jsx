@@ -242,6 +242,17 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/employer/:employerID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <EmployerPage currUser={currUser} />
+                </AuthGuard>
+            }
+            />
           </Route>
           <Route
             path="/admin/create-user"
@@ -274,17 +285,6 @@ function App() {
                 >
                   <EditPage getUserById={getUserById} />
                 </RouteGuard>
-              </AuthGuard>
-            }
-          />
-          <Route
-            path="/employer/:employerID"
-            element={
-              <AuthGuard
-                isAuthenticated={isAuthenticated}
-                loginUser={loginUser}
-              >
-                <EmployerPage currUser={currUser} />
               </AuthGuard>
             }
           />
