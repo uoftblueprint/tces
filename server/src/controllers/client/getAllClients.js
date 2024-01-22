@@ -52,7 +52,7 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (date_registered_from) {
-      query.date_registered = {
+      query.date_added = {
         [Op.gte]: new Date(date_registered_from),
       };
     }
@@ -60,8 +60,8 @@ const getAllClientsRequestHandler = async (req, res) => {
     if (date_registered_to) {
       const date = new Date(date_registered_to);
       date.setHours(23, 59, 59, 999);
-      query.date_registered = {
-        ...query.date_registered,
+      query.date_added = {
+        ...query.date_added,
         [Op.lte]: date,
       };
     }
