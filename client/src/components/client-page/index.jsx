@@ -21,6 +21,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 
+// import UserChipComponent from "../shared/user-chip-component";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -62,7 +63,13 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
     }).isRequired,
     monthsSinceClosure: PropTypes.number.isRequired,
     onSaveChanges: PropTypes.func.isRequired,
+    // getUserById: PropTypes.func.isRequired,
+    // ownerID: PropTypes.number.isRequired,
+    // creatorID: PropTypes.number.isRequired,
   };
+
+  // const owner = getUserById(clientInfo.ownerID);
+  // const creator = getUserById(clientInfo.creatorID);
 
   const [isEditMode, setIsEditMode] = React.useState(true);
 
@@ -241,6 +248,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                   onDelete={handleClick}
                   deleteIcon={<EditIcon />}
                 />
+                {/* <UserChipComponent user={owner} onClick edit /> */}
               </Grid>
               <Grid item xs={6}>
                 <Chip
@@ -252,6 +260,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                   }
                   label="Emily Gale"
                 />
+                {/* <UserChipComponent user={creator} /> */}
               </Grid>
             </Grid>
           </CardContent>

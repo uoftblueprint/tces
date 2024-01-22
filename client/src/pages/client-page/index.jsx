@@ -7,6 +7,10 @@ import {
 } from "react-router-dom";
 
 import Client from "../../components/client-page";
+// import { getUserByIdHelper } from "../../utils/users";
+
+
+// const [managedUsers, setManagedUsers] = React.useState([]);
 
 
 function ClientPage() {
@@ -34,6 +38,8 @@ function ClientPage() {
     status_at_6: "Employed",
     status_at_9: "Employed",
     status_at_12: "Training",
+    // ownerID: 0,
+    // creatorID: 1,
   };
 
   const [clientInfo, setClientInfo] = React.useState(initialClientInfo);
@@ -41,6 +47,10 @@ function ClientPage() {
   const handleSave = (updatedClientInfo) => {
     setClientInfo(updatedClientInfo);
   };
+
+  // const getUserById = (userID) => {
+  //     return getUserByIdHelper(managedUsers, userID);
+  //   };
 
   return (
     <Router>
@@ -53,6 +63,7 @@ function ClientPage() {
               clientInfo={clientInfo}
               monthsSinceClosure={monthsSinceClosure}
               onSaveChanges={handleSave}
+              // getUserById={getUserById}
             />
           }
         />
