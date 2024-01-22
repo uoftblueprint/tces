@@ -259,33 +259,6 @@ function JobLeadDashboardFiltersComponent({
             </Typography>
             <DatePicker
               label="From"
-              value={startDateExpired}
-              onChange={setStartDateExpired}
-              renderInput={(params) => {
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                return <TextField {...params} size="small" fullWidth />;
-              }}
-            />
-            <DatePicker
-              label="Until"
-              value={endDateExpired}
-              onChange={setEndDateExpired}
-              renderInput={(params) => {
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                return <TextField {...params} size="small" fullWidth />;
-              }}
-            />
-            {/* Date Expired Filter */}
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              align="left"
-              gutterBottom
-            >
-              Expiry Date
-            </Typography>
-            <DatePicker
-              label="From"
               value={startDateCreated}
               onChange={setStartDateCreated}
               renderInput={(params) => {
@@ -302,6 +275,34 @@ function JobLeadDashboardFiltersComponent({
                 return <TextField {...params} size="small" fullWidth />;
               }}
             />
+            {/* Date Expired Filter */}
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              align="left"
+              gutterBottom
+            >
+              Date Expired
+            </Typography>
+            <DatePicker
+              label="From"
+              value={startDateExpired}
+              onChange={setStartDateExpired}
+              renderInput={(params) => {
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                return <TextField {...params} size="small" fullWidth />;
+              }}
+            />
+            <DatePicker
+              label="Until"
+              value={endDateExpired}
+              onChange={setEndDateExpired}
+              renderInput={(params) => {
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                return <TextField {...params} size="small" fullWidth />;
+              }}
+            />
+
             {/* Compensation Filter */}
             <Typography
               sx={{ fontSize: 14 }}

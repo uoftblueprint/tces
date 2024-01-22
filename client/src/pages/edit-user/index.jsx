@@ -9,7 +9,6 @@ function Edit({ getUserById }) {
   const parsedUserID = parseInt(userID, 10);
   const userToEdit = getUserById(parsedUserID);
 
-
   if (!userToEdit) return <ErrorComponent message={errorMessage} />;
   return <EditComponent currUser={userToEdit} />;
 }

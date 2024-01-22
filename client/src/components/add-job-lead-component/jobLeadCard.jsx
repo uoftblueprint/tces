@@ -73,7 +73,7 @@ function JobLeadContent({
           {/* Compensation Minimum Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`minCompensationLabel-${lead.id}`}>
-              Compensation Minimum
+              Compensation Minimum*
             </InputLabel>
             <OutlinedInput
               id={`minCompensation-${lead.id}`}
@@ -81,7 +81,7 @@ function JobLeadContent({
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Minimum"
+              label="Compensation Minimum*"
               inputProps={{ min: 0 }}
               value={lead.minCompensation}
               onChange={(e) => {
@@ -96,7 +96,7 @@ function JobLeadContent({
           {/* Compensation Maximum Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`maxCompensationLabel-${lead.id}`}>
-              Compensation Maximum
+              Compensation Maximum*
             </InputLabel>
             <OutlinedInput
               id={`maxCompensation-${lead.id}`}
@@ -105,7 +105,7 @@ function JobLeadContent({
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Maximum"
+              label="Compensation Maximum*"
               value={lead.maxCompensation}
               onChange={(e) => {
                 const { value } = e.target;
