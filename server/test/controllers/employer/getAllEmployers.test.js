@@ -11,6 +11,14 @@ mockUniqueOwners.map = vi.fn().mockImplementation(function (callback) {
   return Array.prototype.map.call(this, callback);
 });
 
+const mockFindAll = vi.fn().mockResolvedValue([]);
+
+beforeEach(() => {
+  mock("../../../src/models/employer.model", mockGetManyEmployers);
+  getAllEmployersRequestHandler = mock.reRequire(
+      "../../../src/controllers/employer/getAllEmployers",
+  );
+})
 afterEach(() => {
   // Reset mocks after every test
   mock.stop("../../../src/models/employer.model");
@@ -45,13 +53,6 @@ describe("getAllEmployers test suite", () => {
   });
 
   it("Does not call findOne", async () => {
-    mock("../../src/models/job_lead.model", {
-      ...mockGetManyClients,
-      findAll: vi.fn().mockResolvedValue(mockUniqueOwners),
-    });
-    getAllEmployersRequestHandler = mock.reRequire(
-        "../../../src/controllers/employer/getAllEmployers",
-    );
     const spy = vi.spyOn(mockGetManyEmployers, "findOne");
 
     await getAllEmployersRequestHandler(mockReq, mockRes);
@@ -59,10 +60,6 @@ describe("getAllEmployers test suite", () => {
   });
 
   it("Calls findAll", async () => {
-    mock("../../../src/models/employer.model", mockGetManyEmployers);
-    getAllEmployersRequestHandler = mock.reRequire(
-        "../../../src/controllers/employer/getAllEmployers",
-    );
     const spy = vi.spyOn(mockGetManyEmployers, "findAll");
 
     await getAllEmployersRequestHandler(mockReq, mockRes);
@@ -73,14 +70,6 @@ describe("getAllEmployers test suite", () => {
   });
 
   it("Returns 200 on success", async () => {
-    mock("../../src/models/job_lead.model", {
-      ...mockGetManyClients,
-      findAll: vi.fn().mockResolvedValue(mockUniqueOwners),
-    });
-    getAllEmployersRequestHandler = mock.reRequire(
-        "../../../src/controllers/employer/getAllEmployers",
-    );
-
     await getAllEmployersRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
   });

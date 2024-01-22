@@ -61,13 +61,16 @@ const getAllEmployersRequestHandler = async (req, res) => {
       attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
       raw: true,
     });
+    const uniqueOwnersList = Array.isArray(uniqueOwners)
+      ? uniqueOwners.map((owner) => owner.owner)
+      : [];
 
     return res.status(200).json({
       status: "success",
       message: "All employers found successfully",
       data: employers,
       total: totalEmployers,
-      uniqueOwners: uniqueOwners.map((owner) => owner.owner),
+      uniqueOwners: uniqueOwnersList,
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);
