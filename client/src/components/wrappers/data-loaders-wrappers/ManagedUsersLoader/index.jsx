@@ -3,9 +3,8 @@ import { useState, useEffect } from "react";
 import ErrorComponent from "../../../shared/error-screen-component";
 import LoadingComponent from "../../../shared/loading-screen-component";
 import { getAllUsers } from "../../../../utils/api";
-import UserType from "../../../../prop-types/UserType";
 
-function ManagedUsersLoader({ currUser, setManagedUsers, children }) {
+function ManagedUsersLoader({ setManagedUsers, children }) {
   const [loading, setLoading] = useState(true);
   const [errorDisplay, setError] = useState(null);
 
@@ -16,15 +15,13 @@ function ManagedUsersLoader({ currUser, setManagedUsers, children }) {
         if (response.ok) {
           const usersData = await response.json();
 
-          const formattedUsers = usersData.data.rows
-            .filter((user) => !user.is_admin && user.email !== currUser.email)
-            .map((user) => ({
-              userID: user.id,
-              firstName: user.first_name,
-              lastName: user.last_name,
-              email: user.email,
-              isAdmin: user.is_admin,
-            }));
+          const formattedUsers = usersData.data.rows.map((user) => ({
+            userID: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            isAdmin: user.is_admin,
+          }));
           setManagedUsers(formattedUsers);
         } else {
           const errorData = await response.json();
@@ -47,7 +44,6 @@ function ManagedUsersLoader({ currUser, setManagedUsers, children }) {
 }
 
 ManagedUsersLoader.propTypes = {
-  currUser: UserType.isRequired,
   setManagedUsers: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
