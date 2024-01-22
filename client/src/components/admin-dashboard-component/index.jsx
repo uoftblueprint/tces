@@ -180,8 +180,10 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
                 color: "white",
               },
             }}
-            onClick={() => { }}
-          >Import CSV</Button>
+            onClick={() => {}}
+          >
+            Import CSV
+          </Button>
           <Button
             sx={{
               marginLeft: "30px",

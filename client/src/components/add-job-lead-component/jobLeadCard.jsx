@@ -177,7 +177,7 @@ function JobLeadContent({
               minDate={dayjs()}
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText=""  required/>
+                <TextField {...params} error={false} helperText="" required />
               )}
               required
             />
@@ -197,7 +197,7 @@ function JobLeadContent({
               }
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText=""  required/>
+                <TextField {...params} error={false} helperText="" required />
               )}
               required
             />

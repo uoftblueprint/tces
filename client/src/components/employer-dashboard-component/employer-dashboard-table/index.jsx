@@ -65,7 +65,7 @@ function EmployerDashboardTable({
         background: "white",
       }}
     />
-);
+  );
 }
 
 EmployerDashboardTable.propTypes = {
