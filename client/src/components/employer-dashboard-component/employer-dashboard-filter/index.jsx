@@ -1,21 +1,21 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   CardContent,
   TextField,
   InputAdornment,
   Typography,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 function EmployerDashboardFilter() {
-  const [employerName, setEmployerName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [employerName, setEmployerName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
-  const [postalCode, setPostalCode] = useState('');
+  const [postalCode, setPostalCode] = useState("");
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
@@ -26,7 +26,7 @@ function EmployerDashboardFilter() {
   };
 
   return (
-    <Card sx={{ width: 240, height: 'fit-content', marginLeft: 2 }}>
+    <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
       <CardContent>
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
