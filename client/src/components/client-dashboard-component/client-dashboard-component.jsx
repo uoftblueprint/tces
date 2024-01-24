@@ -1,18 +1,30 @@
 import { Button, Box } from "@mui/material";
+import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
+import PropTypes from "prop-types";
 import FilterCard from "./FilterCard";
 import ClientTable from "./ClientTable";
 
-function ClientTableComponent() {
+function ClientDashboardComponent({ clientData }) {
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
+  // eslint-disable-next-line
+  const [rowCount, setRowCount] = useState(clientData.length)
+
+  const displayedRows = clientData.slice(
+    paginationModel.page * paginationModel.pageSize,
+    (paginationModel.page + 1) * paginationModel.pageSize
+  );
+
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
-      {/* Sidebar / Filter Card */}
       <Box sx={{ width: "25%", minWidth: "250px", margin: "28px" }}>
         <FilterCard />
       </Box>
 
-      {/* Main Content */}
       <Box
         sx={{
           flexGrow: 1,
@@ -21,7 +33,6 @@ function ClientTableComponent() {
           marginRight: "50px",
         }}
       >
-        {/* Action Buttons */}
         <Box
           sx={{
             display: "flex",
@@ -31,18 +42,26 @@ function ClientTableComponent() {
           }}
         >
           <Button variant="outlined" startIcon={<DownloadIcon />}>
-            EXPORT CURRENT FILTER VIEW (103 CLIENTS)
+            EXPORT CURRENT FILTER VIEW ({clientData.length} CLIENTS)
           </Button>
           <Button variant="contained" startIcon={<AddIcon />}>
             ADD NEW CLIENT
           </Button>
         </Box>
-
-        {/* Client Table */}
-        <ClientTable />
+        <ClientTable
+          clientData={displayedRows}
+          paginationModel={paginationModel}
+          setPaginationModel={setPaginationModel}
+          totalRowCount={rowCount}
+        />
       </Box>
     </Box>
   );
 }
 
-export default ClientTableComponent;
+ClientDashboardComponent.propTypes = {
+  // eslint-disable-next-line
+  clientData: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+export default ClientDashboardComponent;

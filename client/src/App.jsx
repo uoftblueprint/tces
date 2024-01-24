@@ -8,15 +8,16 @@ import {
 } from "react-router-dom";
 
 // page components
-import DashboardPage from "./pages/dashboard";
+// import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
+import ClientDashboard from "./pages/client-dashboard"
 
 // mock data
-import mockJobUpdates from "./mock-data/mockJobUpdates";
+// import mockJobUpdates from "./mock-data/mockJobUpdates";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -25,7 +26,6 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
-
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -41,10 +41,10 @@ function App() {
     email: "",
     isAdmin: false,
   });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   // Job Updates State
-  const [jobUpdates] = useState(mockJobUpdates);
+  // const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState([]);
@@ -104,7 +104,7 @@ function App() {
                 isAuthenticated={isAuthenticated}
                 loginUser={loginUser}
               >
-                <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
+                <ClientDashboard />
               </AuthGuard>
             }
           />
