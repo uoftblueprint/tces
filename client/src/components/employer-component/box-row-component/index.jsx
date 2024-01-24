@@ -1,13 +1,17 @@
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { Grid, Typography, TextField } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import PropTypes from "prop-types";
-import {
-  BoxDivider
-} from "./index.styles";
+import { BoxDivider } from "./index.styles";
 
-function BoxRowComponent({ leftSide, rightSide, copyable }) {
+function BoxRowComponent({
+  leftSide,
+  rightSide,
+  copyable,
+  editable,
+  setRightSide,
+  rightSideWrapper,
+}) {
   return (
     <>
       <Grid
@@ -17,7 +21,6 @@ function BoxRowComponent({ leftSide, rightSide, copyable }) {
         sx={{ mb: 1, paddingX: "20px" }}
       >
         <Grid item xs={4} container alignItems="center">
-
           <span>
             <Typography variant="body1" align="left">
               {leftSide}
@@ -25,21 +28,38 @@ function BoxRowComponent({ leftSide, rightSide, copyable }) {
           </span>
         </Grid>
         <Grid item xs={8}>
-          <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}>
-            <Typography variant="body1" align="left">
-              {rightSide}
-            </Typography>
-            {copyable && 
-              <ContentCopyIcon 
-                sx={{color: "gray", cursor: "pointer",}} 
-                align="right" 
-                onClick={() => {if (rightSide.props) {navigator.clipboard.writeText(rightSide.props.children) } }}
-              />}
-          </div>
+          {editable ? (
+            <TextField
+              variant="outlined"
+              fullWidth
+              value={rightSide}
+              onChange={(event) => setRightSide(event.target.value)}
+              disabled={!editable}
+              required
+            />
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant="body1" align="left">
+                {rightSideWrapper(rightSide)}
+              </Typography>
+              {copyable && (
+                <ContentCopyIcon
+                  sx={{ color: "gray", cursor: "pointer" }}
+                  align="right"
+                  onClick={() => {
+                    if (rightSide.props) {
+                      navigator.clipboard.writeText(rightSide.props.children);
+                    }
+                  }}
+                />
+              )}
+            </div>
+          )}
         </Grid>
       </Grid>
       <BoxDivider />
@@ -51,11 +71,18 @@ BoxRowComponent.propTypes = {
   leftSide: PropTypes.string.isRequired,
   rightSide: PropTypes.string,
   copyable: PropTypes.bool,
+  editable: PropTypes.bool.isRequired,
+  setRightSide: PropTypes.func,
+  rightSideWrapper: PropTypes.func,
 };
 
 BoxRowComponent.defaultProps = {
   rightSide: "",
   copyable: false,
-}
+  setRightSide: () => {},
+  rightSideWrapper: (rightSide) => {
+    return rightSide;
+  },
+};
 
 export default BoxRowComponent;

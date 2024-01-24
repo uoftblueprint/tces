@@ -251,6 +251,34 @@ const getEmployerContacts = async (employerID) => {
   return response;
 };
 
+const modifyEmployerInfo = async (modifiedEmployerInfo) => {
+  const modifyEmployerBody = {
+    values: {
+      name: modifiedEmployerInfo.name,
+      phone_number: modifiedEmployerInfo.phone_number,
+      fax: modifiedEmployerInfo.fax,
+      email: modifiedEmployerInfo.email,
+      website: modifiedEmployerInfo.website,
+      naics_code: modifiedEmployerInfo.naics_code,
+      address: modifiedEmployerInfo.address,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${modifiedEmployerInfo.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyEmployerBody),
+    }
+  );
+  return response;
+};
+
 export {
   login,
   logout,
@@ -266,4 +294,5 @@ export {
   getEmployer,
   getUserName,
   getEmployerContacts,
+  modifyEmployerInfo,
 };

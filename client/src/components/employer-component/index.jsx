@@ -100,7 +100,10 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
                 width: "100%",
               }}
             >
-              <EmployerInformationCard employer={employer} />
+              <EmployerInformationCard
+                employer={employer}
+                setSnackBarMessage={setSnackBarMessage}
+              />
 
               <ContactsInformationCard contacts={contacts} />
 

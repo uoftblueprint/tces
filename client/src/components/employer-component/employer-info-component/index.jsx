@@ -25,10 +25,8 @@ function EmployerInfoComponent({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  console.warn(`employer: ${employer.owner}, ${employer.creator}`);
   let owner = getUserById(employer.owner);
   let creator = getUserById(employer.creator);
-  console.warn(`owner: ${owner} creator: ${creator}`);
 
   useEffect(() => {
     owner = getUserById(employer.owner);
