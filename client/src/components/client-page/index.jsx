@@ -7,7 +7,6 @@ import Chip from "@mui/material/Chip";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
-// import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
@@ -20,6 +19,8 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import UserType from "../../prop-types/UserType";
 import UserChipComponent from "../shared/user-chip-component";
+import ChangeOwnerDialog from "../shared/change-owner-dialog";
+import ErrorScreenComponent from "../shared/error-screen-component";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -63,14 +64,26 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
     onSaveChanges: PropTypes.func.isRequired,
     owner: UserType.isRequired,
     creator: UserType.isRequired,
+    // managedUsers: PropTypes.arrayOf(UserType).isRequired,
   };
 
   const [isEditMode, setIsEditMode] = React.useState(true);
+  const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
-  // Just for now
-  const handleClick = () => {
-    console.info("You clicked the me.");
+  const onEditOwnerClick = () => {
+    setOwnerChangeDialog(true);
   };
+
+  const onOwnerChangeConfirm = () => {
+    setOwnerChangeDialog(false);
+  };
+
+  const onChangeOwnerCancel = () => {
+    setOwnerChangeDialog(false);
+  };
+
+  if (error) return <ErrorScreenComponent message={error} />;
 
   const navigate = useNavigate();
 
@@ -87,8 +100,8 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
     try {
       await navigator.clipboard.writeText(text);
       console.log('Text copied to the dashboard');
-    } catch (error) {
-      console.error('Error copying text to the clipboard:', error);
+    } catch (err) {
+      console.err('Error copying text to the clipboard:', err);
     }
   };
 
@@ -221,7 +234,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
               <Typography variant="subtitle2" sx={{ mb: 1 }}>
                 Owner
               </Typography>
-              <UserChipComponent user={owner} onClick={handleClick} edit />
+              <UserChipComponent user={owner} onClick={onEditOwnerClick} edit />
             </Box>
             <Box sx={{ textAlign: "center" }}>
               <Typography variant="subtitle2" sx={{ mb: 1 }}>
@@ -230,6 +243,18 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
               <UserChipComponent user={creator} />
             </Box>
           </Box>
+          {/* !!!IMPORTANT MAKE NECESSARY CHANGES WHEN ROUTING :} !!! */}
+          <ChangeOwnerDialog
+            type="client"
+            entity={clientInfo}
+            currOwner={owner}
+            onCancel={onChangeOwnerCancel}
+            onConfirm={onOwnerChangeConfirm}
+            open={ownerChangeDialog}
+            users={[]}
+            setSnackBarMessage=""
+            setError={setError}
+      />
       </div>
       <Paper>
         <Box>
