@@ -29,7 +29,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
     if (startDateAdded) {
       const startDate = new Date(startDateAdded);
       startDate.setHours(0, 0, 0, 0);
-      query.date_added = { [Op.gte]: new Date(startDateAdded) };
+      query.date_added = { [Op.gte]: new Date(startDate) };
     }
 
     if (endDateAdded) {
@@ -37,7 +37,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
       endDate.setHours(23, 59, 59, 999);
       query.date_added = {
         ...query.date_added,
-        [Op.lte]: new Date(endDateAdded),
+        [Op.lte]: new Date(endDate),
       };
     }
 
