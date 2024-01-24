@@ -1,25 +1,37 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getAllEmployersRequestHandler from "../../../src/controllers/employer/getAllEmployers";
+import mockGetManyClients from "../../mocks/mockGetAllObjects";
 const Employer = await require("../../../src/models/employer.model");
 const mock = require("mock-require");
 const mockGetManyEmployers = require("../../mocks/mockGetAllEmployers");
 
+const mockUniqueOwners = [{ owner: "Owner1" }, { owner: "Owner2" }];
+
+mockUniqueOwners.map = vi.fn().mockImplementation(function (callback) {
+  return Array.prototype.map.call(this, callback);
+});
+
+const mockFindAll = vi.fn().mockResolvedValue([]);
+
 beforeEach(() => {
   mock("../../../src/models/employer.model", mockGetManyEmployers);
   getAllEmployersRequestHandler = mock.reRequire(
-    "../../../src/controllers/employer/getAllEmployers",
+      "../../../src/controllers/employer/getAllEmployers",
   );
-});
-
+})
 afterEach(() => {
   // Reset mocks after every test
   mock.stop("../../../src/models/employer.model");
 });
 
-describe("getOneEmployer test suite", () => {
+describe("getAllEmployers test suite", () => {
   const mockReq = {
     params: {
       employer_id: 1,
+    },
+    query: {
+      page: "2",
+      pageSize: "10",
     },
   };
 
@@ -51,7 +63,10 @@ describe("getOneEmployer test suite", () => {
     const spy = vi.spyOn(mockGetManyEmployers, "findAll");
 
     await getAllEmployersRequestHandler(mockReq, mockRes);
-    expect(spy).toHaveBeenCalledTimes(1);
+    // one call for finding all employers
+    // one call for finding distinct owners
+    // thus two calls
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it("Returns 200 on success", async () => {
