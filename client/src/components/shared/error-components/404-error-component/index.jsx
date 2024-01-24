@@ -1,6 +1,6 @@
 import Container from "../index.styles";
 
-function Error404 () {
+function Error404Component() {
     return (
         <Container>
             <img src="/img/error.svg" alt="error"/>
@@ -10,4 +10,4 @@ function Error404 () {
     );
 }
 
-export default Error404;
+export default Error404Component;

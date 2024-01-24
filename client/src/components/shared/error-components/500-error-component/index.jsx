@@ -1,6 +1,6 @@
 import Container from "../index.styles";
 
-function Error500 () {
+function Error500Component() {
     return (
         <Container>
             <img src="/img/error.svg" alt="error"/>
@@ -10,4 +10,4 @@ function Error500 () {
     );
 }
 
-export default Error500;
+export default Error500Component;

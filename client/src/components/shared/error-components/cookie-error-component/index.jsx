@@ -1,6 +1,6 @@
 import Container from "../index.styles";
 
-function CookieError () {
+function CookieErrorComponent() {
     return (
         <Container>
             <img src="/img/error.svg" alt="error"/>
@@ -9,5 +9,4 @@ function CookieError () {
     );
 }
 
-export default CookieError
-;
+export default CookieErrorComponent;
