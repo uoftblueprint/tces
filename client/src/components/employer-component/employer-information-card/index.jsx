@@ -17,6 +17,24 @@ function EmployerInformationCard({ employer }) {
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
     employer.phone_number
   );
+  const [employerFax, setEmployerFax] = useState(employer.fax);
+  const [employerEmail, setEmployerEmail] = useState(employer.email);
+  const [employerWebsite, setEmployerWebsite] = useState(employer.website);
+  const [employerNAICSCode, setEmployerNAICSCode] = useState(
+    employer.naics_code
+  );
+  const [employerAddress, setEmployerAddress] = useState(employer.address);
+
+  // on initial startup, since useState() does not work on passed in props
+  useEffect(() => {
+    setEmployerName(employer.name);
+    setEmployerPhoneNumber(employer.phone_number);
+    setEmployerFax(employer.fax);
+    setEmployerEmail(employer.email);
+    setEmployerWebsite(employer.website);
+    setEmployerNAICSCode(employer.naics_code);
+    setEmployerAddress(employer.address);
+  }, [employer]);
 
   useEffect(() => {
     setEditable(false);
@@ -73,18 +91,14 @@ function EmployerInformationCard({ employer }) {
         <BoxRowComponent
           leftSide="Fax"
           rightSide={
-            employer.fax ? (
-              <a href={`tel:${employer.fax}`}>{employer.fax}</a>
-            ) : (
-              ""
-            )
+            employer.fax ? <a href={`tel:${employerFax}`}>{employerFax}</a> : ""
           }
         />
         <BoxRowComponent
           leftSide="Email"
           rightSide={
             employer.email ? (
-              <a href={`mailto:${employer.email}`}>{employer.email}</a>
+              <a href={`mailto:${employerEmail}`}>{employerEmail}</a>
             ) : (
               ""
             )
@@ -95,20 +109,14 @@ function EmployerInformationCard({ employer }) {
           leftSide="Website"
           rightSide={
             employer.website ? (
-              <a href={employer.website}>{employer.website}</a>
+              <a href={employerWebsite}>{employerWebsite}</a>
             ) : (
               ""
             )
           }
         />
-        <BoxRowComponent
-          leftSide="NAICS Code"
-          rightSide={employer.naics_code ? employer.naics_code : ""}
-        />
-        <BoxRowComponent
-          leftSide="Address"
-          rightSide={employer.address ? employer.address : ""}
-        />
+        <BoxRowComponent leftSide="NAICS Code" rightSide={employerNAICSCode} />
+        <BoxRowComponent leftSide="Address" rightSide={employerAddress} />
       </CardContent>
     </Card>
   );
