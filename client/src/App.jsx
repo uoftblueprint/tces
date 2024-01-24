@@ -35,6 +35,7 @@ import EditJobLead from "./pages/edit-job-lead";
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
+import EmployerDashboard from "./pages/employer-dashboard";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -192,6 +193,25 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/employers"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployersLoader setEmployers={setEmployers}>
+                      <EmployerDashboard
+                        employers={employers}
+                        setEmployers={setEmployers}
+                        getUserById={getUserById}
+                      />
+                    </EmployersLoader>
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
@@ -281,7 +301,5 @@ function App() {
     </Router>
   );
 }
-
-
 
 export default App;

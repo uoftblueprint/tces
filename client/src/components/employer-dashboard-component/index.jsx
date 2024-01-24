@@ -6,8 +6,9 @@ import { Container, DashboardContainer } from "./index.styles";
 import EmployerDashboardHeader from "./employer-dashboard-header";
 import EmployerDashboardFilter from "./employer-dashboard-filter";
 import EmployerDashboardTable from "./employer-dashboard-table";
+import EmployerType from "../../prop-types/EmployerType";
 
-function EmployerDashboardComponent({ employerData }) {
+function EmployerDashboardComponent({ employers }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -20,7 +21,7 @@ function EmployerDashboardComponent({ employerData }) {
     setPage(0);
   };
 
-  const slicedData = employerData.slice(
+  const slicedData = employers.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
   );
@@ -28,7 +29,7 @@ function EmployerDashboardComponent({ employerData }) {
   return (
     <Container>
       <DashboardContainer>
-        <EmployerDashboardHeader numEntries={employerData.length} />
+        <EmployerDashboardHeader numEntries={employers.length} />
         <Box
           sx={{
             display: "flex",
@@ -46,7 +47,7 @@ function EmployerDashboardComponent({ employerData }) {
             rowsPerPage={rowsPerPage}
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
-            count={employerData.length}
+            count={employers.length}
           />
         </Box>
       </DashboardContainer>
@@ -56,7 +57,9 @@ function EmployerDashboardComponent({ employerData }) {
 
 EmployerDashboardComponent.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  employerData: PropTypes.array.isRequired,
+  employers: PropTypes.arrayOf(EmployerType).isRequired,
+  // setEmployers: PropTypes.func.isRequired,
+  // getUserById: PropTypes.func.isRequired,
 };
 
 export default EmployerDashboardComponent;

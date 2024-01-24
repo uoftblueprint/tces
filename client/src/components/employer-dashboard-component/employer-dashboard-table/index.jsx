@@ -10,8 +10,10 @@ function EmployerDashboardTable({
   handleChangeRowsPerPage,
   count,
 }) {
+  console.log(slicedData)
   const formatDate = (date) => {
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const dateObj = new Date(date);
+    return `${dateObj.getMonth() + 1}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
   };
 
   const columns = [
@@ -41,7 +43,7 @@ function EmployerDashboardTable({
   const rows = slicedData.map((item, index) => ({
     id: index,
     employerName: item.employerName,
-    date: item.date,
+    date: item.dateAdded,
     phoneNumber: item.phoneNumber,
     email: item.email,
     primaryContact: item.primaryContact,
