@@ -7,7 +7,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AdminIcon from "@mui/icons-material/Group";
 import Button from "@mui/material/Button";
 
-function DropdownItem({ keyword, setIsDropdownVisible }) {
+function DropdownItem({ keyword, setIsDropdownVisible, setLocalExitRoute }) {
   const navigate = useNavigate();
   const icons = {
     settings: <SettingsIcon color="action" />,
@@ -29,7 +29,11 @@ function DropdownItem({ keyword, setIsDropdownVisible }) {
 
   const onClickRoute = () => {
     setIsDropdownVisible(false);
-    navigate(routes[keyword]);
+    if (setLocalExitRoute !== null) {
+      setLocalExitRoute(routes[keyword]);
+    } else {
+      navigate(routes[keyword]);
+    }
   };
   const icon = icons[keyword];
   const label = labels[keyword];
@@ -55,6 +59,11 @@ function DropdownItem({ keyword, setIsDropdownVisible }) {
 DropdownItem.propTypes = {
   keyword: PropTypes.string.isRequired,
   setIsDropdownVisible: PropTypes.func.isRequired,
+  setLocalExitRoute: PropTypes.func,
+};
+
+DropdownItem.defaultProps = {
+  setLocalExitRoute: null,
 };
 
 export default DropdownItem;

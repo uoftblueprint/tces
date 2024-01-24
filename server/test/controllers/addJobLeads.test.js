@@ -1,10 +1,12 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import addJobLeadsRequestHandler from "../../src/controllers/job_lead/addJobLeads";
+
 const mock = require("mock-require");
 const mockAddJobLeads = require("../mocks/mockAddObject");
 
 beforeEach(() => {
   mock("../../src/models/job_lead.model", mockAddJobLeads);
+  // eslint-disable-next-line no-import-assign
   addJobLeadsRequestHandler = mock.reRequire(
     "../../src/controllers/job_lead/addJobLeads",
   );
@@ -34,10 +36,10 @@ describe("addJobLeads test suite", () => {
   });
 
   describe("Add single job lead", () => {
-    var mockReq = {
+    const mockReq = {
       body: {
         job_lead: {
-          employer_name: "someone",
+          employer: 1,
           job_title: "software developer intern",
           compensation_max: 50000,
           compensation_max: 40000,
@@ -46,7 +48,7 @@ describe("addJobLeads test suite", () => {
           job_description: "full-stack testing.",
           creation_date: "2023-11-29",
           expiration_date: "2023-12-31",
-          employment_type: "Full Time"
+          employment_type: "Full Time",
         },
       },
       user: {
@@ -88,7 +90,7 @@ describe("addJobLeads test suite", () => {
             job_description: "full-stack testing.",
             creation_date: "2023-11-29",
             expiration_date: "2023-12-31",
-            employment_type: "Full Time"
+            employment_type: "Full Time",
           },
           {
             employer_name: "someone else",
@@ -100,7 +102,7 @@ describe("addJobLeads test suite", () => {
             job_description: "business testing.",
             creation_date: "2023-11-29",
             expiration_date: "2023-12-31",
-            employment_type: "Full Time"
+            employment_type: "Full Time",
           },
         ],
       },

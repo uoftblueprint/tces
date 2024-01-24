@@ -127,10 +127,10 @@ describe("updateJobLead test suite", () => {
         },
       };
 
-      updateJobLeadRequestHandler  = mock.reRequire(
+      updateJobLeadRequestHandler = mock.reRequire(
         "../../src/controllers/job_lead/updateJobLead",
       );
-      await updateJobLeadRequestHandler (mockReq, mockRes);
+      await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(403);
     });
   });

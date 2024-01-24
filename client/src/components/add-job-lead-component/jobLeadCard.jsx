@@ -11,14 +11,22 @@ import {
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 import { JobLeadContainer, H3 } from "./index.styles";
+import EmployerType from "../../prop-types/EmployerType";
+import JOB_TYPES from "../../utils/contants";
 
-function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
+function JobLeadContent({
+  jobLeadData,
+  handleInputChange,
+  isAddEmployer,
+  employers,
+}) {
   return (
     <>
       {jobLeadData.map((lead) => (
         <JobLeadContainer key={lead.id}>
-          <H3>Job Lead</H3>
+          <H3>Job Lead {lead.id + 1}</H3>
 
           {/* Employer Name Field */}
           {!isAddEmployer && (
@@ -33,10 +41,16 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "employer")
                 }
+                required
               >
-                <MenuItem value="name 1">Name 1</MenuItem>
-                <MenuItem value="name 2">Name 2</MenuItem>
-                <MenuItem value="name 3">Name 3</MenuItem>
+                {employers.map((employer) => (
+                  <MenuItem
+                    key={employer.employerID}
+                    value={employer.employerID}
+                  >
+                    {employer.name}
+                  </MenuItem>
+                ))}
               </Select>
               <FormHelperText>*Required</FormHelperText>
             </FormControl>
@@ -53,12 +67,13 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               handleInputChange(e.target.value, lead.id, "title")
             }
             helperText={isAddEmployer ? "" : "*Required"}
+            required
           />
 
           {/* Compensation Minimum Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`minCompensationLabel-${lead.id}`}>
-              Compensation Minimum
+              Compensation Minimum*
             </InputLabel>
             <OutlinedInput
               id={`minCompensation-${lead.id}`}
@@ -66,30 +81,38 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Minimum"
+              label="Compensation Minimum*"
+              inputProps={{ min: 0 }}
               value={lead.minCompensation}
-              onChange={(e) =>
-                handleInputChange(e.target.value, lead.id, "minCompensation")
-              }
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value >= 0)
+                  handleInputChange(value, lead.id, "minCompensation");
+              }}
+              required
             />
           </FormControl>
 
           {/* Compensation Maximum Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`maxCompensationLabel-${lead.id}`}>
-              Compensation Maximum
+              Compensation Maximum*
             </InputLabel>
             <OutlinedInput
               id={`maxCompensation-${lead.id}`}
               type="number"
+              inputProps={{ min: 0 }}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Maximum"
+              label="Compensation Maximum*"
               value={lead.maxCompensation}
-              onChange={(e) =>
-                handleInputChange(e.target.value, lead.id, "maxCompensation")
-              }
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value >= 0)
+                  handleInputChange(value, lead.id, "maxCompensation");
+              }}
+              required
             />
           </FormControl>
 
@@ -100,22 +123,29 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             id={`hoursPerWeek-${lead.id}`}
             type="number"
             label="Hours per week"
+            inputProps={{ min: 0 }}
             value={lead.hoursPerWeek}
-            onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "hoursPerWeek")
-            }
+            onChange={(e) => {
+              const { value } = e.target;
+              if (value >= 0) handleInputChange(value, lead.id, "hoursPerWeek");
+            }}
+            required
           />
 
           {/* National Occupation Code Field */}
           <TextField
             fullWidth
+            type="number"
+            inputProps={{ min: 0 }}
             sx={{ m: 1, width: "47%" }}
             id={`nationalOC-${lead.id}`}
             label="National Occupation Code"
             value={lead.nationalOC}
-            onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "nationalOC")
-            }
+            onChange={(e) => {
+              const { value } = e.target;
+              if (value >= 0) handleInputChange(value, lead.id, "nationalOC");
+            }}
+            required
           />
 
           {/* Job Description Field */}
@@ -130,6 +160,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "description")
             }
+            required
           />
 
           {/* Creation Date Picker */}
@@ -143,10 +174,12 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               onChange={(newValue) =>
                 handleInputChange(newValue, lead.id, "creationDate")
               }
+              minDate={dayjs()}
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText="" />
+                <TextField {...params} error={false} helperText="" required />
               )}
+              required
             />
           </LocalizationProvider>
 
@@ -158,13 +191,15 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               fullWidth
               sx={{ m: 1, width: "47%" }}
               value={lead.expirationDate}
+              minDate={dayjs()}
               onChange={(newValue) =>
                 handleInputChange(newValue, lead.id, "expirationDate")
               }
               renderInput={(params) => (
                 // eslint-disable-next-line
-                <TextField {...params} error={false} helperText="" />
+                <TextField {...params} error={false} helperText="" required />
               )}
+              required
             />
           </LocalizationProvider>
 
@@ -182,11 +217,13 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "employmentType")
               }
+              required
             >
-              <MenuItem value="full-time">Full Time</MenuItem>
-              <MenuItem value="part-time">Part Time</MenuItem>
-              <MenuItem value="casual">Casual</MenuItem>
-              <MenuItem value="on-call">On-Call</MenuItem>
+              {JOB_TYPES.map((jobType) => (
+                <MenuItem key={jobType} value={jobType}>
+                  {jobType}
+                </MenuItem>
+              ))}
             </Select>
             {!isAddEmployer && <FormHelperText>*Required</FormHelperText>}
           </FormControl>
@@ -198,11 +235,14 @@ function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
             id={`numPositions-${lead.id}`}
             label="Number of Positions"
             type="number"
+            inputProps={{ min: 0 }}
             value={lead.numPositions}
-            onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "numPositions")
-            }
+            onChange={(e) => {
+              const { value } = e.target;
+              if (value >= 0) handleInputChange(value, lead.id, "numPositions");
+            }}
             helperText={isAddEmployer ? "" : "*Required"}
+            required
           />
         </JobLeadContainer>
       ))}
@@ -215,6 +255,7 @@ JobLeadContent.propTypes = {
   jobLeadData: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
+  employers: PropTypes.arrayOf(EmployerType).isRequired,
 };
 
 JobLeadContent.defaultProps = {
