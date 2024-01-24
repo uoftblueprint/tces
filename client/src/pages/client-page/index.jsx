@@ -1,10 +1,4 @@
 import * as React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
 
 import Client from "../../components/client-page";
 // import { getUserByIdHelper } from "../../utils/users";
@@ -24,7 +18,6 @@ function ClientPage() {
   const monthsSinceClosure = Math.floor(
     timeDifference / (1000 * 60 * 60 * 24 * 30.44),
   );
-  console.log(monthsSinceClosure);
 
   const dummyOwner = {
     userID: 1,
@@ -67,23 +60,13 @@ function ClientPage() {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/signin" />} />
-        <Route
-          path="/client-page"
-          element={
-            <Client
-              clientInfo={clientInfo}
-              monthsSinceClosure={monthsSinceClosure}
-              onSaveChanges={handleSave}
-              owner={owner}
-              creator={creator}
-            />
-          }
-        />
-      </Routes>
-    </Router>
+    <Client
+      clientInfo={clientInfo}
+      monthsSinceClosure={monthsSinceClosure}
+      onSaveChanges={handleSave}
+      owner={owner}
+      creator={creator}
+    />
   );
 }
 

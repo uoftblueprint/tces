@@ -16,6 +16,7 @@ import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
+import ClientPage from "./pages/client-page";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -190,6 +191,12 @@ function App() {
                     />
                   </ManagedUsersLoader>
                 </AuthGuard>
+              }
+            />
+            <Route
+              path="client-page"
+              element={
+                <ClientPage />
               }
             />
           </Route>
