@@ -5,4 +5,16 @@ module.exports = {
   findAll: () => {
     return {};
   },
+  count: () => {
+    return {};
+  },
+  min: () => {
+    return {};
+  },
+  max: () => {
+    return {};
+  },
+  map: () => {
+    return {};
+  },
 };

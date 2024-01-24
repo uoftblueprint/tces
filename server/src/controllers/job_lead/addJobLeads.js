@@ -17,13 +17,16 @@ const addJobLeadsRequestHandler = async (req, res) => {
         message: "created job leads",
         data: { jobLeads },
       });
+    } else {
+      const jobLead = await createJobLead(req.body.job_lead, req.user.id);
+      return res
+        .status(200)
+        .json({
+          status: "success",
+          message: "created job lead",
+          data: { jobLead },
+        });
     }
-    const jobLead = await createJobLead(req.body.job_lead, req.user.id);
-    return res.status(200).json({
-      status: "success",
-      message: "created job lead",
-      data: { jobLead },
-    });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
