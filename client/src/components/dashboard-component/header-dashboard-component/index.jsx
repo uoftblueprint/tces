@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import {useNavigate} from "react-router-dom";
 import {
   Button,
   Typography,
@@ -13,6 +14,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import UserType from "../../../prop-types/UserType";
 
 function DashboardHeaderComponent({ currUser }) {
+  const navigate = useNavigate();
   const buttonGroupRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -21,8 +23,9 @@ function DashboardHeaderComponent({ currUser }) {
     setAnchorEl(buttonGroupRef.current);
   };
 
-  const handleClose = () => {
+  const handleClose = (route) => {
     setAnchorEl(null);
+    navigate(route);
   };
   return (
     <Box my={4}>
@@ -64,13 +67,13 @@ function DashboardHeaderComponent({ currUser }) {
                 },
               }}
             >
-              <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
+              <MenuItem onClick={() => handleClose("/employers")} sx={{ justifyContent: "center" }}>
                 Add New Employer
               </MenuItem>
-              <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
+              <MenuItem onClick={() => handleClose("/job-leads")} sx={{ justifyContent: "center" }}>
                 Add New Job Lead
               </MenuItem>
-              <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
+              <MenuItem onClick={() => handleClose("/clients")} sx={{ justifyContent: "center" }}>
                 Add New Client
               </MenuItem>
             </Menu>
