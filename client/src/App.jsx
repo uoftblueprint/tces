@@ -16,7 +16,9 @@ import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-import ClientEntry from "./components/timeline-create-entry-components/client-entry-component";
+import JobLeadEntryComponent from "./components/timeline-create-entry-components/joblead-entry-component";
+import ClientEntryComponent from "./components/timeline-create-entry-components/employer-entry-component";
+import EmployerEntryComponent from "./components/timeline-create-entry-components/client-entry-component";
 // mock data
 // import mockJobUpdates from "./mock-data/mockJobUpdates";
 
@@ -149,7 +151,9 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ClientEntry />
+                  <JobLeadEntryComponent />
+                  <EmployerEntryComponent />
+                  <ClientEntryComponent />
                 </AuthGuard>
               }
             />
