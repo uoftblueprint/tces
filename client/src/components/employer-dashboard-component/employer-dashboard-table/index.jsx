@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { Chip, Avatar } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import UserChipComponent from "../../shared/user-chip-component";
 
 function EmployerDashboardTable({
   slicedData,
@@ -9,11 +9,14 @@ function EmployerDashboardTable({
   handleChangePage,
   handleChangeRowsPerPage,
   count,
+  getUserById,
 }) {
-  console.log(slicedData)
+  console.log(slicedData);
   const formatDate = (date) => {
     const dateObj = new Date(date);
-    return `${dateObj.getMonth() + 1}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
+    return `${
+      dateObj.getMonth() + 1
+    }/${dateObj.getDate()}/${dateObj.getFullYear()}`;
   };
 
   const columns = [
@@ -31,22 +34,20 @@ function EmployerDashboardTable({
       field: "owner",
       headerName: "Owner",
       flex: 1,
-      renderCell: (params) => (
-        <Chip
-          avatar={<Avatar>{/* logic for the avatar */}</Avatar>}
-          label={params.value}
-        />
-      ),
+      renderCell: (params) => {
+        const owner = getUserById(params.row.owner);
+        return <UserChipComponent user={owner} />;
+      },
     },
   ];
 
   const rows = slicedData.map((item, index) => ({
     id: index,
-    employerName: item.employerName,
+    employerName: item.name,
     date: item.dateAdded,
     phoneNumber: item.phoneNumber,
     email: item.email,
-    primaryContact: item.primaryContact,
+    primaryContact: item.primaryContact ?? "Unknown",
     owner: item.owner,
   }));
 
@@ -76,6 +77,7 @@ EmployerDashboardTable.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   handleChangePage: PropTypes.func.isRequired,
+  getUserById: PropTypes.func.isRequired,
   handleChangeRowsPerPage: PropTypes.func.isRequired,
   count: PropTypes.number.isRequired,
 };

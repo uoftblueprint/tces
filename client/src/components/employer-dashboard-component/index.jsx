@@ -8,7 +8,7 @@ import EmployerDashboardFilter from "./employer-dashboard-filter";
 import EmployerDashboardTable from "./employer-dashboard-table";
 import EmployerType from "../../prop-types/EmployerType";
 
-function EmployerDashboardComponent({ employers }) {
+function EmployerDashboardComponent({ employers, getUserById}) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -48,6 +48,7 @@ function EmployerDashboardComponent({ employers }) {
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
             count={employers.length}
+            getUserById={getUserById}
           />
         </Box>
       </DashboardContainer>
@@ -59,7 +60,7 @@ EmployerDashboardComponent.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   employers: PropTypes.arrayOf(EmployerType).isRequired,
   // setEmployers: PropTypes.func.isRequired,
-  // getUserById: PropTypes.func.isRequired,
+  getUserById: PropTypes.func.isRequired,
 };
 
 export default EmployerDashboardComponent;
