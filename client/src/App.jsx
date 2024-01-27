@@ -1,7 +1,7 @@
 import "./App.css";
 // import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
-// import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
-import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
+import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
+// import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
 
 // NOTE: will revert this file after pull request approval (this is for demo purposes only)
 /* eslint-disable no-unused-vars */
@@ -50,10 +50,21 @@ function App() {
     employerContact: null,
   };
 
+  const jobEntry = {
+    id: 5,
+    dateAdded: "2024-01-26T09:00:00.000Z",
+    type: "job",
+    title: "Employee Name Added Job Lead",
+    body: "Receptionist123",
+    client: null,
+    jobLead: null,
+    employerContact: null,
+  }
+
   return (
     // <ClientEntryComponent entry={placementEntry} />
-    // <EmployerEntryComponent entry={placementEntry} />
-    <JobEntryComponent entry={noteEntry} />
+    <EmployerEntryComponent entry={jobEntry} />
+    // <JobEntryComponent entry={placementEntry} />
   );
 }
 

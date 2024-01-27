@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
-function JobLeadPlacementComponent({ ...props }) {
+function JobLeadPlacementComponent({ ...entry }) {
   return (
     <CardComponent
-      title={props.title}
-      dateAdded={props.dateAdded}
-      body={props.body}
+      title={entry.title}
+      dateAdded={entry.dateAdded}
+      body={entry.body}
       imageUrl="/img/timelineIconCheck.svg"
     />
   );

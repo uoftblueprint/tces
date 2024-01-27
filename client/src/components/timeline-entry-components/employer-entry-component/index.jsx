@@ -4,6 +4,7 @@ import EmployerContactComponent from "./contact-entry-component";
 import EmployerPlacementComponent from "./placement-entry-component";
 import EmployerNoteComponent from "./note-entry-component";
 
+/* eslint-disable react/jsx-props-no-spreading */
 function EmployerEntryComponent({ entry }) {
   const { type, ...otherProps } = entry;
 

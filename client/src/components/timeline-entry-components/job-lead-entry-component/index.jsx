@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import JobLeadPlacementComponent from "./placement-entry-component";
 import JobLeadNoteComponent from "./note-entry-component";
 
+/* eslint-disable react/jsx-props-no-spreading */
 function JobLeadEntryComponent({ entry }) {
   const { type, ...otherProps } = entry;
 

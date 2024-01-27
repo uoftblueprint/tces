@@ -4,6 +4,7 @@ import ClientContactComponent from "./contact-entry-component";
 import ClientPlacementComponent from "./placement-entry-component";
 import ClientNoteComponent from "./note-entry-component";
 
+/* eslint-disable react/jsx-props-no-spreading */
 function ClientEntryComponent({ entry }) {
   const { type, ...otherProps } = entry;
 
