@@ -20,6 +20,10 @@ describe("getOneClient test suite", () => {
     params: {
       client_id: 1,
     },
+    query: {
+      page: "2",
+      pageSize: "10",
+    },
   };
 
   var mockRes = {
@@ -46,8 +50,8 @@ describe("getOneClient test suite", () => {
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
-  it("Calls findAll", async () => {
-    const spy = vi.spyOn(mockGetManyClients, "findAll");
+  it("Calls findAndCountAll", async () => {
+    const spy = vi.spyOn(mockGetManyClients, "findAndCountAll");
 
     await getAllClientsRequestHandler(mockReq, mockRes);
     expect(spy).toHaveBeenCalledTimes(1);
