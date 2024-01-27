@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Card = styled.div`
   display: flex;
@@ -6,9 +6,9 @@ const Card = styled.div`
   width: 400px;
   height: fit-content;
   align-items: stretch; // Change from flex-start to stretch to fill the height
-  border: 1px solid #0000001F;
+  border: 1px solid #0000001f;
   padding: 16px;
-  background: #FFF;
+  background: #fff;
 `;
 
 const ImageContainer = styled.div`
@@ -27,7 +27,7 @@ const Image = styled.img`
 const Line = styled.div`
   width: 1px;
   height: 100%;
-  background-color: #0000001F;
+  background-color: #0000001f;
 `;
 
 const ContentContainer = styled.div`
@@ -52,7 +52,7 @@ const Title = styled.h4`
 `;
 
 const DateText = styled.div`
-  color: var(--Light-Text-Secondary, rgba(0, 0, 0, 0.60));
+  color: var(--Light-Text-Secondary, rgba(0, 0, 0, 0.6));
   font-size: 6px;
 `;
 
@@ -64,4 +64,14 @@ const Body = styled.p`
   margin-top: 8px;
 `;
 
-export {Card, ImageContainer, Image, Line, ContentContainer, Header, Title, DateText, Body};
+export {
+  Card,
+  ImageContainer,
+  Image,
+  Line,
+  ContentContainer,
+  Header,
+  Title,
+  DateText,
+  Body,
+};
