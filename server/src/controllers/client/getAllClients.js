@@ -1,7 +1,7 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
-const sequelize = require("sequelize");
-const Op = sequelize.Op;
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const getAllClientsRequestHandler = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ const getAllClientsRequestHandler = async (req, res) => {
     if (name) {
       query = {
         ...query,
-        [Op.and]: sequelize.literal(`LOWER(name) LIKE :name`),
+        [Op.and]: Sequelize.literal(`LOWER(name) LIKE :name`),
       };
       query_options = {
         replacements: { name: `%${name.toLowerCase()}%` },
@@ -37,8 +37,10 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (date_updated_from) {
+      const date = new Date(date_updated_from);
+      date.setHours(0, 0, 0, 0);
       query.date_updated = {
-        [Op.gte]: new Date(date_updated_from),
+        [Op.gte]: date,
       };
     }
 
@@ -52,8 +54,10 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (date_registered_from) {
+      const date = new Date(date_registered_from);
+      date.setHours(0, 0, 0, 0);
       query.date_added = {
-        [Op.gte]: new Date(date_registered_from),
+        [Op.gte]: date,
       };
     }
 
@@ -88,8 +92,10 @@ const getAllClientsRequestHandler = async (req, res) => {
       ...query_options,
       where: query,
     };
-    const page = Number(req.query.page);
-    const pageSize = Number(req.query.pageSize);
+    const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
+    const pageSize = req?.query?.pageSize
+      ? parseInt(req.query.pageSize, 10)
+      : null;
     if (page && pageSize) {
       query_options = {
         ...query_options,
@@ -100,10 +106,19 @@ const getAllClientsRequestHandler = async (req, res) => {
 
     const clients = await Client.findAndCountAll(query_options);
 
+    const uniqueOwners = await Client.findAll({
+      attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
+      raw: true,
+    });
+    const uniqueOwnersList = Array.isArray(uniqueOwners)
+      ? uniqueOwners.map((owner) => owner.owner)
+      : [];
+
     return res.status(200).json({
       status: "success",
       message: "All clients found successfully",
       data: clients,
+      uniqueOwners: uniqueOwnersList,
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);
