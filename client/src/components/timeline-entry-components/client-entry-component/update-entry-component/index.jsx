@@ -14,12 +14,10 @@ ClientUpdateComponent.propTypes = {
         type: PropTypes.oneOf(['update', 'contact', 'placement', 'note']).isRequired,
         title: PropTypes.string.isRequired,
         body: PropTypes.string.isRequired,
-        client: PropTypes.shape({
-            clientId: PropTypes.number,
-            name: PropTypes.string
-        }),
         // eslint-disable-next-line react/forbid-prop-types
-        jobLead: PropTypes.object, // not sure how to define this
+        client: PropTypes.object, // not sure how to define this
+        // eslint-disable-next-line react/forbid-prop-types
+        jobLead: PropTypes.object, // same as above
         // eslint-disable-next-line react/forbid-prop-types
         employerContact: PropTypes.object // same as above
     }).isRequired
