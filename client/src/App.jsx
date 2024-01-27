@@ -1,5 +1,6 @@
 import "./App.css";
-import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
+// import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
+import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
 
 // NOTE: will revert after pull request approval (this is for demo purposes only)
 function App() {
@@ -48,7 +49,8 @@ function App() {
   }
 
   return (
-    <ClientEntryComponent entry={placementEntry} />
+    // <ClientEntryComponent entry={placementEntry} />
+    <EmployerEntryComponent entry={placementEntry} />
   );
 }
 
