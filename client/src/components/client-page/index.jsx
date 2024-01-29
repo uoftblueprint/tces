@@ -425,9 +425,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="body1" align="left">
-                {clientInfo.status
-                    ? <Chip variant="filled" label={clientInfo.status} />
-                    : <Chip variant="filled" label="Undefined"/>}
+                <Chip variant="filled" label={clientInfo.status} />
                 </Typography>
               </Grid>
                 </>
@@ -449,7 +447,7 @@ export default function ClientPage({ clientInfo, monthsSinceClosure, onSaveChang
                   editedStatus && (
                     <Chip
                       label={editedStatus}
-                      onDelete={() => handleChipDelete('status')}
+                      
                       onMouseDown={(event) => {
                         event.stopPropagation();
                       }}
