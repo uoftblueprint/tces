@@ -36,6 +36,7 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import EmployerDashboard from "./pages/employer-dashboard";
+import AddEmployerPage from "./pages/add-employer";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -201,13 +202,11 @@ function App() {
                   loginUser={loginUser}
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EmployersLoader setEmployers={setEmployers}>
-                      <EmployerDashboard
-                        employers={employers}
-                        setEmployers={setEmployers}
-                        getUserById={getUserById}
-                      />
-                    </EmployersLoader>
+                    <EmployerDashboard
+                      employers={employers}
+                      setEmployers={setEmployers}
+                      getUserById={getUserById}
+                    />
                   </ManagedUsersLoader>
                 </AuthGuard>
               }
@@ -257,6 +256,20 @@ function App() {
                       currUser={currUser}
                       setLocalExitRoute={setLocalExitRoute}
                     />
+                  </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/employers/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                  redirectUrl={jobLeadRedirect}
+                >
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddEmployerPage />
                   </EmployersLoader>
                 </AuthGuard>
               }

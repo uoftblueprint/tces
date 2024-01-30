@@ -9,8 +9,19 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import PropTypes from "prop-types";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import * as React from "react";
+import JobLeadType from "../../../prop-types/JobLeadType";
 
-function EmployerDashboardFilter() {
+function EmployerDashboardFilter({ paginationModel, handleApplyFilter }) {
+  // setting and persisting initial state
+  const [noFilterMode, setNoFilterMode] = React.useState(true);
+  const [ignorePaginationChange, setIgnorePaginationChange] =
+    React.useState(false);
+
+  // local filter states
   const [employerName, setEmployerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [dateFrom, setDateFrom] = useState(null);
@@ -24,6 +35,58 @@ function EmployerDashboardFilter() {
   const handleDateChange = (setter) => (newValue) => {
     setter(newValue);
   };
+
+  const applyFilters = (isInvokedByPageChange = false) => {
+    const filterParams = {
+      employerName,
+      phoneNumber,
+      dateFrom,
+      dateTo,
+      postalCode,
+    };
+    setIgnorePaginationChange(true);
+    let customPageModel = null;
+    if (!isInvokedByPageChange) {
+      customPageModel = {
+        pageSize: 10,
+        page: 0,
+      };
+    }
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(filterParams, customPageModel);
+  };
+
+  const onFilterReset = () => {
+    setNoFilterMode(true);
+    setEmployerName("");
+    setPhoneNumber("");
+    setDateFrom(null);
+    setDateTo(null);
+    setPostalCode("");
+    setIgnorePaginationChange(true);
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(null, {
+      pageSize: 10,
+      page: 0,
+    });
+  };
+
+  const onApplyFilterClick = () => {
+    setNoFilterMode(false);
+    applyFilters();
+  };
+
+  React.useEffect(() => {
+    if (!ignorePaginationChange) {
+      if (noFilterMode) {
+        handleApplyFilter(null);
+      } else {
+        applyFilters(true);
+      }
+    } else {
+      setIgnorePaginationChange(false);
+    }
+  }, [paginationModel]);
 
   return (
     <Card sx={{ width: 240, height: "fit-content", marginLeft: 2 }}>
@@ -123,8 +186,30 @@ function EmployerDashboardFilter() {
           }}
         />
       </CardContent>
+      <CardActions sx={{ justifyContent: "center", p: 2 }}>
+        <Button
+          size="small"
+          onClick={onFilterReset}
+          color="warning"
+          variant="outlined"
+          sx={{ mr: 1 }}
+        >
+          Reset
+        </Button>
+        <Button size="small" onClick={onApplyFilterClick} variant="contained">
+          Apply
+        </Button>
+      </CardActions>
     </Card>
   );
 }
+
+EmployerDashboardFilter.propTypes = {
+  managedEmployers: PropTypes.arrayOf(JobLeadType).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
+  handleApplyFilter: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+};
 
 export default EmployerDashboardFilter;

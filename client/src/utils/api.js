@@ -121,6 +121,21 @@ const getAllEmployers = async () => {
   return response;
 };
 
+const getFilteredEmployers = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 const createJobLeads = async (jobLeads, ownerID, creatorID) => {
   const formattedJobLeads = jobLeads.map((jobLead) => {
     return {
@@ -217,6 +232,7 @@ export {
   modifyUser,
   deleteUser,
   getAllEmployers,
+  getFilteredEmployers,
   createJobLeads,
   getFilteredJobLeads,
   modifyJobLead,

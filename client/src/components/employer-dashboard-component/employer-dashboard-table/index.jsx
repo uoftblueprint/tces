@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import UserChipComponent from "../../shared/user-chip-component";
+import UserType from "../../../prop-types/UserType";
 
 function EmployerDashboardTable({
-  slicedData,
-  page,
+  managedEmployers,
+  paginationModel,
   rowsPerPage,
-  handleChangePage,
-  handleChangeRowsPerPage,
+  setPaginationModel,
   count,
   getUserById,
+  isLoading,
 }) {
   const formatDate = (date) => {
     const dateObj = new Date(date);
@@ -40,7 +41,7 @@ function EmployerDashboardTable({
     },
   ];
 
-  const rows = slicedData.map((item, index) => ({
+  const rows = managedEmployers.map((item, index) => ({
     id: index,
     employerName: item.name,
     date: item.dateAdded,
@@ -52,33 +53,43 @@ function EmployerDashboardTable({
 
   return (
     <DataGrid
-      rows={rows}
-      columns={columns}
-      pageSize={rowsPerPage}
-      page={page - 1}
-      onPageSizeChange={(newPageSize) =>
-        handleChangeRowsPerPage({ target: { value: newPageSize } })
-      }
-      onPageChange={(newPage) => handleChangePage(null, newPage)}
-      rowCount={count}
-      pagination
-      paginationMode="server"
       sx={{
+        minHeight: "540px",
+        "& .actionButton": {
+          display: "none",
+        },
+        [`& .${gridClasses.row}:hover`]: {
+          ".actionButton": {
+            display: "block",
+          },
+        },
         background: "white",
       }}
+      rows={rows}
+      columns={columns}
+      loading={isLoading}
+      pageSize={rowsPerPage}
+      pageSizeOptions={[10]}
+      paginationModel={paginationModel}
+      onPaginationModelChange={setPaginationModel}
+      rowCount={count}
+      disableColumnSelector
+      disableColumnMenu
+      paginationMode="server"
     />
   );
 }
 
 EmployerDashboardTable.propTypes = {
   // eslint-disable-next-line
-  slicedData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  page: PropTypes.number.isRequired,
+  managedEmployers: PropTypes.arrayOf(UserType).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  handleChangePage: PropTypes.func.isRequired,
   getUserById: PropTypes.func.isRequired,
-  handleChangeRowsPerPage: PropTypes.func.isRequired,
+  setPaginationModel: PropTypes.func.isRequired,
   count: PropTypes.number.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default EmployerDashboardTable;
