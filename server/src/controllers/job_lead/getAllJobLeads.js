@@ -12,11 +12,10 @@ function isValidNOCQuery(query) {
 
 const getAllJobLeadsRequestHandler = async (req, res) => {
   try {
-    const page = req?.query?.page ? parseInt(req.query.page, 10) : 0;
+    const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
     const pageSize = req?.query?.pageSize
       ? parseInt(req.query.pageSize, 10)
-      : 10;
-    const offsetSize = page * pageSize;
+      : null;
 
     const {
       searchTitleQuery,
@@ -125,11 +124,15 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       };
     }
 
-    const jobLeads = await JobLead.findAll({
+    const searchConfig = {
       where: query,
-      limit: pageSize,
-      offset: offsetSize,
-    });
+    };
+    if (page !== null && pageSize !== null) {
+      searchConfig.limit = pageSize;
+      searchConfig.offset = pageSize * page;
+    }
+
+    const jobLeads = await JobLead.findAll(searchConfig);
 
     const maxCompensationSoFar = await JobLead.max("compensation_max");
     const minCompensationSoFar = await JobLead.min("compensation_min");
