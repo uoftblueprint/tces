@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Typography,
@@ -16,16 +16,17 @@ import UserType from "../../../prop-types/UserType";
 function DashboardHeaderComponent({ currUser }) {
   const navigate = useNavigate();
   const buttonGroupRef = useRef(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = () => {
-    setAnchorEl(buttonGroupRef.current);
+    setIsMenuOpen(true);
   };
 
   const handleClose = (route) => {
-    setAnchorEl(null);
-    navigate(route);
+    setIsMenuOpen(false);
+    if (route) {
+      navigate(route);
+    }
   };
   return (
     <Box my={4}>
@@ -47,15 +48,17 @@ function DashboardHeaderComponent({ currUser }) {
               aria-label="split button"
               ref={buttonGroupRef}
             >
-              <Button startIcon={<AddIcon />}>Add New Entry</Button>
+              <Button startIcon={<AddIcon />} onClick={handleClick}>
+                Add New Entry
+              </Button>
               <Button onClick={handleClick}>
                 <ArrowDropDownIcon />
               </Button>
             </ButtonGroup>
             <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
+              anchorEl={buttonGroupRef.current}
+              open={isMenuOpen}
+              onClose={() => handleClose(undefined)}
               MenuListProps={{
                 "aria-labelledby": "split-button",
               }}
@@ -67,13 +70,22 @@ function DashboardHeaderComponent({ currUser }) {
                 },
               }}
             >
-              <MenuItem onClick={() => handleClose("/employers")} sx={{ justifyContent: "center" }}>
+              <MenuItem
+                onClick={() => handleClose("/employers/add")}
+                sx={{ justifyContent: "center" }}
+              >
                 Add New Employer
               </MenuItem>
-              <MenuItem onClick={() => handleClose("/job-leads")} sx={{ justifyContent: "center" }}>
+              <MenuItem
+                onClick={() => handleClose("/job-leads/add")}
+                sx={{ justifyContent: "center" }}
+              >
                 Add New Job Lead
               </MenuItem>
-              <MenuItem onClick={() => handleClose("/clients")} sx={{ justifyContent: "center" }}>
+              <MenuItem
+                onClick={() => handleClose("/clients/add")}
+                sx={{ justifyContent: "center" }}
+              >
                 Add New Client
               </MenuItem>
             </Menu>
