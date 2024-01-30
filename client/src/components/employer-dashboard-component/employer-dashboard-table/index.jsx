@@ -48,7 +48,7 @@ function EmployerDashboardTable({
     phoneNumber: item.phoneNumber,
     email: item.email,
     primaryContact: item.primaryContact ?? "Unknown",
-    owner: item.owner,
+    owner: item.ownerID,
   }));
 
   return (
