@@ -8,7 +8,7 @@ import EmployerDashboardFilter from "./employer-dashboard-filter";
 import EmployerDashboardTable from "./employer-dashboard-table";
 import EmployerType from "../../prop-types/EmployerType";
 
-function EmployerDashboardComponent({ employers, getUserById}) {
+function EmployerDashboardComponent({ employers, getUserById }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 

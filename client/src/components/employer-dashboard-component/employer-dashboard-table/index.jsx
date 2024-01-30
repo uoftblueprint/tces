@@ -11,7 +11,6 @@ function EmployerDashboardTable({
   count,
   getUserById,
 }) {
-  console.log(slicedData);
   const formatDate = (date) => {
     const dateObj = new Date(date);
     return `${
