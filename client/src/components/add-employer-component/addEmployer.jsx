@@ -4,7 +4,7 @@ import AddEmployerInfo from "./employer-contact-component";
 import AddEmployerJobLead from "./employer-job-lead-component";
 
 function AddEmployer() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(3);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(true);
   const initialState = {
     companyInfo: [

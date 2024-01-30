@@ -248,7 +248,6 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddJobLeadPage
@@ -266,7 +265,6 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddEmployerPage />
