@@ -2,18 +2,18 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function ClientUpdateComponent({ ...entry }) {
-  // const getUpdatedField = () => {
-  //   switch (entry.updatedField) {
-  //     case 'name':
-  //       return entry.client.name;
-  //     case 'email':
-  //       return entry.client.email;
-  //     case 'phone_number':
-  //       return entry.client.phone_number;
-  //     case 'status':
-  //       // not sure what the statuses map to
-  //   }
-  // };
+  const getUpdatedField = () => {
+    switch (entry.updatedField) {
+      case 'name':
+        return entry.client.name;
+      case 'email':
+        return entry.client.email;
+      case 'phone_number':
+        return entry.client.phone_number;
+      case 'status':
+        // not sure what the statuses map to
+    }
+  };
 
   const linkStyle = {
     textDecoration: 'none',
