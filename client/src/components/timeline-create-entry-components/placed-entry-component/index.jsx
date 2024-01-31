@@ -19,16 +19,6 @@ function PlacedEntryComponent() {
         setNotes(e.target.value)
     }
 
-    // eslint-disable-next-line no-unused-vars
-    const data = {
-        date_added: new Date().toISOString(),
-        type: 'placement',
-        title: 'Placed Job Seeker',
-        body: notes,
-        client: clientValue, 
-        job_lead: jobLeadValue, 
-      }
-
     return (
         <Card sx={{ height: 791, width: 391 }}>
             <CardContent>
