@@ -23,7 +23,6 @@ import {
 import EmployerInfoComponent from "./employer-info-component";
 import EmployerInformationCard from "./employer-information-card";
 import ContactsInformationCard from "./contacts-information-card";
-import EmployerJobLeadsCard from "./employer-job-leads-card";
 
 function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
   const navigate = useNavigate();
@@ -124,8 +123,6 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
                 </CardContent>
               </Card>
             </Box>
-
-            <EmployerJobLeadsCard />
           </EmployerContainer>
         </MainContainer>
       </div>
