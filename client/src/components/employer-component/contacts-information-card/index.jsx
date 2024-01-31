@@ -293,35 +293,40 @@ function ContactsInformationCard({
               setRightSide={setAlternativePhoneNumber}
               required={false}
             />
-            <Grid
-              container
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <div className="contactPageNumber" style={{ padding: 8 }}>
-                {contactPage} of {contacts.length}
-              </div>
-              <IconButton onClick={leftButtonClick}>
-                <ChevronLeftIcon
-                  sx={{
-                    color: "gray",
-                    cursor: "pointer",
-                    align: "center",
-                  }}
-                />
-              </IconButton>
-              <IconButton onClick={rightButtonClick}>
-                <ChevronRightIcon
-                  sx={{
-                    color: "gray",
-                    cursor: "pointer",
-                    align: "center",
-                  }}
-                />
-              </IconButton>
-            </Grid>
+            {!editable && !addable ? (
+              <Grid
+                container
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <div className="contactPageNumber" style={{ padding: 8 }}>
+                  {contactPage} of {contacts.length}
+                </div>
+                <IconButton onClick={leftButtonClick}>
+                  <ChevronLeftIcon
+                    sx={{
+                      color: "gray",
+                      cursor: "pointer",
+                      align: "center",
+                    }}
+                  />
+                </IconButton>
+                <IconButton onClick={rightButtonClick}>
+                  <ChevronRightIcon
+                    sx={{
+                      color: "gray",
+                      cursor: "pointer",
+                      align: "center",
+                    }}
+                  />
+                </IconButton>
+              </Grid>
+            ) : (
+              // eslint-disable-next-line react/jsx-no-useless-fragment
+              <></>
+            )}
 
             {(editable || addable) && (
               <Grid container justifyContent="flex-end">

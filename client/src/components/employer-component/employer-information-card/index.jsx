@@ -34,10 +34,15 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
 
   const toggleEditable = () => {
+    if (editable) {
+      setConfirmCancelEditDialog(true);
+      return;
+    }
     setEditable(!editable);
   };
 
@@ -64,6 +69,22 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const cancelEdit = () => {
     setConfirmEditDialog(false);
+  };
+
+  const cancelEditUnsaved = () => {
+    setConfirmCancelEditDialog(false);
+  };
+
+  const handleConfirmCancel = () => {
+    setConfirmCancelEditDialog(false);
+    setEditable(false);
+    setEmployerName(employer.name);
+    setEmployerPhoneNumber(employer.phone_number);
+    setEmployerFax(employer.fax);
+    setEmployerEmail(employer.email);
+    setEmployerWebsite(employer.website);
+    setEmployerNAICSCode(employer.naics_code);
+    setEmployerAddress(employer.address);
   };
 
   const handleSubmit = async (event) => {
@@ -209,13 +230,22 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           )}
 
           {editable ? (
-            <ConfirmDialog
-              open={confirmEditDialog}
-              title="Confirm Edit"
-              message="Are you sure you want to save these changes?"
-              onConfirm={handleSubmit}
-              onCancel={cancelEdit}
-            />
+            <>
+              <ConfirmDialog
+                open={confirmCancelEditDialog}
+                title="Confirm Cancel Edit"
+                message="Are you sure you want to stop editing? Unsaved changes will be lost."
+                onConfirm={handleConfirmCancel}
+                onCancel={cancelEditUnsaved}
+              />
+              <ConfirmDialog
+                open={confirmEditDialog}
+                title="Confirm Edit"
+                message="Are you sure you want to save these changes?"
+                onConfirm={handleSubmit}
+                onCancel={cancelEdit}
+              />
+            </>
           ) : (
             // eslint-disable-next-line react/jsx-no-useless-fragment
             <></>
