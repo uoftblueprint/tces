@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ClientDashboardComponent from "../../components/client-dashboard-component/client-dashboard-component";
+import ClientDashboardComponent from "../../components/client-dashboard-component";
 
 const mockRows = [
   {

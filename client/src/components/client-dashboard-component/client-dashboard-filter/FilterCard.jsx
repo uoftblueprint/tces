@@ -1,11 +1,8 @@
 import { useState } from "react";
 import {
-  Box,
   TextField,
   Checkbox,
   FormControlLabel,
-  Radio,
-  RadioGroup,
   Button,
   MenuItem,
   Select,
@@ -15,30 +12,18 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 function FilterCard() {
-
-  const dateNow = new Date(); // Creating a new date object with the current date and time
-  const year = dateNow.getFullYear(); // Getting current year from the created Date object
-  const monthWithOffset = dateNow.getUTCMonth() + 1; // January is 0 by default in JS. Offsetting +1 to fix date for calendar.
-  const month = // Setting current Month number from current Date object
-    monthWithOffset.toString().length < 2 // Checking if month is < 10 and pre-prending 0 to adjust for date input.
-      ? `0${monthWithOffset}`
-      : monthWithOffset;
-  const date =
-    dateNow.getUTCDate().toString().length < 2 // Checking if date is < 10 and pre-prending 0 if not to adjust for date input.
-      ? `0${dateNow.getUTCDate()}`
-      : dateNow.getUTCDate();
-  
-  const materialDateInput = `${year}-${month}-${date}`;
 
   const [values, setValues] = useState({
     name: "",
     phoneNumber: "",
-    dateUpdatedFrom: materialDateInput,
-    dateUpdatedUntil: materialDateInput,
-    dateRegisteredFrom: materialDateInput,
-    dateRegisteredUntil: materialDateInput,
+    dateUpdatedFrom: null,
+    dateUpdatedUntil: null,
+    dateRegisteredFrom: null,
+    dateRegisteredUntil: null,
     owner: "All",
     status: {
       active: false,
@@ -50,6 +35,10 @@ function FilterCard() {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleDateChange = (prop) => (newValue) => {
+    setValues({ ...values, [prop]: newValue });
   };
 
   const handleStatusChange = (prop) => (event) => {
@@ -110,53 +99,48 @@ function FilterCard() {
             ),
           }}
         />
-        <Typography variant="body1" sx={{ textAlign: "left" }}>
+        <Typography variant="body1" sx={{ textAlign: "left", mb: 2 }}>
           Date Updated
         </Typography>
-        <TextField
-          label="From"
-          type="date"
-          value={values.dateUpdatedFrom || ""}
-          onChange={handleChange("dateUpdatedFrom")}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          label="Until"
-          type="date"
-          value={values.dateUpdatedUntil || ""}
-          onChange={handleChange("dateUpdatedUntil")}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <Typography variant="body1" sx={{ textAlign: "left" }}>
-          Date Registered
-        </Typography>
-        <TextField
-          label="From"
-          type="date"
-          value={values.dateRegisteredFrom || ""}
-          onChange={handleChange("dateRegisteredFrom")}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          label="Until"
-          type="date"
-          value={values.dateRegisteredUntil || ""}
-          onChange={handleChange("dateRegisteredUntil")}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <Typography variant="body1" sx={{ textAlign: "left" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="From"
+            value={values.dateUpdatedFrom}
+            onChange={handleDateChange("dateUpdatedFrom")}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ mb: 2 }}
+          />
+          <DatePicker
+            label="To"
+            value={values.dateUpdatedUntil}
+            onChange={handleDateChange("dateUpdatedUntil")}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ mb: 2 }}
+          />
+        
+          <Typography variant="body1" sx={{ textAlign: "left", mb: 2 }}>
+            Date Registered
+          </Typography>
+          <DatePicker
+            label="From"
+            value={values.dateRegisteredFrom}
+            onChange={handleDateChange("dateRegisteredFrom")}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ mb: 2 }}
+          />
+          <DatePicker
+            label="To"
+            value={values.dateRegisteredUntil}
+            onChange={handleDateChange("dateRegisteredUntil")}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} />}
+            sx={{ mb: 2 }}
+          />
+        </LocalizationProvider>
+        <Typography variant="body1" sx={{ textAlign: "left", mb: 2 }}>
           Owner
         </Typography>
         <Select
@@ -168,7 +152,7 @@ function FilterCard() {
         >
           <MenuItem value="All">All</MenuItem>
         </Select>
-        <Typography variant="body1" sx={{ textAlign: "left" }}>
+        <Typography variant="body1" sx={{ textAlign: "left", mt: 2 }}>
           Status
         </Typography>
         <FormControlLabel
@@ -198,23 +182,7 @@ function FilterCard() {
           }
           label="Closed"
         />
-        {values.status.closed && (
-          <Box sx={{ pl: 3 }}>
-            <RadioGroup
-              aria-label="action-status"
-              name="actionStatus"
-              value={values.actionStatus}
-              onChange={handleChange("actionStatus")}
-            >
-              <FormControlLabel value="all" control={<Radio />} label="All" />
-              <FormControlLabel
-                value="actionNeeded"
-                control={<Radio />}
-                label="Action Needed"
-              />
-            </RadioGroup>
-          </Box>
-        )}
+        <Button variant="contained" sx={{ mt: 2 }}>APPLY FLILTER</Button>
         <Button onClick={handleReset} sx={{ mt: 2, alignSelf: "flex-start" }}>
           RESET FILTERS
         </Button>

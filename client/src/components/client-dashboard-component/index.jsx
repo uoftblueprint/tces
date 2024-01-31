@@ -3,8 +3,8 @@ import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
-import FilterCard from "./FilterCard";
-import ClientTable from "./ClientTable";
+import FilterCard from "./client-dashboard-filter/FilterCard";
+import ClientTable from "./client-dashboard-table/ClientTable";
 
 function ClientDashboardComponent({ clientData }) {
   const [paginationModel, setPaginationModel] = useState({
@@ -21,7 +21,7 @@ function ClientDashboardComponent({ clientData }) {
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
-      <Box sx={{ width: "25%", minWidth: "250px", margin: "28px" }}>
+      <Box sx={{ width: "25%", minWidth: "250px", margin: "28px", mt: 18 }}>
         <FilterCard />
       </Box>
 
