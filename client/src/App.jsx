@@ -1,6 +1,6 @@
 import "./App.css";
-// import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
-import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
+import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
+// import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
 // import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
 
 // NOTE: will revert this file after pull request approval (this is for demo purposes only)
@@ -63,8 +63,8 @@ function App() {
   };
 
   return (
-    // <ClientEntryComponent entry={placementEntry} />
-    <EmployerEntryComponent entry={placementEntry} />
+    <ClientEntryComponent entry={updateEntry}/>
+    // <EmployerEntryComponent entry={placementEntry} />
     // <JobEntryComponent entry={placementEntry} />
   );
 }

@@ -13,9 +13,9 @@ function EmployerPlacementComponent({ ...entry }) {
       dateAdded={entry.dateAdded}
       body={
         <span>
-          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.client.name}</a>
+          <a href="#" style={linkStyle}>{entry.client.name}</a>
           {' was placed in '}
-          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.jobLead.name}</a>
+          <a href="#" style={linkStyle}>{entry.jobLead.name}</a>
         </span>
       }
       imageUrl="/img/timelineIconCheck.svg"

@@ -2,24 +2,29 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function ClientUpdateComponent({ ...entry }) {
-  const getUpdatedField = () => {
-    switch (entry.updatedField) {
-      case 'name':
-        return entry.client.name;
-      case 'email':
-        return entry.client.email;
-      case 'phone_number':
-        return entry.client.phone_number;
-      case 'status':
-        // not sure what the statuses map to
-    }
+  // const getUpdatedField = () => {
+  //   switch (entry.updatedField) {
+  //     case 'name':
+  //       return entry.client.name;
+  //     case 'email':
+  //       return entry.client.email;
+  //     case 'phone_number':
+  //       return entry.client.phone_number;
+  //     case 'status':
+  //       // not sure what the statuses map to
+  //   }
+  // };
+
+  const linkStyle = {
+    textDecoration: 'none',
+    color: '#3568E5'
   };
 
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={<a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{getUpdatedField()}</a>}
+      body={<a href="#" style={linkStyle}>{getUpdatedField()}</a>}
       imageUrl="/img/timelineIconCheck.svg"
     />
   );

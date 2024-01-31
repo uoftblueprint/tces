@@ -15,7 +15,7 @@ function EmployerJobComponent({ ...entry }) {
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={<a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.jobLead.title}</a>}
+      body={<a href="#" style={linkStyle}>{entry.jobLead.title}</a>}
       imageUrl={imageUrl}
     />
   );
