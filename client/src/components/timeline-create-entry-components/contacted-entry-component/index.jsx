@@ -1,59 +1,46 @@
 import { useState } from "react";
 import { Card, Box, Avatar, CardContent, TextField, Button, Typography, Divider, Select, MenuItem } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+// import CloseIcon from '@mui/icons-material/Close';
 
-function ClientEntryComponent() {
-    const [clientValue, setClientValue] = useState('Client');
-    const [jobLeadValue, setjobLeadValue] = useState('JobLead');
+function ContactedEntryComponent() {
+    const [selectedValue, setSelectedValue] = useState('Employer');
     const [notes, setNotes] = useState("")
 
-    const handleClientChange = (e) => {
-      setClientValue(e.target.value);
+    const handleValueChange = (e) => {
+      setSelectedValue(e.target.value);
     };
-
-    const handleJobLeadChange = (e) => {
-        setjobLeadValue(e.target.value)
-    }
 
     const handleNoteChange = (e) => {
         setNotes(e.target.value)
     }
+
     return (
         <Card sx={{ height: 791, width: 391 }}>
             <CardContent>
                 <Typography variant="h5">Activity Timeline</Typography>
                 <Box sx={{ display: "flex", marginTop: "12px" }}>
                     <Box>
-                        <Avatar sx={{ bgcolor: "rgba(53, 104, 229, 1)", width: "30px", height: "30px" }}>
-                            <CheckCircleIcon sx={{ width: "18px", height: "18px" }}/>
+                        <Avatar sx={{ bgcolor: "rgba(229, 53, 104, 1)", width: "30px", height: "30px" }}>
+                            <PhoneIphoneIcon sx={{ width: "18px", height: "18px" }}/>
                         </Avatar>
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "16px" }}>
-                <Typography>Placed Job Seeker</Typography>
+                <Typography>Contacted Employer</Typography>
                     </Box>
                 </Box>
             </CardContent>
             <Divider />
             <CardContent>
-            <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>Select the Client</Typography>
+            <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>Select the Employer Contact</Typography>
                 <Select
                  fullWidth
-                 value={clientValue}
-                 onChange={handleClientChange}
+                 value={selectedValue}
+                 onChange={handleValueChange}
                  label="Choose an option"
                  sx={{ borderRadius: '10px' }} 
                 >
-                <MenuItem value="Client">Client</MenuItem>
-                </Select>
-                <Typography sx={{ color: "rgba(117, 117, 117, 1)", marginTop: 1 }}>Select the Job Lead</Typography>
-                <Select
-                 fullWidth
-                 value={jobLeadValue}
-                 onChange={handleJobLeadChange}
-                 label="Choose an option"
-                 sx={{ borderRadius: '10px' }} 
-                >
-                <MenuItem value="JobLead">Job Lead</MenuItem>
+                <MenuItem value="Employer">Employer</MenuItem>
                 </Select>
                 <TextField
                     fullWidth
@@ -61,7 +48,7 @@ function ClientEntryComponent() {
                     margin="normal"
                     multiline
                     variant="outlined"
-                    rows={16}
+                    rows={20}
                     value={notes}
                     onChange={handleNoteChange}
                 />
@@ -74,4 +61,4 @@ function ClientEntryComponent() {
     )
 }
 
-export default ClientEntryComponent;
+export default ContactedEntryComponent;

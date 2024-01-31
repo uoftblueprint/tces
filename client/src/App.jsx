@@ -9,18 +9,15 @@ import {
 
 // page components
 import * as React from "react";
-// import DashboardPage from "./pages/dashboard";
+import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-import JobLeadEntryComponent from "./components/timeline-create-entry-components/joblead-entry-component";
-import ClientEntryComponent from "./components/timeline-create-entry-components/employer-entry-component";
-import EmployerEntryComponent from "./components/timeline-create-entry-components/client-entry-component";
 // mock data
-// import mockJobUpdates from "./mock-data/mockJobUpdates";
+import mockJobUpdates from "./mock-data/mockJobUpdates";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -56,7 +53,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Job Updates State
-  // const [jobUpdates] = useState(mockJobUpdates);
+  const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState([]);
@@ -151,9 +148,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <JobLeadEntryComponent />
-                  <EmployerEntryComponent />
-                  <ClientEntryComponent />
+                  <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
                 </AuthGuard>
               }
             />
