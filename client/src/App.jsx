@@ -243,7 +243,7 @@ function App() {
               }
             />
             <Route
-              path="/employer/:employerID"
+              path="/employers/:employerID"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}

@@ -11,6 +11,7 @@ function BoxRowComponent({
   editable,
   setRightSide,
   rightSideWrapper,
+  required,
 }) {
   return (
     <>
@@ -35,7 +36,7 @@ function BoxRowComponent({
               value={rightSide}
               onChange={(event) => setRightSide(event.target.value)}
               disabled={!editable}
-              required
+              required={required}
             />
           ) : (
             <div
@@ -74,6 +75,7 @@ BoxRowComponent.propTypes = {
   editable: PropTypes.bool.isRequired,
   setRightSide: PropTypes.func,
   rightSideWrapper: PropTypes.func,
+  required: PropTypes.bool,
 };
 
 BoxRowComponent.defaultProps = {
@@ -83,6 +85,7 @@ BoxRowComponent.defaultProps = {
   rightSideWrapper: (rightSide) => {
     return rightSide;
   },
+  required: true,
 };
 
 export default BoxRowComponent;
