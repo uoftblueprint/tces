@@ -1,5 +1,5 @@
 import "./App.css";
-import Timeline from "./components/timeline-window-component";
+import Timeline from "./components/timeline-window-component/clientWindow";
 
 function App () {
   
