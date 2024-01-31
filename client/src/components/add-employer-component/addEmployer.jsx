@@ -66,7 +66,7 @@ function AddEmployer() {
   const onSubmit = () => {
     const createEmployer = async () => {
       const employerBody = employerData.companyInfo
-      
+
 
     }
     createEmployer()
