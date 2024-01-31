@@ -35,6 +35,7 @@ import EditJobLead from "./pages/edit-job-lead";
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
+import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -208,18 +209,23 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <EditJobLead
-                      managedUsers={managedUsers}
-                      managedJobLeads={managedJobLeads}
-                      getEmployerById={getEmployerById}
-                      getUserById={getUserById}
-                      setLocalExitRoute={setLocalExitRoute}
-                      setSnackBarMessage={setSnackBarMessage}
-                    />
-                  </EmployersLoader>
+                  <ManagedJobLeadsLoader
+                    setManagedJobLeads={setManagedJobLeads}
+                  >
+                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                      <EmployersLoader setEmployers={setEmployers}>
+                        <EditJobLead
+                          managedUsers={managedUsers}
+                          managedJobLeads={managedJobLeads}
+                          getEmployerById={getEmployerById}
+                          getUserById={getUserById}
+                          setLocalExitRoute={setLocalExitRoute}
+                          setSnackBarMessage={setSnackBarMessage}
+                        />
+                      </EmployersLoader>
+                    </ManagedUsersLoader>
+                  </ManagedJobLeadsLoader>
                 </AuthGuard>
               }
             />
@@ -281,7 +287,5 @@ function App() {
     </Router>
   );
 }
-
-
 
 export default App;

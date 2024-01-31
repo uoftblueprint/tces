@@ -90,7 +90,7 @@ describe("addJobLeads test suite", () => {
             job_description: "full-stack testing.",
             creation_date: "2023-11-29",
             expiration_date: "2023-12-31",
-            employment_type: "Full Time"
+            employment_type: "Full Time",
           },
           {
             employer_name: "someone else",
@@ -102,7 +102,7 @@ describe("addJobLeads test suite", () => {
             job_description: "business testing.",
             creation_date: "2023-11-29",
             expiration_date: "2023-12-31",
-            employment_type: "Full Time"
+            employment_type: "Full Time",
           },
         ],
       },

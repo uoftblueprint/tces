@@ -7,11 +7,9 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 
 export default function UserProfile() {
-    
-    const handleBackClick = () => {
-        console.log('You clicked me');
-    };
-
+  const handleBackClick = () => {
+    console.log("You clicked me");
+  };
 
   return (
     <div style={{ marginTop: "40px" }}>
@@ -26,11 +24,11 @@ export default function UserProfile() {
             marginBottom={1}
             variant="h4"
             align="left"
-            style={{ 
-            fontSize: "48px",
-            fontFamily: "Arial",
-            fontWeight: 545,
-            lineHeight: "56px",
+            style={{
+              fontSize: "48px",
+              fontFamily: "Arial",
+              fontWeight: 545,
+              lineHeight: "56px",
             }}
           >
             Your Profile
