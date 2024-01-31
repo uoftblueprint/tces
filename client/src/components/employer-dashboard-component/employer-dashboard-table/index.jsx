@@ -8,9 +8,9 @@ function EmployerDashboardTable({
   paginationModel,
   rowsPerPage,
   setPaginationModel,
-  count,
   getUserById,
   isLoading,
+  totalRowCount,
 }) {
   const formatDate = (date) => {
     const dateObj = new Date(date);
@@ -65,6 +65,7 @@ function EmployerDashboardTable({
         },
         background: "white",
       }}
+      rowCount={totalRowCount}
       rows={rows}
       columns={columns}
       loading={isLoading}
@@ -72,7 +73,6 @@ function EmployerDashboardTable({
       pageSizeOptions={[10]}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}
-      rowCount={count}
       disableColumnSelector
       disableColumnMenu
       paginationMode="server"
@@ -88,8 +88,8 @@ EmployerDashboardTable.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
   getUserById: PropTypes.func.isRequired,
   setPaginationModel: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  totalRowCount: PropTypes.number.isRequired,
 };
 
 export default EmployerDashboardTable;

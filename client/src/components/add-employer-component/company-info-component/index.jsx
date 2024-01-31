@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { IMaskInput } from "react-imask";
 import {
@@ -68,11 +69,9 @@ function AddCompanyInfo({
     resetInitialState: PropTypes.func.isRequired,
   };
 
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handlePageChange = (event, value) => {
-    onPageChange(value);
-  };
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -432,12 +431,15 @@ function AddCompanyInfo({
               shape="rounded"
               hidePrevButton
               hideNextButton
-              onChange={(event, value) => handlePageChange(event, value)}
               page={1}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 my: 2,
+                "& .MuiPaginationItem-root": {
+                  color: "#3568E5",
+                  pointerEvents: "none",
+                },
                 "& .MuiPaginationItem-page.Mui-selected": {
                   backgroundColor: "#3568E5",
                   color: "white",
@@ -465,7 +467,7 @@ function AddCompanyInfo({
                     onClick={() => {
                       handleClose();
                       handleResetInputs();
-                      onPageChange(1);
+                      navigate("/employers");
                     }}
                     autoFocus
                   >

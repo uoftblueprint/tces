@@ -129,7 +129,10 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
               width: "100%",
             }}
           >
-            <EmployerDashboardFilter handleApplyFilter={handleApplyFilter} />
+            <EmployerDashboardFilter
+              handleApplyFilter={handleApplyFilter}
+              paginationModel={paginationModel}
+            />
             <EmployerDashboardTable
               managedEmployers={employers}
               getUserById={getUserById}

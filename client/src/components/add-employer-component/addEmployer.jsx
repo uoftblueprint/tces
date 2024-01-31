@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import AddCompanyInfo from "./company-info-component";
 import AddEmployerInfo from "./employer-contact-component";
 import AddEmployerJobLead from "./employer-job-lead-component";
@@ -43,15 +44,17 @@ function AddEmployer({ currUser }) {
     ],
     jobLeads: [
       {
-        id: 0,
+        id: 1,
         title: "",
-        compensation: "",
-        hoursPerWeek: "",
+        minCompensation: NaN,
+        maxCompensation: NaN,
+        hoursPerWeek: NaN,
+        nationalOC: NaN,
         description: "",
-        expirationDate: null,
-        employmentType: "",
-        numPositions: 0,
-        nationalOC: null
+        creationDate: dayjs(),
+        expirationDate: dayjs().add(1, "month"),
+        employmentType: NaN,
+        numPositions: NaN,
       },
     ],
   };

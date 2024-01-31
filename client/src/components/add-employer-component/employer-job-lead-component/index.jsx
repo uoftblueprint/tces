@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import {
   Button,
@@ -12,6 +13,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+import dayjs from "dayjs";
 import JobLeadContent from "../../add-job-lead-component/jobLeadCard";
 import { Container, ButtonContainer, ButtonL } from "./index.styles";
 
@@ -21,12 +23,10 @@ function AddEmployerJobLead({
   setEmployerData,
   resetInitialState,
   onSubmit,
+  isLoading,
 }) {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-
-  const handlePageChange = (event, value) => {
-    onPageChange(value);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,7 +37,7 @@ function AddEmployerJobLead({
   };
 
   const handleSubmitButtonClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     onSubmit();
   };
 
@@ -52,12 +52,15 @@ function AddEmployerJobLead({
       {
         id: newId,
         title: "",
-        compensation: "",
-        hoursPerWeek: "",
+        minCompensation: NaN,
+        maxCompensation: NaN,
+        hoursPerWeek: NaN,
+        nationalOC: NaN,
         description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
+        creationDate: dayjs(),
+        expirationDate: dayjs().add(1, "month"),
+        employmentType: NaN,
+        numPositions: NaN,
       },
     ]);
   };
@@ -105,12 +108,15 @@ function AddEmployerJobLead({
               shape="rounded"
               hidePrevButton
               hideNextButton
-              onChange={(event, value) => handlePageChange(event, value)}
               page={3}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 my: 2,
+                "& .MuiPaginationItem-root": {
+                  color: "#3568E5",
+                  pointerEvents: "none",
+                },
                 "& .MuiPaginationItem-page.Mui-selected": {
                   backgroundColor: "#3568E5",
                   color: "white",
@@ -138,7 +144,7 @@ function AddEmployerJobLead({
                     onClick={() => {
                       handleClose();
                       handleResetInputs();
-                      onPageChange(1);
+                      navigate("/employers");
                     }}
                     autoFocus
                   >
@@ -162,8 +168,8 @@ function AddEmployerJobLead({
                 >
                   BACK
                 </Button>
-                <Button type="submit" variant="contained">
-                  SUBMIT
+                <Button type="submit" variant="contained" disabled={isLoading}>
+                  {isLoading ? "SUBMITTING..." : "SUBMIT"}
                 </Button>
               </div>
             </ButtonContainer>
@@ -178,6 +184,7 @@ AddEmployerJobLead.propTypes = {
   onPageChange: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   employerData: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   setEmployerData: PropTypes.func.isRequired,
   resetInitialState: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
