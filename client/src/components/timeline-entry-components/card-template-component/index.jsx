@@ -1,4 +1,6 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
+import Button from "@mui/material/Button";
 import {
   Card,
   ImageContainer,
@@ -12,18 +14,35 @@ import {
 } from "./index.styles";
 
 function CardComponent({ title, dateAdded, body, imageUrl }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isLongBody = body.length > 200;
+
+  const toggleExpansion = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <Card>
       <ImageContainer>
         <Image src={imageUrl} alt="Card Image" />
         <Line />
       </ImageContainer>
+      <Line />
       <ContentContainer>
         <Header>
           <Title>{title}</Title>
           <DateText>{new Date(dateAdded).toLocaleDateString()}</DateText>
         </Header>
-        <Body>{body}</Body>
+        <Body expanded={isExpanded}>{body}</Body>
+        {isLongBody && (
+          <Button
+            variant="text"
+            onClick={toggleExpansion}
+            sx={{ p: 0, color: "#3568E5", width: "fit-content" }}
+          >
+            {isExpanded ? "Read Less" : "Read More"}
+          </Button>
+        )}
       </ContentContainer>
     </Card>
   );

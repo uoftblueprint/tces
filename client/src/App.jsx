@@ -59,11 +59,11 @@ function App() {
     client: null,
     jobLead: null,
     employerContact: null,
-  }
+  };
 
   return (
     // <ClientEntryComponent entry={placementEntry} />
-    <EmployerEntryComponent entry={jobEntry} />
+    <EmployerEntryComponent entry={noteEntry} />
     // <JobEntryComponent entry={placementEntry} />
   );
 }

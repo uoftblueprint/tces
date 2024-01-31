@@ -5,7 +5,7 @@ const Card = styled.div`
   flex-direction: row;
   width: 400px;
   height: fit-content;
-  align-items: stretch; // Change from flex-start to stretch to fill the height
+  align-items: stretch;
   border: 1px solid #0000001f;
   padding: 16px;
   background: #fff;
@@ -62,6 +62,11 @@ const Body = styled.p`
   font-style: normal;
   font-weight: 400;
   margin-top: 8px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: ${(props) => (props.expanded ? "none" : "4")};
+  -webkit-box-orient: vertical;
+  transition: max-height 0.3s ease;
 `;
 
 export {
