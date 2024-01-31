@@ -152,7 +152,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
         <IconButton onClick={toggleEditable}>
           <EditIcon
             sx={{
-              color: "gray",
+              color: editable ? "#3568E5" : "gray",
               cursor: "pointer",
               align: "center",
             }}

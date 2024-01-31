@@ -237,7 +237,7 @@ function ContactsInformationCard({
           <IconButton onClick={toggleEditable}>
             <EditIcon
               sx={{
-                color: "gray",
+                color: editable ? "#3568E5" : "gray",
                 cursor: "pointer",
                 align: "center",
               }}
@@ -246,7 +246,7 @@ function ContactsInformationCard({
           <IconButton onClick={toggleAddable}>
             <AddIcon
               sx={{
-                color: "gray",
+                color: addable ? "#3568E5" : "gray",
                 cursor: "pointer",
                 align: "center",
               }}
