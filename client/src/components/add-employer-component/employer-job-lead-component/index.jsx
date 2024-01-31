@@ -36,7 +36,8 @@ function AddEmployerJobLead({
     setOpen(false);
   };
 
-  const handleSubmitButtonClick = () => {
+  const handleSubmitButtonClick = (e) => {
+    e.preventDefault()
     onSubmit();
   };
 

@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AddCompanyInfo from "./company-info-component";
 import AddEmployerInfo from "./employer-contact-component";
 import AddEmployerJobLead from "./employer-job-lead-component";
+import { createEmployer, createJobLeads } from "../../utils/api";
+import UserType from "../../prop-types/UserType";
+import ErrorScreenComponent from "../shared/error-screen-component";
 
-function AddEmployer() {
+function AddEmployer({ currUser }) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(true);
+  const [errorObj, setErrorObj] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [employerID, setEmployerID] = useState(null);
   const initialState = {
     companyInfo: [
       {
@@ -40,9 +48,10 @@ function AddEmployer() {
         compensation: "",
         hoursPerWeek: "",
         description: "",
-        creationDate: null,
         expirationDate: null,
         employmentType: "",
+        numPositions: 0,
+        nationalOC: null
       },
     ],
   };
@@ -63,15 +72,75 @@ function AddEmployer() {
     setEmployerData(initialState);
   };
 
-  const onSubmit = () => {
-    const createEmployer = async () => {
-      const employerBody = employerData.companyInfo
+  const addEmployer = async (employer) => {
+    try {
+      const response = await createEmployer(
+        employer,
+        currUser.userID,
+        currUser.userID,
+      );
 
-
+      if (response.ok) {
+        const data = await response.json();
+        setEmployerID(data.data.employer.id);
+      } else {
+        setErrorObj(response);
+      }
+    } catch (error) {
+      setErrorObj(error);
+    } finally {
+      setIsLoading(false);
     }
-    createEmployer()
-    console.log(employerData)
-  }
+  };
+
+  const addJobLeads = async (jobLeads) => {
+    try {
+      const response = await createJobLeads(
+        jobLeads,
+        currUser.userID,
+        currUser.userID,
+      );
+
+      if (!response.ok) {
+        setErrorObj(response);
+      }
+    } catch (error) {
+      setErrorObj(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+    const employerBody = {
+      ...employerData.companyInfo[0],
+      ...employerData.companyInfo[1],
+    };
+
+    // const contactBody = employerBody.employerContacts
+
+    addEmployer(employerBody);
+  };
+
+  // triggers whenever employerID is declared thus employer has been created -> so create job lead with the employer id
+  useEffect(() => {
+    if (employerID) {
+      if (employerData.jobLeads[0].title) {
+        const jobLeadsBody = employerData.jobLeads.map((jobLead) => {
+          return {
+            ...jobLead,
+            employer: employerID,
+          };
+        });
+        addJobLeads(jobLeadsBody).then(() => navigate("/employers"));
+      } else {
+        navigate("/employers");
+      }
+    }
+  }, [employerID]);
+
+  if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
     <div>
@@ -101,11 +170,17 @@ function AddEmployer() {
           setEmployerData={(data) => updateEmployerData("jobLeads", data)}
           onPageChange={handlePageChange}
           resetInitialState={resetEmployerData}
+          isLoading={isLoading}
           onSubmit={onSubmit}
         />
       )}
     </div>
   );
 }
+
+AddEmployer.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  currUser: UserType.isRequired,
+};
 
 export default AddEmployer;

@@ -43,7 +43,6 @@ function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
-  const jobLeadRedirect = "/job-leads";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -273,7 +272,7 @@ function App() {
                   loginUser={loginUser}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
-                    <AddEmployerPage />
+                    <AddEmployerPage currUser={currUser}/>
                   </EmployersLoader>
                 </AuthGuard>
               }

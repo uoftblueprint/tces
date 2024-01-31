@@ -111,24 +111,24 @@ const deleteUser = async (userID) => {
 
 const createEmployer = async (employer, ownerID, creatorID) => {
   const employerBody = {
-    owner: employer.owner,
-    creator: employer.creator,
-    date_added: employer.date_added,
-    name: employer.name,
-    legal_name: employer.legal_name || null,
-    phone_number: employer.phone_number || null,
-    fax: employer.fax || null,
-    email: employer.email || null,
+    owner: ownerID,
+    creator: creatorID,
+    date_added: new Date(),
+    name: employer.businessName,
+    legal_name: employer.businessLegalName || null,
+    phone_number: employer.phoneNumber || null,
+    fax: employer.faxNumber|| null,
+    email: employer.generalEmail || null,
     website: employer.website || null,
-    naics_code: employer.naics_code || null,
-    address: employer.address || null,
+    naics_code: employer.naicsCode || null,
+    address: employer.employerAddress || null,
     city: employer.city || null,
     province: employer.province || null,
-    postal_code: employer.postal_code || null,
-    secondary_address: employer.secondary_address || null,
-    secondary_city: employer.secondary_city || null,
-    secondary_province: employer.secondary_province || null,
-    secondary_postal_code: employer.secondary_postal_code || null,
+    postal_code: employer.postalCode || null,
+    secondary_address: employer.secondaryAddress || null,
+    secondary_city: employer.secondaryCity || null,
+    secondary_province: employer.secondaryProvince || null,
+    secondary_postal_code: employer.secondaryPostalCode || null,
   };
 
   const employerCreateBody = {
@@ -140,7 +140,7 @@ const createEmployer = async (employer, ownerID, creatorID) => {
   };
 
   // eslint-disable-next-line no-useless-catch
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers`, {
     method: "POST",
     credentials: "include",
     headers: {
