@@ -40,7 +40,7 @@ function CardComponent({ title, dateAdded, body, imageUrl }) {
             onClick={toggleExpansion}
             sx={{ p: 0, color: "#3568E5", width: "fit-content" }}
           >
-            {isExpanded ? "Read Less" : "Read More"}
+            {isExpanded ? "READ MORE" : "READ LESS"}
           </Button>
         )}
       </ContentContainer>
@@ -51,7 +51,8 @@ function CardComponent({ title, dateAdded, body, imageUrl }) {
 CardComponent.propTypes = {
   title: PropTypes.string.isRequired,
   dateAdded: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  body: PropTypes.object.isRequired,
   imageUrl: PropTypes.string.isRequired,
 };
 

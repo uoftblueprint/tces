@@ -2,12 +2,21 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function EmployerJobComponent({ ...entry }) {
+  const linkStyle = {
+    textDecoration: 'none',
+    color: '#3568E5'
+  };
+
+  const imageUrl = entry.typeJob === 'add'
+    ? '/img/timelineIconStar.svg'
+    : '/img/timelineIconDelete.svg';
+
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={entry.body}
-      imageUrl="/img/timelineIconStar.svg"
+      body={<a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.jobLead.title}</a>}
+      imageUrl={imageUrl}
     />
   );
 }
@@ -25,6 +34,7 @@ EmployerJobComponent.propTypes = {
     jobLead: PropTypes.object, // same as above
     // eslint-disable-next-line react/forbid-prop-types
     employerContact: PropTypes.object, // same as above
+    typeJob: PropTypes.oneOf(["add", "delete"]).isRequired,
   }).isRequired,
 };
 

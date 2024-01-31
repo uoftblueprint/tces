@@ -2,11 +2,22 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function EmployerPlacementComponent({ ...entry }) {
+  const linkStyle = {
+    textDecoration: 'none',
+    color: '#3568E5'
+  };
+
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={entry.body}
+      body={
+        <span>
+          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.client.name}</a>
+          {' was placed in '}
+          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.jobLead.name}</a>
+        </span>
+      }
       imageUrl="/img/timelineIconCheck.svg"
     />
   );

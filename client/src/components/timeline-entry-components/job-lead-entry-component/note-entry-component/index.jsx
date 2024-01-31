@@ -23,8 +23,6 @@ JobLeadNoteComponent.propTypes = {
     client: PropTypes.object, // not sure how to define this
     // eslint-disable-next-line react/forbid-prop-types
     jobLead: PropTypes.object, // same as above
-    // eslint-disable-next-line react/forbid-prop-types
-    employerContact: PropTypes.object, // same as above
   }).isRequired,
 };
 

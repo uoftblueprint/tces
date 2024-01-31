@@ -2,11 +2,22 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function JobLeadPlacementComponent({ ...entry }) {
+  const linkStyle = {
+    textDecoration: 'none',
+    color: '#3568E5'
+  };
+  
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={entry.body}
+      body={
+        <span>
+          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.client.name}</a>
+          {' was placed in '}
+          <a href="#" style={linkStyle} onClick={(e) => e.preventDefault()}>{entry.jobLead.name}</a>
+        </span>
+      }
       imageUrl="/img/timelineIconCheck.svg"
     />
   );
@@ -23,8 +34,6 @@ JobLeadPlacementComponent.propTypes = {
     client: PropTypes.object, // not sure how to define this
     // eslint-disable-next-line react/forbid-prop-types
     jobLead: PropTypes.object, // same as above
-    // eslint-disable-next-line react/forbid-prop-types
-    employerContact: PropTypes.object, // same as above
   }).isRequired,
 };
 
