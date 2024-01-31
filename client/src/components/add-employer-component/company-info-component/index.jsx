@@ -465,6 +465,7 @@ function AddCompanyInfo({
                     onClick={() => {
                       handleClose();
                       handleResetInputs();
+                      onPageChange(1);
                     }}
                     autoFocus
                   >

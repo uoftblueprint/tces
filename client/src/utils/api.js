@@ -109,6 +109,48 @@ const deleteUser = async (userID) => {
   return response;
 };
 
+const createEmployer = async (employer, ownerID, creatorID) => {
+  const employerBody = {
+    owner: employer.owner,
+    creator: employer.creator,
+    date_added: employer.date_added,
+    name: employer.name,
+    legal_name: employer.legal_name || null,
+    phone_number: employer.phone_number || null,
+    fax: employer.fax || null,
+    email: employer.email || null,
+    website: employer.website || null,
+    naics_code: employer.naics_code || null,
+    address: employer.address || null,
+    city: employer.city || null,
+    province: employer.province || null,
+    postal_code: employer.postal_code || null,
+    secondary_address: employer.secondary_address || null,
+    secondary_city: employer.secondary_city || null,
+    secondary_province: employer.secondary_province || null,
+    secondary_postal_code: employer.secondary_postal_code || null,
+  };
+
+  const employerCreateBody = {
+    client: {
+      owner: ownerID,
+      creator: creatorID,
+    },
+    employer: employerBody,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employerCreateBody),
+  });
+  return response;
+};
+
 const getAllEmployers = async () => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(`${REACT_APP_API_BASE_URL}/employers`, {
@@ -232,6 +274,7 @@ export {
   modifyUser,
   deleteUser,
   getAllEmployers,
+  createEmployer,
   getFilteredEmployers,
   createJobLeads,
   getFilteredJobLeads,

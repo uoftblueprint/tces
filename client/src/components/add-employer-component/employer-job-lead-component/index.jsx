@@ -20,14 +20,8 @@ function AddEmployerJobLead({
   employerData,
   setEmployerData,
   resetInitialState,
+  onSubmit,
 }) {
-  AddEmployerJobLead.propTypes = {
-    onPageChange: PropTypes.func.isRequired,
-    // eslint-disable-next-line react/forbid-prop-types
-    employerData: PropTypes.array.isRequired,
-    setEmployerData: PropTypes.func.isRequired,
-    resetInitialState: PropTypes.func.isRequired,
-  };
   const [open, setOpen] = React.useState(false);
 
   const handlePageChange = (event, value) => {
@@ -42,7 +36,9 @@ function AddEmployerJobLead({
     setOpen(false);
   };
 
-  const handleSubmitButtonClick = () => {};
+  const handleSubmitButtonClick = () => {
+    onSubmit();
+  };
 
   const handleBackButtonClick = () => {
     onPageChange(2);
@@ -141,6 +137,7 @@ function AddEmployerJobLead({
                     onClick={() => {
                       handleClose();
                       handleResetInputs();
+                      onPageChange(1);
                     }}
                     autoFocus
                   >
@@ -175,5 +172,14 @@ function AddEmployerJobLead({
     </Container>
   );
 }
+
+AddEmployerJobLead.propTypes = {
+  onPageChange: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  employerData: PropTypes.array.isRequired,
+  setEmployerData: PropTypes.func.isRequired,
+  resetInitialState: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default AddEmployerJobLead;

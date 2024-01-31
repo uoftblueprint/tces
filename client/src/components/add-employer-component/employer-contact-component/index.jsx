@@ -256,6 +256,7 @@ function AddEmployerInfo({
                     onClick={() => {
                       handleClose();
                       handleResetInputs();
+                      onPageChange(1);
                     }}
                     autoFocus
                   >

@@ -4,7 +4,7 @@ import AddEmployerInfo from "./employer-contact-component";
 import AddEmployerJobLead from "./employer-job-lead-component";
 
 function AddEmployer() {
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(1);
   const [showAddSecondaryButton, setShowAddSecondaryButton] = useState(true);
   const initialState = {
     companyInfo: [
@@ -60,8 +60,18 @@ function AddEmployer() {
   };
 
   const resetEmployerData = () => {
-    // setEmployerData(initialState);
+    setEmployerData(initialState);
   };
+
+  const onSubmit = () => {
+    const createEmployer = async () => {
+      const employerBody = employerData.companyInfo
+      
+
+    }
+    createEmployer()
+    console.log(employerData)
+  }
 
   return (
     <div>
@@ -91,6 +101,7 @@ function AddEmployer() {
           setEmployerData={(data) => updateEmployerData("jobLeads", data)}
           onPageChange={handlePageChange}
           resetInitialState={resetEmployerData}
+          onSubmit={onSubmit}
         />
       )}
     </div>
