@@ -14,7 +14,9 @@ import {
     TextField,
   } from "@mui/material";
   import MoreVertIcon from '@mui/icons-material/MoreVert';
+  import DownloadIcon from '@mui/icons-material/Download';
   import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+  import IconButton from '@mui/material/IconButton';
   import AddIcon from "@mui/icons-material/Add";
   import TabContext from '@mui/lab/TabContext';
   import TabList from '@mui/lab/TabList';
@@ -28,7 +30,13 @@ export default function Timeline() {
   const [searchTerm, setSearchTerm] = useState("");
   const buttonGroupRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElDots, setAnchorElDots] = useState(null);
   const open = Boolean(anchorEl);
+  const openDots = Boolean(anchorElDots);
+
+  const handleClickDots = (event) => {
+    setAnchorElDots(event.currentTarget);
+  };
   
 
   const handleClick = () => {
@@ -46,6 +54,10 @@ export default function Timeline() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleCloseDots = () => {
+    setAnchorElDots(null);
+  };
     
     return (
     <Card style={{ width: "500px"}}>
@@ -55,7 +67,29 @@ export default function Timeline() {
             <Typography variant="h5" align="left">Activity Timeline</Typography>
           </Grid>
           <Grid item xs={1}>
-            <MoreVertIcon />
+          <IconButton
+        aria-label="more"
+        id="long-button"
+        aria-controls={open ? 'long-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
+        aria-haspopup="true"
+        onClick={handleClickDots}
+      >
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+              anchorEl={anchorElDots}
+              open={openDots}
+              onClose={handleCloseDots}
+              MenuListProps={{
+                "aria-labelledby": "split-button",
+              }}
+              >
+                <MenuItem onClick={handleClickDots} sx={{ justifyContent: "center" }} >
+                  <DownloadIcon sx={{color: "grey", paddingRight: "10px"}}/>
+                  Export as JSON
+                </MenuItem>
+                </Menu>
           </Grid>
         </Grid>
       </Box>
