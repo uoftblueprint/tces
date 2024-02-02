@@ -40,7 +40,7 @@ function CardComponent({ title, dateAdded, body, imageUrl }) {
             onClick={toggleExpansion}
             sx={{ p: 0, color: "#3568E5", width: "fit-content" }}
           >
-            {isExpanded ? "READ MORE" : "READ LESS"}
+            {isExpanded ? "READ LESS" : "READ MORE"}
           </Button>
         )}
       </ContentContainer>

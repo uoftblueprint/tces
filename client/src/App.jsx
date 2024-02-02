@@ -1,7 +1,7 @@
 import "./App.css";
-import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
+// import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
 // import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
-// import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
+import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
 
 // NOTE: will revert this file after pull request approval (this is for demo purposes only)
 /* eslint-disable no-unused-vars */
@@ -11,7 +11,7 @@ function App() {
     dateAdded: "2024-01-26T09:00:00.000Z",
     type: "contact",
     title: "Employee Name Contacted Client",
-    body: "Sample text that mentions a name: John Smith, mentions a job posting: Receptionist #123, and contains regular text for the rest of the posting, like a note would. The text continues lorem ipsum dolor sit.",
+    body: "Sample text that mentions a name: John Smith, mentions a job posting: Receptionist #123, and contains regular text for the rest of the posting, like a note would.",
     client: null,
     jobLead: null,
     employerContact: null,
@@ -21,8 +21,8 @@ function App() {
     id: 2,
     dateAdded: "2024-01-26T09:00:00.000Z",
     type: "update",
-    title: "Employee Name Updated Email",
-    body: "email@email.com",
+    title: "Employee Name Updated Name",
+    body: "First Last",
     client: null,
     jobLead: null,
     employerContact: null,
@@ -59,13 +59,13 @@ function App() {
     client: null,
     jobLead: null,
     employerContact: null,
-    typeJob: "delete",
+    typeJob: "add",
   };
 
   return (
-    <ClientEntryComponent entry={updateEntry}/>
-    // <EmployerEntryComponent entry={placementEntry} />
-    // <JobEntryComponent entry={placementEntry} />
+    // <ClientEntryComponent entry={placementEntry} />
+    // <EmployerEntryComponent entry={contactEntry} />
+    <JobEntryComponent entry={placementEntry} />
   );
 }
 

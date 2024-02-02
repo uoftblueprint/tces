@@ -1,21 +1,27 @@
 import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 function EmployerJobComponent({ ...entry }) {
   const linkStyle = {
-    textDecoration: 'none',
-    color: '#3568E5'
+    textDecoration: "none",
+    color: "#3568E5",
   };
 
-  const imageUrl = entry.typeJob === 'add'
-    ? '/img/timelineIconStar.svg'
-    : '/img/timelineIconDelete.svg';
+  const imageUrl =
+    entry.typeJob === "add"
+      ? "/img/timelineIconStar.svg"
+      : "/img/timelineIconDelete.svg";
 
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={<a href="#" style={linkStyle}>{entry.jobLead.title}</a>}
+      body={
+        <a href="#" style={linkStyle}>
+          {entry.jobLead.title}
+        </a>
+      }
       imageUrl={imageUrl}
     />
   );

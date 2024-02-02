@@ -2,29 +2,15 @@ import PropTypes from "prop-types";
 import CardComponent from "../../card-template-component";
 
 function ClientUpdateComponent({ ...entry }) {
-  const getUpdatedField = () => {
-    switch (entry.updatedField) {
-      case 'name':
-        return entry.client.name;
-      case 'email':
-        return entry.client.email;
-      case 'phone_number':
-        return entry.client.phone_number;
-      case 'status':
-        // not sure what the statuses map to
-    }
-  };
-
-  const linkStyle = {
-    textDecoration: 'none',
-    color: '#3568E5'
+  const textStyle = {
+    color: "#3568E5",
   };
 
   return (
     <CardComponent
       title={entry.title}
       dateAdded={entry.dateAdded}
-      body={<a href="#" style={linkStyle}>{getUpdatedField()}</a>}
+      body={<span style={textStyle}>{entry.body}</span>}
       imageUrl="/img/timelineIconCheck.svg"
     />
   );
@@ -42,7 +28,6 @@ ClientUpdateComponent.propTypes = {
     client: PropTypes.object, // not sure how to define this
     // eslint-disable-next-line react/forbid-prop-types
     jobLead: PropTypes.object, // same as above
-    updatedField: PropTypes.string.isRequired,
   }).isRequired,
 };
 
