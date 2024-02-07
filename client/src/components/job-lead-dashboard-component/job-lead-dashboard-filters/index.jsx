@@ -1,30 +1,30 @@
 // eslint-disable-next-line no-unused-vars
-import * as React from "react";
-import PropTypes from "prop-types";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import Typography from "@mui/material/Typography";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers";
-import Slider from "@mui/material/Slider";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import JobLeadType from "../../../prop-types/JobLeadType";
-import { valuetext, getOwnerIds } from "../../../utils/jobLeads";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import Typography from '@mui/material/Typography';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers';
+import Slider from '@mui/material/Slider';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import JobLeadType from '../../../prop-types/JobLeadType';
+import { valuetext, getOwnerIds } from '../../../utils/jobLeads';
 
-import JOB_TYPES from "../../../utils/contants";
+import { JOB_TYPES } from '../../../utils/contants';
 
 function JobLeadDashboardFiltersComponent({
   managedJobLeads,
@@ -42,7 +42,7 @@ function JobLeadDashboardFiltersComponent({
   const [ownerOptions, setOwnerOptions] = React.useState([]);
 
   // setting local state for filter config
-  const [searchTitleQuery, setSearchTitleQuery] = React.useState("");
+  const [searchTitleQuery, setSearchTitleQuery] = React.useState('');
   const [startDateCreated, setStartDateCreated] = React.useState(null);
   const [endDateCreated, setEndDateCreated] = React.useState(null);
   const [startDateExpired, setStartDateExpired] = React.useState(null);
@@ -56,7 +56,7 @@ function JobLeadDashboardFiltersComponent({
     null,
   ]);
   const [ownerId, setOwnerId] = React.useState(-1);
-  const [searchNOCQuery, setSearchNOCQuery] = React.useState("");
+  const [searchNOCQuery, setSearchNOCQuery] = React.useState('');
   const initialJobTypeSelect = JOB_TYPES.reduce((acc, jobType) => {
     acc[jobType] = true;
     return acc;
@@ -173,13 +173,13 @@ function JobLeadDashboardFiltersComponent({
 
   const onFilterReset = () => {
     setNoFilterMode(true);
-    setSearchTitleQuery("");
+    setSearchTitleQuery('');
     setStartDateCreated(null);
     setEndDateCreated(null);
     setStartDateExpired(null);
     setEndDateExpired(null);
     setOwnerId(-1);
-    setSearchNOCQuery("");
+    setSearchNOCQuery('');
     setJobTypeSelect(initialJobTypeSelect);
     setIgnorePaginationChange(true);
     // we want to reset pagination model when we apply a filter
@@ -237,7 +237,7 @@ function JobLeadDashboardFiltersComponent({
                 onChange={onTitleSearch}
                 size="small"
                 style={{
-                  borderWidth: "10px",
+                  borderWidth: '10px',
                 }}
                 InputProps={{
                   endAdornment: (
@@ -391,7 +391,7 @@ function JobLeadDashboardFiltersComponent({
                 onChange={onNOCSearch}
                 size="small"
                 style={{
-                  borderWidth: "10px",
+                  borderWidth: '10px',
                 }}
                 InputProps={{
                   endAdornment: (
@@ -430,7 +430,7 @@ function JobLeadDashboardFiltersComponent({
             </FormControl>
           </Stack>
         </CardContent>
-        <CardActions sx={{ justifyContent: "center", p: 2 }}>
+        <CardActions sx={{ justifyContent: 'center', p: 2 }}>
           <Button
             size="small"
             onClick={onFilterReset}

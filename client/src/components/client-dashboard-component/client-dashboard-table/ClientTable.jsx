@@ -1,7 +1,6 @@
-import PropTypes from "prop-types";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box, Card, Link, Avatar, Chip } from "@mui/material";
-
+import PropTypes from 'prop-types';
+import { DataGrid, gridClasses } from '@mui/x-data-grid';
+import { Link, Avatar, Chip } from '@mui/material';
 
 function ClientTable({
   clientData,
@@ -9,11 +8,10 @@ function ClientTable({
   setPaginationModel,
   totalRowCount,
 }) {
-
   const columns = [
     {
-      field: "name",
-      headerName: "Name",
+      field: 'name',
+      headerName: 'Name',
       width: 175,
       editable: false,
       sortable: false,
@@ -25,16 +23,16 @@ function ClientTable({
       ),
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: 'phone',
+      headerName: 'Phone Number',
       width: 175,
       editable: false,
       sortable: false,
       filterable: false,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: 'email',
+      headerName: 'Email',
       width: 175,
       editable: false,
       sortable: false,
@@ -46,27 +44,25 @@ function ClientTable({
       ),
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: 'status',
+      headerName: 'Status',
       width: 175,
       editable: false,
       sortable: false,
       filterable: false,
-      renderCell: (params) => (
-        <Chip label={params.value} />
-      ),
+      renderCell: (params) => <Chip label={params.value} />,
     },
     {
-      field: "dateUpdated",
-      headerName: "Date Updated",
+      field: 'dateUpdated',
+      headerName: 'Date Updated',
       width: 175,
       editable: false,
       sortable: false,
       filterable: false,
     },
     {
-      field: "owner",
-      headerName: "Owner",
+      field: 'owner',
+      headerName: 'Owner',
       width: 175,
       editable: false,
       sortable: false,
@@ -74,35 +70,44 @@ function ClientTable({
       renderCell: (params) => {
         const getInitials = (name) => {
           return name
-            .split(" ")
+            .split(' ')
             .map((n) => n[0])
-            .join("");
+            .join('');
         };
 
         return (
-          <Chip avatar={<Avatar>{getInitials(params.value)}</Avatar>} label={params.value} />
+          <Chip
+            avatar={<Avatar>{getInitials(params.value)}</Avatar>}
+            label={params.value}
+          />
         );
       },
     },
   ];
 
   return (
-    <Card>
-      <Box>
-        <DataGrid
-          sx={{ border: 'none' }}
-          rowCount={totalRowCount}
-          rows={clientData}
-          columns={columns}
-          pageSizeOptions={[10]}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={setPaginationModel}
-          disableColumnSelector
-          disableColumnMenu
-        />
-      </Box>
-    </Card>
+    <DataGrid
+      sx={{
+        minHeight: '500px',
+        '& .actionButton': {
+          display: 'none',
+        },
+        [`& .${gridClasses.row}:hover`]: {
+          '.actionButton': {
+            display: 'block',
+          },
+        },
+      }}
+      rowCount={totalRowCount}
+      rows={clientData}
+      columns={columns}
+      pageSizeOptions={[10]}
+      paginationModel={paginationModel}
+      paginationMode="server"
+      onPaginationModelChange={setPaginationModel}
+      disableColumnSelector
+      disableColumnMenu
+    />
   );
 }
 

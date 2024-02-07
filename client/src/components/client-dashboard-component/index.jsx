@@ -1,11 +1,12 @@
-import { Button, Box, Typography, IconButton } from "@mui/material";
-import { useState } from "react";
-import DownloadIcon from "@mui/icons-material/Download";
+import { Button, Box, Typography, IconButton } from '@mui/material';
+import { useState } from 'react';
+import DownloadIcon from '@mui/icons-material/Download';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from "@mui/icons-material/Add";
-import PropTypes from "prop-types";
-import FilterCard from "./client-dashboard-filter/FilterCard";
-import ClientTable from "./client-dashboard-table/ClientTable";
+import AddIcon from '@mui/icons-material/Add';
+import PropTypes from 'prop-types';
+import FilterCard from './client-dashboard-filter/FilterCard';
+import ClientTable from './client-dashboard-table/ClientTable';
+import ClientDashboardContainer from './index.styles';
 
 function ClientDashboardComponent({ clientData }) {
   const [paginationModel, setPaginationModel] = useState({
@@ -22,28 +23,73 @@ function ClientDashboardComponent({ clientData }) {
   );
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px", mt: 3 }}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton>
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="h4" sx={{ ml: 1 }}>Clients</Typography>
+    <ClientDashboardContainer>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '20px',
+            mt: 3,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton>
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h4" sx={{ ml: 1 }}>
+              Clients
+            </Typography>
+          </Box>
+          <Box>
+            <Button
+              sx={{
+                marginLeft: 'auto',
+                marginBottom: '30px',
+                marginRight: '30px',
+                marginTop: '30px',
+                backgroundColor: 'white',
+                border: '1px solid #3568E5',
+                color: '#3568E5',
+                '&:hover': {
+                  backgroundColor: '#3568E5',
+                  color: 'white',
+                },
+              }}
+              startIcon={<DownloadIcon />}
+              onClick={() => {}}
+            >
+              EXPORT CURRENT FILTER VIEW ({clientData.length} Clients)
+            </Button>
+            <Button
+              sx={{
+                marginLeft: 'auto',
+                marginBottom: '30px',
+                marginTop: '30px',
+                backgroundColor: '#3568E5',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#3568E5',
+                  color: 'white',
+                },
+              }}
+              startIcon={<AddIcon />}
+              onClick={() => {}}
+            >
+              ADD NEW CLIENT
+            </Button>
+          </Box>
         </Box>
-        <Box>
-          <Button variant="outlined" startIcon={<DownloadIcon />}>
-            EXPORT CURRENT FILTER VIEW ({clientData.length} CLIENTS)
-          </Button>
-          <Button variant="contained" startIcon={<AddIcon />} sx={{ ml: 2 }}>
-            ADD NEW CLIENT
-          </Button>
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <Box sx={{ width: "25%", minWidth: "250px", padding: "20px" }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gridColumnGap: '30px',
+            width: '100%',
+          }}
+        >
           <FilterCard />
-        </Box>
-        <Box sx={{ flexGrow: 1, maxWidth: "75%", padding: "20px" }}>
           <ClientTable
             clientData={displayedRows}
             paginationModel={paginationModel}
@@ -52,7 +98,7 @@ function ClientDashboardComponent({ clientData }) {
           />
         </Box>
       </Box>
-    </Box>
+    </ClientDashboardContainer>
   );
 }
 
