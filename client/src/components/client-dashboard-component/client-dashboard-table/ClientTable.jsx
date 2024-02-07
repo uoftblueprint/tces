@@ -88,7 +88,7 @@ function ClientTable({
 
   return (
     <Card>
-      <Box sx={{ padding: "10px 10px", width: "100%" }}>
+      <Box sx={{ padding: "10px 10px", width: "calc(100% - 60px)" }}>
         <DataGrid
           sx={{ border: 'none' }}
           rowCount={totalRowCount}

@@ -9,16 +9,16 @@ import {
 
 // page components
 import * as React from "react";
-import DashboardPage from "./pages/dashboard";
+// import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-
+import ClientDashboard from "./pages/client-dashboard";
 // mock data
-import mockJobUpdates from "./mock-data/mockJobUpdates";
+// import mockJobUpdates from "./mock-data/mockJobUpdates";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -54,7 +54,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   // Job Updates State
-  const [jobUpdates] = useState(mockJobUpdates);
+  // const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState([]);
@@ -145,12 +145,7 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <AuthGuard
-                  isAuthenticated={isAuthenticated}
-                  loginUser={loginUser}
-                >
-                  <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
-                </AuthGuard>
+                <ClientDashboard />
               }
             />
             <Route

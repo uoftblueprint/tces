@@ -1,10 +1,12 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography, IconButton } from "@mui/material";
 import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 import FilterCard from "./client-dashboard-filter/FilterCard";
 import ClientTable from "./client-dashboard-table/ClientTable";
+
 
 function ClientDashboardComponent({ clientData }) {
   const [paginationModel, setPaginationModel] = useState({
@@ -21,8 +23,16 @@ function ClientDashboardComponent({ clientData }) {
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>
-      <Box sx={{ width: "25%", minWidth: "250px", margin: "28px", mt: 18 }}>
-        <FilterCard />
+      <Box sx={{ width: "25%", minWidth: "250px", margin: "28px" }}>
+        <Box sx={{ display: "flex", mt: 3, alignItems: "center" }}>
+          <IconButton>
+            <ArrowBackIcon sx={{ width: 40, height: 40 }} />
+          </IconButton>
+          <Typography variant="h4" sx={{ ml: 2 }}>My Clients</Typography>
+        </Box>
+        <Box sx={{ mt: 9}}>
+          <FilterCard />
+        </Box>
       </Box>
 
       <Box
