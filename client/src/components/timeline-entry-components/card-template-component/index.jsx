@@ -38,7 +38,13 @@ function CardComponent({ title, dateAdded, body, imageUrl }) {
           <Button
             variant="text"
             onClick={toggleExpansion}
-            sx={{ p: 0, color: "#3568E5", width: "fit-content" }}
+            sx={{
+              p: 0,
+              color: "#3568E5",
+              width: "fit-content",
+              fontWeight: "bold",
+              fontSize: "0.75rem",
+            }}
           >
             {isExpanded ? "READ LESS" : "READ MORE"}
           </Button>

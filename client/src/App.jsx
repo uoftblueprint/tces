@@ -65,21 +65,42 @@ function App() {
 
   return (
     <>
-      <Typography sx={{ textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Typography
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         Client
       </Typography>
       <ClientEntryComponent entry={placementEntry} />
       <ClientEntryComponent entry={updateEntry} />
       <ClientEntryComponent entry={contactEntry} />
       <ClientEntryComponent entry={noteEntry} />
-      <Typography sx={{ textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Typography
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         Employer
       </Typography>
       <EmployerEntryComponent entry={contactEntry} />
       <EmployerEntryComponent entry={jobEntry} />
       <EmployerEntryComponent entry={placementEntry} />
       <EmployerEntryComponent entry={noteEntry} />
-      <Typography sx={{ textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Typography
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         job lead
       </Typography>
       <JobEntryComponent entry={placementEntry} />
