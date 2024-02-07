@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   TextField,
   Checkbox,
@@ -14,28 +14,28 @@ import {
   Typography,
   InputAdornment,
   Stack,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
-import { STATUS_TYPES } from '../../../utils/contants';
+import { STATUS_TYPES } from "../../../utils/contants";
 
 function FilterCard() {
   const [values, setValues] = useState({
-    name: '',
-    phoneNumber: '',
+    name: "",
+    phoneNumber: "",
     dateUpdatedFrom: null,
     dateUpdatedUntil: null,
     dateRegisteredFrom: null,
     dateRegisteredUntil: null,
-    owner: 'All',
+    owner: "All",
     status: {
       active: false,
       rAndI: false,
       closed: false,
     },
-    actionStatus: 'all',
+    actionStatus: "all",
   });
 
   const handleChange = (prop) => (event) => {
@@ -48,19 +48,19 @@ function FilterCard() {
 
   const handleReset = () => {
     setValues({
-      name: '',
-      phoneNumber: '',
+      name: "",
+      phoneNumber: "",
       dateUpdatedFrom: null,
       dateUpdatedUntil: null,
       dateRegisteredFrom: null,
       dateRegisteredUntil: null,
-      owner: 'All',
+      owner: "All",
       status: {
         active: false,
         rAndI: false,
         closed: false,
       },
-      actionStatus: 'all',
+      actionStatus: "all",
     });
   };
 
@@ -80,10 +80,10 @@ function FilterCard() {
             <TextField
               type="text"
               value={values.name}
-              onChange={handleChange('name')}
+              onChange={handleChange("name")}
               size="small"
               style={{
-                borderWidth: '10px',
+                borderWidth: "10px",
               }}
               InputProps={{
                 endAdornment: (
@@ -105,10 +105,10 @@ function FilterCard() {
           <TextField
             type="text"
             value={values.phoneNumber}
-            onChange={handleChange('phoneNumber')}
+            onChange={handleChange("phoneNumber")}
             size="small"
             style={{
-              borderWidth: '10px',
+              borderWidth: "10px",
             }}
             InputProps={{
               endAdornment: (
@@ -130,14 +130,14 @@ function FilterCard() {
             <DatePicker
               label="From"
               value={values.dateUpdatedFrom}
-              onChange={handleDateChange('dateUpdatedFrom')}
+              onChange={handleDateChange("dateUpdatedFrom")}
               // eslint-disable-next-line react/jsx-props-no-spreading
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
               label="Until"
               value={values.dateUpdatedUntil}
-              onChange={handleDateChange('dateUpdatedUntil')}
+              onChange={handleDateChange("dateUpdatedUntil")}
               // eslint-disable-next-line react/jsx-props-no-spreading
               renderInput={(params) => <TextField {...params} />}
             />
@@ -153,14 +153,14 @@ function FilterCard() {
             <DatePicker
               label="From"
               value={values.dateRegisteredFrom}
-              onChange={handleDateChange('dateRegisteredFrom')}
+              onChange={handleDateChange("dateRegisteredFrom")}
               // eslint-disable-next-line react/jsx-props-no-spreading
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
               label="Until"
               value={values.dateRegisteredUntil}
-              onChange={handleDateChange('dateRegisteredUntil')}
+              onChange={handleDateChange("dateRegisteredUntil")}
               // eslint-disable-next-line react/jsx-props-no-spreading
               renderInput={(params) => <TextField {...params} />}
             />
@@ -177,7 +177,7 @@ function FilterCard() {
             labelId="owner-label"
             id="owner-select"
             value={values.owner}
-            onChange={handleChange('owner')}
+            onChange={handleChange("owner")}
             fullWidth
           >
             <MenuItem value="All">All</MenuItem>
@@ -209,11 +209,11 @@ function FilterCard() {
           </FormControl>
         </Stack>
       </CardContent>
-      <CardActions sx={{ display: 'flex', p: 2, flexDirection: "column"}}>
+      <CardActions sx={{ display: "flex", p: 2, flexDirection: "column" }}>
         <Button variant="contained" sx={{ width: "100%" }}>
           APPLY FLILTER
         </Button>
-        <Button onClick={handleReset} sx={{ mt: 2, alignSelf: 'flex-start' }}>
+        <Button onClick={handleReset} sx={{ mt: 2, alignSelf: "flex-start" }}>
           RESET FILTERS
         </Button>
       </CardActions>

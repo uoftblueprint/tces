@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import ClientDashboardComponent from "../../components/client-dashboard-component";
 
 const mockRows = [
@@ -119,7 +119,7 @@ const mockRows = [
     dateUpdated: "1/1/2022",
     owner: "Emily Gazo",
   },
-    {
+  {
     id: 14,
     name: "First Last",
     phone: "+1 111 111 1111",
@@ -128,7 +128,7 @@ const mockRows = [
     dateUpdated: "1/1/2022",
     owner: "Emily Gazo",
   },
-    {
+  {
     id: 15,
     name: "First Last",
     phone: "+1 111 111 1111",
@@ -265,10 +265,9 @@ const mockRows = [
   },
 ];
 
-
 function ClientDashboard() {
   // eslint-disable-next-line no-unused-vars
-const [clientData, setClientData] = useState(mockRows);
+  const [clientData, setClientData] = useState(mockRows);
 
   return <ClientDashboardComponent clientData={clientData} />;
 }

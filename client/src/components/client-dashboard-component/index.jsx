@@ -1,12 +1,12 @@
-import { Button, Box, Typography, IconButton } from '@mui/material';
-import { useState } from 'react';
-import DownloadIcon from '@mui/icons-material/Download';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
-import PropTypes from 'prop-types';
-import FilterCard from './client-dashboard-filter/FilterCard';
-import ClientTable from './client-dashboard-table/ClientTable';
-import ClientDashboardContainer from './index.styles';
+import { Button, Box, Typography, IconButton } from "@mui/material";
+import { useState } from "react";
+import DownloadIcon from "@mui/icons-material/Download";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddIcon from "@mui/icons-material/Add";
+import PropTypes from "prop-types";
+import FilterCard from "./client-dashboard-filter/FilterCard";
+import ClientTable from "./client-dashboard-table/ClientTable";
+import ClientDashboardContainer from "./index.styles";
 
 function ClientDashboardComponent({ clientData }) {
   const [paginationModel, setPaginationModel] = useState({
@@ -19,22 +19,22 @@ function ClientDashboardComponent({ clientData }) {
 
   const displayedRows = clientData.slice(
     paginationModel.page * paginationModel.pageSize,
-    (paginationModel.page + 1) * paginationModel.pageSize
+    (paginationModel.page + 1) * paginationModel.pageSize,
   );
 
   return (
     <ClientDashboardContainer>
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '20px',
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "20px",
             mt: 3,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton>
               <ArrowBackIcon />
             </IconButton>
@@ -45,16 +45,16 @@ function ClientDashboardComponent({ clientData }) {
           <Box>
             <Button
               sx={{
-                marginLeft: 'auto',
-                marginBottom: '30px',
-                marginRight: '30px',
-                marginTop: '30px',
-                backgroundColor: 'white',
-                border: '1px solid #3568E5',
-                color: '#3568E5',
-                '&:hover': {
-                  backgroundColor: '#3568E5',
-                  color: 'white',
+                marginLeft: "auto",
+                marginBottom: "30px",
+                marginRight: "30px",
+                marginTop: "30px",
+                backgroundColor: "white",
+                border: "1px solid #3568E5",
+                color: "#3568E5",
+                "&:hover": {
+                  backgroundColor: "#3568E5",
+                  color: "white",
                 },
               }}
               startIcon={<DownloadIcon />}
@@ -64,14 +64,14 @@ function ClientDashboardComponent({ clientData }) {
             </Button>
             <Button
               sx={{
-                marginLeft: 'auto',
-                marginBottom: '30px',
-                marginTop: '30px',
-                backgroundColor: '#3568E5',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#3568E5',
-                  color: 'white',
+                marginLeft: "auto",
+                marginBottom: "30px",
+                marginTop: "30px",
+                backgroundColor: "#3568E5",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#3568E5",
+                  color: "white",
                 },
               }}
               startIcon={<AddIcon />}
@@ -83,10 +83,10 @@ function ClientDashboardComponent({ clientData }) {
         </Box>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gridColumnGap: '30px',
-            width: '100%',
+            display: "flex",
+            flexDirection: "row",
+            gridColumnGap: "30px",
+            width: "100%",
           }}
         >
           <FilterCard />

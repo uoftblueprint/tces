@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import { Link, Avatar, Chip } from '@mui/material';
+import PropTypes from "prop-types";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { Link, Avatar, Chip } from "@mui/material";
 
 function ClientTable({
   clientData,
@@ -10,8 +10,8 @@ function ClientTable({
 }) {
   const columns = [
     {
-      field: 'name',
-      headerName: 'Name',
+      field: "name",
+      headerName: "Name",
       width: 175,
       editable: false,
       sortable: false,
@@ -23,16 +23,16 @@ function ClientTable({
       ),
     },
     {
-      field: 'phone',
-      headerName: 'Phone Number',
+      field: "phone",
+      headerName: "Phone Number",
       width: 175,
       editable: false,
       sortable: false,
       filterable: false,
     },
     {
-      field: 'email',
-      headerName: 'Email',
+      field: "email",
+      headerName: "Email",
       width: 175,
       editable: false,
       sortable: false,
@@ -44,8 +44,8 @@ function ClientTable({
       ),
     },
     {
-      field: 'status',
-      headerName: 'Status',
+      field: "status",
+      headerName: "Status",
       width: 175,
       editable: false,
       sortable: false,
@@ -53,16 +53,16 @@ function ClientTable({
       renderCell: (params) => <Chip label={params.value} />,
     },
     {
-      field: 'dateUpdated',
-      headerName: 'Date Updated',
+      field: "dateUpdated",
+      headerName: "Date Updated",
       width: 175,
       editable: false,
       sortable: false,
       filterable: false,
     },
     {
-      field: 'owner',
-      headerName: 'Owner',
+      field: "owner",
+      headerName: "Owner",
       width: 175,
       editable: false,
       sortable: false,
@@ -70,9 +70,9 @@ function ClientTable({
       renderCell: (params) => {
         const getInitials = (name) => {
           return name
-            .split(' ')
+            .split(" ")
             .map((n) => n[0])
-            .join('');
+            .join("");
         };
 
         return (
@@ -88,13 +88,13 @@ function ClientTable({
   return (
     <DataGrid
       sx={{
-        minHeight: '500px',
-        '& .actionButton': {
-          display: 'none',
+        minHeight: "500px",
+        "& .actionButton": {
+          display: "none",
         },
         [`& .${gridClasses.row}:hover`]: {
-          '.actionButton': {
-            display: 'block',
+          ".actionButton": {
+            display: "block",
           },
         },
       }}
