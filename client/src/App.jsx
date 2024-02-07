@@ -58,7 +58,7 @@ function App() {
     title: "Employee Name Added Job Lead",
     body: "Receptionist123",
     client: { name: "Daniel" },
-    jobLead: { name: "McDonalds Janitor" },
+    jobLead: { title: "McDonalds Janitor" },
     employerContact: null,
     typeJob: "add",
   };
