@@ -1,111 +1,290 @@
-import { Typography } from "@mui/material";
 import "./App.css";
-import ClientEntryComponent from "./components/timeline-entry-components/client-entry-component";
-import EmployerEntryComponent from "./components/timeline-entry-components/employer-entry-component";
-import JobEntryComponent from "./components/timeline-entry-components/job-lead-entry-component";
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-// NOTE: will revert this file after pull request approval (this is for demo purposes only)
-/* eslint-disable no-unused-vars */
+// page components
+import * as React from "react";
+import DashboardPage from "./pages/dashboard";
+import AdminDashboard from "./pages/admin-dashboard";
+import LoginPage from "./pages/login";
+import CreatePage from "./pages/create-user";
+import EditPage from "./pages/edit-user";
+import LogoutPage from "./pages/logout";
+import CommonOverlayComponent from "./components/shared/common-overlay-component";
+
+// mock data
+import mockJobUpdates from "./mock-data/mockJobUpdates";
+
+// protected route wrappers
+import RouteGuard from "./components/wrappers/route-guard-component";
+import AuthGuard from "./components/wrappers/auth-guard-component";
+
+// data loading wrappers
+import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
+import EmployersLoader from "./components/wrappers/data-loaders-wrappers/EmployersLoader";
+import Navbar from "./components/shared/navbar-component/Navbar";
+import JobLeadDashboard from "./pages/job-lead-dashboard";
+import AddJobLeadPage from "./pages/add-job-lead";
+import EditJobLead from "./pages/edit-job-lead";
+
+// helper functions
+import { getUserByIdHelper } from "./utils/users";
+import getEmployerByIdHelper from "./utils/employers";
+import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+
 function App() {
-  const contactEntry = {
-    id: 1,
-    dateAdded: "2024-01-26T09:00:00.000Z",
-    type: "contact",
-    title: "Employee Name Contacted Client",
-    body: "Sample text that mentions a name: John Smith, mentions a job posting: Receptionist #123, and contains regular text for the rest of the posting, like a note would.",
-    client: { name: "Daniel" },
-    jobLead: { name: "McDonalds Janitor" },
-    employerContact: null,
+  // redirect urls in-case user has a cached login or not
+  const dashboardRedirect = "/dashboard";
+  const adminRedirect = "/admin";
+  const jobLeadRedirect = "/job-leads";
+
+  // states defined at the very root of the react tree (will be passed down to contributing child components)
+  // User State
+  const [currUser, setCurrUser] = useState({
+    userID: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    isAdmin: false,
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Job Updates State
+  const [jobUpdates] = useState(mockJobUpdates);
+
+  // Admin State
+  const [managedUsers, setManagedUsers] = useState([]);
+
+  // Job Leads State
+  const [managedJobLeads, setManagedJobLeads] = useState([]);
+
+  // Employer State
+  const [employers, setEmployers] = useState([]);
+
+  // Common Overlay States
+  const [localExitRoute, setLocalExitRoute] = React.useState(null);
+  const [snackBarMessage, setSnackBarMessage] = React.useState("");
+
+  // Helper Utils
+
+  // Get employer object given employer ID
+  const getEmployerById = (employerID) => {
+    return getEmployerByIdHelper(employers, employerID);
   };
 
-  const updateEntry = {
-    id: 2,
-    dateAdded: "2024-01-26T09:00:00.000Z",
-    type: "update",
-    title: "Employee Name Updated Name",
-    body: "First Last",
-    client: { name: "Daniel" },
-    jobLead: { name: "McDonalds Janitor" },
-    employerContact: null,
+  // Get user object given user ID
+  const getUserById = (userID) => {
+    return getUserByIdHelper(managedUsers, userID);
   };
 
-  const noteEntry = {
-    id: 3,
-    dateAdded: "2024-01-26T09:00:00.000Z",
-    type: "note",
-    title: "Employee Name Added Note",
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla",
-    client: { name: "Daniel" },
-    jobLead: { name: "McDonalds Janitor" },
-    employerContact: null,
+  // Reset all states (when user logs out)
+  const resetState = () => {
+    setCurrUser({
+      userID: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      isAdmin: false,
+    });
+    setIsAuthenticated(false);
+    setManagedUsers([]);
   };
 
-  const placementEntry = {
-    id: 4,
-    dateAdded: "2024-01-26T09:00:00.000Z",
-    type: "placement",
-    title: "Employee Name Placed Job Seeker",
-    body: "John Smith was placed in Receptionist123",
-    client: { name: "Daniel" },
-    jobLead: { name: "McDonalds Janitor" },
-    employerContact: null,
+  // Setting state (when user logs in)
+  const loginUser = (userData) => {
+    setCurrUser({
+      userID: userData.userID || userData.user_id || 1,
+      firstName: userData.firstName || userData.first_name || "",
+      lastName: userData.lastName || userData.last_name || "",
+      email: userData.email || userData.last_name,
+      isAdmin: userData.isAdmin || userData.is_admin || false,
+    });
+    setIsAuthenticated(true);
   };
 
-  const jobEntry = {
-    id: 5,
-    dateAdded: "2024-01-26T09:00:00.000Z",
-    type: "job",
-    title: "Employee Name Added Job Lead",
-    body: "Receptionist123",
-    client: { name: "Daniel" },
-    jobLead: { title: "McDonalds Janitor" },
-    employerContact: null,
-    typeJob: "add",
-  };
-
+  // declaring routes here
   return (
-    <>
-      <Typography
-        sx={{
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        Client
-      </Typography>
-      <ClientEntryComponent entry={placementEntry} />
-      <ClientEntryComponent entry={updateEntry} />
-      <ClientEntryComponent entry={contactEntry} />
-      <ClientEntryComponent entry={noteEntry} />
-      <Typography
-        sx={{
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        Employer
-      </Typography>
-      <EmployerEntryComponent entry={contactEntry} />
-      <EmployerEntryComponent entry={jobEntry} />
-      <EmployerEntryComponent entry={placementEntry} />
-      <EmployerEntryComponent entry={noteEntry} />
-      <Typography
-        sx={{
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        job lead
-      </Typography>
-      <JobEntryComponent entry={placementEntry} />
-      <JobEntryComponent entry={noteEntry} />
-    </>
+    <Router>
+      <Routes>
+        <Route
+          element={
+            <CommonOverlayComponent
+              localExitRoute={localExitRoute}
+              setLocalExitRoute={setLocalExitRoute}
+              snackBarMessage={snackBarMessage}
+            />
+          }
+        >
+          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route
+            path="/signin"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+                redirectUrl={dashboardRedirect}
+                signInRoute
+              >
+                <LoginPage
+                  setIsAuthenticated={setIsAuthenticated}
+                  loginUser={loginUser}
+                />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/logout"
+            element={<LogoutPage onLogout={resetState} />}
+          />
+          {/* Render navbar for child routes e.g dashboard, admin dashboard etc */}
+          <Route element={<Navbar isAdmin={currUser.isAdmin} />}>
+            <Route
+              path="/dashboard"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <RouteGuard
+                    isPermitted={currUser.isAdmin}
+                    redirect={dashboardRedirect}
+                  >
+                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                      <AdminDashboard
+                        currUser={currUser}
+                        managedUsers={managedUsers}
+                        setManagedUsers={setManagedUsers}
+                      />
+                    </ManagedUsersLoader>
+                  </RouteGuard>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/job-leads"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <JobLeadDashboard
+                      managedJobLeads={managedJobLeads}
+                      setManagedJobLeads={setManagedJobLeads}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+          </Route>
+          {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
+          <Route
+            element={
+              <Navbar
+                isAdmin={currUser.isAdmin}
+                setLocalExitRoute={setLocalExitRoute}
+              />
+            }
+          >
+            <Route
+              path="/job-leads/:jobLeadID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedJobLeadsLoader
+                    setManagedJobLeads={setManagedJobLeads}
+                  >
+                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                      <EmployersLoader setEmployers={setEmployers}>
+                        <EditJobLead
+                          managedUsers={managedUsers}
+                          managedJobLeads={managedJobLeads}
+                          getEmployerById={getEmployerById}
+                          getUserById={getUserById}
+                          setLocalExitRoute={setLocalExitRoute}
+                          setSnackBarMessage={setSnackBarMessage}
+                        />
+                      </EmployersLoader>
+                    </ManagedUsersLoader>
+                  </ManagedJobLeadsLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/job-leads/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                  redirectUrl={jobLeadRedirect}
+                >
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddJobLeadPage
+                      employers={employers}
+                      currUser={currUser}
+                      setLocalExitRoute={setLocalExitRoute}
+                    />
+                  </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+          </Route>
+          <Route
+            path="/admin/create-user"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+                redirectUrl={adminRedirect}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
+                >
+                  <CreatePage />
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/admin/edit-user/:userID"
+            element={
+              <AuthGuard
+                isAuthenticated={isAuthenticated}
+                loginUser={loginUser}
+                redirectUrl={adminRedirect}
+              >
+                <RouteGuard
+                  isPermitted={currUser.isAdmin}
+                  redirect={dashboardRedirect}
+                >
+                  <EditPage getUserById={getUserById} />
+                </RouteGuard>
+              </AuthGuard>
+            }
+          />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
