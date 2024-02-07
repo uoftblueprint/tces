@@ -45,7 +45,6 @@ const Header = styled.div`
 
 const Title = styled.h4`
   margin: 0;
-  font-family: Inter;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -57,7 +56,6 @@ const DateText = styled.div`
 `;
 
 const Body = styled.p`
-  font-family: Inter;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

@@ -23,7 +23,7 @@ function JobLeadEntryComponent({ entry }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "200px",
       }}
     >
       {renderComponent()}
