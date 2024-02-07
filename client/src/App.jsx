@@ -1,11 +1,8 @@
 import "./App.css";
 import Timeline from "./components/timeline-window-component/jobLeadWindow";
 
-function App () {
-  
-  return (
-    <Timeline/>
-  )
+function App() {
+  return <Timeline />;
 }
 // import { useState } from "react";
 // import {
@@ -289,7 +286,5 @@ function App () {
 //     </Router>
 //   );
 // }
-
-
 
 export default App;
