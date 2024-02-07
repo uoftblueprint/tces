@@ -7,14 +7,14 @@ import PropTypes from "prop-types";
 import FilterCard from "./client-dashboard-filter/FilterCard";
 import ClientTable from "./client-dashboard-table/ClientTable";
 
-
 function ClientDashboardComponent({ clientData }) {
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 10,
     page: 0,
   });
+
   // eslint-disable-next-line
-  const [rowCount, setRowCount] = useState(clientData.length)
+  const [rowCount, setRowCount] = useState(clientData.length);
 
   const displayedRows = clientData.slice(
     paginationModel.page * paginationModel.pageSize,
@@ -22,48 +22,35 @@ function ClientDashboardComponent({ clientData }) {
   );
 
   return (
-    <Box sx={{ display: "flex", height: "100%" }}>
-      <Box sx={{ width: "25%", minWidth: "250px", margin: "28px" }}>
-        <Box sx={{ display: "flex", mt: 3, alignItems: "center" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px", mt: 3 }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton>
-            <ArrowBackIcon sx={{ width: 40, height: 40 }} />
+            <ArrowBackIcon />
           </IconButton>
-          <Typography variant="h4" sx={{ ml: 2 }}>My Clients</Typography>
+          <Typography variant="h4" sx={{ ml: 1 }}>Clients</Typography>
         </Box>
-        <Box sx={{ mt: 9}}>
-          <FilterCard />
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          flexGrow: 1,
-          maxWidth: "75%",
-          marginTop: "55px",
-          marginRight: "50px",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 2,
-            marginBottom: "55px",
-          }}
-        >
+        <Box>
           <Button variant="outlined" startIcon={<DownloadIcon />}>
             EXPORT CURRENT FILTER VIEW ({clientData.length} CLIENTS)
           </Button>
-          <Button variant="contained" startIcon={<AddIcon />}>
+          <Button variant="contained" startIcon={<AddIcon />} sx={{ ml: 2 }}>
             ADD NEW CLIENT
           </Button>
         </Box>
-        <ClientTable
-          clientData={displayedRows}
-          paginationModel={paginationModel}
-          setPaginationModel={setPaginationModel}
-          totalRowCount={rowCount}
-        />
+      </Box>
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
+        <Box sx={{ width: "25%", minWidth: "250px", padding: "20px" }}>
+          <FilterCard />
+        </Box>
+        <Box sx={{ flexGrow: 1, maxWidth: "75%", padding: "20px" }}>
+          <ClientTable
+            clientData={displayedRows}
+            paginationModel={paginationModel}
+            setPaginationModel={setPaginationModel}
+            totalRowCount={rowCount}
+          />
+        </Box>
       </Box>
     </Box>
   );
