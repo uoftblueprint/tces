@@ -5,6 +5,9 @@ module.exports = {
   findAll: () => {
     return {};
   },
+  findAndCountAll: () => {
+    return {};
+  },
   count: () => {
     return {};
   },

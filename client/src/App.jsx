@@ -9,16 +9,15 @@ import {
 
 // page components
 import * as React from "react";
-// import DashboardPage from "./pages/dashboard";
+import DashboardPage from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
 import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-import ClientDashboard from "./pages/client-dashboard";
 // mock data
-// import mockJobUpdates from "./mock-data/mockJobUpdates";
+import mockJobUpdates from "./mock-data/mockJobUpdates";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -35,6 +34,7 @@ import EditJobLead from "./pages/edit-job-lead";
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
+import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -54,7 +54,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   // Job Updates State
-  // const [jobUpdates] = useState(mockJobUpdates);
+  const [jobUpdates] = useState(mockJobUpdates);
 
   // Admin State
   const [managedUsers, setManagedUsers] = useState([]);
@@ -145,7 +145,12 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <ClientDashboard />
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <DashboardPage currUser={currUser} jobUpdates={jobUpdates} />
+                </AuthGuard>
               }
             />
             <Route
@@ -203,18 +208,23 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <EditJobLead
-                      managedUsers={managedUsers}
-                      managedJobLeads={managedJobLeads}
-                      getEmployerById={getEmployerById}
-                      getUserById={getUserById}
-                      setLocalExitRoute={setLocalExitRoute}
-                      setSnackBarMessage={setSnackBarMessage}
-                    />
-                  </EmployersLoader>
+                  <ManagedJobLeadsLoader
+                    setManagedJobLeads={setManagedJobLeads}
+                  >
+                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                      <EmployersLoader setEmployers={setEmployers}>
+                        <EditJobLead
+                          managedUsers={managedUsers}
+                          managedJobLeads={managedJobLeads}
+                          getEmployerById={getEmployerById}
+                          getUserById={getUserById}
+                          setLocalExitRoute={setLocalExitRoute}
+                          setSnackBarMessage={setSnackBarMessage}
+                        />
+                      </EmployersLoader>
+                    </ManagedUsersLoader>
+                  </ManagedJobLeadsLoader>
                 </AuthGuard>
               }
             />
