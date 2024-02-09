@@ -46,10 +46,10 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     if (filterParams.phoneNumber)
       queryParams.append("phoneNumber", filterParams.phoneNumber);
     if (filterParams.dateFrom)
-      queryParams.append("startDateAdded", filterParams.dateFrom.toISOString());
+      queryParams.append("startDateAdded", filterParams.dateFrom);
     if (filterParams.dateTo)
-      queryParams.append("endDateAdded", filterParams.dateTo.toISOString());
-    if (filterParams.searchPostalCodeQuery)
+      queryParams.append("endDateAdded", filterParams.dateTo);
+    if (filterParams.postalCode)
       queryParams.append("postalCode", filterParams.postalCode);
 
     return queryParams;
@@ -118,7 +118,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     <Container>
       <LoadingScreenComponent isLoading={initialLoading}>
         <DashboardContainer>
-          <EmployerDashboardHeader numEntries={employers.length} />
+          <EmployerDashboardHeader numEntries={rowCount} />
           <Box
             sx={{
               display: "flex",

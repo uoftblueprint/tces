@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 import UserChipComponent from "../../shared/user-chip-component";
 import UserType from "../../../prop-types/UserType";
 
@@ -12,6 +14,11 @@ function EmployerDashboardTable({
   isLoading,
   totalRowCount,
 }) {
+  const navigate = useNavigate();
+  const handleEmployerNavClick = (employerId) => {
+    navigate(`/employers/${employerId}`);
+  };
+
   const formatDate = (date) => {
     const dateObj = new Date(date);
     return `${
@@ -20,7 +27,28 @@ function EmployerDashboardTable({
   };
 
   const columns = [
-    { field: "employerName", headerName: "Employer Name", flex: 1 },
+    {
+      headerName: "Employer Name",
+      editable: false,
+      sortable: false,
+      filterable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          onClick={() => handleEmployerNavClick(params.row.employerID)}
+          style={{
+            textDecoration: "underline",
+            color: "#3568E5",
+            textTransform: "none",
+            padding: 0,
+            textAlign: "left",
+            justifyContent: "flex-start",
+          }}
+        >
+          {params.row.employerName}
+        </Button>
+      ),
+    },
     {
       field: "date",
       headerName: "Date",
@@ -43,6 +71,7 @@ function EmployerDashboardTable({
 
   const rows = managedEmployers.map((item, index) => ({
     id: index,
+    employerID: item.employerID,
     employerName: item.name,
     date: item.dateAdded,
     phoneNumber: item.phoneNumber,

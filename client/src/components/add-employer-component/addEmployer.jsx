@@ -44,7 +44,7 @@ function AddEmployer({ currUser }) {
     ],
     jobLeads: [
       {
-        id: 1,
+        id: 0,
         title: "",
         minCompensation: NaN,
         maxCompensation: NaN,
