@@ -232,8 +232,8 @@ function AddEmployerInfo({
                   pointerEvents: "none",
                 },
                 "& .MuiPaginationItem-page.Mui-selected": {
-                  backgroundColor: "grey",
-                  color: "#3568E5",
+                  backgroundColor: "#3568e5",
+                  color: "white",
                 },
               }}
             />
