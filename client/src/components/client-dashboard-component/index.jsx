@@ -30,8 +30,7 @@ function ClientDashboardComponent({ clientData }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "20px",
-            mt: 3,
+            margin: "20px",
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
