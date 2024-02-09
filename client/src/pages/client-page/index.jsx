@@ -3,12 +3,9 @@ import * as React from "react";
 import Client from "../../components/client-page";
 // import { getUserByIdHelper } from "../../utils/users";
 
-
 // const [managedUsers, setManagedUsers] = React.useState([]);
 
-
 function ClientPage() {
-
   const today = new Date();
   today.setMonth(today.getMonth() - 3);
   const threeMonthsAgo = today.toLocaleDateString("en-US");
@@ -21,17 +18,17 @@ function ClientPage() {
 
   const dummyOwner = {
     userID: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
     isAdmin: true,
   };
 
   const dummyCreator = {
     userID: 2,
-    firstName: 'Selin',
-    lastName: 'Tasman',
-    email: 'selin.doe@example.com',
+    firstName: "Selin",
+    lastName: "Tasman",
+    email: "selin.doe@example.com",
     isAdmin: true,
   };
 
@@ -53,7 +50,6 @@ function ClientPage() {
 
   const [clientInfo, setClientInfo] = React.useState(initialClientInfo);
   const { owner, creator } = clientInfo;
-
 
   const handleSave = (updatedClientInfo) => {
     setClientInfo(updatedClientInfo);
