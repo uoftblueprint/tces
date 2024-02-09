@@ -7,7 +7,4 @@ const HeaderContainer = styled.div`
 
 const TopRowContainer = styled.div``;
 
-export {
-  HeaderContainer,
-  TopRowContainer,
-};
+export { HeaderContainer, TopRowContainer };

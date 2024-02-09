@@ -94,7 +94,7 @@ const modifyUser = async (modifiedUser) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(modifyUserBody),
-    }
+    },
   );
   return response;
 };
@@ -174,7 +174,7 @@ const getFilteredJobLeads = async (queryParams) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   return response;
 };
@@ -205,7 +205,7 @@ const modifyJobLead = async (modifiedJobLead) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(modifyJobLeadBody),
-    }
+    },
   );
   return response;
 };
@@ -219,7 +219,7 @@ const getEmployer = async (employerID) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 
   return response;
@@ -274,7 +274,7 @@ const modifyEmployerInfo = async (modifiedEmployerInfo) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(modifyEmployerBody),
-    }
+    },
   );
   return response;
 };

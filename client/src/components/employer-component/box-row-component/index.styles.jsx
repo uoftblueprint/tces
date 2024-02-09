@@ -12,7 +12,4 @@ const temp = styled.div`
   color: white;
 `;
 
-export {
-  BoxDivider,
-  temp,
-};
+export { BoxDivider, temp };
