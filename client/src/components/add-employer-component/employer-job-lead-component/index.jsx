@@ -135,7 +135,8 @@ function AddEmployerJobLead({
                 <DialogTitle>ARE YOU SURE?</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    You will lose all your progress and return to the Dashboard.
+                    You will lose all your progress and return to the employers
+                    table.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
