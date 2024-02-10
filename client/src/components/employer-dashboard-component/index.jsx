@@ -19,6 +19,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     page: 0,
   });
   const [rowCount, setRowCount] = React.useState(employers.length);
+  const [owners, setOwners] = React.useState([]);
   const [errorOb, setError] = React.useState(null);
 
   // helper to generate query params based on pagination model state and filter configs
@@ -49,6 +50,8 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
       queryParams.append("startDateAdded", filterParams.dateFrom);
     if (filterParams.dateTo)
       queryParams.append("endDateAdded", filterParams.dateTo);
+    if (filterParams.ownerId)
+      queryParams.append("ownerId", filterParams.ownerId);
     if (filterParams.postalCode)
       queryParams.append("postalCode", filterParams.postalCode);
 
@@ -89,6 +92,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
           phoneNumber: employer.phone_number,
           website: employer.website,
         }));
+        setOwners(employersData.uniqueOwners);
         setEmployers(formattedEmployers);
         setRowCount(employersData.total);
       } else {
@@ -132,6 +136,8 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
             <EmployerDashboardFilter
               handleApplyFilter={handleApplyFilter}
               paginationModel={paginationModel}
+              owners={owners}
+              getUserById={getUserById}
             />
             <EmployerDashboardTable
               managedEmployers={employers}

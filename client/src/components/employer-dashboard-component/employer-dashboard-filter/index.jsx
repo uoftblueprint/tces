@@ -13,20 +13,31 @@ import PropTypes from "prop-types";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import * as React from "react";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { getOwnerIds } from "../../../utils/jobLeads";
 import JobLeadType from "../../../prop-types/JobLeadType";
 
-function EmployerDashboardFilter({ paginationModel, handleApplyFilter }) {
+function EmployerDashboardFilter({
+  paginationModel,
+  handleApplyFilter,
+  owners,
+  getUserById,
+}) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);
   const [ignorePaginationChange, setIgnorePaginationChange] =
     React.useState(false);
 
   // local filter states
+  const ownerOptions = getOwnerIds(owners, getUserById);
   const [employerName, setEmployerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
   const [postalCode, setPostalCode] = useState("");
+  const [ownerId, setOwnerId] = React.useState(-1);
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
@@ -36,12 +47,17 @@ function EmployerDashboardFilter({ paginationModel, handleApplyFilter }) {
     setter(newValue);
   };
 
+  const onOwnerIdChange = (event) => {
+    setOwnerId(event.target.value);
+  };
+
   const applyFilters = (isInvokedByPageChange = false) => {
     const filterParams = {
       employerName,
       phoneNumber,
       dateFrom,
       dateTo,
+      ownerId,
       postalCode,
     };
     setIgnorePaginationChange(true);
@@ -163,6 +179,31 @@ function EmployerDashboardFilter({ paginationModel, handleApplyFilter }) {
             sx={{ mb: 2 }}
           />
         </LocalizationProvider>
+        <Typography
+          sx={{ fontSize: 14, mb: 2 }}
+          color="text.secondary"
+          align="left"
+          gutterBottom
+        >
+          Owner
+        </Typography>
+        <FormControl fullWidth>
+          <Select
+            labelId="owner-select-label"
+            id="owner-select"
+            value={ownerId}
+            displayEmpty
+            onChange={onOwnerIdChange}
+            sx={{ mb: 2 }}
+          >
+            <MenuItem value={-1}>Any</MenuItem>
+            {ownerOptions.map((owner) => (
+              <MenuItem key={owner.ownerID} value={owner.ownerID}>
+                {owner.userName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <Typography
           sx={{ fontSize: 14, mb: 2 }}
@@ -209,6 +250,8 @@ EmployerDashboardFilter.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   paginationModel: PropTypes.object.isRequired,
   handleApplyFilter: PropTypes.func.isRequired,
+  owners: PropTypes.arrayOf(PropTypes.number).isRequired,
+  getUserById: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

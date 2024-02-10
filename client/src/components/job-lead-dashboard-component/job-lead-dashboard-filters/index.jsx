@@ -302,7 +302,6 @@ function JobLeadDashboardFiltersComponent({
                 return <TextField {...params} size="small" fullWidth />;
               }}
             />
-
             {/* Compensation Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -325,7 +324,6 @@ function JobLeadDashboardFiltersComponent({
                 marks={compensationSliderMarks}
               />
             </Box>
-
             {/* Hours Per Week Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -348,7 +346,6 @@ function JobLeadDashboardFiltersComponent({
                 marks={hourSliderMarks}
               />
             </Box>
-
             {/* Owner Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -358,10 +355,11 @@ function JobLeadDashboardFiltersComponent({
             >
               Owner
             </Typography>
+            =
             <FormControl fullWidth>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="owner-select-label"
+                id="owner-select"
                 value={ownerId}
                 displayEmpty
                 onChange={onOwnerIdChange}
@@ -374,7 +372,6 @@ function JobLeadDashboardFiltersComponent({
                 ))}
               </Select>
             </FormControl>
-
             {/* NOC Filter */}
             <Typography
               sx={{ fontSize: 14 }}
