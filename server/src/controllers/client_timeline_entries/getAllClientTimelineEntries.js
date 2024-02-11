@@ -9,11 +9,15 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    const { type } = req.query;
+    const { type, client } = req.query;
 
     const query = {};
     if (type) {
       query.type = { [Op.like]: `%${type}%` };
+    }
+
+    if (client) {
+      query.client = { [Op.like]: `%${client}%` };
     }
 
     const searchConfig = {

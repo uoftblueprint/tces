@@ -4,6 +4,7 @@ const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
 const Client = require("./client.model");
 const JobLead = require("./job_lead.model");
+const Employer = require("./employer.model");
 
 const EmployerTimelineEntry = sequelize.define(
   "employer_timeline_entries",
@@ -42,6 +43,15 @@ const EmployerTimelineEntry = sequelize.define(
       allowNull: true,
       references: {
         model: User, // to be replaced when Contact api is done
+        key: "id",
+      },
+      defaultValue: -1,
+    },
+    employer: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Employer,
         key: "id",
       },
       defaultValue: -1,

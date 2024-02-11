@@ -9,11 +9,15 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    const { type } = req.query;
+    const { type, job_lead } = req.query;
 
     const query = {};
     if (type) {
       query.type = { [Op.like]: `%${type}%` };
+    }
+
+    if (job_lead) {
+      query.job_lead = { [Op.like]: `%${job_lead}%` };
     }
 
     const searchConfig = {

@@ -1,5 +1,7 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
+const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
+const User = require("../../models/user.model");
 
 const updateClientRequestHandler = async (req, res) => {
   try {
@@ -51,6 +53,30 @@ const updateClientRequestHandler = async (req, res) => {
 
     await client.set(req.body.values);
     await client.save();
+
+    const { name, email, phone_number, status, closure_date } = req.body.values;
+
+    const userObject = await User.findOne({ where: { id: client.first_name } });
+
+    const createTimelineEntry = async (field, value) => {
+      const title = `${userObject.first_name} updated ${field} to "${value}" for ${clientObject.name}`;
+      const body = `${userObject.first_name} has updated the ${field} to "${value}" for ${clientObject.name}.`;
+
+      await ClientTimelineEntry.create({
+        date_added: new Date(),
+        type: "update",
+        title,
+        body,
+        client,
+        user: userObject.id,
+      });
+    };
+
+    if (name) await createTimelineEntry("name", name);
+    if (email) await createTimelineEntry("email", email);
+    if (phone_number) await createTimelineEntry("phone number", phone_number);
+    if (status) await createTimelineEntry("status", status);
+    if (closure_date) await createTimelineEntry("closure date", closure_date);
 
     return res.status(200).json({
       status: "success",

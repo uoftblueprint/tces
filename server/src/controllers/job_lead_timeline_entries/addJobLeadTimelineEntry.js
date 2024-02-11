@@ -1,5 +1,8 @@
 const logger = require("pino")();
 const JobLeadTimelineEntry = require("../../models/job_lead_timeline_entry.model");
+const {
+  submitPlacementUpdateEntryInTimelines,
+} = require("../../utils/placement_entry_util");
 
 const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
   try {
@@ -28,7 +31,8 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    if (type === "note" && (!user || !title || !body)) {
+    // eslint-disable-next-line camelcase
+    if (type === "note" && (!user || !title || !body || !job_lead)) {
       return res.status(400).json({
         status: "fail",
         message: "For type note, user, title, and body must be defined",
@@ -36,16 +40,27 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    const jobLeadTimelineEntry = await JobLeadTimelineEntry.create({
-      date_added: new Date(),
-      type,
-      title,
-      body,
-      client,
-      // eslint-disable-next-line camelcase
-      job_lead,
-      user,
-    });
+    let jobLeadTimelineEntry;
+
+    if (type === "placement") {
+      jobLeadTimelineEntry = submitPlacementUpdateEntryInTimelines(
+          // eslint-disable-next-line camelcase
+        { type, title, body, client, job_lead, user },
+        "job_lead",
+      );
+    } else {
+      jobLeadTimelineEntry = await JobLeadTimelineEntry.create({
+        date_added: new Date(),
+        type,
+        title,
+        body,
+        client,
+        // eslint-disable-next-line camelcase
+        job_lead,
+        user,
+      });
+    }
+
     return res.status(200).json({
       status: "success",
       message: "created job lead timeline entry",

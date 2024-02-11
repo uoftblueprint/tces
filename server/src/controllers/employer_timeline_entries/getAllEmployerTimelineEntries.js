@@ -9,11 +9,15 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    const { type } = req.query;
+    const { type, employer } = req.query;
 
     const query = {};
     if (type) {
       query.type = { [Op.like]: `%${type}%` };
+    }
+
+    if (employer) {
+      query.employer = { [Op.like]: `%${employer}%` };
     }
 
     const searchConfig = {

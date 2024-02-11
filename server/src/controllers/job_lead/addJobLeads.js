@@ -1,5 +1,7 @@
 const logger = require("pino")();
 const JobLead = require("../../models/job_lead.model");
+const EmployerTimelineEntry = require("../../models/employer_timeline_entry.model");
+const User = require("../../models/user.model");
 
 const addJobLeadsRequestHandler = async (req, res) => {
   try {
@@ -17,16 +19,27 @@ const addJobLeadsRequestHandler = async (req, res) => {
         message: "created job leads",
         data: { jobLeads },
       });
-    } else {
-      const jobLead = await createJobLead(req.body.job_lead, req.user.id);
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          message: "created job lead",
-          data: { jobLead },
-        });
     }
+    const jobLead = await createJobLead(req.body.job_lead, req.user.id);
+    const userObject = await User.findOne({ where: { id: req.user.id } });
+
+    const title = `${userObject.first_name} added Job Lead`;
+    const body = `${jobLead.job_title}`;
+
+    await EmployerTimelineEntry.create({
+      date_added: new Date(),
+      type: "job_lead_add",
+      title,
+      body,
+      job_lead: jobLead.id,
+      user: req.user.id,
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "created job lead",
+      data: { jobLead },
+    });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user

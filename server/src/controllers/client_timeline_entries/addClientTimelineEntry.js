@@ -1,5 +1,8 @@
 const logger = require("pino")();
 const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
+const {
+  submitPlacementUpdateEntryInTimelines,
+} = require("../../utils/placement_entry_util");
 
 const addClientTimelineEntryRequestHandler = async (req, res) => {
   try {
@@ -47,16 +50,27 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    const clientTimelineEntry = await ClientTimelineEntry.create({
-      date_added: new Date(),
-      type,
-      title,
-      body,
-      client,
-      // eslint-disable-next-line camelcase
-      job_lead,
-      user,
-    });
+    let clientTimelineEntry;
+
+    if (type === "placement") {
+      clientTimelineEntry = submitPlacementUpdateEntryInTimelines(
+        // eslint-disable-next-line camelcase
+        { type, title, body, client, job_lead, user },
+        "client",
+      );
+    } else {
+      clientTimelineEntry = await ClientTimelineEntry.create({
+        date_added: new Date(),
+        type,
+        title,
+        body,
+        client,
+        // eslint-disable-next-line camelcase
+        job_lead,
+        user,
+      });
+    }
+
     return res.status(200).json({
       status: "success",
       message: "created client timeline entry",
