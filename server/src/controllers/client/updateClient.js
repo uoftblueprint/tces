@@ -3,7 +3,7 @@ const Client = require("../../models/client.model");
 
 const updateClientRequestHandler = async (req, res) => {
   try {
-    const client_id = req.params.client_id;
+    const { client_id } = req.params;
     const client = await Client.findOne({ where: { id: client_id } });
 
     if (!client) {

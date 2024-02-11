@@ -4,9 +4,9 @@ const router = express.Router();
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
-const createEmployerTimelineEntry = require("../controllers/employer_timeline_entries/addEmployerTimelineEntry");
+const addClientTimelineEntryRequestHandler = require("../controllers/client_timeline_entries/addClientTimelineEntry");
 
-const getAllEmployerTimelineEntries = require("../controllers/employer_timeline_entries/getAllEmployerTimelineEntries");
+const getAllClientTimelineEntriesRequestHandler = require("../controllers/client_timeline_entries/getAllClientTimelineEntries");
 
 
 /**
@@ -16,7 +16,7 @@ const getAllEmployerTimelineEntries = require("../controllers/employer_timeline_
  * @type string {body.email}
  * @type string {body.password}
  */
-router.post("", isLoggedIn, createEmployerTimelineEntry);
+router.post("", isLoggedIn, addClientTimelineEntryRequestHandler);
 /**
  * Get All Users
  *
@@ -30,7 +30,7 @@ router.post("", isLoggedIn, createEmployerTimelineEntry);
  * @type integer {query.limit}
  * @type string {query.name}
  */
-router.get("", isLoggedIn, getAllEmployerTimelineEntries);
+router.get("", isLoggedIn, getAllClientTimelineEntriesRequestHandler);
 
 
 module.exports = router;
