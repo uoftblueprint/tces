@@ -9,25 +9,38 @@ const addJobLeadTimelineEntryRequestHandler = require("../controllers/job_lead_t
 const getAllJobLeadTimelineEntriesRequestHandler = require("../controllers/job_lead_timeline_entries/getAllJobLeadTimelineEntries");
 
 /**
- * Expected body parameters:
- * @type string {body.first_name}
- * @type string {body.last_name}
- * @type string {body.email}
- * @type string {body.password}
+ * Add New Job Lead Timeline Entries
+ * @type string {entry.type}
+ * @type string {entry.title}
+ * @type string {entry.body}
+ * @type string {entry.client}
+ * @type string {entry.job_lead}
+ * @type string {entry.user}
+ *
+ * example body
+ * {
+ *   "entry": {
+ *     "type": "note",
+ *     "title": "test user added a note",
+ *     "body": "hello world",
+ *     "user": 1
+ *   }
+ * }
  */
 router.post("", isLoggedIn, addJobLeadTimelineEntryRequestHandler);
 /**
- * Get All Users
+ * Get All Job Lead Timeline Entries
  *
  *
- * Note: Removing isAdmin to getAllUsers handler to generate user
- *       options in other pages (e.g Job Leads Table Owner Filter)  that non-admins have access to
+ * @type enum "placement", "note" {query.type}
  *
  *
- * Expected Query Params:
- * @type integer {query.page}
- * @type integer {query.limit}
- * @type string {query.name}
+ * example body
+ * {
+ *   "query": {
+ *     "type": "update",
+ *   }
+ * }
  */
 router.get("", isLoggedIn, getAllJobLeadTimelineEntriesRequestHandler);
 

@@ -10,25 +10,37 @@ const getAllClientTimelineEntriesRequestHandler = require("../controllers/client
 
 
 /**
- * Expected body parameters:
- * @type string {body.first_name}
- * @type string {body.last_name}
- * @type string {body.email}
- * @type string {body.password}
+ * Add New Client Timeline Entries
+ * @type string {entry.type}
+ * @type string {entry.title}
+ * @type string {entry.body}
+ * @type string {entry.client}
+ * @type string {entry.job_lead}
+ * @type string {entry.user}
+ *
+ * example body
+ * {
+ *   "entry": {
+ *     "type": "note",
+ *     "title": "test user added a note",
+ *     "body": "hello world",
+ *     "user": 1
+ *   }
+ * }
  */
 router.post("", isLoggedIn, addClientTimelineEntryRequestHandler);
 /**
- * Get All Users
+ * Get All Client Timeline Entries
  *
  *
- * Note: Removing isAdmin to getAllUsers handler to generate user
- *       options in other pages (e.g Job Leads Table Owner Filter)  that non-admins have access to
+ * @type enum "update", "contact", "placement", "note" {query.type}
  *
- *
- * Expected Query Params:
- * @type integer {query.page}
- * @type integer {query.limit}
- * @type string {query.name}
+ * example body
+ * {
+ *   "query": {
+ *     "type": "update",
+ *   }
+ * }
  */
 router.get("", isLoggedIn, getAllClientTimelineEntriesRequestHandler);
 
