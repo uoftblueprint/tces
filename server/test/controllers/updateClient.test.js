@@ -1,5 +1,8 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import updateClientRequestHandler from "../../src/controllers/client/updateClient";
+import mockEmployerTimelineEntry from "../mocks/mockAddObject";
+import mockUser from "../mocks/mockGetAllObjects";
+
 const mock = require("mock-require");
 
 describe("updateClient test suite", () => {
@@ -7,13 +10,19 @@ describe("updateClient test suite", () => {
     status: (code) => {
       mockRes.statusCode = code;
       return {
-        json: (message) => {
-          return;
-        },
+        json: (message) => {},
       };
     },
     statusCode: 0,
   };
+
+  beforeEach(() => {
+    mock(
+      "../../src/models/employer_timeline_entry.model",
+      mockEmployerTimelineEntry,
+    );
+    mock("../../src/models/user.model", mockUser);
+  });
 
   afterEach(() => {
     // Reset status code after each test
@@ -106,9 +115,7 @@ describe("updateClient test suite", () => {
       mock("../../src/models/client.model", {
         findOne: async () => {
           const client = {
-            set: async (values) => {
-              return;
-            },
+            set: async (values) => {},
           };
 
           return client;

@@ -8,7 +8,6 @@ const createEmployerTimelineEntry = require("../controllers/employer_timeline_en
 
 const getAllEmployerTimelineEntries = require("../controllers/employer_timeline_entries/getAllEmployerTimelineEntries");
 
-
 /**
  * Expected body parameters:
  * @type string {body.first_name}
@@ -31,6 +30,5 @@ router.post("", isLoggedIn, createEmployerTimelineEntry);
  * @type string {query.name}
  */
 router.get("", isLoggedIn, getAllEmployerTimelineEntries);
-
 
 module.exports = router;

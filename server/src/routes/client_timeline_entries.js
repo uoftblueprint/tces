@@ -8,7 +8,6 @@ const addClientTimelineEntryRequestHandler = require("../controllers/client_time
 
 const getAllClientTimelineEntriesRequestHandler = require("../controllers/client_timeline_entries/getAllClientTimelineEntries");
 
-
 /**
  * Add New Client Timeline Entries
  * @type string {entry.type}
@@ -43,6 +42,5 @@ router.post("", isLoggedIn, addClientTimelineEntryRequestHandler);
  * }
  */
 router.get("", isLoggedIn, getAllClientTimelineEntriesRequestHandler);
-
 
 module.exports = router;

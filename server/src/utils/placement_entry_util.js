@@ -61,6 +61,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
   if (pageType === "client") {
     return clientBody;
   }
+  return null;
 };
 
 module.exports = {

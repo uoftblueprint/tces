@@ -56,7 +56,9 @@ const updateClientRequestHandler = async (req, res) => {
 
     const { name, email, phone_number, status, closure_date } = req.body.values;
 
-    const userObject = await User.findOne({ where: { id: client.first_name } });
+    const userObject = await User.findOne({
+      where: { id: client.first_name },
+    });
 
     const createTimelineEntry = async (field, value) => {
       const title = `${userObject.first_name} updated ${field} to "${value}" for ${clientObject.name}`;
@@ -72,11 +74,13 @@ const updateClientRequestHandler = async (req, res) => {
       });
     };
 
-    if (name) await createTimelineEntry("name", name);
-    if (email) await createTimelineEntry("email", email);
-    if (phone_number) await createTimelineEntry("phone number", phone_number);
-    if (status) await createTimelineEntry("status", status);
-    if (closure_date) await createTimelineEntry("closure date", closure_date);
+    if (name && userObject) await createTimelineEntry("name", name);
+    if (email && userObject) await createTimelineEntry("email", email);
+    if (phone_number && userObject)
+      await createTimelineEntry("phone number", phone_number);
+    if (status && userObject) await createTimelineEntry("status", status);
+    if (closure_date && userObject)
+      await createTimelineEntry("closure date", closure_date);
 
     return res.status(200).json({
       status: "success",
