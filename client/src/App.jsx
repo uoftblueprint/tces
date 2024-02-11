@@ -36,6 +36,7 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+import ClientDashboard from "./pages/client-dashboard";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -62,6 +63,9 @@ function App() {
 
   // Job Leads State
   const [managedJobLeads, setManagedJobLeads] = useState([]);
+
+  // Clients State
+  const [managedClients, setManagedClients] = useState([]);
 
   // Employer State
   const [employers, setEmployers] = useState([]);
@@ -193,7 +197,25 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/clients"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientDashboard
+                      managedClients={managedClients}
+                      setManagedClients={setManagedClients}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
+
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
             element={

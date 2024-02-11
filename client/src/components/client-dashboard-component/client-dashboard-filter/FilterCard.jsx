@@ -19,9 +19,26 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
+import PropTypes from "prop-types";
+import * as React from "react";
 import { STATUS_TYPES } from "../../../utils/contants";
+import ClientType from "../../../prop-types/ClientType";
+import { getOwnerIds } from "../../../utils/jobLeads";
 
-function FilterCard() {
+function FilterCard({
+  getUserById,
+  managedClients,
+  paginationModel,
+  owners,
+  handleApplyFilter,
+}) {
+  // setting and persisting initial state for option selection and slider range boundaries
+  const [initialLoad, setInitialLoad] = React.useState(true);
+  const [noFilterMode, setNoFilterMode] = React.useState(true);
+  const [ignorePaginationChange, setIgnorePaginationChange] =
+    React.useState(false);
+  const [ownerOptions, setOwnerOptions] = React.useState([]);
+
   const [values, setValues] = useState({
     name: "",
     phoneNumber: "",
@@ -29,7 +46,7 @@ function FilterCard() {
     dateUpdatedUntil: null,
     dateRegisteredFrom: null,
     dateRegisteredUntil: null,
-    owner: "All",
+    owner: -1,
     status: {
       active: false,
       rAndI: false,
@@ -46,7 +63,20 @@ function FilterCard() {
     setValues({ ...values, [prop]: newValue });
   };
 
-  const handleReset = () => {
+  const applyFilters = (isInvokedByPageChange = false) => {
+    setIgnorePaginationChange(true);
+    let customPageModel = null;
+    if (!isInvokedByPageChange) {
+      customPageModel = {
+        pageSize: 10,
+        page: 0,
+      };
+    }
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(values, customPageModel);
+  };
+
+  const onFilterReset = () => {
     setValues({
       name: "",
       phoneNumber: "",
@@ -54,7 +84,7 @@ function FilterCard() {
       dateUpdatedUntil: null,
       dateRegisteredFrom: null,
       dateRegisteredUntil: null,
-      owner: "All",
+      owner: -1,
       status: {
         active: false,
         rAndI: false,
@@ -62,7 +92,38 @@ function FilterCard() {
       },
       actionStatus: "all",
     });
+    setIgnorePaginationChange(true);
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(null, {
+      pageSize: 10,
+      page: 0,
+    });
   };
+
+  const onApplyFilterClick = () => {
+    setNoFilterMode(false);
+    applyFilters();
+  };
+
+  // triggers whenever the job leads list changes (e.g page change, filter change etc)
+  React.useEffect(() => {
+    if (initialLoad && managedClients?.length > 0) {
+      setOwnerOptions(getOwnerIds(owners, getUserById));
+      setInitialLoad(false);
+    }
+  }, [managedClients]);
+
+  React.useEffect(() => {
+    if (!initialLoad && !ignorePaginationChange) {
+      if (noFilterMode) {
+        handleApplyFilter(null);
+      } else {
+        applyFilters(true);
+      }
+    } else {
+      setIgnorePaginationChange(false);
+    }
+  }, [paginationModel]);
 
   return (
     <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4 }}>
@@ -180,7 +241,12 @@ function FilterCard() {
             onChange={handleChange("owner")}
             fullWidth
           >
-            <MenuItem value="All">All</MenuItem>
+            <MenuItem value={-1}>Any</MenuItem>
+            {ownerOptions.map((owner) => (
+              <MenuItem key={owner.ownerID} value={owner.ownerID}>
+                {owner.userName}
+              </MenuItem>
+            ))}
           </Select>
           <Typography
             sx={{ fontSize: 14 }}
@@ -209,16 +275,33 @@ function FilterCard() {
           </FormControl>
         </Stack>
       </CardContent>
-      <CardActions sx={{ display: "flex", p: 2, flexDirection: "column" }}>
-        <Button variant="contained" sx={{ width: "100%" }}>
-          APPLY FLILTER
+      <CardActions sx={{ justifyContent: "center", p: 2 }}>
+        <Button
+          size="small"
+          onClick={onFilterReset}
+          color="warning"
+          variant="outlined"
+          sx={{ mr: 1 }}
+        >
+          Reset
         </Button>
-        <Button onClick={handleReset} sx={{ mt: 2, alignSelf: "flex-start" }}>
-          RESET FILTERS
+        <Button size="small" onClick={onApplyFilterClick} variant="contained">
+          Apply
         </Button>
       </CardActions>
     </Card>
   );
 }
+
+FilterCard.propTypes = {
+  getUserById: PropTypes.func.isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  owners: PropTypes.arrayOf(PropTypes.number).isRequired,
+  handleApplyFilter: PropTypes.func.isRequired,
+  // eslint-disable-next-line
+};
 
 export default FilterCard;

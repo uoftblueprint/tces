@@ -1,7 +1,8 @@
 const logger = require("pino")();
-const Client = require("../../models/client.model");
 const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
+const Client = require("../../models/client.model");
+
+const { Op } = Sequelize;
 
 const getAllClientsRequestHandler = async (req, res) => {
   try {
@@ -96,7 +97,9 @@ const getAllClientsRequestHandler = async (req, res) => {
     const pageSize = req?.query?.pageSize
       ? parseInt(req.query.pageSize, 10)
       : null;
-    if (page && pageSize) {
+
+    if (page != null && pageSize != null) {
+      console.log("hit");
       query_options = {
         ...query_options,
         limit: pageSize,
