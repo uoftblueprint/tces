@@ -15,6 +15,8 @@ import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
+import ClientDashboard from "./pages/client-dashboard";
+import CreateClient from "./pages/create-client";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 
 // mock data
@@ -36,7 +38,6 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
-import ClientDashboard from "./pages/client-dashboard";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -266,6 +267,17 @@ function App() {
                       setLocalExitRoute={setLocalExitRoute}
                     />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <CreateClient currUser={currUser} />
                 </AuthGuard>
               }
             />

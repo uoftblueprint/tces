@@ -223,6 +223,36 @@ const getFilteredClients = async (queryParams) => {
   return response;
 };
 
+const createClients = async (clients, userID) => {
+  const formattedClients = clients.map((client) => {
+    return {
+      email: client.email,
+      phone_number: client.phoneNumber,
+      name: client.fullName,
+      owner: userID,
+      creator: userID,
+      date_added: new Date(),
+      date_updated: new Date(),
+      status: "active", // newly created clients will be active by default
+    };
+  });
+
+  const jobLeadsCreateBody = {
+    client: formattedClients,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/clients`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobLeadsCreateBody),
+  });
+  return response;
+};
+
 export {
   login,
   logout,
@@ -236,4 +266,5 @@ export {
   getFilteredJobLeads,
   modifyJobLead,
   getFilteredClients,
+  createClients,
 };

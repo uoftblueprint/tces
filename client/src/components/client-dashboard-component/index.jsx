@@ -190,7 +190,7 @@ function ClientDashboardComponent({
                   },
                 }}
                 startIcon={<AddIcon />}
-                onClick={() => navigate("/employers/add")}
+                onClick={() => navigate("/clients/add")}
               >
                 ADD NEW CLIENT
               </Button>

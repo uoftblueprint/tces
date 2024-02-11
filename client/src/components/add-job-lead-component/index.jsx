@@ -109,6 +109,7 @@ function AddJobLead({
   const cancelSubmit = () => {
     setConfirmDialog(false);
   };
+
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
