@@ -37,6 +37,13 @@ function JobLeadDashboardFiltersComponent({
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
   const [noFilterMode, setNoFilterMode] = React.useState(true);
+
+  // explaination of this useState "ignorePaginationChange":
+  // TLDR: this useState is used to avoid infinite loop when new filters are applied
+  // Explaination: this use state is used to avoid infinite recursive call within the useEffect hook below that triggers on [paginationModel]
+  // more specifically, whenever the user applies a new filter, we want to invoke a page change back to 0, but we also don't want to invoke
+  // another apply filter from that specific useEffect that triggers on pagination model because it will cause an infinite loop.
+  // Generally, we use this to let the hook know to know apply another filter as a toggle type mechanism
   const [ignorePaginationChange, setIgnorePaginationChange] =
     React.useState(false);
   const [ownerOptions, setOwnerOptions] = React.useState([]);
