@@ -1,7 +1,7 @@
 import AddEmployer from "../../components/add-employer-component/addEmployer";
 import UserType from "../../prop-types/UserType";
 
-function AddEmployerPage({currUser}) {
+function AddEmployerPage({ currUser }) {
   return <AddEmployer currUser={currUser} />;
 }
 

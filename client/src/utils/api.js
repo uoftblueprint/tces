@@ -117,7 +117,7 @@ const createEmployer = async (employer, ownerID, creatorID) => {
     name: employer.businessName,
     legal_name: employer.businessLegalName || null,
     phone_number: employer.phoneNumber || null,
-    fax: employer.faxNumber|| null,
+    fax: employer.faxNumber || null,
     email: employer.generalEmail || null,
     website: employer.website || null,
     naics_code: employer.naicsCode || null,

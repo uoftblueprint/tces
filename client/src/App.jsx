@@ -272,7 +272,7 @@ function App() {
                   loginUser={loginUser}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
-                    <AddEmployerPage currUser={currUser}/>
+                    <AddEmployerPage currUser={currUser} />
                   </EmployersLoader>
                 </AuthGuard>
               }
