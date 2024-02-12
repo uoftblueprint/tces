@@ -32,7 +32,7 @@ import { formateDateObjToStr } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
-import JOB_TYPES from "../../../utils/contants";
+import { JOB_TYPES } from "../../../utils/contants";
 
 function EditJobLeadFormComponent({
   jobLead,

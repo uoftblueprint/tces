@@ -14,7 +14,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { JobLeadContainer, H3 } from "./index.styles";
 import EmployerType from "../../prop-types/EmployerType";
-import JOB_TYPES from "../../utils/contants";
+import { JOB_TYPES } from "../../utils/contants";
 
 function JobLeadContent({
   jobLeadData,

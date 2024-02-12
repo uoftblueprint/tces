@@ -15,7 +15,7 @@ function ClientTable({
     {
       field: "name",
       headerName: "Name",
-      width: 175,
+      width: 200,
       editable: false,
       sortable: false,
       filterable: false,

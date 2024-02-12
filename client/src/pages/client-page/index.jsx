@@ -1,11 +1,24 @@
 import * as React from "react";
 
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import Client from "../../components/client-page";
+import ErrorComponent from "../../components/shared/error-screen-component";
+import LoadingScreenComponent from "../../components/shared/loading-screen-component";
+import { fetchClientById } from "../../utils/api";
+import UserType from "../../prop-types/UserType";
 // import { getUserByIdHelper } from "../../utils/users";
 
 // const [managedUsers, setManagedUsers] = React.useState([]);
 
-function ClientPage() {
+function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
+  const [clientLoaded, setClientLoaded] = React.useState(false);
+  const [clientObject, setClientObject] = React.useState(null);
+
+  const { clientID } = useParams();
+  const parsedClientID = parseInt(clientID, 10);
+
   const today = new Date();
   today.setMonth(today.getMonth() - 3);
   const threeMonthsAgo = today.toLocaleDateString("en-US");
@@ -16,54 +29,65 @@ function ClientPage() {
     timeDifference / (1000 * 60 * 60 * 24 * 30.44),
   );
 
-  const dummyOwner = {
-    userID: 1,
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    isAdmin: true,
-  };
+  const [errorDisplay, setError] = useState(null);
 
-  const dummyCreator = {
-    userID: 2,
-    firstName: "Selin",
-    lastName: "Tasman",
-    email: "selin.doe@example.com",
-    isAdmin: true,
-  };
+  useEffect(() => {
+    const getClientById = async () => {
+      try {
+        // fetch all
+        const response = await fetchClientById(parsedClientID);
+        if (response.ok) {
+          const clientData = await response.json();
+          const initialClientInfo = {
+            clientID: clientData.data.client.id,
+            firstName: clientData.data.client.name,
+            email: clientData.data.client.email,
+            phone: clientData.data.client.phone_number,
+            status: clientData.data.client.status,
+            status_at_exit: clientData.data.client.status_at_exit,
+            status_at_3: clientData.data.client.status_at_3_months,
+            status_at_6: clientData.data.client.status_at_6_months,
+            status_at_9: clientData.data.client.status_at_9_months,
+            status_at_12: clientData.data.client.status_at_12_months,
+            owner: clientData.data.client.owner,
+            creator: clientData.data.client.creator,
+          };
+          setClientObject(initialClientInfo);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Fetch failed.");
+        }
+      } catch (error) {
+        setError("An error occurred: ", error.message);
+      } finally {
+        setClientLoaded(true);
+      }
+    };
 
-  const initialClientInfo = {
-    firstName: "First Name",
-    email: "email@email.com",
-    phone: "+1 111 111 1111",
-    status: "Closed",
-    closure_date: threeMonthsAgo,
-    time_since_closure: `${monthsSinceClosure} Months`,
-    status_at_exit: "Employed",
-    status_at_3: "",
-    status_at_6: "Employed",
-    status_at_9: "Employed",
-    status_at_12: "Training",
-    owner: dummyOwner,
-    creator: dummyCreator,
-  };
+    getClientById();
+  }, []);
 
-  const [clientInfo, setClientInfo] = React.useState(initialClientInfo);
-  const { owner, creator } = clientInfo;
-
-  const handleSave = (updatedClientInfo) => {
-    setClientInfo(updatedClientInfo);
-  };
+  if (errorDisplay) return <ErrorComponent message={errorDisplay} />;
 
   return (
-    <Client
-      clientInfo={clientInfo}
-      monthsSinceClosure={monthsSinceClosure}
-      onSaveChanges={handleSave}
-      owner={owner}
-      creator={creator}
-    />
+    <LoadingScreenComponent isLoading={!clientLoaded}>
+      {clientObject != null && (
+        <Client
+          clientInfo={clientObject}
+          monthsSinceClosure={monthsSinceClosure}
+          managedUsers={managedUsers}
+          getUserById={getUserById}
+          setSnackBarMessage={setSnackBarMessage}
+        />
+      )}
+    </LoadingScreenComponent>
   );
 }
+
+ClientPage.propTypes = {
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  getUserById: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
+};
 
 export default ClientPage;

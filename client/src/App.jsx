@@ -38,6 +38,7 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+import ClientPage from "./pages/client-page";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -267,6 +268,23 @@ function App() {
                       setLocalExitRoute={setLocalExitRoute}
                     />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/:clientID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientPage
+                      managedUsers={managedUsers}
+                      getUserById={getUserById}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
                 </AuthGuard>
               }
             />

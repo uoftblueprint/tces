@@ -233,11 +233,11 @@ const createClients = async (clients, userID) => {
       creator: userID,
       date_added: new Date(),
       date_updated: new Date(),
-      status: "active", // newly created clients will be active by default
+      status: "Active", // newly created clients will be active by default
     };
   });
 
-  const jobLeadsCreateBody = {
+  const clientsCreateBody = {
     client: formattedClients,
   };
 
@@ -248,8 +248,53 @@ const createClients = async (clients, userID) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(jobLeadsCreateBody),
+    body: JSON.stringify(clientsCreateBody),
   });
+  return response;
+};
+
+const fetchClientById = async (clientID) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${clientID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const modifyClient = async (modifiedClient) => {
+  const modifyClientBody = {
+    values: {
+      email: modifiedClient.email,
+      phone_number: modifiedClient.phone,
+      name: modifiedClient.name,
+      owner: modifiedClient.owner,
+      status_at_exit: modifiedClient.status_at_exit,
+      status_at_3_months: modifiedClient.status_at_3,
+      status_at_6_months: modifiedClient.status_at_6,
+      status_at_9_months: modifiedClient.status_at_9,
+      status_at_12_months: modifiedClient.status_at_12,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${modifiedClient.clientID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyClientBody),
+    },
+  );
   return response;
 };
 
@@ -267,4 +312,6 @@ export {
   modifyJobLead,
   getFilteredClients,
   createClients,
+  fetchClientById,
+  modifyClient,
 };
