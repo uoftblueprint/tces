@@ -434,17 +434,19 @@ function JobLeadDashboardFiltersComponent({
             </FormControl>
           </Stack>
         </CardContent>
-        <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <Button size="medium" onClick={onApplyFilterClick} variant="contained" fullWidth>
-            Apply Filters
+        <CardActions sx={{ display: "flex", p: 2, flexDirection: "column" }}>
+          <Button
+            variant="contained"
+            onClick={onApplyFilterClick}
+            sx={{ width: "100%" }}
+          >
+            APPLY FLILTER
           </Button>
           <Button
-            size="small"
             onClick={onFilterReset}
-            variant="text"
-            sx={{ p: 2 }}
+            sx={{ mt: 2, alignSelf: "flex-start" }}
           >
-            Reset Filters
+            RESET FILTERS
           </Button>
         </CardActions>
       </Card>
