@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -38,6 +39,7 @@ function EditJobLeadFormComponent({
   getEmployerById,
   setSnackBarMessage,
 }) {
+  const navigate = useNavigate();
   const employer = getEmployerById(jobLead.employerID);
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -225,7 +227,7 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 <Button
-                  onClick={() => {}}
+                  onClick={() => navigate(`employer/${jobLead.employerID}`)}
                   style={{
                     textDecoration: "underline",
                     color: "#3568E5",
