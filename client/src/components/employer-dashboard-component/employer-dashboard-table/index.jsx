@@ -1,21 +1,54 @@
 import PropTypes from "prop-types";
-import { Chip, Avatar } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import UserChipComponent from "../../shared/user-chip-component";
+import UserType from "../../../prop-types/UserType";
 
 function EmployerDashboardTable({
-  slicedData,
-  page,
+  managedEmployers,
+  paginationModel,
   rowsPerPage,
-  handleChangePage,
-  handleChangeRowsPerPage,
-  count,
+  setPaginationModel,
+  getUserById,
+  isLoading,
+  totalRowCount,
 }) {
+  const navigate = useNavigate();
+  const handleEmployerNavClick = (employerId) => {
+    navigate(`/employers/${employerId}`);
+  };
+
   const formatDate = (date) => {
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const dateObj = new Date(date);
+    return `${
+      dateObj.getMonth() + 1
+    }/${dateObj.getDate()}/${dateObj.getFullYear()}`;
   };
 
   const columns = [
-    { field: "employerName", headerName: "Employer Name", flex: 1 },
+    {
+      headerName: "Employer Name",
+      editable: false,
+      sortable: false,
+      filterable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          onClick={() => handleEmployerNavClick(params.row.employerID)}
+          style={{
+            textDecoration: "underline",
+            color: "#3568E5",
+            textTransform: "none",
+            padding: 0,
+            textAlign: "left",
+            justifyContent: "flex-start",
+          }}
+        >
+          {params.row.employerName}
+        </Button>
+      ),
+    },
     {
       field: "date",
       headerName: "Date",
@@ -29,53 +62,63 @@ function EmployerDashboardTable({
       field: "owner",
       headerName: "Owner",
       flex: 1,
-      renderCell: (params) => (
-        <Chip
-          avatar={<Avatar>{/* logic for the avatar */}</Avatar>}
-          label={params.value}
-        />
-      ),
+      renderCell: (params) => {
+        const owner = getUserById(params.row.owner);
+        return <UserChipComponent user={owner} />;
+      },
     },
   ];
 
-  const rows = slicedData.map((item, index) => ({
+  const rows = managedEmployers.map((item, index) => ({
     id: index,
-    employerName: item.employerName,
-    date: item.date,
+    employerID: item.employerID,
+    employerName: item.name,
+    date: item.dateAdded,
     phoneNumber: item.phoneNumber,
     email: item.email,
-    primaryContact: item.primaryContact,
-    owner: item.owner,
+    primaryContact: item.primaryContact ?? "Unknown",
+    owner: item.ownerID,
   }));
 
   return (
     <DataGrid
-      rows={rows}
-      columns={columns}
-      pageSize={rowsPerPage}
-      page={page - 1}
-      onPageSizeChange={(newPageSize) =>
-        handleChangeRowsPerPage({ target: { value: newPageSize } })
-      }
-      onPageChange={(newPage) => handleChangePage(null, newPage)}
-      rowCount={count}
-      pagination
-      paginationMode="server"
       sx={{
+        minHeight: "540px",
+        "& .actionButton": {
+          display: "none",
+        },
+        [`& .${gridClasses.row}:hover`]: {
+          ".actionButton": {
+            display: "block",
+          },
+        },
         background: "white",
       }}
+      rowCount={totalRowCount}
+      rows={rows}
+      columns={columns}
+      loading={isLoading}
+      pageSize={rowsPerPage}
+      pageSizeOptions={[10]}
+      paginationModel={paginationModel}
+      onPaginationModelChange={setPaginationModel}
+      disableColumnSelector
+      disableColumnMenu
+      paginationMode="server"
     />
   );
 }
 
 EmployerDashboardTable.propTypes = {
   // eslint-disable-next-line
-  slicedData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  page: PropTypes.number.isRequired,
+  managedEmployers: PropTypes.arrayOf(UserType).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  paginationModel: PropTypes.object.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  handleChangePage: PropTypes.func.isRequired,
-  handleChangeRowsPerPage: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired,
+  getUserById: PropTypes.func.isRequired,
+  setPaginationModel: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  totalRowCount: PropTypes.number.isRequired,
 };
 
 export default EmployerDashboardTable;

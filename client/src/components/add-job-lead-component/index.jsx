@@ -151,7 +151,8 @@ function AddJobLead({
                 <DialogTitle>ARE YOU SURE?</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    You will lose all your progress and return to the Dashboard.
+                    You will lose all your progress and return to the and return
+                    to the dashboard.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>

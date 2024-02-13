@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: 62.5%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -55,7 +55,7 @@ const Body = styled.p`
 `;
 
 const ButtonL = styled.button`
-  width: 62.5%;
+  width: 100%;
   padding: 16px;
   font-size: 20px;
   font-weight: 500;

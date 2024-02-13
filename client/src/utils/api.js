@@ -109,6 +109,48 @@ const deleteUser = async (userID) => {
   return response;
 };
 
+const createEmployer = async (employer, ownerID, creatorID) => {
+  const employerBody = {
+    owner: ownerID,
+    creator: creatorID,
+    date_added: new Date(),
+    name: employer.businessName,
+    legal_name: employer.businessLegalName || null,
+    phone_number: employer.phoneNumber || null,
+    fax: employer.faxNumber || null,
+    email: employer.generalEmail || null,
+    website: employer.website || null,
+    naics_code: employer.naicsCode || null,
+    address: employer.employerAddress || null,
+    city: employer.city || null,
+    province: employer.province || null,
+    postal_code: employer.postalCode || null,
+    secondary_address: employer.secondaryAddress || null,
+    secondary_city: employer.secondaryCity || null,
+    secondary_province: employer.secondaryProvince || null,
+    secondary_postal_code: employer.secondaryPostalCode || null,
+  };
+
+  const employerCreateBody = {
+    client: {
+      owner: ownerID,
+      creator: creatorID,
+    },
+    employer: employerBody,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employerCreateBody),
+  });
+  return response;
+};
+
 const getAllEmployers = async () => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(`${REACT_APP_API_BASE_URL}/employers`, {
@@ -118,6 +160,21 @@ const getAllEmployers = async () => {
       "Content-Type": "application/json",
     },
   });
+  return response;
+};
+
+const getFilteredEmployers = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
   return response;
 };
 
@@ -217,6 +274,8 @@ export {
   modifyUser,
   deleteUser,
   getAllEmployers,
+  createEmployer,
+  getFilteredEmployers,
   createJobLeads,
   getFilteredJobLeads,
   modifyJobLead,

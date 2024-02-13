@@ -1,5 +1,6 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import * as React from "react";
 import {
   Button,
   Dialog,
@@ -9,28 +10,23 @@ import {
   DialogTitle,
   Stack,
   Pagination,
+  Box,
+  Typography,
 } from "@mui/material";
+import dayjs from "dayjs";
 import JobLeadContent from "../../add-job-lead-component/jobLeadCard";
-import { Container, ButtonContainer, H1, Body, ButtonL } from "./index.styles";
+import { Container, ButtonContainer, ButtonL } from "./index.styles";
 
 function AddEmployerJobLead({
   onPageChange,
   employerData,
   setEmployerData,
   resetInitialState,
+  onSubmit,
+  isLoading,
 }) {
-  AddEmployerJobLead.propTypes = {
-    onPageChange: PropTypes.func.isRequired,
-    // eslint-disable-next-line react/forbid-prop-types
-    employerData: PropTypes.array.isRequired,
-    setEmployerData: PropTypes.func.isRequired,
-    resetInitialState: PropTypes.func.isRequired,
-  };
-  const [open, setOpen] = useState(false);
-
-  const handlePageChange = (event, value) => {
-    onPageChange(value);
-  };
+  const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,6 +34,11 @@ function AddEmployerJobLead({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSubmitButtonClick = (e) => {
+    e.preventDefault();
+    onSubmit();
   };
 
   const handleBackButtonClick = () => {
@@ -51,12 +52,15 @@ function AddEmployerJobLead({
       {
         id: newId,
         title: "",
-        compensation: "",
-        hoursPerWeek: "",
+        minCompensation: NaN,
+        maxCompensation: NaN,
+        hoursPerWeek: NaN,
+        nationalOC: NaN,
         description: "",
-        creationDate: null,
-        expirationDate: null,
-        employmentType: "",
+        creationDate: dayjs(),
+        expirationDate: dayjs().add(1, "month"),
+        employmentType: NaN,
+        numPositions: NaN,
       },
     ]);
   };
@@ -74,80 +78,117 @@ function AddEmployerJobLead({
 
   return (
     <Container>
-      <H1>Adding a New Employer</H1>
-      <Body>
-        Input information about any job leads associated with the employer.
-      </Body>
-      <JobLeadContent
-        jobLeadData={employerData}
-        handleInputChange={handleInputChange}
-        isAddEmployer
-      />
-      <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
-      <Stack spacing={2}>
-        <Pagination
-          count={3}
-          shape="rounded"
-          hidePrevButton
-          hideNextButton
-          onChange={(event, value) => handlePageChange(event, value)}
-          page={3}
+      <Stack direction="column" alignItems="center" spacing={4}>
+        <Box
           sx={{
-            "& .MuiPaginationItem-page.Mui-selected": {
-              backgroundColor: "#3568E5",
-              color: "white",
-            },
+            width: "63%",
           }}
-        />
-      </Stack>
-      <ButtonContainer>
-        <Button
-          sx={{ justifySelf: "flex-end" }}
-          variant="outlined"
-          onClick={handleClickOpen}
         >
-          DISCARD
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>ARE YOU SURE?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              You will lose all your progress and return to the Dashboard.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>CANCEL</Button>
-            <Button
-              onClick={() => {
-                handleClose();
-                handleResetInputs();
+          <Typography variant="h4" component="h1" textAlign="left">
+            Adding a New Employer
+          </Typography>
+          <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
+            Input information about the Employer/HR Contact(s) of the employer.
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: "63%",
+          }}
+        >
+          <form onSubmit={handleSubmitButtonClick}>
+            <JobLeadContent
+              jobLeadData={employerData}
+              handleInputChange={handleInputChange}
+              isAddEmployer
+            />
+            <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+            <Pagination
+              count={3}
+              shape="rounded"
+              hidePrevButton
+              hideNextButton
+              page={3}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                my: 2,
+                "& .MuiPaginationItem-root": {
+                  color: "#3568E5",
+                  pointerEvents: "none",
+                },
+                "& .MuiPaginationItem-page.Mui-selected": {
+                  backgroundColor: "#3568E5",
+                  color: "white",
+                },
               }}
-              autoFocus
-            >
-              YES, I&apos;M SURE
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <div style={{ display: "flex", gap: "16px" }}>
-          <Button
-            sx={{
-              background: "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
-              color: "black",
-              ":hover": {
-                background:
-                  "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.379))",
-              },
-            }}
-            variant="contained"
-            onClick={handleBackButtonClick}
-          >
-            BACK
-          </Button>
-          <Button variant="contained">SUBMIT</Button>
-        </div>
-      </ButtonContainer>
+            />
+            <ButtonContainer>
+              <Button
+                sx={{ justifySelf: "flex-end" }}
+                variant="outlined"
+                onClick={handleClickOpen}
+              >
+                DISCARD
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>ARE YOU SURE?</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    You will lose all your progress and return to the employers
+                    table.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>CANCEL</Button>
+                  <Button
+                    onClick={() => {
+                      handleClose();
+                      handleResetInputs();
+                      navigate("/employers");
+                    }}
+                    autoFocus
+                  >
+                    YES, I&apos;M SURE
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <div style={{ display: "flex", gap: "16px" }}>
+                <Button
+                  sx={{
+                    background:
+                      "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
+                    color: "black",
+                    ":hover": {
+                      background:
+                        "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.379))",
+                    },
+                  }}
+                  variant="contained"
+                  onClick={handleBackButtonClick}
+                >
+                  BACK
+                </Button>
+                <Button type="submit" variant="contained" disabled={isLoading}>
+                  {isLoading ? "SUBMITTING..." : "SUBMIT"}
+                </Button>
+              </div>
+            </ButtonContainer>
+          </form>
+        </Box>
+      </Stack>
     </Container>
   );
 }
+
+AddEmployerJobLead.propTypes = {
+  onPageChange: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  employerData: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  setEmployerData: PropTypes.func.isRequired,
+  resetInitialState: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default AddEmployerJobLead;
