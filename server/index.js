@@ -50,9 +50,9 @@ app.use("/employers", employerRouter);
 app.use("/users", userRouter);
 app.use("/clients", clientRouter);
 app.use("/job_leads", jobLeadRouter);
-app.use("/timeline/job_leads", JobLeadTimelineRouter);
-app.use("/timeline/employers", EmployerTimelineRouter);
-app.use("/timeline/clients", ClientTimelineRouter);
+app.use("/job_leads_timeline", JobLeadTimelineRouter);
+app.use("/employers_timeline", EmployerTimelineRouter);
+app.use("/clients_timeline", ClientTimelineRouter);
 
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
