@@ -26,6 +26,7 @@ function EmployerInfoComponent({
   const open = Boolean(anchorEl);
 
   let owner = getUserById(employer.owner);
+
   let creator = getUserById(employer.creator);
 
   useEffect(() => {
@@ -148,7 +149,7 @@ function EmployerInfoComponent({
         </Box>
       </Box>
       <ChangeOwnerDialog
-        type="job-lead"
+        type="employer"
         entity={employer}
         currOwner={owner}
         onCancel={onChangeOwnerCancel}
