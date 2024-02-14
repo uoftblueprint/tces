@@ -217,6 +217,23 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/clients"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientDashboard
+                      managedClients={managedClients}
+                      setManagedClients={setManagedClients}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
@@ -281,6 +298,34 @@ function App() {
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddEmployerPage currUser={currUser} />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/:clientID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientPage
+                      managedUsers={managedUsers}
+                      getUserById={getUserById}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <CreateClient currUser={currUser} />
                 </AuthGuard>
               }
             />

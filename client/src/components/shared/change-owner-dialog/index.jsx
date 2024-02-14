@@ -20,7 +20,7 @@ import {
   getInitialsAndDisplayName,
   getUserByIdHelper,
 } from "../../../utils/users";
-import {modifyClient, modifyJobLead} from "../../../utils/api";
+import { modifyClient, modifyJobLead } from "../../../utils/api";
 
 function ChangeOwnerDialog({
   type,
