@@ -275,18 +275,16 @@ function FilterCard({
           </FormControl>
         </Stack>
       </CardContent>
-      <CardActions sx={{ justifyContent: "center", p: 2 }}>
+      <CardActions sx={{ display: "flex", p: 2, flexDirection: "column" }}>
         <Button
-          size="small"
-          onClick={onFilterReset}
-          color="warning"
-          variant="outlined"
-          sx={{ mr: 1 }}
+          onClick={onApplyFilterClick}
+          variant="contained"
+          sx={{ width: "100%" }}
         >
-          Reset
+          APPLY FILTER
         </Button>
-        <Button size="small" onClick={onApplyFilterClick} variant="contained">
-          Apply
+        <Button onClick={onFilterReset} sx={{ mt: 2, alignSelf: "flex-start" }}>
+          RESET FILTERS
         </Button>
       </CardActions>
     </Card>
