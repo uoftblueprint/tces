@@ -24,7 +24,7 @@ import Box from "@mui/material/Box";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import { valuetext, getOwnerIds } from "../../../utils/jobLeads";
 
-import JOB_TYPES from "../../../utils/contants";
+import { JOB_TYPES } from "../../../utils/contants";
 
 function JobLeadDashboardFiltersComponent({
   managedJobLeads,
@@ -37,6 +37,13 @@ function JobLeadDashboardFiltersComponent({
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
   const [noFilterMode, setNoFilterMode] = React.useState(true);
+
+  // explaination of this useState "ignorePaginationChange":
+  // TLDR: this useState is used to avoid infinite loop when new filters are applied
+  // Explaination: this use state is used to avoid infinite recursive call within the useEffect hook below that triggers on [paginationModel]
+  // more specifically, whenever the user applies a new filter, we want to invoke a page change back to 0, but we also don't want to invoke
+  // another apply filter from that specific useEffect that triggers on pagination model because it will cause an infinite loop.
+  // Generally, we use this to let the hook know to know apply another filter as a toggle type mechanism
   const [ignorePaginationChange, setIgnorePaginationChange] =
     React.useState(false);
   const [ownerOptions, setOwnerOptions] = React.useState([]);
@@ -302,7 +309,6 @@ function JobLeadDashboardFiltersComponent({
                 return <TextField {...params} size="small" fullWidth />;
               }}
             />
-
             {/* Compensation Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -325,7 +331,6 @@ function JobLeadDashboardFiltersComponent({
                 marks={compensationSliderMarks}
               />
             </Box>
-
             {/* Hours Per Week Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -348,7 +353,6 @@ function JobLeadDashboardFiltersComponent({
                 marks={hourSliderMarks}
               />
             </Box>
-
             {/* Owner Filter */}
             <Typography
               sx={{ fontSize: 14 }}
@@ -358,10 +362,11 @@ function JobLeadDashboardFiltersComponent({
             >
               Owner
             </Typography>
+            =
             <FormControl fullWidth>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="owner-select-label"
+                id="owner-select"
                 value={ownerId}
                 displayEmpty
                 onChange={onOwnerIdChange}
@@ -374,7 +379,6 @@ function JobLeadDashboardFiltersComponent({
                 ))}
               </Select>
             </FormControl>
-
             {/* NOC Filter */}
             <Typography
               sx={{ fontSize: 14 }}

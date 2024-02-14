@@ -7,9 +7,7 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 
 export default function UserProfile() {
-  const handleBackClick = () => {
-    console.log("You clicked me");
-  };
+  const handleBackClick = () => {};
 
   return (
     <div style={{ marginTop: "40px" }}>
