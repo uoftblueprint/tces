@@ -6,7 +6,7 @@ const JobLead = require("./job_lead.model");
 const Client = require("./client.model");
 
 const ClientTimelineEntry = sequelize.define(
-  "clients",
+  "client_timeline_entries",
   {
     id: {
       type: DataTypes.BIGINT,
@@ -58,7 +58,7 @@ const ClientTimelineEntry = sequelize.define(
   },
   {
     timestamps: false,
-    tableName: "clients",
+    tableName: "client_timeline_entries",
   },
 );
 
