@@ -89,7 +89,7 @@ function EmployerDashboardHeader({ numEntries }) {
           },
         }}
         startIcon={<AddIcon />}
-        onClick={() => {}}
+        onClick={() => navigate("/employers/add")}
       >
         ADD NEW EMPLOYER
       </Button>

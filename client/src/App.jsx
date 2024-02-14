@@ -35,12 +35,13 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+import EmployerDashboard from "./pages/employer-dashboard";
+import AddEmployerPage from "./pages/add-employer";
 
 function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
-  const jobLeadRedirect = "/job-leads";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -192,6 +193,23 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/employers"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployerDashboard
+                      employers={employers}
+                      setEmployers={setEmployers}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
@@ -234,7 +252,6 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddJobLeadPage
@@ -242,6 +259,19 @@ function App() {
                       currUser={currUser}
                       setLocalExitRoute={setLocalExitRoute}
                     />
+                  </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/employers/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddEmployerPage currUser={currUser} />
                   </EmployersLoader>
                 </AuthGuard>
               }

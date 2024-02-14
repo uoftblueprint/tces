@@ -14,11 +14,26 @@ function EmployersLoader({ setEmployers, children }) {
         const response = await getAllEmployers();
         if (response.ok) {
           const employersData = await response.json();
-
-          // this was set up to get data for job leads (will populate rest of attributes in future ticket) but this will suffice for now
           const formattedEmployers = employersData.data.map((employer) => ({
             employerID: employer.id,
             name: employer.name,
+            creatorID: employer.creator,
+            ownerID: employer.owner,
+            address: employer.address,
+            city: employer.city,
+            postalCode: employer.postal_code,
+            province: employer.province,
+            secondaryAddress: employer.secondary_address,
+            secondaryCity: employer.secondary_city,
+            secondaryPostalCode: employer.secondary_postal_code,
+            secondaryProvince: employer.secondary_province,
+            dateAdded: employer.date_added,
+            email: employer.email,
+            fax: employer.fax,
+            legalName: employer.legal_name,
+            naicsCode: employer.naics_code,
+            phoneNumber: employer.phone_number,
+            website: employer.website,
           }));
           setEmployers(formattedEmployers);
         } else {
