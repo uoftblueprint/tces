@@ -23,7 +23,8 @@ const getAllJobLeadTimelineEntriesRequestHandler = require("../controllers/job_l
  *     "type": "note",
  *     "title": "test user added a note",
  *     "body": "hello world",
- *     "user": 1
+ *     "user": 1,
+ *     "job_lead": 1,
  *   }
  * }
  */
