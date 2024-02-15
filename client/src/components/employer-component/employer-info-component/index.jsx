@@ -69,7 +69,7 @@ function EmployerInfoComponent({
             style={{
               fontFamily: "Arial",
               fontSize: "34px",
-              fontWeight: 700,
+              fontWeight: 500,
               lineHeight: "42px",
               letterSpacing: "0.25px",
               textAlign: "left",
