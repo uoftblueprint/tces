@@ -2,12 +2,9 @@ import { Box } from "@mui/material";
 
 import styled from "styled-components";
 
-const ArrowContainer = styled.div`
-  height: 100%;
-`;
-
 const EmployerContainer = styled.div`
-  margin-right: 40px;
+  margin-right: 2rem;
+  margin-left: 2rem;
   width: 100%;
 `;
 const MainContainer = styled.div`
@@ -26,10 +23,4 @@ const BoxDivider = styled(Box)`
   margin-bottom: 10px;
 `;
 
-export {
-  EmployerContainer,
-  ArrowContainer,
-  MainContainer,
-  Divider,
-  BoxDivider,
-};
+export { EmployerContainer, MainContainer, Divider, BoxDivider };

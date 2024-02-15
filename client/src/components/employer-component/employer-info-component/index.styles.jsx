@@ -6,6 +6,4 @@ const HeaderContainer = styled.div`
   margin: 20px;
 `;
 
-const TopRowContainer = styled.div``;
-
-export { HeaderContainer, TopRowContainer };
+export default HeaderContainer;
