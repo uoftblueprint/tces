@@ -254,6 +254,7 @@ const getEmployerContacts = async (employerID) => {
 const modifyEmployerInfo = async (modifiedEmployerInfo) => {
   const modifyEmployerBody = {
     values: {
+      owner: modifiedEmployerInfo.owner,
       name: modifiedEmployerInfo.name,
       phone_number: modifiedEmployerInfo.phone_number,
       fax: modifiedEmployerInfo.fax,
