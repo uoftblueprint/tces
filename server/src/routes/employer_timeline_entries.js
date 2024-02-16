@@ -25,6 +25,7 @@ const getAllEmployerTimelineEntriesRequestHandler = require("../controllers/empl
  *     "title": "test user added a note",
  *     "body": "hello world",
  *     "user": 1
+ *     "employer": 1,
  *   }
  * }
  */
@@ -44,6 +45,18 @@ router.post("", isLoggedIn, addEmployerTimelineEntryRequestHandler);
  * {
  *   "query": {
  *     "type": "update",
+ *   }
+ * }
+ * example body for placement
+ * {
+ *   "entry": {
+ *     "type": "placement",
+ *     "title": "placement test",
+ *     "body": "hello worlddd",
+ *     "user": 1,
+ *     "employer": 1,
+ *     "client": 1,
+ *     "job_lead": 1
  *   }
  * }
  */

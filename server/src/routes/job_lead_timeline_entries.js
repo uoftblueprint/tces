@@ -27,6 +27,19 @@ const getAllJobLeadTimelineEntriesRequestHandler = require("../controllers/job_l
  *     "job_lead": 1,
  *   }
  * }
+ *
+ * example body for placement
+ * {
+ *   "entry": {
+ *     "type": "placement",
+ *     "title": "placement test",
+ *     "body": "hello worlddd",
+ *     "user": 1,
+ *     "employer": 1,
+ *     "client": 1,
+ *     "job_lead": 1
+ *   }
+ * }
  */
 router.post("", isLoggedIn, addJobLeadTimelineEntryRequestHandler);
 /**

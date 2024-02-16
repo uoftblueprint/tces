@@ -23,7 +23,21 @@ const getAllClientTimelineEntriesRequestHandler = require("../controllers/client
  *     "type": "note",
  *     "title": "test user added a note",
  *     "body": "hello world",
- *     "user": 1
+ *     "user": 1,
+ *     "client": 1,
+ *   }
+ * }
+ *
+ * example body for placement
+ * {
+ *   "entry": {
+ *     "type": "placement",
+ *     "title": "placement test",
+ *     "body": "hello worlddd",
+ *     "user": 1,
+ *     "employer": 1,
+ *     "client": 1,
+ *     "job_lead": 1
  *   }
  * }
  */
