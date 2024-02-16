@@ -36,8 +36,6 @@ router.post("", isLoggedIn, addEmployerTimelineEntryRequestHandler);
  *
  * @type enum "contact",
  *         "job_lead_add",
- *         "job_lead_update",
- *         "job_lead_delete",
  *         "placement",
  *         "note", {query.type}
  *

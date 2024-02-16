@@ -23,8 +23,6 @@ const EmployerTimelineEntry = sequelize.define(
       type: DataTypes.ENUM(
         "contact",
         "job_lead_add",
-        "job_lead_update",
-        "job_lead_delete",
         "placement",
         "note",
       ),

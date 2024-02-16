@@ -51,7 +51,7 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     }
 
     if (
-      ["job_lead_add", "job_lead_update", "job_lead_delete"].includes(type) &&
+      ["job_lead_add"].includes(type) &&
       // eslint-disable-next-line camelcase
       (!user || !title || !body || !job_lead || !employer)
     ) {

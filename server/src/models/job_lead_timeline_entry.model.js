@@ -3,6 +3,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const Client = require("./client.model");
 const User = require("./user.model");
+const Employer = require("./employer.model");
 const JobLead = require("./job_lead.model");
 
 const JobLeadTimelineEntry = sequelize.define(
@@ -42,6 +43,14 @@ const JobLeadTimelineEntry = sequelize.define(
       type: DataTypes.INTEGER,
       references: {
         model: JobLead,
+        key: "id",
+      },
+      defaultValue: -1,
+    },
+    employer: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Employer,
         key: "id",
       },
       defaultValue: -1,

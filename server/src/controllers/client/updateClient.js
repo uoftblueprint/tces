@@ -57,12 +57,12 @@ const updateClientRequestHandler = async (req, res) => {
     const { name, email, phone_number, status, closure_date } = req.body.values;
 
     const userObject = await User.findOne({
-      where: { id: client.first_name },
+      where: { id: req.body.values.user },
     });
 
     const createTimelineEntry = async (field, value) => {
-      const title = `${userObject.first_name} updated ${field} to "${value}" for ${clientObject.name}`;
-      const body = `${userObject.first_name} has updated the ${field} to "${value}" for ${clientObject.name}.`;
+      const title = `${userObject.first_name} ${userObject.last_name} updated ${field} to "${value}" for ${client.name}`;
+      const body = `${userObject.first_name} ${userObject.last_name} has updated the ${field} to "${value}" for ${client.name}.`;
 
       await ClientTimelineEntry.create({
         date_added: new Date(),
