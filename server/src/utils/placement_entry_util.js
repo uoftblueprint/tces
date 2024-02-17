@@ -22,10 +22,10 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
     type,
     title,
     body,
-    client_id: client,
+    client,
     // eslint-disable-next-line camelcase
-    job_lead_id: job_lead,
-    user_id: user,
+    job_lead,
+    user,
   });
 
   const clientBody = await ClientTimelineEntry.create({

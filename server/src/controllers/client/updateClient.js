@@ -54,7 +54,18 @@ const updateClientRequestHandler = async (req, res) => {
     await client.set(req.body.values);
     await client.save();
 
-    const { name, email, phone_number, status, closure_date } = req.body.values;
+    const {
+      name,
+      email,
+      phone_number,
+      status,
+      closure_date,
+      status_at_exit,
+      status_at_3_months,
+      status_at_6_months,
+      status_at_9_months,
+      status_at_12_months,
+    } = req.body.values;
 
     const userObject = await User.findOne({
       where: { id: req.body.values.user },
@@ -81,6 +92,16 @@ const updateClientRequestHandler = async (req, res) => {
     if (status && userObject) await createTimelineEntry("status", status);
     if (closure_date && userObject)
       await createTimelineEntry("closure date", closure_date);
+    if (status_at_exit && userObject)
+      await createTimelineEntry("status at exit", status_at_exit);
+    if (status_at_3_months && userObject)
+      await createTimelineEntry("status at 3 months", status_at_3_months);
+    if (status_at_6_months && userObject)
+      await createTimelineEntry("status at 6 months", status_at_6_months);
+    if (status_at_9_months && userObject)
+      await createTimelineEntry("status at 9 months", status_at_9_months);
+    if (status_at_12_months && userObject)
+      await createTimelineEntry("status at 12 months", status_at_12_months);
 
     return res.status(200).json({
       status: "success",

@@ -127,7 +127,8 @@ describe("addJobLeads test suite", () => {
       await addJobLeadsRequestHandler(mockReq, mockRes);
       // 2 times for creating job leads
       // 2 times for creating timeline entry about action
-      expect(spy).toHaveBeenCalledTimes(4);
+      // 2 times for bulk creating timeline entry
+      expect(spy).toHaveBeenCalledTimes(6);
     });
 
     it("Returns 200 on success", async () => {

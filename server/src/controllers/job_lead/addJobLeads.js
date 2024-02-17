@@ -11,6 +11,20 @@ const addJobLeadsRequestHandler = async (req, res) => {
       // create each job lead while doing the needed checks for each one as well
       for (const jobLeadData of req.body.job_lead) {
         const jobLead = await createJobLead(jobLeadData, req.user.id);
+
+        const title = `${req.user.first_name} added Job Lead`;
+        const body = jobLead ? `${jobLead.job_title}` : "";
+
+        await EmployerTimelineEntry.create({
+          date_added: new Date(),
+          type: "job_lead_add",
+          title,
+          body,
+          employer: jobLead ? jobLead.employer : -1,
+          job_lead: jobLead ? jobLead.id : -1,
+          user: req.user,
+        });
+
         jobLeads.push(jobLead);
       }
 
@@ -88,7 +102,7 @@ const createJobLead = async (jobLeadData, userId) => {
       type: "job_lead_add",
       title,
       body,
-      employer: jobLead ? jobLead.employer: -1,
+      employer: jobLead ? jobLead.employer : -1,
       job_lead: jobLead ? jobLead.id : -1,
       user: userId,
     });
