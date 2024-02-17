@@ -88,7 +88,7 @@ const createJobLead = async (jobLeadData, userId) => {
       type: "job_lead_add",
       title,
       body,
-      employer: jobLead.employer,
+      employer: jobLead ? jobLead.employer: -1,
       job_lead: jobLead ? jobLead.id : -1,
       user: userId,
     });
