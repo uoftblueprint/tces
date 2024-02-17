@@ -20,12 +20,7 @@ const EmployerTimelineEntry = sequelize.define(
       defaultValue: DataTypes.NOW,
     },
     type: {
-      type: DataTypes.ENUM(
-        "contact",
-        "job_lead_add",
-        "placement",
-        "note",
-      ),
+      type: DataTypes.ENUM("contact", "job_lead_add", "placement", "note"),
       allowNull: false,
     },
     title: {
