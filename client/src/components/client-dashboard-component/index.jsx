@@ -11,6 +11,7 @@ import ClientTable from "./client-dashboard-table/ClientTable";
 import ClientDashboardContainer from "./index.styles";
 import { formatDateStr } from "../../utils/date";
 import { getFilteredClients } from "../../utils/api";
+import { capitalizeFirstLetter } from "../../utils/users";
 import ErrorComponent from "../shared/error-screen-component";
 import LoadingScreenComponent from "../shared/loading-screen-component";
 import ClientType from "../../prop-types/ClientType";
@@ -105,7 +106,7 @@ function ClientDashboardComponent({
           email: client.email,
           dateUpdated: formatDateStr(client.date_updated),
           dateAdded: formatDateStr(client.date_added),
-          status: client.status,
+          status: capitalizeFirstLetter(client.status),
           statusAt3Months: client.status_at_3_months,
           statusAt6Months: client.status_at_6_months,
           statusAt9Months: client.status_at_9_months,

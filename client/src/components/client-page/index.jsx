@@ -206,7 +206,7 @@ export default function ClientPage({
       if (response.ok) {
         setSnackBarMessage("Client updated successfully.");
         setIsEditMode(true);
-        navigate(0);
+        navigate("/clients");
       } else {
         setSnackBarMessage("Failed to update client.");
       }
@@ -277,17 +277,19 @@ export default function ClientPage({
           </Box>
         </Box>
         {/* !!!IMPORTANT MAKE NECESSARY CHANGES WHEN ROUTING :} !!! */}
-        <ChangeOwnerDialog
-          type="client"
-          entity={clientInfo}
-          currOwner={owner}
-          onCancel={onChangeOwnerCancel}
-          onConfirm={onOwnerChangeConfirm}
-          open={ownerChangeDialog}
-          users={managedUsers}
-          setSnackBarMessage=""
-          setError={setErrorObj}
-        />
+        {owner && (
+          <ChangeOwnerDialog
+            type="client"
+            entity={clientInfo}
+            currOwner={owner}
+            onCancel={onChangeOwnerCancel}
+            onConfirm={onOwnerChangeConfirm}
+            open={ownerChangeDialog}
+            users={managedUsers}
+            setSnackBarMessage=""
+            setError={setErrorObj}
+          />
+        )}
       </div>
       <Paper>
         <Box>

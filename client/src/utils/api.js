@@ -332,11 +332,14 @@ const modifyClient = async (modifiedClient) => {
       phone_number: modifiedClient.phone,
       name: modifiedClient.name,
       owner: modifiedClient.owner,
-      status_at_exit: modifiedClient.status_at_exit,
-      status_at_3_months: modifiedClient.status_at_3,
-      status_at_6_months: modifiedClient.status_at_6,
-      status_at_9_months: modifiedClient.status_at_9,
-      status_at_12_months: modifiedClient.status_at_12,
+      status: modifiedClient.status?.toLowerCase(),
+      status_at_exit: modifiedClient.status_at_exit
+        ?.toLowerCase()
+        ?.replace(/ /g, "_"),
+      status_at_3_months: modifiedClient.status_at_3?.toLowerCase(),
+      status_at_6_months: modifiedClient.status_at_6?.toLowerCase(),
+      status_at_9_months: modifiedClient.status_at_9?.toLowerCase(),
+      status_at_12_months: modifiedClient.status_at_12?.toLowerCase(),
     },
   };
 

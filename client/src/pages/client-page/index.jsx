@@ -8,6 +8,7 @@ import ErrorComponent from "../../components/shared/error-screen-component";
 import LoadingScreenComponent from "../../components/shared/loading-screen-component";
 import { fetchClientById } from "../../utils/api";
 import UserType from "../../prop-types/UserType";
+import { capitalizeFirstLetter } from "../../utils/users";
 // import { getUserByIdHelper } from "../../utils/users";
 
 // const [managedUsers, setManagedUsers] = React.useState([]);
@@ -43,7 +44,7 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
             firstName: clientData.data.client.name,
             email: clientData.data.client.email,
             phone: clientData.data.client.phone_number,
-            status: clientData.data.client.status,
+            status: capitalizeFirstLetter(clientData.data.client.status),
             status_at_exit: clientData.data.client.status_at_exit,
             status_at_3: clientData.data.client.status_at_3_months,
             status_at_6: clientData.data.client.status_at_6_months,
