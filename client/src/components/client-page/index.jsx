@@ -277,16 +277,16 @@ export default function ClientPage({
           </Box>
         </Box>
         {/* !!!IMPORTANT MAKE NECESSARY CHANGES WHEN ROUTING :} !!! */}
-        {owner && (
+        {managedUsers.length > 0 && (
           <ChangeOwnerDialog
             type="client"
             entity={clientInfo}
-            currOwner={owner}
+            currOwner={owner || managedUsers[0]}
             onCancel={onChangeOwnerCancel}
             onConfirm={onOwnerChangeConfirm}
             open={ownerChangeDialog}
             users={managedUsers}
-            setSnackBarMessage=""
+            setSnackBarMessage={setSnackBarMessage}
             setError={setErrorObj}
           />
         )}
