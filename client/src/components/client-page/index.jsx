@@ -555,14 +555,14 @@ export default function ClientPage({
                       </Grid>
                       <Grid item xs={7.5}>
                         <Typography gutterBottom variant="body1" align="left">
-                          {clientInfo.time_since_closure}
+                          {clientInfo.time_since_closure} Months
                         </Typography>
                       </Grid>
                       <Grid item xs={0.5} id="info-card-icon">
                         <IconButton>
                           <ContentCopyIcon
                             onClick={() =>
-                              handleCopyClick(clientInfo.time_since_closure)
+                              handleCopyClick(`${clientInfo.time_since_closure} Months`)
                             }
                           />
                         </IconButton>

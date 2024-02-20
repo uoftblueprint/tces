@@ -47,13 +47,21 @@ function FilterCard({
     dateRegisteredFrom: null,
     dateRegisteredUntil: null,
     owner: -1,
-    status: {
-      active: false,
-      rAndI: false,
-      closed: false,
-    },
     actionStatus: "all",
   });
+
+  const initialStatusSelect = STATUS_TYPES.reduce((acc, statusType) => {
+    acc[statusType] = true;
+    return acc;
+  }, {});
+  const [statusSelect, setStatusSelect] = React.useState(initialStatusSelect);
+
+  const handleStatusFilterChange = (event) => {
+    setStatusSelect({
+      ...statusSelect,
+      [event.target.name]: event.target.checked,
+    });
+  };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -73,7 +81,17 @@ function FilterCard({
       };
     }
     // we want to reset pagination model when we apply a filter
-    handleApplyFilter(values, customPageModel);
+    handleApplyFilter(
+      {
+        ...values,
+        status: {
+          active: statusSelect.Active,
+          rAndI: statusSelect["R&I"],
+          closed: statusSelect.Closed,
+        },
+      },
+      customPageModel,
+    );
   };
 
   const onFilterReset = () => {
@@ -85,13 +103,9 @@ function FilterCard({
       dateRegisteredFrom: null,
       dateRegisteredUntil: null,
       owner: -1,
-      status: {
-        active: false,
-        rAndI: false,
-        closed: false,
-      },
       actionStatus: "all",
     });
+    setStatusSelect(initialStatusSelect);
     setIgnorePaginationChange(true);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(null, {
@@ -263,8 +277,8 @@ function FilterCard({
                   key={statusType}
                   control={
                     <Checkbox
-                      checked={() => {}}
-                      onChange={() => {}}
+                      checked={statusSelect[statusType]}
+                      onChange={handleStatusFilterChange}
                       name={statusType}
                     />
                   }

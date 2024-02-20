@@ -8,7 +8,8 @@ import ErrorComponent from "../../components/shared/error-screen-component";
 import LoadingScreenComponent from "../../components/shared/loading-screen-component";
 import { fetchClientById } from "../../utils/api";
 import UserType from "../../prop-types/UserType";
-import { capitalizeFirstLetter } from "../../utils/users";
+import { cleanStatusString } from "../../utils/users";
+import {formatDateStr, monthsSince} from "../../utils/date";
 // import { getUserByIdHelper } from "../../utils/users";
 
 // const [managedUsers, setManagedUsers] = React.useState([]);
@@ -19,16 +20,6 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
 
   const { clientID } = useParams();
   const parsedClientID = parseInt(clientID, 10);
-
-  const today = new Date();
-  today.setMonth(today.getMonth() - 3);
-  const threeMonthsAgo = today.toLocaleDateString("en-US");
-  const closureDate = new Date(threeMonthsAgo);
-  const currentDate = new Date();
-  const timeDifference = currentDate - closureDate;
-  const monthsSinceClosure = Math.floor(
-    timeDifference / (1000 * 60 * 60 * 24 * 30.44),
-  );
 
   const [errorDisplay, setError] = useState(null);
 
@@ -44,12 +35,14 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
             firstName: clientData.data.client.name,
             email: clientData.data.client.email,
             phone: clientData.data.client.phone_number,
-            status: capitalizeFirstLetter(clientData.data.client.status),
-            status_at_exit: clientData.data.client.status_at_exit,
-            status_at_3: clientData.data.client.status_at_3_months,
-            status_at_6: clientData.data.client.status_at_6_months,
-            status_at_9: clientData.data.client.status_at_9_months,
-            status_at_12: clientData.data.client.status_at_12_months,
+            closure_date: formatDateStr(clientData.data.client.closure_date),
+            status: cleanStatusString(clientData.data.client.status),
+            time_since_closure: monthsSince(clientData.data.client.closure_date),
+            status_at_exit: cleanStatusString(clientData.data.client.status_at_exit),
+            status_at_3: cleanStatusString(clientData.data.client.status_at_3_months),
+            status_at_6: cleanStatusString(clientData.data.client.status_at_6_months),
+            status_at_9: cleanStatusString(clientData.data.client.status_at_9_months),
+            status_at_12: cleanStatusString(clientData.data.client.status_at_12_months),
             owner: clientData.data.client.owner,
             creator: clientData.data.client.creator,
           };
@@ -75,7 +68,7 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
       {clientObject != null && (
         <Client
           clientInfo={clientObject}
-          monthsSinceClosure={monthsSinceClosure}
+          monthsSinceClosure={clientObject.time_since_closure}
           managedUsers={managedUsers}
           getUserById={getUserById}
           setSnackBarMessage={setSnackBarMessage}

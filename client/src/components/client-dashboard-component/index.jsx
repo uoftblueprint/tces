@@ -11,7 +11,7 @@ import ClientTable from "./client-dashboard-table/ClientTable";
 import ClientDashboardContainer from "./index.styles";
 import { formatDateStr } from "../../utils/date";
 import { getFilteredClients } from "../../utils/api";
-import { capitalizeFirstLetter } from "../../utils/users";
+import { cleanStatusString } from "../../utils/users";
 import ErrorComponent from "../shared/error-screen-component";
 import LoadingScreenComponent from "../shared/loading-screen-component";
 import ClientType from "../../prop-types/ClientType";
@@ -73,13 +73,13 @@ function ClientDashboardComponent({
       );
     if (filterParams.owner && filterParams.owner !== -1)
       queryParams.append("owner", filterParams.owner);
-    if (filterParams.active !== undefined)
-      queryParams.append("active", filterParams.active);
-    if (filterParams.rAndI !== undefined)
-      queryParams.append("r_and_i", filterParams.rAndI);
-    if (filterParams.closed !== undefined)
+    if (filterParams.status.active !== undefined)
+      queryParams.append("active", filterParams.status.active);
+    if (filterParams.status.rAndI !== undefined)
+      queryParams.append("r_and_i", filterParams.status.rAndI);
+    if (filterParams.status.closed !== undefined)
       // Assuming closed is a boolean
-      queryParams.append("closed", filterParams.closed);
+      queryParams.append("closed", filterParams.status.closed);
 
     return queryParams;
   };
@@ -106,12 +106,13 @@ function ClientDashboardComponent({
           email: client.email,
           dateUpdated: formatDateStr(client.date_updated),
           dateAdded: formatDateStr(client.date_added),
-          status: capitalizeFirstLetter(client.status),
-          statusAt3Months: client.status_at_3_months,
-          statusAt6Months: client.status_at_6_months,
-          statusAt9Months: client.status_at_9_months,
-          statusAt12Months: client.status_at_12_months,
-          statusAtExit: client.status_at_exit,
+          dateClosed: formatDateStr(client.closure_date),
+          status: cleanStatusString(client.status),
+          statusAt3Months: cleanStatusString(client.status_at_3_months),
+          statusAt6Months: cleanStatusString(client.status_at_6_months),
+          statusAt9Months: cleanStatusString(client.status_at_9_months),
+          statusAt12Months: cleanStatusString(client.status_at_12_months),
+          statusAtExit: cleanStatusString(client.status_at_exit),
         }));
         setOwners(clientsData.uniqueOwners);
         setManagedClients(formattedClients);

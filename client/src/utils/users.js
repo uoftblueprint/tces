@@ -10,11 +10,13 @@ function getInitialsAndDisplayName(user) {
   return { initials, fullName };
 }
 
-function capitalizeFirstLetter(string) {
+function cleanStatusString(string) {
   if (string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    const stringWithSpaces = string.replace(/_/g, " ");
+
+    return stringWithSpaces.charAt(0).toUpperCase() + string.slice(1);
   }
   return string;
 }
 
-export { getUserByIdHelper, getInitialsAndDisplayName, capitalizeFirstLetter };
+export { getUserByIdHelper, getInitialsAndDisplayName, cleanStatusString };
