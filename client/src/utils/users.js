@@ -14,7 +14,12 @@ function cleanStatusString(string) {
   if (string) {
     const stringWithSpaces = string.replace(/_/g, " ");
 
-    return stringWithSpaces.charAt(0).toUpperCase() + string.slice(1);
+    const capitalizedString = stringWithSpaces
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    return capitalizedString;
   }
   return string;
 }
