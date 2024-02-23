@@ -16,7 +16,6 @@ import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 
