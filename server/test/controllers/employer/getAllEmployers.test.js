@@ -16,9 +16,9 @@ const mockFindAll = vi.fn().mockResolvedValue([]);
 beforeEach(() => {
   mock("../../../src/models/employer.model", mockGetManyEmployers);
   getAllEmployersRequestHandler = mock.reRequire(
-      "../../../src/controllers/employer/getAllEmployers",
+    "../../../src/controllers/employer/getAllEmployers",
   );
-})
+});
 afterEach(() => {
   // Reset mocks after every test
   mock.stop("../../../src/models/employer.model");

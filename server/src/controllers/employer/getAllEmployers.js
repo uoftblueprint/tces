@@ -23,7 +23,9 @@ const getAllEmployersRequestHandler = async (req, res) => {
       query.name = { [Op.like]: `%${employerName}%` };
     }
     if (phoneNumber) {
-      query.phone_number = Sequelize.literal(`REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`);
+      query.phone_number = Sequelize.literal(
+        `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
+      );
     }
     if (startDateAdded) {
       const startDate = new Date(startDateAdded);

@@ -44,7 +44,10 @@ function FilterCard() {
 
   const handlePhoneNumberChange = (event) => {
     // Remove all non-numeric characters from the input
-    setValues({ ...values, phoneNumber: event.target.value.replace(/\D/g, "") });
+    setValues({
+      ...values,
+      phoneNumber: event.target.value.replace(/\D/g, ""),
+    });
   };
 
   const handleDateChange = (prop) => (newValue) => {
