@@ -12,7 +12,7 @@ const MainContainer = styled.div`
 `;
 
 const Divider = styled(Box)`
-  border-bottom: 2px solid #0000001f;
+  border-bottom: 1px solid #0000001f;
   border-color: divider;
   margin-bottom: 10px;
 `;
