@@ -33,7 +33,7 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (phone_number) {
-      query.phone_number = { [Op.like]: `%${phone_number}%` };
+      query.phone_number = Sequelize.literal(`REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`);
     }
 
     if (date_updated_from) {
