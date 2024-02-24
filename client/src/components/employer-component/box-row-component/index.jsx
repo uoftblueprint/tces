@@ -53,8 +53,8 @@ function BoxRowComponent({
                   sx={{ color: "gray", cursor: "pointer" }}
                   align="right"
                   onClick={() => {
-                    if (rightSide.props) {
-                      navigator.clipboard.writeText(rightSide.props.children);
+                    if (rightSide) {
+                      navigator.clipboard.writeText(rightSide);
                     }
                   }}
                 />

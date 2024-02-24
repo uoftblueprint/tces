@@ -153,7 +153,7 @@ function EmployerInfoComponent({
           borderRadius: "8px",
           boxShadow: 2,
           p: 3,
-          mr: 6.5,
+          mr: 1.5,
         }}
       >
         <Box sx={{ textAlign: "center", mr: 2 }}>
