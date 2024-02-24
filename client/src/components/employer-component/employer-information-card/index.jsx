@@ -23,13 +23,13 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const [employerName, setEmployerName] = useState(employer.name);
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
-    employer.phone_number,
+    employer.phone_number
   );
   const [employerFax, setEmployerFax] = useState(employer.fax);
   const [employerEmail, setEmployerEmail] = useState(employer.email);
   const [employerWebsite, setEmployerWebsite] = useState(employer.website);
   const [employerNAICSCode, setEmployerNAICSCode] = useState(
-    employer.naics_code,
+    employer.naics_code
   );
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
@@ -146,7 +146,17 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h5" align="left" gutterBottom>
+        <Typography
+          variant="h5"
+          align="left"
+          gutterBottom
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            margin: 0,
+          }}
+        >
           Information
         </Typography>
         <IconButton onClick={toggleEditable}>

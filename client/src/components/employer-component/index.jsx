@@ -78,7 +78,17 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
 
             <Card style={{ width: "33%" }}>
               <CardContent>
-                <Typography variant="h5" align="left" gutterBottom>
+                <Typography
+                  variant="h5"
+                  align="left"
+                  gutterBottom
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    margin: 0,
+                  }}
+                >
                   Activity Timeline (placeholder)
                 </Typography>
               </CardContent>
