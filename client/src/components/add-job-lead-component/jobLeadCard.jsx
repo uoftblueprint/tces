@@ -14,7 +14,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { JobLeadContainer, H3 } from "./index.styles";
 import EmployerType from "../../prop-types/EmployerType";
-import JOB_TYPES from "../../utils/contants";
+import { JOB_TYPES } from "../../utils/contants";
 
 function JobLeadContent({
   jobLeadData,
@@ -41,7 +41,7 @@ function JobLeadContent({
                 onChange={(e) =>
                   handleInputChange(e.target.value, lead.id, "employer")
                 }
-                required
+                required={!isAddEmployer}
               >
                 {employers.map((employer) => (
                   <MenuItem
@@ -67,7 +67,7 @@ function JobLeadContent({
               handleInputChange(e.target.value, lead.id, "title")
             }
             helperText={isAddEmployer ? "" : "*Required"}
-            required
+            required={!isAddEmployer}
           />
 
           {/* Compensation Minimum Field */}
@@ -89,7 +89,7 @@ function JobLeadContent({
                 if (value >= 0)
                   handleInputChange(value, lead.id, "minCompensation");
               }}
-              required
+              required={!isAddEmployer}
             />
           </FormControl>
 
@@ -112,7 +112,7 @@ function JobLeadContent({
                 if (value >= 0)
                   handleInputChange(value, lead.id, "maxCompensation");
               }}
-              required
+              required={!isAddEmployer}
             />
           </FormControl>
 
@@ -129,7 +129,7 @@ function JobLeadContent({
               const { value } = e.target;
               if (value >= 0) handleInputChange(value, lead.id, "hoursPerWeek");
             }}
-            required
+            required={!isAddEmployer}
           />
 
           {/* National Occupation Code Field */}
@@ -145,7 +145,7 @@ function JobLeadContent({
               const { value } = e.target;
               if (value >= 0) handleInputChange(value, lead.id, "nationalOC");
             }}
-            required
+            required={!isAddEmployer}
           />
 
           {/* Job Description Field */}
@@ -160,7 +160,7 @@ function JobLeadContent({
             onChange={(e) =>
               handleInputChange(e.target.value, lead.id, "description")
             }
-            required
+            required={!isAddEmployer}
           />
 
           {/* Creation Date Picker */}
@@ -179,7 +179,7 @@ function JobLeadContent({
                 // eslint-disable-next-line
                 <TextField {...params} error={false} helperText="" required />
               )}
-              required
+              required={!isAddEmployer}
             />
           </LocalizationProvider>
 
@@ -199,7 +199,7 @@ function JobLeadContent({
                 // eslint-disable-next-line
                 <TextField {...params} error={false} helperText="" required />
               )}
-              required
+              required={!isAddEmployer}
             />
           </LocalizationProvider>
 
@@ -217,7 +217,7 @@ function JobLeadContent({
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "employmentType")
               }
-              required
+              required={!isAddEmployer}
             >
               {JOB_TYPES.map((jobType) => (
                 <MenuItem key={jobType} value={jobType}>
@@ -242,7 +242,7 @@ function JobLeadContent({
               if (value >= 0) handleInputChange(value, lead.id, "numPositions");
             }}
             helperText={isAddEmployer ? "" : "*Required"}
-            required
+            required={!isAddEmployer}
           />
         </JobLeadContainer>
       ))}

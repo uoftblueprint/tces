@@ -14,7 +14,7 @@ const createUserRequestHandler = async (req, res, next) => {
       salt,
       310000,
       32,
-      "sha256"
+      "sha256",
     );
 
     const newUser = await User.create({

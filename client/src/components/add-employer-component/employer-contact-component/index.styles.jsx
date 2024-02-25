@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: 62.5%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -23,12 +23,11 @@ const EmployerContactContainer = styled.div`
   display: flex-wrap;
   flex-direction: column;
   align-items: center;
-  width: 60%;
   height: auto;
   background-color: white;
-  margin: 10px;
-  padding: 16px;
   border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
@@ -58,7 +57,7 @@ const Body = styled.p`
 `;
 
 const ButtonL = styled.button`
-  width: 62.5%;
+  width: 100%;
   padding: 16px;
   font-size: 20px;
   font-weight: 500;

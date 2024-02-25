@@ -21,6 +21,7 @@ function DashboardNavigationComponent() {
             variant="contained"
             startIcon={<PeopleIcon />}
             iconbackgroundcolour="#3568E5"
+            onClick={() => navigate("/clients/")}
           >
             My Clients
           </MainNavButton>
@@ -40,6 +41,7 @@ function DashboardNavigationComponent() {
             variant="contained"
             startIcon={<WorkIcon />}
             iconbackgroundcolour="#E53568"
+            onClick={() => navigate("/employers/")}
           >
             Employers
           </MainNavButton>
