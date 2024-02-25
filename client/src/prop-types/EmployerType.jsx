@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 
 const EmployerType = PropTypes.shape({
-  employerID: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+  owner: PropTypes.number.isRequired,
+  creator: PropTypes.number.isRequired,
+  date_added: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   creatorID: PropTypes.number.isRequired,
   ownerID: PropTypes.number.isRequired,
@@ -20,7 +23,6 @@ const EmployerType = PropTypes.shape({
   naicsCode: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
   website: PropTypes.string.isRequired,
-
   // eslint-disable-next-line
 });
 
