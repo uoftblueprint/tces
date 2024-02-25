@@ -23,13 +23,13 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const [employerName, setEmployerName] = useState(employer.name);
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
-    employer.phone_number
+    employer.phoneNumber
   );
   const [employerFax, setEmployerFax] = useState(employer.fax);
   const [employerEmail, setEmployerEmail] = useState(employer.email);
   const [employerWebsite, setEmployerWebsite] = useState(employer.website);
   const [employerNAICSCode, setEmployerNAICSCode] = useState(
-    employer.naics_code
+    employer.naicsCode
   );
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
@@ -79,11 +79,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
     setConfirmCancelEditDialog(false);
     setEditable(false);
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phone_number);
+    setEmployerPhoneNumber(employer.phoneNumber);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naics_code);
+    setEmployerNAICSCode(employer.naicsCode);
     setEmployerAddress(employer.address);
   };
 
@@ -124,11 +124,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   // on initial startup, since useState() does not work on passed in props
   useEffect(() => {
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phone_number);
+    setEmployerPhoneNumber(employer.phoneNumber);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naics_code);
+    setEmployerNAICSCode(employer.naicsCode);
     setEmployerAddress(employer.address);
   }, [employer]);
 
