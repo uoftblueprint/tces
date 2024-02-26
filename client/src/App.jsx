@@ -15,6 +15,8 @@ import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
+import ClientDashboard from "./pages/client-dashboard";
+import CreateClient from "./pages/create-client";
 import EmployerPage from "./pages/employer";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 // mock data
@@ -36,6 +38,7 @@ import EditJobLead from "./pages/edit-job-lead";
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
 import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
 
@@ -63,6 +66,9 @@ function App() {
 
   // Job Leads State
   const [managedJobLeads, setManagedJobLeads] = useState([]);
+
+  // Clients State
+  const [managedClients, setManagedClients] = useState([]);
 
   // Employer State
   const [employers, setEmployers] = useState([]);
@@ -211,7 +217,25 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/clients"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientDashboard
+                      managedClients={managedClients}
+                      setManagedClients={setManagedClients}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
+
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
             element={
@@ -291,6 +315,34 @@ function App() {
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddEmployerPage currUser={currUser} />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/:clientID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientPage
+                      managedUsers={managedUsers}
+                      getUserById={getUserById}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <CreateClient currUser={currUser} />
                 </AuthGuard>
               }
             />

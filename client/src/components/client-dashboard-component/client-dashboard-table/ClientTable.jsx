@@ -1,18 +1,21 @@
 import PropTypes from "prop-types";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { Link, Avatar, Chip } from "@mui/material";
+import { Link, Chip } from "@mui/material";
+import UserChipComponent from "../../shared/user-chip-component";
 
 function ClientTable({
   clientData,
   paginationModel,
   setPaginationModel,
   totalRowCount,
+  getUserById,
+  isLoading,
 }) {
   const columns = [
     {
       field: "name",
       headerName: "Name",
-      width: 175,
+      width: 200,
       editable: false,
       sortable: false,
       filterable: false,
@@ -50,7 +53,7 @@ function ClientTable({
       editable: false,
       sortable: false,
       filterable: false,
-      renderCell: (params) => <Chip label={params.value} />,
+      renderCell: (params) => <Chip label={params.value ?? "unknown"} />,
     },
     {
       field: "dateUpdated",
@@ -68,19 +71,8 @@ function ClientTable({
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        const getInitials = (name) => {
-          return name
-            .split(" ")
-            .map((n) => n[0])
-            .join("");
-        };
-
-        return (
-          <Chip
-            avatar={<Avatar>{getInitials(params.value)}</Avatar>}
-            label={params.value}
-          />
-        );
+        const user = getUserById(params.row.ownerID);
+        return <UserChipComponent user={user} />;
       },
     },
   ];
@@ -100,6 +92,7 @@ function ClientTable({
       }}
       rowCount={totalRowCount}
       rows={clientData}
+      loading={isLoading}
       columns={columns}
       pageSizeOptions={[10]}
       paginationModel={paginationModel}
@@ -118,6 +111,8 @@ ClientTable.propTypes = {
   paginationModel: PropTypes.object.isRequired,
   setPaginationModel: PropTypes.func.isRequired,
   totalRowCount: PropTypes.number.isRequired,
+  getUserById: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default ClientTable;

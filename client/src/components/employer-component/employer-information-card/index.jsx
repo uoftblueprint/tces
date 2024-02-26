@@ -23,13 +23,13 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const [employerName, setEmployerName] = useState(employer.name);
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
-    employer.phoneNumber
+    employer.phoneNumber,
   );
   const [employerFax, setEmployerFax] = useState(employer.fax);
   const [employerEmail, setEmployerEmail] = useState(employer.email);
   const [employerWebsite, setEmployerWebsite] = useState(employer.website);
   const [employerNAICSCode, setEmployerNAICSCode] = useState(
-    employer.naicsCode
+    employer.naicsCode,
   );
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
@@ -104,8 +104,6 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
     try {
       const response = await modifyEmployerInfo(modifiedEmployerInfo);
-      console.warn(employer);
-      console.warn(response);
       if (response.ok) {
         setSnackBarMessage("Job lead updated successfully.");
         setEditable(false);

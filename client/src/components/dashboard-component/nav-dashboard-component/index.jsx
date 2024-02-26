@@ -23,7 +23,7 @@ function DashboardNavigationComponent() {
             iconbackgroundcolour="#3568E5"
             onClick={() => navigate("/clients/")}
           >
-            My Clients
+            Clients
           </MainNavButton>
         </Grid>
         <Grid item xs={12} sm={4}>
