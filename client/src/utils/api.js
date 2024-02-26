@@ -1,3 +1,5 @@
+import mockEmployerContacts from "../mock-data/mockEmployerContacts";
+
 const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
@@ -265,6 +267,76 @@ const modifyJobLead = async (modifiedJobLead) => {
   return response;
 };
 
+const getEmployer = async (employerID) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${employerID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return response;
+};
+
+const getUserName = async (userID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status !== 200) {
+    return "";
+  }
+
+  const json = await response.json();
+  return json.data
+    ? `${json.data.user.first_name} ${json.data.user.last_name}`
+    : "";
+};
+
+// eslint-disable-next-line no-unused-vars
+const getEmployerContacts = async (employerID) => {
+  const response = mockEmployerContacts;
+
+  return response;
+};
+
+const modifyEmployerInfo = async (modifiedEmployerInfo) => {
+  const modifyEmployerBody = {
+    values: {
+      owner: modifiedEmployerInfo.owner,
+      name: modifiedEmployerInfo.name,
+      phone_number: modifiedEmployerInfo.phone_number,
+      fax: modifiedEmployerInfo.fax,
+      email: modifiedEmployerInfo.email,
+      website: modifiedEmployerInfo.website,
+      naics_code: modifiedEmployerInfo.naics_code,
+      address: modifiedEmployerInfo.address,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${modifiedEmployerInfo.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyEmployerBody),
+    },
+  );
+  return response;
+};
+
 const getFilteredClients = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
@@ -376,4 +448,8 @@ export {
   createClients,
   fetchClientById,
   modifyClient,
+  getEmployer,
+  getUserName,
+  getEmployerContacts,
+  modifyEmployerInfo,
 };

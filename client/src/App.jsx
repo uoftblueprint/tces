@@ -17,8 +17,8 @@ import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
 import ClientDashboard from "./pages/client-dashboard";
 import CreateClient from "./pages/create-client";
+import EmployerPage from "./pages/employer";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 
@@ -285,6 +285,23 @@ function App() {
                       setLocalExitRoute={setLocalExitRoute}
                     />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/employers/:employerID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployerPage
+                      getUserById={getUserById}
+                      managedUsers={managedUsers}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
                 </AuthGuard>
               }
             />
