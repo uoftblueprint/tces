@@ -562,7 +562,9 @@ export default function ClientPage({
                         <IconButton>
                           <ContentCopyIcon
                             onClick={() =>
-                              handleCopyClick(`${clientInfo.time_since_closure} Months`)
+                              handleCopyClick(
+                                `${clientInfo.time_since_closure} Months`,
+                              )
                             }
                           />
                         </IconButton>

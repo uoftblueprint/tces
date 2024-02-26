@@ -99,7 +99,6 @@ const getAllClientsRequestHandler = async (req, res) => {
       : null;
 
     if (page != null && pageSize != null) {
-      console.log("hit");
       query_options = {
         ...query_options,
         limit: pageSize,

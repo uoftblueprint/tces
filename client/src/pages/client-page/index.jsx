@@ -9,7 +9,7 @@ import LoadingScreenComponent from "../../components/shared/loading-screen-compo
 import { fetchClientById } from "../../utils/api";
 import UserType from "../../prop-types/UserType";
 import { cleanStatusString } from "../../utils/users";
-import {formatDateStr, monthsSince} from "../../utils/date";
+import { formatDateStr, monthsSince } from "../../utils/date";
 // import { getUserByIdHelper } from "../../utils/users";
 
 // const [managedUsers, setManagedUsers] = React.useState([]);
@@ -37,12 +37,24 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
             phone: clientData.data.client.phone_number,
             closure_date: formatDateStr(clientData.data.client.closure_date),
             status: cleanStatusString(clientData.data.client.status),
-            time_since_closure: monthsSince(clientData.data.client.closure_date),
-            status_at_exit: cleanStatusString(clientData.data.client.status_at_exit),
-            status_at_3: cleanStatusString(clientData.data.client.status_at_3_months),
-            status_at_6: cleanStatusString(clientData.data.client.status_at_6_months),
-            status_at_9: cleanStatusString(clientData.data.client.status_at_9_months),
-            status_at_12: cleanStatusString(clientData.data.client.status_at_12_months),
+            time_since_closure: monthsSince(
+              clientData.data.client.closure_date,
+            ),
+            status_at_exit: cleanStatusString(
+              clientData.data.client.status_at_exit,
+            ),
+            status_at_3: cleanStatusString(
+              clientData.data.client.status_at_3_months,
+            ),
+            status_at_6: cleanStatusString(
+              clientData.data.client.status_at_6_months,
+            ),
+            status_at_9: cleanStatusString(
+              clientData.data.client.status_at_9_months,
+            ),
+            status_at_12: cleanStatusString(
+              clientData.data.client.status_at_12_months,
+            ),
             owner: clientData.data.client.owner,
             creator: clientData.data.client.creator,
           };
