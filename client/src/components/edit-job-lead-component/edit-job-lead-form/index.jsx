@@ -11,7 +11,6 @@ import {
   FormControl,
   MenuItem,
   Select,
-  TextareaAutosize,
   IconButton,
   Grid,
   InputAdornment,
@@ -480,14 +479,14 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 {isEditMode ? (
-                  <TextareaAutosize
+                  <TextField
+                    multiline
                     minRows={3}
                     value={jobDescription}
                     disabled={!isEditMode}
                     style={{
-                      width: "calc(100% - 16px)",
+                      width: "100%",
                       fontSize: "1rem",
-                      padding: "8px",
                       marginTop: "8px",
                       marginBottom: "8px",
                       borderRadius: "4px",
