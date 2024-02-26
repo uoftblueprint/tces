@@ -10,14 +10,7 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     const { type, title, body, contact, client, job_lead, user, employer } =
       req.body.entry;
 
-    const validTypes = [
-      "contact",
-      "job_lead_add",
-      "job_lead_update",
-      "job_lead_delete",
-      "placement",
-      "note",
-    ];
+    const validTypes = ["contact", "job_lead_add", "placement", "note"];
     if (!validTypes.includes(type)) {
       return res.status(400).json({
         status: "fail",
@@ -66,7 +59,8 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     if (type === "contact" && (!user || !title || !body || !contact)) {
       return res.status(400).json({
         status: "fail",
-        message: "For type note, user, employer, title, contact and body must be defined",
+        message:
+          "For type note, user, employer, title, contact and body must be defined",
         data: null,
       });
     }
@@ -74,7 +68,8 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     if (type === "note" && (!user || !title || !body || !employer)) {
       return res.status(400).json({
         status: "fail",
-        message: "For type note, user, employer, title, and body must be defined",
+        message:
+          "For type note, user, employer, title, and body must be defined",
         data: null,
       });
     }

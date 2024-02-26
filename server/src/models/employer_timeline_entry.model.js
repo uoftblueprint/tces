@@ -33,7 +33,7 @@ const EmployerTimelineEntry = sequelize.define(
     },
     contact: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: User, // to be replaced when Contact api is done
         key: "id",
@@ -42,7 +42,7 @@ const EmployerTimelineEntry = sequelize.define(
     },
     employer: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: Employer,
         key: "id",
@@ -51,7 +51,7 @@ const EmployerTimelineEntry = sequelize.define(
     },
     client: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: Client,
         key: "id",
@@ -87,6 +87,7 @@ const EmployerTimelineEntry = sequelize.define(
         model: User,
         key: "id",
       },
+      allowNull: false,
       validate: {
         isInUser(value) {
           if (!User.findByPk(value)) {
