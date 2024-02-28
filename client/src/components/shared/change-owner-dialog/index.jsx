@@ -20,7 +20,11 @@ import {
   getInitialsAndDisplayName,
   getUserByIdHelper,
 } from "../../../utils/users";
-import { modifyEmployerInfo, modifyJobLead } from "../../../utils/api";
+import {
+  modifyClient,
+  modifyEmployerInfo,
+  modifyJobLead,
+} from "../../../utils/api";
 
 function ChangeOwnerDialog({
   type,
@@ -75,7 +79,8 @@ function ChangeOwnerDialog({
           clientID: entity.clientID,
           owner,
         };
-        // to add modifyClient when it is set up
+        response = await modifyClient(modifiedEntity);
+        redirectUrl = "/clients/";
       }
 
       if (response.ok) {

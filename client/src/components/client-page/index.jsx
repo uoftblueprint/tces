@@ -17,10 +17,13 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 import UserType from "../../prop-types/UserType";
 import UserChipComponent from "../shared/user-chip-component";
 import ChangeOwnerDialog from "../shared/change-owner-dialog";
 import ErrorScreenComponent from "../shared/error-screen-component";
+import { modifyClient } from "../../utils/api";
+import ConfirmDialog from "../shared/confirm-dialog-component";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -48,34 +51,18 @@ TextMaskCustom.propTypes = {
 export default function ClientPage({
   clientInfo,
   monthsSinceClosure,
-  onSaveChanges,
-  owner,
-  creator,
+  getUserById,
+  managedUsers,
+  setSnackBarMessage,
 }) {
-  ClientPage.propTypes = {
-    clientInfo: PropTypes.shape({
-      firstName: PropTypes.string,
-      email: PropTypes.string,
-      phone: PropTypes.string,
-      status: PropTypes.string,
-      closure_date: PropTypes.string,
-      time_since_closure: PropTypes.string,
-      status_at_exit: PropTypes.string,
-      status_at_3: PropTypes.string,
-      status_at_6: PropTypes.string,
-      status_at_9: PropTypes.string,
-      status_at_12: PropTypes.string,
-    }).isRequired,
-    monthsSinceClosure: PropTypes.number.isRequired,
-    onSaveChanges: PropTypes.func.isRequired,
-    owner: UserType.isRequired,
-    creator: UserType.isRequired,
-    // managedUsers: PropTypes.arrayOf(UserType).isRequired,
-  };
-
   const [isEditMode, setIsEditMode] = React.useState(true);
   const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
-  const [error, setError] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [errorObj, setErrorObj] = React.useState(null);
+  const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+
+  const owner = getUserById(clientInfo.owner);
+  const creator = getUserById(clientInfo.creator);
 
   const onEditOwnerClick = () => {
     setOwnerChangeDialog(true);
@@ -89,8 +76,6 @@ export default function ClientPage({
     setOwnerChangeDialog(false);
   };
 
-  if (error) return <ErrorScreenComponent message={error} />;
-
   const navigate = useNavigate();
 
   const handleEditClick = () => {
@@ -99,15 +84,20 @@ export default function ClientPage({
 
   // Just for now
   const handleBackClick = () => {
-    navigate("/");
+    navigate("/clients");
+  };
+
+  const commitEdit = (e) => {
+    e.preventDefault();
+    setConfirmEditDialog(true);
   };
 
   const handleCopyClick = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      console.log("Text copied to the dashboard");
+      setSnackBarMessage("Text copied to the dashboard");
     } catch (err) {
-      console.err("Error copying text to the clipboard:", err);
+      setSnackBarMessage("Error copying text to the clipboard:", err);
     }
   };
 
@@ -193,10 +183,13 @@ export default function ClientPage({
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+
     const updatedClientInfo = {
       ...clientInfo,
-      firstName: editedName,
+      name: editedName,
       email: editedEmail,
       phone: editedPhone,
       status: editedStatus,
@@ -207,11 +200,32 @@ export default function ClientPage({
       status_at_12: editedStatus12,
     };
 
-    onSaveChanges(updatedClientInfo);
-    setIsEditMode(!isEditMode);
+    try {
+      const response = await modifyClient(updatedClientInfo);
+
+      if (response.ok) {
+        setSnackBarMessage("Client updated successfully.");
+        setIsEditMode(true);
+        navigate("/clients");
+      } else {
+        setSnackBarMessage("Failed to update client.");
+      }
+    } catch (error) {
+      setErrorObj(error);
+      setSnackBarMessage("An error occurred.");
+    } finally {
+      setIsLoading(false);
+      setConfirmEditDialog(false);
+    }
+  };
+
+  const cancelEdit = () => {
+    setConfirmEditDialog(false);
   };
 
   const isStatusExitVisible = editedStatus === "Closed";
+
+  if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
     <div
@@ -263,17 +277,19 @@ export default function ClientPage({
           </Box>
         </Box>
         {/* !!!IMPORTANT MAKE NECESSARY CHANGES WHEN ROUTING :} !!! */}
-        <ChangeOwnerDialog
-          type="client"
-          entity={clientInfo}
-          currOwner={owner}
-          onCancel={onChangeOwnerCancel}
-          onConfirm={onOwnerChangeConfirm}
-          open={ownerChangeDialog}
-          users={[]}
-          setSnackBarMessage=""
-          setError={setError}
-        />
+        {managedUsers.length > 0 && (
+          <ChangeOwnerDialog
+            type="client"
+            entity={clientInfo}
+            currOwner={owner || managedUsers[0]}
+            onCancel={onChangeOwnerCancel}
+            onConfirm={onOwnerChangeConfirm}
+            open={ownerChangeDialog}
+            users={managedUsers}
+            setSnackBarMessage={setSnackBarMessage}
+            setError={setErrorObj}
+          />
+        )}
       </div>
       <Paper>
         <Box>
@@ -539,14 +555,16 @@ export default function ClientPage({
                       </Grid>
                       <Grid item xs={7.5}>
                         <Typography gutterBottom variant="body1" align="left">
-                          {clientInfo.time_since_closure}
+                          {clientInfo.time_since_closure} Months
                         </Typography>
                       </Grid>
                       <Grid item xs={0.5} id="info-card-icon">
                         <IconButton>
                           <ContentCopyIcon
                             onClick={() =>
-                              handleCopyClick(clientInfo.time_since_closure)
+                              handleCopyClick(
+                                `${clientInfo.time_since_closure} Months`,
+                              )
                             }
                           />
                         </IconButton>
@@ -967,7 +985,16 @@ export default function ClientPage({
               <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
                 <Grid container direction="row" alignItems="center">
                   <Grid item xs={11.5} align="right">
-                    <Button onClick={handleSave}>Save Changes</Button>
+                    <Button
+                      type="submit"
+                      variant="text"
+                      color="primary"
+                      size="small"
+                      disabled={isLoading}
+                      onClick={commitEdit}
+                    >
+                      {isLoading ? "Saving..." : "Save Changes"}
+                    </Button>
                   </Grid>
                 </Grid>
               </Box>
@@ -975,6 +1002,36 @@ export default function ClientPage({
           )}
         </Box>
       </Paper>
+      <ConfirmDialog
+        open={confirmEditDialog}
+        title="Confirm Edit"
+        message="Are you sure you want to save these changes?"
+        onConfirm={handleSave}
+        onCancel={cancelEdit}
+      />
     </div>
   );
 }
+
+ClientPage.propTypes = {
+  clientInfo: PropTypes.shape({
+    firstName: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    status: PropTypes.string,
+    closure_date: PropTypes.string,
+    time_since_closure: PropTypes.string,
+    status_at_exit: PropTypes.string,
+    status_at_3: PropTypes.string,
+    status_at_6: PropTypes.string,
+    status_at_9: PropTypes.string,
+    status_at_12: PropTypes.string,
+    owner: PropTypes.number,
+    creator: PropTypes.number,
+  }).isRequired,
+  monthsSinceClosure: PropTypes.number.isRequired,
+  managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  getUserById: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
+  // managedUsers: PropTypes.arrayOf(UserType).isRequired,
+};

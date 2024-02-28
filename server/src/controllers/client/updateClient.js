@@ -37,7 +37,7 @@ const updateClientRequestHandler = async (req, res) => {
         });
       }
 
-      req.body.values.closed_date = new Date();
+      req.body.values.closure_date = new Date();
     }
     if (req.body.values.status == "active") {
       // Case: we are setting a client back to active
