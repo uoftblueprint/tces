@@ -7,8 +7,10 @@ const {
 const addEmployerTimelineEntryRequestHandler = async (req, res) => {
   try {
     // eslint-disable-next-line camelcase
-    const { type, title, body, contact, client, job_lead, user, employer } =
+    const { type, title, body, contact, client, job_lead, employer } =
       req.body.entry;
+
+    const { user } = req;
 
     const validTypes = ["contact", "job_lead_add", "placement", "note"];
     if (!validTypes.includes(type)) {

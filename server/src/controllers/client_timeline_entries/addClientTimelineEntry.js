@@ -7,7 +7,9 @@ const {
 const addClientTimelineEntryRequestHandler = async (req, res) => {
   try {
     // eslint-disable-next-line camelcase
-    const { type, title, body, client, job_lead, user } = req.body.entry;
+    const { type, title, body, client, job_lead } = req.body.entry;
+
+    const { user } = req;
 
     const validTypes = ["update", "contact", "placement", "note"];
     if (!validTypes.includes(type)) {
