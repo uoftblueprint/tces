@@ -33,6 +33,7 @@ import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { JOB_TYPES } from "../../../utils/contants";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
 function EditJobLeadFormComponent({
   jobLead,
@@ -42,6 +43,8 @@ function EditJobLeadFormComponent({
   const navigate = useNavigate();
   const employer = getEmployerById(jobLead.employerID);
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
   const [isEditMode, setIsEditMode] = React.useState(false);
@@ -137,6 +140,10 @@ function EditJobLeadFormComponent({
     setConfirmEditDialog(false);
   };
 
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -161,6 +168,7 @@ function EditJobLeadFormComponent({
         setSnackBarMessage("Job lead updated successfully.");
         setIsEditMode(false);
       } else {
+        setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job lead.");
       }
     } catch (error) {
@@ -527,6 +535,10 @@ function EditJobLeadFormComponent({
         message="Are you sure you want to save these changes?"
         onConfirm={handleSubmit}
         onCancel={cancelEdit}
+      />
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
       />
     </LocalizationProvider>
   );

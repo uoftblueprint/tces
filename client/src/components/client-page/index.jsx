@@ -24,10 +24,11 @@ import ChangeOwnerDialog from "../shared/change-owner-dialog";
 import ErrorScreenComponent from "../shared/error-screen-component";
 import { modifyClient } from "../../utils/api";
 import ConfirmDialog from "../shared/confirm-dialog-component";
+import FormSubmissionErrorDialog from "../shared/form-submission-error-dialog";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref,
+  ref
 ) {
   return (
     <IMaskInput
@@ -55,11 +56,14 @@ export default function ClientPage({
   managedUsers,
   setSnackBarMessage,
 }) {
+  // Edit mode is initially set to true due to the structure of the inline if-else statements for rendering the form fields
   const [isEditMode, setIsEditMode] = React.useState(true);
   const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
 
   const owner = getUserById(clientInfo.owner);
   const creator = getUserById(clientInfo.creator);
@@ -106,19 +110,19 @@ export default function ClientPage({
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
   const [editedStatus, setEditedStatus] = React.useState(clientInfo.status);
   const [editedStatusExit, setEditedStatusExit] = React.useState(
-    clientInfo.status_at_exit,
+    clientInfo.status_at_exit
   );
   const [editedStatus3, setEditedStatus3] = React.useState(
-    clientInfo.status_at_3,
+    clientInfo.status_at_3
   );
   const [editedStatus6, setEditedStatus6] = React.useState(
-    clientInfo.status_at_6,
+    clientInfo.status_at_6
   );
   const [editedStatus9, setEditedStatus9] = React.useState(
-    clientInfo.status_at_9,
+    clientInfo.status_at_9
   );
   const [editedStatus12, setEditedStatus12] = React.useState(
-    clientInfo.status_at_12,
+    clientInfo.status_at_12
   );
 
   const handleNameChange = (event) => {
@@ -206,8 +210,9 @@ export default function ClientPage({
       if (response.ok) {
         setSnackBarMessage("Client updated successfully.");
         setIsEditMode(true);
-        navigate("/clients");
+        window.location.reload();
       } else {
+        setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update client.");
       }
     } catch (error) {
@@ -221,6 +226,10 @@ export default function ClientPage({
 
   const cancelEdit = () => {
     setConfirmEditDialog(false);
+  };
+
+  const backToFormFromError = () => {
+    setFormSubmissionErrorDialog(false);
   };
 
   const isStatusExitVisible = editedStatus === "Closed";
@@ -563,7 +572,7 @@ export default function ClientPage({
                           <ContentCopyIcon
                             onClick={() =>
                               handleCopyClick(
-                                `${clientInfo.time_since_closure} Months`,
+                                `${clientInfo.time_since_closure} Months`
                               )
                             }
                           />
@@ -1008,6 +1017,10 @@ export default function ClientPage({
         message="Are you sure you want to save these changes?"
         onConfirm={handleSave}
         onCancel={cancelEdit}
+      />
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onClose={backToFormFromError}
       />
     </div>
   );
