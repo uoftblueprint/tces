@@ -1020,7 +1020,7 @@ export default function ClientPage({
       />
       <FormSubmissionErrorDialog
         open={formSubmissionErrorDialog}
-        onClose={backToFormFromError}
+        onBack={backToFormFromError}
       />
     </div>
   );
