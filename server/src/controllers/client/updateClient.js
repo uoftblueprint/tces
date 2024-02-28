@@ -25,7 +25,7 @@ const updateClientRequestHandler = async (req, res) => {
         data: null,
       });
     }
-    if (req.body.values.status == "closed") {
+    if (req.body.values.status === "closed") {
       // Case: we are closing a client
       if (!req.body.values.status_at_exit) {
         return res.status(403).json({
@@ -37,7 +37,7 @@ const updateClientRequestHandler = async (req, res) => {
 
       req.body.values.closure_date = new Date();
     }
-    if (req.body.values.status == "active") {
+    if (req.body.values.status === "active") {
       // Case: we are setting a client back to active
       req.body.values.status_at_exit = null;
       req.body.values.status_at_3_months = null;
@@ -45,6 +45,9 @@ const updateClientRequestHandler = async (req, res) => {
       req.body.values.status_at_9_months = null;
       req.body.values.status_at_12_months = null;
       req.body.values.closed_date = null;
+    }
+    if (req.body.values.status === "r&i") {
+      req.body.values.status = "r_and_i";
     }
 
     req.body.values.date_updated = new Date();
@@ -58,7 +61,7 @@ const updateClientRequestHandler = async (req, res) => {
       data: client,
     });
   } catch (err) {
-    if (err.name == "SequelizeUniqueConstraintError") {
+    if (err.name === "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
       return res.status(400).json({
         status: "fail",
