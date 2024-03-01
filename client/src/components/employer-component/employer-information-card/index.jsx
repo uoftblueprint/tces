@@ -36,7 +36,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
-  useState(false);
+    useState(false);
   const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);

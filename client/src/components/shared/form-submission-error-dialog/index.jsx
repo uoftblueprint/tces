@@ -11,19 +11,22 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 function FormSubmissionErrorDialog({ open, onBack }) {
   return (
-    <Dialog open={open} onClose={onBack}
-    sx={{
-      "& .MuiDialog-paper": {
-        borderTop: "10px solid #D32F2F",
-      },
-    }}>
+    <Dialog
+      open={open}
+      onClose={onBack}
+      sx={{
+        "& .MuiDialog-paper": {
+          borderTop: "10px solid #D32F2F",
+        },
+      }}
+    >
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           paddingTop: 20,
-          width: "100%"
+          width: "100%",
         }}
       >
         <ErrorOutlineIcon style={{ fontSize: 40, color: "#D32F2F" }} />

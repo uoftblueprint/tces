@@ -186,7 +186,7 @@ function ContactsInformationCard({
       setEmail(contacts[newContactPage - 1].email);
       setPhoneNumber(contacts[newContactPage - 1].phoneNumber);
       setAlternativePhoneNumber(
-        contacts[newContactPage - 1].alternatePhoneNumber
+        contacts[newContactPage - 1].alternatePhoneNumber,
       );
     }
   };
@@ -200,7 +200,7 @@ function ContactsInformationCard({
       setEmail(contacts[newContactPage - 1].email);
       setPhoneNumber(contacts[newContactPage - 1].phoneNumber);
       setAlternativePhoneNumber(
-        contacts[newContactPage - 1].alternatePhoneNumber
+        contacts[newContactPage - 1].alternatePhoneNumber,
       );
     }
   };
@@ -211,7 +211,7 @@ function ContactsInformationCard({
     setEmail(contacts[0] ? contacts[0].email : "");
     setPhoneNumber(contacts[0] ? contacts[0].phoneNumber : "");
     setAlternativePhoneNumber(
-      contacts[0] ? contacts[0].alternatePhoneNumber : ""
+      contacts[0] ? contacts[0].alternatePhoneNumber : "",
     );
   }, [contacts]);
 
