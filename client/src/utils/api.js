@@ -1,3 +1,5 @@
+import mockEmployerContacts from "../mock-data/mockEmployerContacts";
+
 const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
@@ -265,6 +267,169 @@ const modifyJobLead = async (modifiedJobLead) => {
   return response;
 };
 
+const getEmployer = async (employerID) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${employerID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return response;
+};
+
+const getUserName = async (userID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status !== 200) {
+    return "";
+  }
+
+  const json = await response.json();
+  return json.data
+    ? `${json.data.user.first_name} ${json.data.user.last_name}`
+    : "";
+};
+
+// eslint-disable-next-line no-unused-vars
+const getEmployerContacts = async (employerID) => {
+  const response = mockEmployerContacts;
+
+  return response;
+};
+
+const modifyEmployerInfo = async (modifiedEmployerInfo) => {
+  const modifyEmployerBody = {
+    values: {
+      owner: modifiedEmployerInfo.owner,
+      name: modifiedEmployerInfo.name,
+      phone_number: modifiedEmployerInfo.phone_number,
+      fax: modifiedEmployerInfo.fax,
+      email: modifiedEmployerInfo.email,
+      website: modifiedEmployerInfo.website,
+      naics_code: modifiedEmployerInfo.naics_code,
+      address: modifiedEmployerInfo.address,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers/${modifiedEmployerInfo.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyEmployerBody),
+    },
+  );
+  return response;
+};
+
+const getFilteredClients = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const createClients = async (clients, userID) => {
+  const formattedClients = clients.map((client) => {
+    return {
+      email: client.email,
+      phone_number: client.phoneNumber,
+      name: client.fullName,
+      owner: userID,
+      creator: userID,
+      date_added: new Date(),
+      date_updated: new Date(),
+      status: "Active", // newly created clients will be active by default
+    };
+  });
+
+  const clientsCreateBody = {
+    client: formattedClients,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/clients`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(clientsCreateBody),
+  });
+  return response;
+};
+
+const fetchClientById = async (clientID) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${clientID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const modifyClient = async (modifiedClient) => {
+  const modifyClientBody = {
+    values: {
+      email: modifiedClient.email,
+      phone_number: modifiedClient.phone,
+      name: modifiedClient.name,
+      owner: modifiedClient.owner,
+      status: modifiedClient.status?.toLowerCase(),
+      status_at_exit: modifiedClient.status_at_exit
+        ?.toLowerCase()
+        ?.replace(/ /g, "_"),
+      status_at_3_months: modifiedClient.status_at_3?.toLowerCase(),
+      status_at_6_months: modifiedClient.status_at_6?.toLowerCase(),
+      status_at_9_months: modifiedClient.status_at_9?.toLowerCase(),
+      status_at_12_months: modifiedClient.status_at_12?.toLowerCase(),
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${modifiedClient.clientID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyClientBody),
+    },
+  );
+  return response;
+};
+
 export {
   login,
   logout,
@@ -279,4 +444,12 @@ export {
   createJobLeads,
   getFilteredJobLeads,
   modifyJobLead,
+  getFilteredClients,
+  createClients,
+  fetchClientById,
+  modifyClient,
+  getEmployer,
+  getUserName,
+  getEmployerContacts,
+  modifyEmployerInfo,
 };

@@ -10,4 +10,18 @@ function getInitialsAndDisplayName(user) {
   return { initials, fullName };
 }
 
-export { getUserByIdHelper, getInitialsAndDisplayName };
+function cleanStatusString(string) {
+  if (string) {
+    const stringWithSpaces = string.replace(/_/g, " ");
+
+    const capitalizedString = stringWithSpaces
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    return capitalizedString;
+  }
+  return string;
+}
+
+export { getUserByIdHelper, getInitialsAndDisplayName, cleanStatusString };
