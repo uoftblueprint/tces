@@ -46,7 +46,7 @@ function FormSubmissionErrorDialog({ open, onBack }) {
               textAlign: "justify",
             }}
           >
-            Make sure you have completed all of the required fields before
+            Make sure you have filled out all the necessary fields before
             submitting the form
           </Typography>
         </DialogContent>

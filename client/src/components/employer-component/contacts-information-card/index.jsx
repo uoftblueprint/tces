@@ -20,6 +20,7 @@ import { Divider } from "../index.styles";
 import BoxRowComponent from "../box-row-component";
 import ContactType from "../../../prop-types/ContactType";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
 function ContactsInformationCard({
   contacts,
@@ -35,6 +36,8 @@ function ContactsInformationCard({
   const [addable, setAddable] = useState(false);
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [confirmAddDialog, setConfirmAddDialog] = useState(false);
   const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [confirmCancelAddDialog, setConfirmCancelAddDialog] = useState(false);
@@ -80,6 +83,10 @@ function ContactsInformationCard({
 
   const cancelEdit = () => {
     setConfirmEditDialog(false);
+  };
+
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
   };
 
   const cancelEditUnsaved = () => {
@@ -158,6 +165,7 @@ function ContactsInformationCard({
     //     setSnackBarMessage("Job lead updated successfully.");
     //     setEditable(false);
     //   } else {
+    //     setFormSubmissionErrorDialog(true);
     //     setSnackBarMessage("Failed to update job lead.");
     //   }
     // } catch (error) {
@@ -178,7 +186,7 @@ function ContactsInformationCard({
       setEmail(contacts[newContactPage - 1].email);
       setPhoneNumber(contacts[newContactPage - 1].phoneNumber);
       setAlternativePhoneNumber(
-        contacts[newContactPage - 1].alternatePhoneNumber,
+        contacts[newContactPage - 1].alternatePhoneNumber
       );
     }
   };
@@ -192,7 +200,7 @@ function ContactsInformationCard({
       setEmail(contacts[newContactPage - 1].email);
       setPhoneNumber(contacts[newContactPage - 1].phoneNumber);
       setAlternativePhoneNumber(
-        contacts[newContactPage - 1].alternatePhoneNumber,
+        contacts[newContactPage - 1].alternatePhoneNumber
       );
     }
   };
@@ -203,7 +211,7 @@ function ContactsInformationCard({
     setEmail(contacts[0] ? contacts[0].email : "");
     setPhoneNumber(contacts[0] ? contacts[0].phoneNumber : "");
     setAlternativePhoneNumber(
-      contacts[0] ? contacts[0].alternatePhoneNumber : "",
+      contacts[0] ? contacts[0].alternatePhoneNumber : ""
     );
   }, [contacts]);
 
@@ -405,6 +413,10 @@ function ContactsInformationCard({
           />
         </Box>
       )}
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
+      />
     </Card>
   );
 }
