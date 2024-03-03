@@ -15,8 +15,10 @@ import LoginPage from "./pages/login";
 import CreatePage from "./pages/create-user";
 import EditPage from "./pages/edit-user";
 import LogoutPage from "./pages/logout";
+import ClientDashboard from "./pages/client-dashboard";
+import CreateClient from "./pages/create-client";
+import EmployerPage from "./pages/employer";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 
@@ -35,12 +37,15 @@ import EditJobLead from "./pages/edit-job-lead";
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
 import getEmployerByIdHelper from "./utils/employers";
+import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
+import ClientPage from "./pages/client-page";
+import EmployerDashboard from "./pages/employer-dashboard";
+import AddEmployerPage from "./pages/add-employer";
 
 function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
   const adminRedirect = "/admin";
-  const jobLeadRedirect = "/job-leads";
 
   // states defined at the very root of the react tree (will be passed down to contributing child components)
   // User State
@@ -61,6 +66,9 @@ function App() {
 
   // Job Leads State
   const [managedJobLeads, setManagedJobLeads] = useState([]);
+
+  // Clients State
+  const [managedClients, setManagedClients] = useState([]);
 
   // Employer State
   const [employers, setEmployers] = useState([]);
@@ -192,7 +200,42 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/employers"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployerDashboard
+                      employers={employers}
+                      setEmployers={setEmployers}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientDashboard
+                      managedClients={managedClients}
+                      setManagedClients={setManagedClients}
+                      getUserById={getUserById}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
           </Route>
+
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
             element={
@@ -208,18 +251,23 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <EditJobLead
-                      managedUsers={managedUsers}
-                      managedJobLeads={managedJobLeads}
-                      getEmployerById={getEmployerById}
-                      getUserById={getUserById}
-                      setLocalExitRoute={setLocalExitRoute}
-                      setSnackBarMessage={setSnackBarMessage}
-                    />
-                  </EmployersLoader>
+                  <ManagedJobLeadsLoader
+                    setManagedJobLeads={setManagedJobLeads}
+                  >
+                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                      <EmployersLoader setEmployers={setEmployers}>
+                        <EditJobLead
+                          managedUsers={managedUsers}
+                          managedJobLeads={managedJobLeads}
+                          getEmployerById={getEmployerById}
+                          getUserById={getUserById}
+                          setLocalExitRoute={setLocalExitRoute}
+                          setSnackBarMessage={setSnackBarMessage}
+                        />
+                      </EmployersLoader>
+                    </ManagedUsersLoader>
+                  </ManagedJobLeadsLoader>
                 </AuthGuard>
               }
             />
@@ -229,7 +277,6 @@ function App() {
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
-                  redirectUrl={jobLeadRedirect}
                 >
                   <EmployersLoader setEmployers={setEmployers}>
                     <AddJobLeadPage
@@ -238,6 +285,64 @@ function App() {
                       setLocalExitRoute={setLocalExitRoute}
                     />
                   </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/employers/:employerID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EmployerPage
+                      getUserById={getUserById}
+                      managedUsers={managedUsers}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/employers/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <EmployersLoader setEmployers={setEmployers}>
+                    <AddEmployerPage currUser={currUser} />
+                  </EmployersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/:clientID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <ClientPage
+                      managedUsers={managedUsers}
+                      getUserById={getUserById}
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
+                  </ManagedUsersLoader>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/clients/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <CreateClient currUser={currUser} />
                 </AuthGuard>
               }
             />

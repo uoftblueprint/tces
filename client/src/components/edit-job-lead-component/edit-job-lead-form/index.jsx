@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -10,7 +11,6 @@ import {
   FormControl,
   MenuItem,
   Select,
-  TextareaAutosize,
   IconButton,
   Grid,
   InputAdornment,
@@ -32,13 +32,14 @@ import { formateDateObjToStr } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
-import JOB_TYPES from "../../../utils/contants";
+import { JOB_TYPES } from "../../../utils/contants";
 
 function EditJobLeadFormComponent({
   jobLead,
   getEmployerById,
   setSnackBarMessage,
 }) {
+  const navigate = useNavigate();
   const employer = getEmployerById(jobLead.employerID);
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -226,7 +227,7 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 <Button
-                  onClick={() => {}}
+                  onClick={() => navigate(`employer/${jobLead.employerID}`)}
                   style={{
                     textDecoration: "underline",
                     color: "#3568E5",
@@ -478,14 +479,14 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 {isEditMode ? (
-                  <TextareaAutosize
+                  <TextField
+                    multiline
                     minRows={3}
                     value={jobDescription}
                     disabled={!isEditMode}
                     style={{
-                      width: "calc(100% - 16px)",
+                      width: "100%",
                       fontSize: "1rem",
-                      padding: "8px",
                       marginTop: "8px",
                       marginBottom: "8px",
                       borderRadius: "4px",

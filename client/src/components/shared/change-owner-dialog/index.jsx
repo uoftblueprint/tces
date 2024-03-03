@@ -20,7 +20,11 @@ import {
   getInitialsAndDisplayName,
   getUserByIdHelper,
 } from "../../../utils/users";
-import { modifyJobLead } from "../../../utils/api";
+import {
+  modifyClient,
+  modifyEmployerInfo,
+  modifyJobLead,
+} from "../../../utils/api";
 
 function ChangeOwnerDialog({
   type,
@@ -63,10 +67,11 @@ function ChangeOwnerDialog({
 
       if (type === "employer") {
         modifiedEntity = {
-          employerID: entity.employerID,
+          id: entity.id,
           owner,
         };
-        // to add modifyEmployer when it is set up
+        redirectUrl = "/employers/";
+        response = await modifyEmployerInfo(modifiedEntity);
       }
 
       if (type === "client") {
@@ -74,7 +79,8 @@ function ChangeOwnerDialog({
           clientID: entity.clientID,
           owner,
         };
-        // to add modifyClient when it is set up
+        response = await modifyClient(modifiedEntity);
+        redirectUrl = "/clients/";
       }
 
       if (response.ok) {
@@ -91,6 +97,10 @@ function ChangeOwnerDialog({
       navigate(redirectUrl);
     }
   };
+
+  React.useEffect(() => {
+    setOwner(currOwner.userID);
+  }, [currOwner]);
 
   return (
     <Dialog
