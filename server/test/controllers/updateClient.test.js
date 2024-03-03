@@ -152,6 +152,9 @@ describe("updateClient test suite", () => {
           owner: 1,
         },
       },
+      user: {
+        id: 1,
+      },
     };
 
     it("Returns 200 on success", async () => {
