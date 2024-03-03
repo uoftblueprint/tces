@@ -68,7 +68,7 @@ const updateClientRequestHandler = async (req, res) => {
     } = req.body.values;
 
     const userObject = await User.findOne({
-      where: { id: req.user },
+      where: { id: req.user.id },
     });
 
     const createTimelineEntry = async (field, value) => {
