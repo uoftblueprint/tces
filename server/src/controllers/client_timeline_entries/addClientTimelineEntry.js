@@ -50,7 +50,7 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
       employer: employer.id,
       // eslint-disable-next-line camelcase
       job_lead,
-      user,
+      user: user.id,
     });
 
     return res.status(200).json({
