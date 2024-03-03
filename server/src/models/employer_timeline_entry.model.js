@@ -57,13 +57,6 @@ const EmployerTimelineEntry = sequelize.define(
         key: "id",
       },
       defaultValue: -1,
-      validate: {
-        isInClient(value) {
-          if (!Client.findByPk(value)) {
-            throw new Error("Client does not exist");
-          }
-        },
-      },
     },
     job_lead: {
       type: DataTypes.INTEGER,

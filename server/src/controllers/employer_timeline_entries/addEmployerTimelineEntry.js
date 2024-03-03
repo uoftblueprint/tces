@@ -12,7 +12,7 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
 
     const { user } = req;
 
-    const validTypes = ["contact", "job_lead_add", "placement", "note"];
+    const validTypes = ["contact", "placement", "note"];
     if (!validTypes.includes(type)) {
       return res.status(400).json({
         status: "fail",
@@ -41,19 +41,6 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
         status: "fail",
         message:
           "For type placement, user, title, employer, body, client, and job_lead must be defined",
-        data: null,
-      });
-    }
-
-    if (
-      ["job_lead_add"].includes(type) &&
-      // eslint-disable-next-line camelcase
-      (!user || !title || !body || !job_lead || !employer)
-    ) {
-      return res.status(400).json({
-        status: "fail",
-        message:
-          "For type note, user, title, employer, body, and job_lead must be defined",
         data: null,
       });
     }

@@ -1,8 +1,7 @@
 const logger = require("pino")();
 const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
-const {
-  submitPlacementUpdateEntryInTimelines,
-} = require("../../utils/placement_entry_util");
+const JobLead = require("../../models/job_lead.model");
+const Employer = require("../../models/employer.model");
 
 const addClientTimelineEntryRequestHandler = async (req, res) => {
   try {
@@ -11,7 +10,7 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
 
     const { user } = req;
 
-    const validTypes = ["update", "contact", "placement", "note"];
+    const validTypes = ["contact", "note"];
     if (!validTypes.includes(type)) {
       return res.status(400).json({
         status: "fail",
@@ -31,19 +30,6 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    if (
-      type === "placement" &&
-      // eslint-disable-next-line camelcase
-      (!user || !title || !body || !client || !job_lead)
-    ) {
-      return res.status(400).json({
-        status: "fail",
-        message:
-          "For type placement, user, title, body, client, and job_lead must be defined",
-        data: null,
-      });
-    }
-
     if (type === "note" && (!user || !title || !body)) {
       return res.status(400).json({
         status: "fail",
@@ -52,26 +38,20 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    let clientTimelineEntry;
+    const jobLead = await JobLead.findOne({ where: { id: job_lead } });
+    const employer = await Employer.findOne({ where: {id: jobLead.employer }})
 
-    if (type === "placement") {
-      clientTimelineEntry = submitPlacementUpdateEntryInTimelines(
-        // eslint-disable-next-line camelcase
-        { type, title, body, client, job_lead, user },
-        "client",
-      );
-    } else {
-      clientTimelineEntry = await ClientTimelineEntry.create({
-        date_added: new Date(),
-        type,
-        title,
-        body,
-        client,
-        // eslint-disable-next-line camelcase
-        job_lead,
-        user,
-      });
-    }
+    const clientTimelineEntry = await ClientTimelineEntry.create({
+      date_added: new Date(),
+      type,
+      title,
+      body,
+      client,
+      employer: employer.id,
+      // eslint-disable-next-line camelcase
+      job_lead,
+      user,
+    });
 
     return res.status(200).json({
       status: "success",

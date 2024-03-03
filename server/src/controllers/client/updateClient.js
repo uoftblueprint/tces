@@ -80,7 +80,7 @@ const updateClientRequestHandler = async (req, res) => {
         type: "update",
         title,
         body,
-        client,
+        client: client.id,
         user: userObject.id,
       });
     };
