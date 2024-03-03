@@ -8,13 +8,11 @@ const updateEmployerContactRequestHandler = async (req, res) => {
       where: { id: employer_contact_id },
     });
     if (!employer_contact) {
-      return res
-        .status(404)
-        .json({
-          status: "fail",
-          message: "Employer contact not found",
-          data: null,
-        });
+      return res.status(404).json({
+        status: "fail",
+        message: "Employer contact not found",
+        data: null,
+      });
     }
     if (req.body.employer) {
       return res.status(403).json({

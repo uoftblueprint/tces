@@ -24,7 +24,7 @@ router.post("/", isLoggedIn, addEmployerContactRequestHandler);
 /**
  * Get all employer contacts
  *
-  * Expected parameters:
+ * Expected parameters:
  * @type string {params.employer_id} Optional
  */
 router.get("/", isLoggedIn, getAllEmployerContactsRequestHandler);
