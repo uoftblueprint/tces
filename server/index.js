@@ -26,6 +26,7 @@ const employerRouter = require("./src/routes/employer");
 const userRouter = require("./src/routes/user");
 const clientRouter = require("./src/routes/client");
 const jobLeadRouter = require("./src/routes/job_lead");
+const employerContactRouter = require("./src/routes/employer_contact");
 
 // Set up cors for local dev connection with frontend
 app.use(cors(corsOption));
@@ -46,6 +47,7 @@ app.use("/employers", employerRouter);
 app.use("/users", userRouter);
 app.use("/clients", clientRouter);
 app.use("/job_leads", jobLeadRouter);
+app.use("/employer_contacts", employerContactRouter);
 
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
