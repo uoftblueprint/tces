@@ -9,28 +9,23 @@ const updateEmployerContactRequestHandler = require("../controllers/employer_con
 const router = express.Router();
 
 /**
- * Create a new employer Contact
+ * Create a new employer contact
  *
  * Expected body parameters:
  *   @type string {params.body.name}
  *   @type string {params.body.email}
- *   @type string {job_type} Not Manidtory
+ *   @type string {job_type} Optional
  *   @type string {phone_number}
- *   @type string {alt_phone_number} Not Manidtory
+ *   @type string {alt_phone_number} Optional
  *   @type string {employer}
  */
 router.post("/", isLoggedIn, addEmployerContactRequestHandler);
 
 /**
- * Create a new employer Contact
+ * Get all employer contacts
  *
- * Expected body parameters:
- *   @type string {params.body.name}
- *   @type string {params.body.email}
- *   @type string {job_type} Not Manidtory
- *   @type string {phone_number}
- *   @type string {alt_phone_number} Not Manidtory
- *   @type string {employer}
+  * Expected parameters:
+ * @type string {params.employer_id} Optional
  */
 router.get("/", isLoggedIn, getAllEmployerContactsRequestHandler);
 
