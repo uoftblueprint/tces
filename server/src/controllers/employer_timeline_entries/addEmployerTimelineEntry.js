@@ -35,7 +35,7 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     if (
       type === "placement" &&
       // eslint-disable-next-line camelcase
-      (!user || !title || !body || !client || !job_lead || !employer)
+      (!user || !client || !job_lead || !employer)
     ) {
       return res.status(400).json({
         status: "fail",
