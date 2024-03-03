@@ -2,7 +2,7 @@ const JobLeadTimelineEntry = require("../models/job_lead_timeline_entry.model");
 const EmployerTimelineEntry = require("../models/employer_timeline_entry.model");
 const ClientTimelineEntry = require("../models/client_timeline_entry.model");
 const JobLead = require("../models/job_lead.model");
-const Client = require("../models/user.model");
+const Client = require("../models/client.model");
 const User = require("../models/user.model");
 
 const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
@@ -28,7 +28,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
     user,
   });
 
-  const clientBody = await ClientTimelineEntry.create({
+  await ClientTimelineEntry.create({
     date_added: new Date(),
     type,
     title,
@@ -56,10 +56,6 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
   }
   if (pageType === "employer") {
     return employerBody;
-  }
-
-  if (pageType === "client") {
-    return clientBody;
   }
   return null;
 };

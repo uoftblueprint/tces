@@ -12,10 +12,7 @@ beforeEach(() => {
     "../../src/models/employer_timeline_entry.model",
     mockEmployerTimelineEntry,
   );
-  mock(
-      "../../src/models/user.model",
-      mockUser,
-  );
+  mock("../../src/models/user.model", mockUser);
   // eslint-disable-next-line no-import-assign
   addJobLeadsRequestHandler = mock.reRequire(
     "../../src/controllers/job_lead/addJobLeads",

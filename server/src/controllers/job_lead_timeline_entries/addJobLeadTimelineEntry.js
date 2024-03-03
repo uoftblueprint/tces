@@ -3,11 +3,13 @@ const JobLeadTimelineEntry = require("../../models/job_lead_timeline_entry.model
 const {
   submitPlacementUpdateEntryInTimelines,
 } = require("../../utils/placement_entry_util");
+const Employer = require("../../models/employer.model");
+const JobLead = require("../../models/job_lead.model");
 
 const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
   try {
     // eslint-disable-next-line camelcase
-    const { type, title, body, client, job_lead, employer } = req.body.entry;
+    const { type, title, body, client, job_lead } = req.body.entry;
 
     const { user } = req;
 
@@ -23,7 +25,7 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
     if (
       type === "placement" &&
       // eslint-disable-next-line camelcase
-      (!user || !title || !body || !client || !job_lead || !employer)
+      (!user || !client || !job_lead)
     ) {
       return res.status(400).json({
         status: "fail",
@@ -45,9 +47,13 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
     let jobLeadTimelineEntry;
 
     if (type === "placement") {
+      const jobLeadObject = await JobLead.findOne({ where: { id: job_lead } });
+      const employerObject = await Employer.findOne({
+        where: { id: jobLeadObject.employer },
+      });
       jobLeadTimelineEntry = await submitPlacementUpdateEntryInTimelines(
         // eslint-disable-next-line camelcase
-        { type, title, body, client, job_lead, user: user.id, employer },
+        { type, client, job_lead, user: user.id, employer: employerObject.id },
         "job_lead",
       );
     } else {

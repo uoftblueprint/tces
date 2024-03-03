@@ -39,7 +39,9 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
     }
 
     const jobLead = await JobLead.findOne({ where: { id: job_lead } });
-    const employer = await Employer.findOne({ where: {id: jobLead.employer }})
+    const employer = await Employer.findOne({
+      where: { id: jobLead.employer },
+    });
 
     const clientTimelineEntry = await ClientTimelineEntry.create({
       date_added: new Date(),

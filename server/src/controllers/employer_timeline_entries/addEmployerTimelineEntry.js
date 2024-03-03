@@ -66,9 +66,9 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     let employerTimelineEntry;
 
     if (type === "placement") {
-      employerTimelineEntry = submitPlacementUpdateEntryInTimelines(
+      employerTimelineEntry = await submitPlacementUpdateEntryInTimelines(
         // eslint-disable-next-line camelcase
-        { type, title, body, contact, client, job_lead, user: user.id, employer },
+        { type, client, job_lead, user: user.id, employer },
         "employer",
       );
     } else {
