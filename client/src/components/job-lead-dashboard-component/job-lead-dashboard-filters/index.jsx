@@ -362,7 +362,6 @@ function JobLeadDashboardFiltersComponent({
             >
               Owner
             </Typography>
-            =
             <FormControl fullWidth>
               <Select
                 labelId="owner-select-label"
