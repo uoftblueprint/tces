@@ -68,6 +68,15 @@ function AddJobLead({
     ]);
   };
 
+  const handleDeleteJobLead = (id) => {
+    const filteredData = jobLeadData.filter(lead => lead.id !== id);
+    const updatedData = filteredData.map((lead, index) => ({
+      ...lead,
+      id: index,
+    }));
+    setJobLeadData(updatedData);
+  };  
+
   const handleInputChange = (input, id, field) => {
     const updatedJobLeads = jobLeadData.map((lead) =>
       lead.id === id ? { ...lead, [field]: input } : lead,
@@ -137,6 +146,7 @@ function AddJobLead({
               jobLeadData={jobLeadData}
               employers={employers}
               handleInputChange={handleInputChange}
+              handleDeleteJobLead={handleDeleteJobLead}
             />
 
             <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
