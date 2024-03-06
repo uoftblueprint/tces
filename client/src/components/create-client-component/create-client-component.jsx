@@ -26,6 +26,10 @@ function CreateClientComponent({ currUser }) {
   const [confirmSubmitDialog, setConfirmSubmitDialog] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
 
+  const handleDeleteClient = (index) => {
+    setClients(currentClients => currentClients.filter((_, i) => i !== index));
+  };
+  
   const onConfirmExit = () => {
     setDialogOpen(false);
     navigate("/clients");
@@ -83,6 +87,8 @@ function CreateClientComponent({ currUser }) {
                   .concat(prevClients.slice(i + 1)),
               )
             }
+            showDeleteIcon={clients.length > 1}
+            onDelete={() => handleDeleteClient(i)}
           />
         ))}
         <AddButton

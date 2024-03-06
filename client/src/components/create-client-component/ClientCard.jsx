@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardContent, TextField, Stack } from "@mui/material";
+import { Card, CardHeader, CardContent, IconButton, TextField, Stack } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { IMaskInput } from "react-imask";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
@@ -27,7 +28,7 @@ TextMaskCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-function ClientCard({ setClientData, index }) {
+function ClientCard({ setClientData, index, showDeleteIcon, onDelete }) {
   const [values, setValues] = React.useState({
     fullName: "",
     textmask: "",
@@ -58,7 +59,16 @@ function ClientCard({ setClientData, index }) {
 
   return (
     <Card>
-      <CardHeader title="Add a New Client" />
+      <CardHeader 
+        title="Add a New Client"
+        action={
+          showDeleteIcon && (
+            <IconButton onClick={onDelete}>
+              <DeleteIcon />
+            </IconButton>
+          )
+        } 
+      />
       <CardContent>
         <Stack gap={2}>
           <Stack direction="row" gap={2}>
@@ -103,6 +113,8 @@ function ClientCard({ setClientData, index }) {
 ClientCard.propTypes = {
   setClientData: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  showDeleteIcon: PropTypes.bool.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default ClientCard;
