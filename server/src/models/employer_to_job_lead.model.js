@@ -35,7 +35,7 @@ const EmployerToJobLead = sequelize.define("employer_to_employer_contacts", {
     validate: {
       isInJobLead(value) {
         if (!JobLead.findByPk(value)) {
-          throw new Error("User does not exist");
+          throw new Error("Job lead does not exist");
         }
       },
     },

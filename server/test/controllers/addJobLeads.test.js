@@ -3,9 +3,16 @@ import addJobLeadsRequestHandler from "../../src/controllers/job_lead/addJobLead
 
 const mock = require("mock-require");
 const mockAddJobLeads = require("../mocks/mockAddObject");
+const mockEmployerTimelineEntry = require("../mocks/mockAddObject");
+const mockUser = require("../mocks/mockGetAllObjects");
 
 beforeEach(() => {
   mock("../../src/models/job_lead.model", mockAddJobLeads);
+  mock(
+    "../../src/models/employer_timeline_entry.model",
+    mockEmployerTimelineEntry,
+  );
+  mock("../../src/models/user.model", mockUser);
   // eslint-disable-next-line no-import-assign
   addJobLeadsRequestHandler = mock.reRequire(
     "../../src/controllers/job_lead/addJobLeads",
@@ -22,9 +29,7 @@ describe("addJobLeads test suite", () => {
     status: (code) => {
       mockRes.statusCode = code;
       return {
-        json: (message) => {
-          return;
-        },
+        json: (message) => {},
       };
     },
     statusCode: 0,
@@ -60,7 +65,9 @@ describe("addJobLeads test suite", () => {
       const spy = vi.spyOn(mockAddJobLeads, "create");
 
       await addJobLeadsRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(1);
+      // one time to create the job lead
+      // one time to create timeline entry of action
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it("Does not call bulkCreate", async () => {
@@ -115,7 +122,10 @@ describe("addJobLeads test suite", () => {
       const spy = vi.spyOn(mockAddJobLeads, "create");
 
       await addJobLeadsRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(2);
+      // 2 times for creating job leads
+      // 2 times for creating timeline entry about action
+      // 2 times for bulk creating timeline entry
+      expect(spy).toHaveBeenCalledTimes(6);
     });
 
     it("Returns 200 on success", async () => {
