@@ -27,9 +27,11 @@ function CreateClientComponent({ currUser }) {
   const [errorObj, setErrorObj] = useState(false);
 
   const handleDeleteClient = (index) => {
-    setClients(currentClients => currentClients.filter((_, i) => i !== index));
+    setClients((currentClients) =>
+      currentClients.filter((_, i) => i !== index),
+    );
   };
-  
+
   const onConfirmExit = () => {
     setDialogOpen(false);
     navigate("/clients");

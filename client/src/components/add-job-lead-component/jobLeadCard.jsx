@@ -13,26 +13,35 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
 import EmployerType from "../../prop-types/EmployerType";
 import { JOB_TYPES } from "../../utils/contants";
 
-function JobLeadContent({ 
-  jobLeadData, 
-  handleInputChange, 
-  handleDeleteJobLead, 
-  isAddEmployer, 
-  employers 
+function JobLeadContent({
+  jobLeadData,
+  handleInputChange,
+  handleDeleteJobLead,
+  isAddEmployer,
+  employers,
 }) {
   return (
     <>
       {jobLeadData.map((lead, index, array) => (
         <JobLeadContainer key={lead.id}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <H3>Job Lead {lead.id + 1}</H3>
             {array.length > 1 && (
-              <IconButton onClick={() => handleDeleteJobLead(lead.id)} aria-label="delete">
+              <IconButton
+                onClick={() => handleDeleteJobLead(lead.id)}
+                aria-label="delete"
+              >
                 <DeleteIcon />
               </IconButton>
             )}

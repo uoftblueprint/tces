@@ -1,8 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardContent, IconButton, TextField, Stack } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  IconButton,
+  TextField,
+  Stack,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { IMaskInput } from "react-imask";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
@@ -59,7 +66,7 @@ function ClientCard({ setClientData, index, showDeleteIcon, onDelete }) {
 
   return (
     <Card>
-      <CardHeader 
+      <CardHeader
         title="Add a New Client"
         action={
           showDeleteIcon && (
@@ -67,7 +74,7 @@ function ClientCard({ setClientData, index, showDeleteIcon, onDelete }) {
               <DeleteIcon />
             </IconButton>
           )
-        } 
+        }
       />
       <CardContent>
         <Stack gap={2}>

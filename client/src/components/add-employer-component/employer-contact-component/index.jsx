@@ -16,7 +16,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Container,
   ButtonContainer,
@@ -98,13 +98,13 @@ function AddEmployerInfo({
   };
 
   const handleDeleteContact = (id) => {
-    const filteredData = employerData.filter(lead => lead.id !== id);
+    const filteredData = employerData.filter((lead) => lead.id !== id);
     const updatedData = filteredData.map((lead, index) => ({
       ...lead,
       id: index,
     }));
     setEmployerData(updatedData);
-  };  
+  };
 
   const handleResetInputs = () => {
     resetInitialState();
@@ -140,10 +140,19 @@ function AddEmployerInfo({
           <form onSubmit={handleNextButtonClick}>
             {employerData.map((lead, index, array) => (
               <EmployerContactContainer key={lead.id}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <H3>Employer Contact</H3>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <H3>Employer Contact</H3>
                   {array.length > 1 && (
-                    <IconButton onClick={() => handleDeleteContact(lead.id)} aria-label="delete">
+                    <IconButton
+                      onClick={() => handleDeleteContact(lead.id)}
+                      aria-label="delete"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   )}
