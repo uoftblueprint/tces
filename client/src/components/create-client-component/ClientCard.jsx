@@ -98,17 +98,13 @@ function ClientCard({ setClientData, index, showDeleteIcon, onDelete }) {
               InputProps={{
                 inputComponent: TextMaskCustom,
               }}
-              helperText="*Required"
-              required
             />
           </Stack>
           <TextField
             type="email"
             label="Email"
             value={values.email}
-            helperText="*Required"
             onChange={handleChange}
-            required
             name="email"
           />
         </Stack>
