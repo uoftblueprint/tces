@@ -50,26 +50,26 @@ function EditJobLeadFormComponent({
   const [isEditMode, setIsEditMode] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN,
+    jobLead.compensationMin || NaN
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN,
+    jobLead.compensationMax || NaN
   );
   const [employmentType, setEmploymentType] = React.useState(
-    jobLead.employmentType || NaN,
+    jobLead.employmentType || NaN
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN,
+    jobLead.hoursPerWeek || NaN
   );
   const [noc, setNoc] = React.useState(jobLead.noc || "");
   const [expirationDate, setExpirationDate] = React.useState(
-    dayjs(jobLead.expirationDate) || null,
+    dayjs(jobLead.expirationDate) || null
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || "",
+    jobLead.numOfPostions || ""
   );
   const [jobDescription, setJobDescription] = React.useState(
-    jobLead.jobDescription || "",
+    jobLead.jobDescription || ""
   );
 
   const toggleEditMode = () => {
@@ -104,7 +104,7 @@ function EditJobLeadFormComponent({
     const text = displayCompensationRange(
       minCompensation,
       maxCompensation,
-      "/hour",
+      "/hour"
     );
     navigator.clipboard.writeText(text).then(
       () => {
@@ -112,7 +112,7 @@ function EditJobLeadFormComponent({
       },
       () => {
         setSnackBarMessage("Failed to copy");
-      },
+      }
     );
   };
 
@@ -219,6 +219,7 @@ function EditJobLeadFormComponent({
                     value={jobTitle}
                     onChange={(event) => setJobTitle(event.target.value)}
                     disabled={!isEditMode}
+                    error={!jobTitle}
                     required
                   />
                 ) : (
@@ -280,6 +281,7 @@ function EditJobLeadFormComponent({
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
+                        error={!minCompensation}
                         required
                       />
                     </FormControl>
@@ -304,6 +306,7 @@ function EditJobLeadFormComponent({
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
+                        error={!maxCompensation}
                         required
                       />
                     </FormControl>
@@ -319,7 +322,7 @@ function EditJobLeadFormComponent({
                           {displayCompensationRange(
                             minCompensation,
                             maxCompensation,
-                            "/hour",
+                            "/hour"
                           )}
                         </Typography>
                       </Grid>
@@ -353,6 +356,7 @@ function EditJobLeadFormComponent({
                       onChange={(event) =>
                         setEmploymentType(event.target.value)
                       }
+                      error={!employmentType}
                       required
                     >
                       {JOB_TYPES.map((jobType) => (
@@ -390,6 +394,7 @@ function EditJobLeadFormComponent({
                         setHoursPerWeek(value);
                       }
                     }}
+                    error={!hoursPerWeek}
                     required
                   />
                 ) : (
@@ -412,6 +417,7 @@ function EditJobLeadFormComponent({
                     value={noc}
                     disabled={!isEditMode}
                     onChange={(event) => setNoc(event.target.value)}
+                    error={!noc}
                     required
                   />
                 ) : (
@@ -429,7 +435,7 @@ function EditJobLeadFormComponent({
               <Grid item xs={9}>
                 {isEditMode ? (
                   <DatePicker
-                    label="Date"
+                    // label="Date"
                     slotProps={{ textField: { fullWidth: true } }}
                     value={expirationDate}
                     onChange={(newValue) => setExpirationDate(newValue)}
@@ -440,6 +446,7 @@ function EditJobLeadFormComponent({
                         {...params}
                         fullWidth
                         disabled={!isEditMode}
+                        error={!expirationDate}
                         required
                       />
                     )}
@@ -448,7 +455,7 @@ function EditJobLeadFormComponent({
                 ) : (
                   renderViewValue(
                     "Expiration Date",
-                    formateDateObjToStr(expirationDate),
+                    formateDateObjToStr(expirationDate)
                   )
                 )}
               </Grid>
@@ -469,6 +476,7 @@ function EditJobLeadFormComponent({
                     value={numberOfPositions}
                     onChange={(e) => setNumberOfPositions(e.target.value)}
                     disabled={!isEditMode}
+                    error={!numberOfPositions}
                     required
                   />
                 ) : (
@@ -501,6 +509,7 @@ function EditJobLeadFormComponent({
                       borderColor: "#ced4da",
                     }}
                     onChange={(event) => setJobDescription(event.target.value)}
+                    error={!jobDescription}
                     required
                   />
                 ) : (

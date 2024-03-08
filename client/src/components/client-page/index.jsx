@@ -358,6 +358,7 @@ export default function ClientPage({
                       value={editedName}
                       fullWidth
                       onChange={handleNameChange}
+                      error={!editedName}
                     />
                   </Grid>
                 </>
@@ -401,6 +402,7 @@ export default function ClientPage({
                       value={editedEmail}
                       fullWidth
                       onChange={handleEmailChange}
+                      error={!editedEmail}
                     />
                   </Grid>
                 </>
@@ -454,6 +456,7 @@ export default function ClientPage({
                       InputProps={{
                         inputComponent: TextMaskCustom,
                       }}
+                      error={!editedPhone}
                     />
                   </Grid>
                 </>
@@ -507,6 +510,7 @@ export default function ClientPage({
                           />
                         )
                       }
+                      error={!editedStatus}
                     >
                       <MenuItem value="Active">Active</MenuItem>
                       <MenuItem value="R&I">R&I</MenuItem>
@@ -651,6 +655,7 @@ export default function ClientPage({
                               />
                             )
                           }
+                          error={!editedStatusExit}
                         >
                           <MenuItem value="Employed">Employed</MenuItem>
                           <MenuItem value="Training">Training</MenuItem>
@@ -732,6 +737,7 @@ export default function ClientPage({
                                 />
                               )
                             }
+                            error={!editedStatus3}
                           >
                             <MenuItem value="Employed">Employed</MenuItem>
                             <MenuItem value="Training">Training</MenuItem>
@@ -813,6 +819,7 @@ export default function ClientPage({
                                 />
                               )
                             }
+                            error={!editedStatus6}
                           >
                             <MenuItem value="Employed">Employed</MenuItem>
                             <MenuItem value="Training">Training</MenuItem>
@@ -894,6 +901,7 @@ export default function ClientPage({
                                 />
                               )
                             }
+                            error={!editedStatus9}
                           >
                             <MenuItem value="Employed">Employed</MenuItem>
                             <MenuItem value="Training">Training</MenuItem>
@@ -975,6 +983,7 @@ export default function ClientPage({
                                 />
                               )
                             }
+                            error={!editedStatus12}
                           >
                             <MenuItem value="Employed">Employed</MenuItem>
                             <MenuItem value="Training">Training</MenuItem>
