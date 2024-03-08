@@ -446,7 +446,6 @@ function EditJobLeadFormComponent({
                         {...params}
                         fullWidth
                         disabled={!isEditMode}
-                        error={!expirationDate}
                         required
                       />
                     )}
