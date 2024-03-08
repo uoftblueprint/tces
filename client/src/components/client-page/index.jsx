@@ -210,7 +210,7 @@ export default function ClientPage({
       if (response.ok) {
         setSnackBarMessage("Client updated successfully.");
         setIsEditMode(true);
-        window.location.reload();
+        navigate(0);
       } else {
         setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update client.");
