@@ -27,14 +27,16 @@ function CreateClientComponent({ currUser }) {
   const [errorObj, setErrorObj] = useState(false);
 
   const handleAddClient = () => {
-    setClients(currentClients => [
+    setClients((currentClients) => [
       ...currentClients,
       { id: `client-${Date.now()}`, fullName: "", phoneNumber: "", email: "" },
     ]);
   };
 
   const handleDeleteClient = (clientId) => {
-    setClients(currentClients => currentClients.filter(client => client.id !== clientId));
+    setClients((currentClients) =>
+      currentClients.filter((client) => client.id !== clientId),
+    );
   };
 
   const onConfirmExit = () => {
@@ -82,13 +84,15 @@ function CreateClientComponent({ currUser }) {
             Input information about the client
           </Typography>
         </Header>
-        {clients.map(client => (
+        {clients.map((client) => (
           <ClientCard
             key={client.id}
             client={client}
             setClientData={(newClientData) =>
-              setClients(prevClients => 
-                prevClients.map(pc => pc.id === client.id ? { ...pc, ...newClientData } : pc)
+              setClients((prevClients) =>
+                prevClients.map((pc) =>
+                  pc.id === client.id ? { ...pc, ...newClientData } : pc,
+                ),
               )
             }
             showDeleteIcon={clients.length > 1}
