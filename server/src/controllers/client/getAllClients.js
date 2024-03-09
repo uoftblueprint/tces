@@ -1,6 +1,7 @@
 const logger = require("pino")();
 const Sequelize = require("sequelize");
 const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
 
 const { Op } = Sequelize;
 
@@ -106,7 +107,16 @@ const getAllClientsRequestHandler = async (req, res) => {
       };
     }
 
-    const clients = await Client.findAndCountAll(query_options);
+    let clients = await Client.findAndCountAll(query_options);
+
+    clients.rows = clients.rows.map((client) => {
+      return client.get({ plain: true});
+    });
+
+    for (clt of clients.rows) {
+      const owner = await User.findOne({where: {id: clt.owner}})
+      owner ? clt.ownerName = `${owner.first_name} ${owner.last_name}` : ""
+    }
 
     const uniqueOwners = await Client.findAll({
       attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
