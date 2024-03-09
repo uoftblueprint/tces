@@ -110,12 +110,12 @@ const getAllClientsRequestHandler = async (req, res) => {
     let clients = await Client.findAndCountAll(query_options);
 
     clients.rows = clients.rows.map((client) => {
-      return client.get({ plain: true});
+      return client.get({ plain: true });
     });
 
     for (clt of clients.rows) {
-      const owner = await User.findOne({where: {id: clt.owner}})
-      owner ? clt.ownerName = `${owner.first_name} ${owner.last_name}` : ""
+      const owner = await User.findOne({ where: { id: clt.owner } });
+      owner ? (clt.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
     }
 
     const uniqueOwners = await Client.findAll({

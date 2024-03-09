@@ -136,12 +136,12 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     let jobLeads = await JobLead.findAll(searchConfig);
 
     jobLeads = jobLeads.map((jl) => {
-      return jl.get({ plain: true});
+      return jl.get({ plain: true });
     });
 
     for (jl of jobLeads) {
-      const owner = await User.findOne({where: {id: jl.owner}})
-      owner ? jl.ownerName = `${owner.first_name} ${owner.last_name}` : ""
+      const owner = await User.findOne({ where: { id: jl.owner } });
+      owner ? (jl.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
     }
 
     const maxCompensationSoFar = await JobLead.max("compensation_max");

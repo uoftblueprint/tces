@@ -60,12 +60,12 @@ const getAllEmployersRequestHandler = async (req, res) => {
     let employers = await Employer.findAll(searchConfig);
 
     employers = employers.map((employer) => {
-      return employer.get({ plain: true});
+      return employer.get({ plain: true });
     });
 
     for (emp of employers) {
-      const owner = await User.findOne({where: {id: emp.owner}})
-      owner ? emp.ownerName = `${owner.first_name} ${owner.last_name}` : ""
+      const owner = await User.findOne({ where: { id: emp.owner } });
+      owner ? (emp.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
     }
 
     const totalEmployers = await Employer.count({ where: query });
