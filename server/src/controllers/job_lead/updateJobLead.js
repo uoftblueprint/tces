@@ -25,7 +25,6 @@ const updateJobLeadRequestHandler = async (req, res) => {
         data: null,
       });
     }
-
     await job_lead.set(req.body.values);
     await job_lead.save();
 

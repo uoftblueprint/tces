@@ -127,6 +127,7 @@ function ChangeOwnerDialog({
             value={owner}
             label="Owner Name"
             onChange={handleInputChange}
+            MenuProps={{ PaperProps: { style: { maxHeight: "33%" } } }}
             required
           >
             {users.map((user) => (
