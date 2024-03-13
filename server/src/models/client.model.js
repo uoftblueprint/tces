@@ -88,6 +88,21 @@ const Client = sequelize.define("clients", {
     type: DataTypes.ENUM(["employed", "training", "no_results"]),
     allowNull: true,
   },
+  job_lead_placement: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: JobLead,
+      key: "id",
+    },
+    validate: {
+      isInJobLead(value) {
+        if (value != -1 && !User.findByPk(value)) {
+          throw new Error("User does not exist");
+        }
+      },
+    },
+  },
 });
 
 module.exports = Client;
