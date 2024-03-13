@@ -13,7 +13,7 @@ const deleteEmployerContactRequestHandler = async (req, res) => {
       return res.status(200).json({
         status: "success",
         message: "Employer Contact Successfully deleted",
-        data: {},
+        data: employer_contact,
       });
     }
 
