@@ -2,6 +2,7 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
+const JobLead = require("./job_lead.model");
 
 const Client = sequelize.define("clients", {
   id: {
@@ -97,7 +98,7 @@ const Client = sequelize.define("clients", {
     },
     validate: {
       isInJobLead(value) {
-        if (value != -1 && !User.findByPk(value)) {
+        if (value !== -1 && !User.findByPk(value)) {
           throw new Error("User does not exist");
         }
       },
