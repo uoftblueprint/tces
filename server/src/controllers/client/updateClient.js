@@ -1,9 +1,11 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
+const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
+const User = require("../../models/user.model");
 
 const updateClientRequestHandler = async (req, res) => {
   try {
-    const client_id = req.params.client_id;
+    const { client_id } = req.params;
     const client = await Client.findOne({ where: { id: client_id } });
 
     if (!client) {
@@ -25,7 +27,7 @@ const updateClientRequestHandler = async (req, res) => {
         data: null,
       });
     }
-    if (req.body.values.status == "closed") {
+    if (req.body.values.status === "closed") {
       // Case: we are closing a client
       if (!req.body.values.status_at_exit) {
         return res.status(403).json({
@@ -37,7 +39,7 @@ const updateClientRequestHandler = async (req, res) => {
 
       req.body.values.closure_date = new Date();
     }
-    if (req.body.values.status == "active") {
+    if (req.body.values.status === "active") {
       // Case: we are setting a client back to active
       req.body.values.status_at_exit = null;
       req.body.values.status_at_3_months = null;
@@ -46,11 +48,63 @@ const updateClientRequestHandler = async (req, res) => {
       req.body.values.status_at_12_months = null;
       req.body.values.closed_date = null;
     }
+    if (req.body.values.status === "r&i") {
+      req.body.values.status = "r_and_i";
+    }
 
     req.body.values.date_updated = new Date();
 
     await client.set(req.body.values);
     await client.save();
+
+    const {
+      name,
+      email,
+      phone_number,
+      status,
+      closure_date,
+      status_at_exit,
+      status_at_3_months,
+      status_at_6_months,
+      status_at_9_months,
+      status_at_12_months,
+    } = req.body.values;
+
+    const userObject = await User.findOne({
+      where: { id: req.user.id },
+    });
+
+    const createTimelineEntry = async (field, value) => {
+      const title = `${userObject.first_name} ${userObject.last_name} updated ${field} to "${value}" for ${client.name}`;
+      const body = `${userObject.first_name} ${userObject.last_name} has updated the ${field} to "${value}" for ${client.name}.`;
+
+      await ClientTimelineEntry.create({
+        date_added: new Date(),
+        type: "update",
+        title,
+        body,
+        client: client.id,
+        user: userObject.id,
+      });
+    };
+
+    if (name && userObject) await createTimelineEntry("name", name);
+    if (email && userObject) await createTimelineEntry("email", email);
+    if (phone_number && userObject)
+      await createTimelineEntry("phone number", phone_number);
+    if (status && userObject) await createTimelineEntry("status", status);
+    if (closure_date && userObject)
+      await createTimelineEntry("closure date", closure_date);
+    if (status_at_exit && userObject)
+      await createTimelineEntry("status at exit", status_at_exit);
+    if (status_at_3_months && userObject)
+      await createTimelineEntry("status at 3 months", status_at_3_months);
+    if (status_at_6_months && userObject)
+      await createTimelineEntry("status at 6 months", status_at_6_months);
+    if (status_at_9_months && userObject)
+      await createTimelineEntry("status at 9 months", status_at_9_months);
+    if (status_at_12_months && userObject)
+      await createTimelineEntry("status at 12 months", status_at_12_months);
 
     return res.status(200).json({
       status: "success",
@@ -58,7 +112,7 @@ const updateClientRequestHandler = async (req, res) => {
       data: client,
     });
   } catch (err) {
-    if (err.name == "SequelizeUniqueConstraintError") {
+    if (err.name === "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
       return res.status(400).json({
         status: "fail",
