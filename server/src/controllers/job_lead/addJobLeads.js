@@ -1,5 +1,7 @@
 const logger = require("pino")();
 const JobLead = require("../../models/job_lead.model");
+const EmployerTimelineEntry = require("../../models/employer_timeline_entry.model");
+const User = require("../../models/user.model");
 
 const addJobLeadsRequestHandler = async (req, res) => {
   try {
@@ -9,6 +11,20 @@ const addJobLeadsRequestHandler = async (req, res) => {
       // create each job lead while doing the needed checks for each one as well
       for (const jobLeadData of req.body.job_lead) {
         const jobLead = await createJobLead(jobLeadData, req.user.id);
+
+        const title = `${req.user.first_name} added Job Lead`;
+        const body = jobLead ? `${jobLead.job_title}` : "";
+
+        await EmployerTimelineEntry.create({
+          date_added: new Date(),
+          type: "job_lead_add",
+          title,
+          body,
+          employer: jobLead ? jobLead.employer : -1,
+          job_lead: jobLead ? jobLead.id : -1,
+          user: req.user,
+        });
+
         jobLeads.push(jobLead);
       }
 
@@ -17,6 +33,7 @@ const addJobLeadsRequestHandler = async (req, res) => {
         message: "created job leads",
         data: { jobLeads },
       });
+<<<<<<< HEAD
     } else {
       const jobLead = await createJobLead(req.body.job_lead, req.user.id);
       return res.status(200).json({
@@ -24,7 +41,16 @@ const addJobLeadsRequestHandler = async (req, res) => {
         message: "created job lead",
         data: { jobLead },
       });
+=======
+>>>>>>> 09737ae1203a2f3e1b803adc9dc4e48b02afdfd2
     }
+    const jobLead = await createJobLead(req.body.job_lead, req.user.id);
+
+    return res.status(200).json({
+      status: "success",
+      message: "created job lead",
+      data: { jobLead },
+    });
   } catch (err) {
     if (err.name == "SequelizeUniqueConstraintError") {
       // This means that either user or owner is not a valid user
@@ -60,7 +86,7 @@ const createJobLead = async (jobLeadData, userId) => {
     }
 
     // create a single job lead
-    return await JobLead.create({
+    const jobLead = await JobLead.create({
       owner: jobLeadData.owner,
       creator: userId,
       employer: jobLeadData.employer,
@@ -75,6 +101,23 @@ const createJobLead = async (jobLeadData, userId) => {
       expiration_date: expirationDate,
       employment_type: jobLeadData.employment_type,
     });
+
+    const userObject = await User.findOne({ where: { id: userId } });
+
+    const title = `${userObject.first_name} added Job Lead`;
+    const body = jobLead ? `${jobLead.job_title}` : "";
+
+    await EmployerTimelineEntry.create({
+      date_added: new Date(),
+      type: "job_lead_add",
+      title,
+      body,
+      employer: jobLead ? jobLead.employer : -1,
+      job_lead: jobLead ? jobLead.id : -1,
+      user: userId,
+    });
+
+    return jobLead;
   } catch (err) {
     logger.error(`Error in createJobLead: ${err}`);
     throw err;
