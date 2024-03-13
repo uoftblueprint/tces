@@ -33,16 +33,6 @@ const addJobLeadsRequestHandler = async (req, res) => {
         message: "created job leads",
         data: { jobLeads },
       });
-<<<<<<< HEAD
-    } else {
-      const jobLead = await createJobLead(req.body.job_lead, req.user.id);
-      return res.status(200).json({
-        status: "success",
-        message: "created job lead",
-        data: { jobLead },
-      });
-=======
->>>>>>> 09737ae1203a2f3e1b803adc9dc4e48b02afdfd2
     }
     const jobLead = await createJobLead(req.body.job_lead, req.user.id);
 
