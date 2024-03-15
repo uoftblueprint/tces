@@ -109,21 +109,25 @@ export default function ClientPage({
   const [editedName, setEditedName] = React.useState(clientInfo.firstName);
   const [editedEmail, seteditedEmail] = React.useState(clientInfo.email);
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
-  const [editedStatus, setEditedStatus] = React.useState(clientInfo.status);
+  // If the database value is r_and_i, render it as r&i
+  const [editedStatus, setEditedStatus] = React.useState(
+    clientInfo.status === "R And I" ? "R&I" : clientInfo.status
+  );
+
   const [editedStatusExit, setEditedStatusExit] = React.useState(
-    clientInfo.status_at_exit
+    clientInfo.status_at_exit,
   );
   const [editedStatus3, setEditedStatus3] = React.useState(
-    clientInfo.status_at_3
+    clientInfo.status_at_3,
   );
   const [editedStatus6, setEditedStatus6] = React.useState(
-    clientInfo.status_at_6
+    clientInfo.status_at_6,
   );
   const [editedStatus9, setEditedStatus9] = React.useState(
-    clientInfo.status_at_9
+    clientInfo.status_at_9,
   );
   const [editedStatus12, setEditedStatus12] = React.useState(
-    clientInfo.status_at_12
+    clientInfo.status_at_12,
   );
 
   const handleNameChange = (event) => {
@@ -192,12 +196,15 @@ export default function ClientPage({
     event.preventDefault();
     setIsLoading(true);
 
+    // rename editedStatus if it is r&i
+    const sanitizedStatus = editedStatus === "r&i" ? "r_and_i" : editedStatus;
+
     const updatedClientInfo = {
       ...clientInfo,
       name: editedName,
       email: editedEmail,
       phone: editedPhone,
-      status: editedStatus,
+      status: sanitizedStatus,
       status_at_exit: editedStatusExit,
       status_at_3: editedStatus3,
       status_at_6: editedStatus6,
@@ -488,7 +495,14 @@ export default function ClientPage({
                     </Grid>
                     <Grid item xs={8}>
                       <Typography variant="body1" align="left">
-                        <Chip variant="filled" label={clientInfo.status} />
+                        <Chip
+                        variant="filled"
+                        label={
+                          clientInfo.status === "R And I"
+                            ? "R&I"
+                            : clientInfo.status
+                        }
+                      />
                       </Typography>
                     </Grid>
                   </>
