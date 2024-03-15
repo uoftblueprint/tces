@@ -48,6 +48,7 @@ function EditJobLeadFormComponent({
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
   const [isEditMode, setIsEditMode] = React.useState(false);
+  const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
     jobLead.compensationMin || NaN
@@ -199,7 +200,18 @@ function EditJobLeadFormComponent({
             <Typography variant="h5" sx={{ flexGrow: 1 }}>
               Information
             </Typography>
-            <IconButton onClick={toggleEditMode} size="small">
+            <IconButton
+              type={shouldSubmit ? "submit" : "button"}
+              size="small"
+              onClick={() => {
+                if (isEditMode) {
+                  setShouldSubmit(true);
+                } else {
+                  toggleEditMode();
+                  setShouldSubmit(false);
+                }
+              }}
+            >
               <EditIcon sx={{ color: isEditMode ? "#3568E5" : "inherit" }} />
             </IconButton>
           </HeaderContainer>
