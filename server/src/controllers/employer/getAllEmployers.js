@@ -1,6 +1,7 @@
 const logger = require("pino")();
 const { Op, Sequelize } = require("sequelize");
 const Employer = require("../../models/employer.model");
+const { sequelize } = require("../../configs/sequelize");
 
 const getAllEmployersRequestHandler = async (req, res) => {
   try {
@@ -23,9 +24,15 @@ const getAllEmployersRequestHandler = async (req, res) => {
       query.name = { [Op.like]: `%${employerName}%` };
     }
     if (phoneNumber) {
-      query.phone_number = Sequelize.literal(
-        `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
-      );
+      // Validate that phoneNumber only contains digits
+      if (/^\d+$/.test(phoneNumber)) {
+        query.phoneNumber = Sequelize.literal(
+          `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
+        );
+      } else {
+        // Handle invalid phoneNumber
+        logger.error('phoneNumber should only contain digits');
+      }
     }
     if (startDateAdded) {
       const startDate = new Date(startDateAdded);
