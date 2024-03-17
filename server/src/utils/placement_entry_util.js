@@ -7,21 +7,24 @@ const User = require("../models/user.model");
 
 const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
   // eslint-disable-next-line camelcase
-  const { type, job_lead, client, user, employer } = data;
+  const { type, job_lead, client, user, employer, body } = data;
 
   // eslint-disable-next-line camelcase
   const jobLeadObject = await JobLead.findOne({ where: { id: job_lead } });
   const clientObject = await Client.findOne({ where: { id: client } });
   const userObject = await User.findOne({ where: { id: user } });
 
-  const title = `${userObject.first_name} placed ${clientObject.name} with ${jobLeadObject.job_title}`;
-  const body = `A new placement has been made for ${clientObject.name} by ${userObject.first_name} for the position at ${jobLeadObject.job_title}.`;
+  const title = `${userObject.first_name} ${userObject.last_name} placed ${clientObject.name} with ${jobLeadObject.job_title}`;
+  let mainBody = `A new placement has been made for ${clientObject.name} by ${userObject.first_name} ${userObject.last_name} for the position at ${jobLeadObject.job_title}.`;
 
+  if (body) {
+    mainBody += body;
+  }
   const jobLeadBody = await JobLeadTimelineEntry.create({
     date_added: new Date(),
     type,
     title,
-    body,
+    body: mainBody,
     client,
     // eslint-disable-next-line camelcase
     job_lead,

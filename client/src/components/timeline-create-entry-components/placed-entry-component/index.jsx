@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
-  Card,
   Box,
   Avatar,
   CardContent,
@@ -12,10 +12,18 @@ import {
   MenuItem,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import JobLeadType from "../../../prop-types/JobLeadType";
+import ClientType from "../../../prop-types/ClientType";
 
-function PlacedEntryComponent() {
-  const [clientValue, setClientValue] = useState("Client");
-  const [jobLeadValue, setjobLeadValue] = useState("JobLead");
+function PlacedEntryComponent({
+  jobLead,
+  onAddEntry,
+  setComponentType,
+  managedJobLeads,
+  managedClients,
+}) {
+  const [clientValue, setClientValue] = useState(null);
+  const [jobLeadValue, setjobLeadValue] = useState(null);
   const [notes, setNotes] = useState("");
 
   // to be injected as a prop when it connects to route (to be done in future ticket)
@@ -33,11 +41,30 @@ function PlacedEntryComponent() {
     setNotes(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (jobLeadValue && clientValue) {
+      const newPlacementEntryObject = {
+        type: "placement",
+        client: clientValue.id,
+        body: notes,
+        job_lead: jobLeadValue.id,
+        employer: jobLeadValue.employerID,
+      };
+      onAddEntry(newPlacementEntryObject);
+    }
+  };
+
+  useEffect(() => {
+    if (jobLead) {
+      setjobLeadValue(jobLead);
+    }
+  }, [jobLead]);
+
   return (
-    <Card sx={{ height: 791, width: 391 }}>
-      <CardContent>
-        <Typography variant="h5">Activity Timeline</Typography>
-        <Box sx={{ display: "flex", marginTop: "12px" }}>
+    <form onSubmit={handleSubmit}>
+      <CardContent sx={{ pl: 3, pt: 0 }}>
+        <Box sx={{ display: "flex" }}>
           <Box>
             <Avatar
               sx={{
@@ -71,8 +98,16 @@ function PlacedEntryComponent() {
           value={clientValue}
           onChange={handleClientChange}
           sx={{ borderRadius: "10px" }}
+          required
         >
-          <MenuItem value="Client">Client</MenuItem>
+          <MenuItem value={null} disabled>
+            Select a Client
+          </MenuItem>
+          {managedClients.map((client) => (
+            <MenuItem key={client.id} value={client}>
+              {client.name}
+            </MenuItem>
+          ))}
         </Select>
         <Typography sx={{ color: "rgba(117, 117, 117, 1)", marginTop: 1 }}>
           Select the Job Lead
@@ -83,8 +118,16 @@ function PlacedEntryComponent() {
           onChange={handleJobLeadChange}
           sx={{ borderRadius: "10px" }}
           disabled={isJobLeadPage}
+          required
         >
-          <MenuItem value="JobLead">Job Lead</MenuItem>
+          <MenuItem value={null} disabled>
+            Select a Job Lead
+          </MenuItem>
+          {managedJobLeads.map((jobLeadOb) => (
+            <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
+              {jobLeadOb.jobTitle}
+            </MenuItem>
+          ))}
         </Select>
         <TextField
           fullWidth
@@ -92,7 +135,6 @@ function PlacedEntryComponent() {
           margin="normal"
           multiline
           variant="outlined"
-          rows={16}
           value={notes}
           onChange={handleNoteChange}
         />
@@ -103,12 +145,27 @@ function PlacedEntryComponent() {
             marginTop: "16px",
           }}
         >
-          <Button variant="outlined">DISCARD</Button>
-          <Button variant="contained">POST</Button>
+          <Button
+            variant="outlined"
+            onClick={() => setComponentType("default")}
+          >
+            DISCARD
+          </Button>
+          <Button variant="contained" type="submit">
+            POST
+          </Button>
         </Box>
       </CardContent>
-    </Card>
+    </form>
   );
 }
+
+PlacedEntryComponent.propTypes = {
+  jobLead: JobLeadType.isRequired,
+  setComponentType: PropTypes.func.isRequired,
+  onAddEntry: PropTypes.func.isRequired,
+  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
+};
 
 export default PlacedEntryComponent;

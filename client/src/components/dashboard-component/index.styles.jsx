@@ -15,7 +15,7 @@ const SearchFieldContainer = styled.div`
   background-color: white;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   border-radius: 0 0 4px 4px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
 `;
 
 const SearchField = styled(TextField)`

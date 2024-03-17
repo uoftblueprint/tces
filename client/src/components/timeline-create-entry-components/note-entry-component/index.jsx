@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Card,
   Box,
   Avatar,
   CardContent,
@@ -10,20 +9,39 @@ import {
   Divider,
 } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
+import PropTypes from "prop-types";
+import JobLeadType from "../../../prop-types/JobLeadType";
 // import CloseIcon from '@mui/icons-material/Close';
 
-function NoteEntryComponent() {
+function NoteEntryComponent({ jobLead, onAddEntry, setComponentType }) {
   const [notes, setNotes] = useState("");
 
   const handleNoteChange = (e) => {
     setNotes(e.target.value);
   };
 
+  // const onPostClick = () => {
+  //   console.log(onAddEntry);
+  //   console.log(jobLead);
+  //   setComponentType("default");
+  // };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (notes.trim()) {
+      const newNoteEntryObject = {
+        type: "note",
+        body: notes,
+        job_lead: jobLead.id,
+      };
+      onAddEntry(newNoteEntryObject);
+    }
+  };
+
   return (
-    <Card sx={{ height: 791, width: 391 }}>
-      <CardContent>
-        <Typography variant="h5">Activity Timeline</Typography>
-        <Box sx={{ display: "flex", marginTop: "12px" }}>
+    <form onSubmit={handleSubmit}>
+      <CardContent sx={{ pl: 3, pt: 0 }}>
+        <Box sx={{ display: "flex" }}>
           <Box>
             <Avatar
               sx={{
@@ -51,14 +69,16 @@ function NoteEntryComponent() {
       <CardContent>
         <TextField
           fullWidth
+          fullHeight
           label="Write your note"
           margin="normal"
           multiline
           variant="outlined"
-          rows={23}
           value={notes}
           onChange={handleNoteChange}
+          required
         />
+
         <Box
           sx={{
             display: "flex",
@@ -66,12 +86,25 @@ function NoteEntryComponent() {
             marginTop: "16px",
           }}
         >
-          <Button variant="outlined">DISCARD</Button>
-          <Button variant="contained">POST</Button>
+          <Button
+            variant="outlined"
+            onClick={() => setComponentType("default")}
+          >
+            DISCARD
+          </Button>
+          <Button variant="contained" type="submit">
+            POST
+          </Button>
         </Box>
       </CardContent>
-    </Card>
+    </form>
   );
 }
+
+NoteEntryComponent.propTypes = {
+  jobLead: JobLeadType.isRequired,
+  setComponentType: PropTypes.func.isRequired,
+  onAddEntry: PropTypes.func.isRequired,
+};
 
 export default NoteEntryComponent;

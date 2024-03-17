@@ -41,6 +41,7 @@ import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/M
 import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
+import ClientsLoader from "./components/wrappers/data-loaders-wrappers/ClientsLoader";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -257,14 +258,17 @@ function App() {
                   >
                     <ManagedUsersLoader setManagedUsers={setManagedUsers}>
                       <EmployersLoader setEmployers={setEmployers}>
-                        <EditJobLead
-                          managedUsers={managedUsers}
-                          managedJobLeads={managedJobLeads}
-                          getEmployerById={getEmployerById}
-                          getUserById={getUserById}
-                          setLocalExitRoute={setLocalExitRoute}
-                          setSnackBarMessage={setSnackBarMessage}
-                        />
+                        <ClientsLoader setClients={setManagedClients}>
+                          <EditJobLead
+                            managedUsers={managedUsers}
+                            managedJobLeads={managedJobLeads}
+                            managedClients={managedClients}
+                            getEmployerById={getEmployerById}
+                            getUserById={getUserById}
+                            setLocalExitRoute={setLocalExitRoute}
+                            setSnackBarMessage={setSnackBarMessage}
+                          />
+                        </ClientsLoader>
                       </EmployersLoader>
                     </ManagedUsersLoader>
                   </ManagedJobLeadsLoader>

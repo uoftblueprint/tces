@@ -3,10 +3,9 @@ import styled from "styled-components";
 const Card = styled.div`
   display: flex;
   flex-direction: row;
-  width: 400px;
   height: fit-content;
   align-items: stretch;
-  border: 1px solid #0000001f;
+  border-bottom: 1px solid #0000001f;
   padding: 16px;
   background: #fff;
 `;

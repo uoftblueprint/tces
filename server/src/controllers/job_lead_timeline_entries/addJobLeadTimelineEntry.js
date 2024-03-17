@@ -9,7 +9,7 @@ const JobLead = require("../../models/job_lead.model");
 const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
   try {
     // eslint-disable-next-line camelcase
-    const { type, title, body, client, job_lead } = req.body.entry;
+    const { type, body, client, job_lead } = req.body.entry;
 
     const { user } = req;
 
@@ -36,7 +36,7 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
     }
 
     // eslint-disable-next-line camelcase
-    if (type === "note" && (!user || !title || !body || !job_lead)) {
+    if (type === "note" && (!user || !body || !job_lead)) {
       return res.status(400).json({
         status: "fail",
         message: "For type note, user, title, and body must be defined",
@@ -53,14 +53,22 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
       });
       jobLeadTimelineEntry = await submitPlacementUpdateEntryInTimelines(
         // eslint-disable-next-line camelcase
-        { type, client, job_lead, user: user.id, employer: employerObject.id },
+        {
+          type,
+          client,
+          job_lead,
+          user: user.id,
+          employer: employerObject.id,
+          body,
+        },
         "job_lead",
       );
     } else {
+      const noteTitle = `${user.first_name} ${user.last_name} Added Note `;
       jobLeadTimelineEntry = await JobLeadTimelineEntry.create({
         date_added: new Date(),
         type,
-        title,
+        title: noteTitle,
         body,
         client,
         // eslint-disable-next-line camelcase
