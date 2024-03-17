@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
@@ -24,10 +23,12 @@ import ChangeOwnerDialog from "../shared/change-owner-dialog";
 import ErrorScreenComponent from "../shared/error-screen-component";
 import { modifyClient } from "../../utils/api";
 import ConfirmDialog from "../shared/confirm-dialog-component";
+import ClientTimelineComponent from "./client-timeline";
+import ClientType from "../../prop-types/ClientType";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref
+  ref,
 ) {
   return (
     <IMaskInput
@@ -53,6 +54,7 @@ export default function ClientPage({
   monthsSinceClosure,
   getUserById,
   managedUsers,
+  managedClients,
   setSnackBarMessage,
 }) {
   const [isEditMode, setIsEditMode] = React.useState(true);
@@ -106,23 +108,23 @@ export default function ClientPage({
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
   // If the database value is r_and_i, render it as r&i
   const [editedStatus, setEditedStatus] = React.useState(
-    clientInfo.status === "R And I" ? "R&I" : clientInfo.status
+    clientInfo.status === "R And I" ? "R&I" : clientInfo.status,
   );
 
   const [editedStatusExit, setEditedStatusExit] = React.useState(
-    clientInfo.status_at_exit
+    clientInfo.status_at_exit,
   );
   const [editedStatus3, setEditedStatus3] = React.useState(
-    clientInfo.status_at_3
+    clientInfo.status_at_3,
   );
   const [editedStatus6, setEditedStatus6] = React.useState(
-    clientInfo.status_at_6
+    clientInfo.status_at_6,
   );
   const [editedStatus9, setEditedStatus9] = React.useState(
-    clientInfo.status_at_9
+    clientInfo.status_at_9,
   );
   const [editedStatus12, setEditedStatus12] = React.useState(
-    clientInfo.status_at_12
+    clientInfo.status_at_12,
   );
 
   const handleNameChange = (event) => {
@@ -235,13 +237,8 @@ export default function ClientPage({
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
-    <div
-      style={{
-        marginLeft: "40px",
-        marginRight: "40px",
-        marginTop: "40px",
-        marginBottom: "40px",
-      }}
+    <Box
+        sx={{ m: 9 }}
     >
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
@@ -268,6 +265,7 @@ export default function ClientPage({
             borderRadius: "8px",
             boxShadow: 2,
             p: 3,
+            mr: 9,
           }}
         >
           <Box sx={{ textAlign: "center", mr: 2 }}>
@@ -298,8 +296,24 @@ export default function ClientPage({
           />
         )}
       </div>
-      <Paper>
-        <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gridColumnGap: "30px",
+          width: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            width: "66%",
+            borderRadius: 2,
+            boxShadow: 3,
+            ml: 9,
+            mb: 9,
+            border: "1px solid #e0e0e0",
+          }}
+        >
           <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
             <Grid container direction="row" alignItems="center">
               <Grid item xs={10}>
@@ -577,7 +591,7 @@ export default function ClientPage({
                           <ContentCopyIcon
                             onClick={() =>
                               handleCopyClick(
-                                `${clientInfo.time_since_closure} Months`
+                                `${clientInfo.time_since_closure} Months`,
                               )
                             }
                           />
@@ -1015,7 +1029,11 @@ export default function ClientPage({
             </div>
           )}
         </Box>
-      </Paper>
+        <ClientTimelineComponent
+          client={clientInfo}
+          managedClients={managedClients}
+        />
+      </Box>
       <ConfirmDialog
         open={confirmEditDialog}
         title="Confirm Edit"
@@ -1023,7 +1041,7 @@ export default function ClientPage({
         onConfirm={handleSave}
         onCancel={cancelEdit}
       />
-    </div>
+    </Box>
   );
 }
 
@@ -1043,6 +1061,7 @@ ClientPage.propTypes = {
     owner: PropTypes.number,
     creator: PropTypes.number,
   }).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
   monthsSinceClosure: PropTypes.number.isRequired,
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   getUserById: PropTypes.func.isRequired,

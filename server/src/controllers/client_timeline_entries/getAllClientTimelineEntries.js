@@ -1,6 +1,8 @@
 const logger = require("pino")();
 const { Op } = require("sequelize");
 const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
+const JobLead = require("../../models/job_lead.model");
+const Client = require("../../models/client.model");
 
 const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
   try {
@@ -9,7 +11,7 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    const { type, client } = req.query;
+    const { type, client, search_query } = req.query;
 
     const query = {};
     if (type) {
@@ -17,11 +19,20 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
     }
 
     if (client) {
-      query.client = { [Op.like]: `%${client}%` };
+      query.client = client;
     }
+
+    if (search_query) {
+      query.title = { [Op.like]: `%${search_query}%` };
+    }
+
+    const totalCount = await ClientTimelineEntry.count({
+      where: query,
+    });
 
     const searchConfig = {
       where: query,
+      order: [['date_added', 'DESC']],
     };
 
     if (page != null && pageSize != null) {
@@ -32,10 +43,27 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
     const clientTimelineEntries =
       await ClientTimelineEntry.findAll(searchConfig);
 
+    const processedClientTimelineEntries = await Promise.all(
+      clientTimelineEntries.map(async (entry) => {
+        const jobLeadDetails = entry.job_lead
+          ? await JobLead.findOne({ where: { id: entry.job_lead} })
+          : null;
+        const clientDetails = entry.client
+          ? await Client.findOne({ where: { id: entry.client } })
+          : null;
+        return {
+          ...entry.toJSON(),
+          job_lead_details: jobLeadDetails ? jobLeadDetails.toJSON() : null,
+          client_details: clientDetails ? clientDetails.toJSON() : null,
+        };
+      }),
+    );
+
     return res.status(200).json({
       status: "success",
       message: "Client timeline entries fetched successfully",
-      data: clientTimelineEntries,
+      data: processedClientTimelineEntries,
+      totalCount,
     });
   } catch (err) {
     logger.error(`Unexpected server error: ${err}`);

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Link as MuiLink } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom"; // Import RouterLink from react-router-dom
+import { Link as RouterLink } from "react-router-dom";
 import CardComponent from "../../card-template-component";
 
 function JobLeadPlacementComponent({ ...entry }) {

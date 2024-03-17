@@ -4,19 +4,14 @@ import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
-import JobLeadType from "../../../prop-types/JobLeadType";
-import EditJobLeadTimelineViewComponent from "../../timeline-window-component/jobLeadWindow";
 import NoteEntryComponent from "../../timeline-create-entry-components/note-entry-component";
-import PlacedEntryComponent from "../../timeline-create-entry-components/placed-entry-component";
-import { addJobLeadTimelineEntry } from "../../../utils/api";
+import { addClientTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
+import ContactedEntryComponent from "../../timeline-create-entry-components/contacted-entry-component";
+import ClientTimelineViewComponent from "../../timeline-window-component/clientWindow";
 
-function EditJobLeadTimelineComponent({
-  jobLead,
-  managedJobLeads,
-  managedClients,
-}) {
-  const [componentType, setComponentType] = useState("default"); // "add-note" , "add-placement"
+function ClientTimelineComponent({ client, managedClients }) {
+  const [componentType, setComponentType] = useState("default"); // "add-contact" , "add-note"
   const [postEntryLoading, setPostEntryLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
   const [anchorEl] = useState(null);
@@ -34,12 +29,8 @@ function EditJobLeadTimelineComponent({
 
   const addEntry = async (entryObject) => {
     setPostEntryLoading(true);
-    const jobLeadEntryObject = {
-      ...entryObject,
-      job_lead: entryObject.object,
-    };
     try {
-      const response = await addJobLeadTimelineEntry(jobLeadEntryObject);
+      const response = await addClientTimelineEntry(entryObject);
 
       if (response.ok) {
         setComponentType("default");
@@ -54,7 +45,11 @@ function EditJobLeadTimelineComponent({
   };
 
   const onAddEntry = (entryObject) => {
-    addEntry(entryObject);
+    const clientEntryObject = {
+      ...entryObject,
+      client: entryObject.object,
+    };
+    addEntry(clientEntryObject);
   };
 
   return (
@@ -109,27 +104,26 @@ function EditJobLeadTimelineComponent({
           </Grid>
         </Grid>
         {componentType === "default" && (
-          <EditJobLeadTimelineViewComponent
-            jobLead={jobLead}
+          <ClientTimelineViewComponent
+            client={client}
             setComponentType={setComponentType}
             externalError={errorObj}
           />
         )}
         {componentType === "add-note" && (
           <NoteEntryComponent
-            jobLead={jobLead}
+            object={client}
             isLoading={postEntryLoading}
             setComponentType={setComponentType}
             onAddEntry={onAddEntry}
           />
         )}
-        {componentType === "add-placement" && (
-          <PlacedEntryComponent
-            jobLead={jobLead}
-            isLoading={postEntryLoading}
-            setComponentType={setComponentType}
-            managedJobLeads={managedJobLeads}
+        {componentType === "add-contact" && (
+          <ContactedEntryComponent
+            client={client}
+            contactType="Client"
             managedClients={managedClients}
+            setComponentType={setComponentType}
             onAddEntry={onAddEntry}
           />
         )}
@@ -138,10 +132,9 @@ function EditJobLeadTimelineComponent({
   );
 }
 
-EditJobLeadTimelineComponent.propTypes = {
-  jobLead: JobLeadType.isRequired,
-  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+ClientTimelineComponent.propTypes = {
+  client: ClientType.isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
 };
 
-export default EditJobLeadTimelineComponent;
+export default ClientTimelineComponent;

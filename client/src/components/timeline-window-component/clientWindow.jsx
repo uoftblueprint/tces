@@ -1,158 +1,220 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
-  Button,
-  ButtonGroup,
-  Grid,
-  Card,
-  CardContent,
   Box,
-  Tab,
-  Typography,
-  Divider,
+  ButtonGroup,
+  Button,
   Menu,
   MenuItem,
+  Grid,
+  Tab,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DownloadIcon from "@mui/icons-material/Download";
-import IconButton from "@mui/material/IconButton";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useNavigate } from "react-router-dom";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import PropTypes from "prop-types";
+import InputAdornment from "@mui/material/InputAdornment";
+import ClearIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import {
+  SearchField,
+  SearchFieldContainer,
+} from "../dashboard-component/index.styles";
 
-export default function Timeline() {
-  const [value, setValue] = useState("1");
+import ClientTimelineEntriesComponent from "../client-page/client-timeline/client-timeline-entries";
+import ClientType from "../../prop-types/ClientType";
+
+function ClientTimelineViewComponent({
+  client,
+  setComponentType,
+  externalError,
+}) {
+  const navigate = useNavigate();
   const buttonGroupRef = useRef(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [anchorElDots, setAnchorElDots] = useState(null);
-  const openDots = Boolean(anchorElDots);
-
-  const handleClickDots = (event) => {
-    setAnchorElDots(event.currentTarget);
-  };
-
-  const handleCloseDots = () => {
-    setAnchorElDots(null);
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [subTab, setSubTab] = useState("all");
+  const [localSearchQuery, setLocalSearchQuery] = useState("");
+  const [globalSearchQuery, setGlobalSearchQuery] = useState(localSearchQuery);
 
   const handleClick = () => {
-    setAnchorEl(buttonGroupRef.current);
+    setIsMenuOpen(true);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleClose = (route) => {
+    setIsMenuOpen(false);
+    if (route) {
+      navigate(route);
+    }
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleSubTabChange = (event, newTab) => {
+    setSubTab(newTab);
+  };
+
+  const invokeSearch = () => {
+    setGlobalSearchQuery(localSearchQuery);
   };
 
   return (
-    <Card style={{ width: "500px" }}>
-      <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
-        <Grid container direction="row" alignItems="center">
-          <Grid item xs={11}>
-            <Typography variant="h5" align="left">
-              Activity Timeline
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              aria-controls={open ? "long-menu" : undefined}
-              aria-expanded={open ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleClickDots}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorElDots}
-              open={openDots}
-              onClose={handleCloseDots}
-              MenuListProps={{
-                "aria-labelledby": "split-button",
-              }}
-            >
-              <MenuItem
-                onClick={handleCloseDots}
-                sx={{ justifyContent: "center" }}
-              >
-                <DownloadIcon sx={{ color: "grey", paddingRight: "10px" }} />
-                Export as JSON
-              </MenuItem>
-            </Menu>
-          </Grid>
-        </Grid>
-      </Box>
-
-      <CardContent>
+    <>
+      <Grid item sx={{ pl: 3, pr: 3, width: "100%" }}>
         <ButtonGroup
           variant="contained"
-          style={{ width: "100%", borderRadius: "8px" }}
+          color="primary"
           aria-label="split button"
           ref={buttonGroupRef}
-          color="primary"
-          sx={{ "& .MuiButtonBase-root": { backgroundColor: "#3568E5" } }}
+          sx={{ mb: 2, width: "100%" }}
         >
-          <Button fullWidth startIcon={<AddIcon />}>
+          <Button
+            startIcon={<AddIcon />}
+            onClick={handleClick}
+            sx={{ flexGrow: 1 }}
+          >
             Add New Entry
           </Button>
           <Button onClick={handleClick}>
             <ArrowDropDownIcon />
           </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "split-button",
-            }}
-            PaperProps={{
-              style: {
-                width: buttonGroupRef
-                  ? buttonGroupRef.current?.clientWidth
-                  : null,
-              },
-            }}
-          >
-            <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
-              Placed Job Seeker
-            </MenuItem>
-            <MenuItem onClick={handleClose} sx={{ justifyContent: "center" }}>
-              Other Note
-            </MenuItem>
-          </Menu>
         </ButtonGroup>
-
-        <TabContext value={value}>
-          <TabList
-            onChange={handleChange}
-            sx={{
-              "& .MuiTabs-flexContainer": {
-                display: "flex",
-                width: "100%",
-                justifyContent: "center",
-              },
-              "& .MuiButtonBase-root": { padding: 2 },
-            }}
+        <Menu
+          anchorEl={buttonGroupRef.current}
+          open={isMenuOpen}
+          onClose={() => handleClose(undefined)}
+          MenuListProps={{
+            "aria-labelledby": "split-button",
+          }}
+          PaperProps={{
+            style: {
+              width: buttonGroupRef
+                ? buttonGroupRef.current?.clientWidth
+                : undefined,
+            },
+          }}
+        >
+          <MenuItem
+            onClick={() => setComponentType("add-contact")}
+            sx={{ justifyContent: "center" }}
           >
-            <Tab label="ALL" value="1" />
-            <Tab label="CONTACTED" value="2" />
-            <Tab label="UPDATES" value="3" />
-            <Tab label="NOTES" value="4" />
-          </TabList>
-
-          <Divider />
-          <TabPanel value="1">ALL</TabPanel>
-          <TabPanel value="2">CONTACTED</TabPanel>
-          <TabPanel value="3">UPDATES</TabPanel>
-          <TabPanel value="4">NOTES</TabPanel>
+            Add New Contact
+          </MenuItem>
+          <MenuItem
+            onClick={() => setComponentType("add-note")}
+            sx={{ justifyContent: "center" }}
+          >
+            Add New Note
+          </MenuItem>
+        </Menu>
+      </Grid>
+      <Grid item>
+        <TabContext value={subTab}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleSubTabChange}>
+              <Tab label="All" value="all" />
+              <Tab label="Contacted" value="contacts" />
+              <Tab label="Updates" value="updates" />
+              <Tab label="Notes" value="notes" />
+            </TabList>
+          </Box>
+          <TabPanel value="all" sx={{ p: 0, height: "60vh" }}>
+            <ClientTimelineEntriesComponent
+              client={client}
+              globalSearchQuery={globalSearchQuery}
+              type="all"
+              externalError={externalError}
+            />
+          </TabPanel>
+          <TabPanel value="contacts" sx={{ p: 0, height: "60vh" }}>
+            <ClientTimelineEntriesComponent
+              client={client}
+              globalSearchQuery={globalSearchQuery}
+              type="contact"
+            />
+          </TabPanel>
+          <TabPanel value="updates" sx={{ p: 0, height: "60vh" }}>
+            <ClientTimelineEntriesComponent
+              client={client}
+              type="update"
+              globalSearchQuery={globalSearchQuery}
+            />
+          </TabPanel>
+          <TabPanel value="notes" sx={{ p: 0, height: "60vh" }}>
+            <ClientTimelineEntriesComponent
+              client={client}
+              type="note"
+              globalSearchQuery={globalSearchQuery}
+            />
+          </TabPanel>
         </TabContext>
-      </CardContent>
-    </Card>
+      </Grid>
+      <Grid item>
+        <SearchFieldContainer>
+          <SearchField
+            fullWidth
+            placeholder="Search..."
+            value={localSearchQuery}
+            onChange={(e) => setLocalSearchQuery(e.target.value)}
+            variant="outlined"
+            sx={{
+              mt: 0,
+              mb: 2,
+              borderRadius: 0,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    onClick={invokeSearch}
+                    aria-label="search"
+                    edge="start"
+                    sx={{
+                      m: 0,
+                      p: 0,
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => {
+                      setLocalSearchQuery("");
+                      setGlobalSearchQuery("");
+                    }}
+                    aria-label="reset search"
+                    edge="end"
+                    sx={{
+                      m: 0,
+                      p: 0,
+                      visibility: localSearchQuery ? "visible" : "hidden",
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </SearchFieldContainer>
+      </Grid>
+    </>
   );
 }
+
+ClientTimelineViewComponent.propTypes = {
+  client: ClientType.isRequired,
+  setComponentType: PropTypes.func.isRequired,
+  externalError: PropTypes.string.isRequired,
+};
+
+export default ClientTimelineViewComponent;

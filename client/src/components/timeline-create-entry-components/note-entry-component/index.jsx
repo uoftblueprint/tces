@@ -10,21 +10,13 @@ import {
 } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
 import PropTypes from "prop-types";
-import JobLeadType from "../../../prop-types/JobLeadType";
-// import CloseIcon from '@mui/icons-material/Close';
 
-function NoteEntryComponent({ jobLead, onAddEntry, setComponentType }) {
+function NoteEntryComponent({ object, onAddEntry, setComponentType }) {
   const [notes, setNotes] = useState("");
 
   const handleNoteChange = (e) => {
     setNotes(e.target.value);
   };
-
-  // const onPostClick = () => {
-  //   console.log(onAddEntry);
-  //   console.log(jobLead);
-  //   setComponentType("default");
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +24,7 @@ function NoteEntryComponent({ jobLead, onAddEntry, setComponentType }) {
       const newNoteEntryObject = {
         type: "note",
         body: notes,
-        job_lead: jobLead.id,
+        object: object.id,
       };
       onAddEntry(newNoteEntryObject);
     }
@@ -102,7 +94,8 @@ function NoteEntryComponent({ jobLead, onAddEntry, setComponentType }) {
 }
 
 NoteEntryComponent.propTypes = {
-  jobLead: JobLeadType.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  object: PropTypes.any.isRequired,
   setComponentType: PropTypes.func.isRequired,
   onAddEntry: PropTypes.func.isRequired,
 };

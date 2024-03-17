@@ -462,6 +462,38 @@ const addJobLeadTimelineEntry = async (entryObject) => {
   return response;
 };
 
+const getFilteredClientTimelineEntries = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients_timeline?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const addClientTimelineEntry = async (entryObject) => {
+  const jobLeadEntryBody = {
+    entry: entryObject,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/clients_timeline`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobLeadEntryBody),
+  });
+  return response;
+};
+
 export {
   login,
   logout,
@@ -485,5 +517,7 @@ export {
   getEmployerContacts,
   modifyEmployerInfo,
   getFilteredJobLeadsTimelineEntries,
-  addJobLeadTimelineEntry
+  addJobLeadTimelineEntry,
+  getFilteredClientTimelineEntries,
+  addClientTimelineEntry,
 };

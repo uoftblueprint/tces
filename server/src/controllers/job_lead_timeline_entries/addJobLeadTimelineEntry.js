@@ -58,7 +58,7 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
           client,
           job_lead,
           user: user.id,
-          employer: employerObject.id,
+          employer: employerObject ? employerObject.id : 1,
           body,
         },
         "job_lead",

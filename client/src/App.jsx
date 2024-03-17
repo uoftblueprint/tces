@@ -330,11 +330,14 @@ function App() {
                   loginUser={loginUser}
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <ClientPage
-                      managedUsers={managedUsers}
-                      getUserById={getUserById}
-                      setSnackBarMessage={setSnackBarMessage}
-                    />
+                    <ClientsLoader setClients={setManagedClients}>
+                      <ClientPage
+                        managedClients={managedClients}
+                        managedUsers={managedUsers}
+                        getUserById={getUserById}
+                        setSnackBarMessage={setSnackBarMessage}
+                      />
+                    </ClientsLoader>
                   </ManagedUsersLoader>
                 </AuthGuard>
               }
