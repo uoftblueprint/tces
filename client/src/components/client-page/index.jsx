@@ -237,9 +237,7 @@ export default function ClientPage({
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
-    <Box
-        sx={{ m: 9 }}
-    >
+    <Box sx={{ ml: 9, mr: 9, mt: 3 }}>
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
@@ -302,6 +300,7 @@ export default function ClientPage({
           flexDirection: "row",
           gridColumnGap: "30px",
           width: "100%",
+          alignItems: "flex-start",
         }}
       >
         <Box

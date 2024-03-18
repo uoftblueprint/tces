@@ -77,6 +77,7 @@ function EmployerComponent({
               gridColumnGap: "30px",
               marginTop: "10px",
               width: "100%",
+              alignItems: "flex-start",
             }}
           >
             <EmployerInformationCard

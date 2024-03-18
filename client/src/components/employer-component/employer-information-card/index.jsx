@@ -136,6 +136,9 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
     <Card
       style={{
         width: "33%",
+        borderRadius: 2,
+        boxShadow: 3,
+        border: "1px solid #e0e0e0",
       }}
     >
       <CardContent

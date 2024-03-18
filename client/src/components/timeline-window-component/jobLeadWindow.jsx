@@ -107,7 +107,7 @@ function EditJobLeadTimelineViewComponent({
           </MenuItem>
         </Menu>
       </Grid>
-      <Grid item>
+      <Grid item sx={{ width: "100%" }}>
         <TabContext value={subTab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleSubTabChange}>

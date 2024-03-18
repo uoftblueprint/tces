@@ -34,6 +34,7 @@ function EditJobLeadComponent({
           gridColumnGap: "30px",
           width: "100%",
           maxHeight: "100vh",
+          alignItems: "flex-start",
         }}
       >
         <EditJobLeadFormComponent

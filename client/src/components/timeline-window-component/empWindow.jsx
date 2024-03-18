@@ -94,8 +94,8 @@ function EmployerTimelineViewComponent({
           }}
         >
           <MenuItem
-              onClick={() => setComponentType("add-contact")}
-              sx={{ justifyContent: "center" }}
+            onClick={() => setComponentType("add-contact")}
+            sx={{ justifyContent: "center" }}
           >
             Add New Contact
           </MenuItem>
@@ -113,7 +113,7 @@ function EmployerTimelineViewComponent({
           </MenuItem>
         </Menu>
       </Grid>
-      <Grid item>
+      <Grid item sx={{ width: "100%" }}>
         <TabContext value={subTab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleSubTabChange}>

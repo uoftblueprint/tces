@@ -227,7 +227,11 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 <Button
-                  onClick={() => navigate(`/employers/${jobLead.employerID}`, { replace: true })}
+                  onClick={() =>
+                    navigate(`/employers/${jobLead.employerID}`, {
+                      replace: true,
+                    })
+                  }
                   style={{
                     textDecoration: "underline",
                     color: "#3568E5",
