@@ -300,11 +300,22 @@ function App() {
                   loginUser={loginUser}
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EmployerPage
-                      getUserById={getUserById}
-                      managedUsers={managedUsers}
-                      setSnackBarMessage={setSnackBarMessage}
-                    />
+                    <ManagedJobLeadsLoader
+                      setManagedJobLeads={setManagedJobLeads}
+                    >
+                      <ClientsLoader setClients={setManagedClients}>
+                        <EmployersLoader setEmployers={setEmployers}>
+                          <EmployerPage
+                            getUserById={getUserById}
+                            managedUsers={managedUsers}
+                            managedEmployers={employers}
+                            managedClients={managedClients}
+                            managedJobLeads={managedJobLeads}
+                            setSnackBarMessage={setSnackBarMessage}
+                          />
+                        </EmployersLoader>
+                      </ClientsLoader>
+                    </ManagedJobLeadsLoader>
                   </ManagedUsersLoader>
                 </AuthGuard>
               }

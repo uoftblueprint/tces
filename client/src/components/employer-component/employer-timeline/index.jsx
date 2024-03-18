@@ -1,18 +1,26 @@
-import { useState } from "react";
+import {useState} from "react";
 import { Typography, Box, Menu, MenuItem, Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
+import JobLeadType from "../../../prop-types/JobLeadType";
 import NoteEntryComponent from "../../timeline-create-entry-components/note-entry-component";
-import { addClientTimelineEntry } from "../../../utils/api";
+import PlacedEntryComponent from "../../timeline-create-entry-components/placed-entry-component";
+import { addEmployerTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
 import ContactedEntryComponent from "../../timeline-create-entry-components/contacted-entry-component";
-import ClientTimelineViewComponent from "../../timeline-window-component/clientWindow";
+import EmployerType from "../../../prop-types/EmployerType";
+import EmployerTimelineViewComponent from "../../timeline-window-component/empWindow";
 
-function ClientTimelineComponent({ client, managedClients }) {
-  const [componentType, setComponentType] = useState("default"); // "add-contact" , "add-note"
-  const [postEntryLoading, setPostEntryLoading] = useState(false);
+function EmployerTimelineComponent({
+  employer,
+  managedJobLeads,
+  managedClients,
+  managedEmployers,
+}) {
+  const [componentType, setComponentType] = useState("default"); // "add-note" , "add-placement", "add-contact"
+  const [postEntryLoading, setPostEntryLoading] = useState(true);
   const [errorObj, setErrorObj] = useState(null);
   const [anchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -29,8 +37,12 @@ function ClientTimelineComponent({ client, managedClients }) {
 
   const addEntry = async (entryObject) => {
     setPostEntryLoading(true);
+    const employerEntryObject = {
+      ...entryObject,
+      employer: entryObject.object,
+    };
     try {
-      const response = await addClientTimelineEntry(entryObject);
+      const response = await addEmployerTimelineEntry(employerEntryObject);
 
       if (response.ok) {
         setComponentType("default");
@@ -45,11 +57,7 @@ function ClientTimelineComponent({ client, managedClients }) {
   };
 
   const onAddEntry = (entryObject) => {
-    const clientEntryObject = {
-      ...entryObject,
-      client: entryObject.object,
-    };
-    addEntry(clientEntryObject);
+    addEntry(entryObject);
   };
 
   return (
@@ -104,25 +112,34 @@ function ClientTimelineComponent({ client, managedClients }) {
           </Grid>
         </Grid>
         {componentType === "default" && (
-          <ClientTimelineViewComponent
-            client={client}
+          <EmployerTimelineViewComponent
+            employer={employer}
             setComponentType={setComponentType}
             externalError={errorObj}
           />
         )}
         {componentType === "add-note" && (
           <NoteEntryComponent
-            object={client}
+            object={employer}
             isLoading={postEntryLoading}
             setComponentType={setComponentType}
             onAddEntry={onAddEntry}
           />
         )}
+        {componentType === "add-placement" && (
+          <PlacedEntryComponent
+            isLoading={postEntryLoading}
+            setComponentType={setComponentType}
+            managedJobLeads={managedJobLeads}
+            managedClients={managedClients}
+            onAddEntry={onAddEntry}
+          />
+        )}
         {componentType === "add-contact" && (
           <ContactedEntryComponent
-            object={client}
-            contactType="Client"
-            managedObjects={managedClients}
+            object={employer}
+            contactType="Employer"
+            managedObjects={managedEmployers}
             setComponentType={setComponentType}
             onAddEntry={onAddEntry}
           />
@@ -132,9 +149,11 @@ function ClientTimelineComponent({ client, managedClients }) {
   );
 }
 
-ClientTimelineComponent.propTypes = {
-  client: ClientType.isRequired,
+EmployerTimelineComponent.propTypes = {
+  employer: EmployerType.isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
+  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  managedEmployers: PropTypes.arrayOf(EmployerType).isRequired,
 };
 
-export default ClientTimelineComponent;
+export default EmployerTimelineComponent;

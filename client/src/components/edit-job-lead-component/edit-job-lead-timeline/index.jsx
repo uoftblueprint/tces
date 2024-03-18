@@ -117,7 +117,7 @@ function EditJobLeadTimelineComponent({
         )}
         {componentType === "add-note" && (
           <NoteEntryComponent
-            jobLead={jobLead}
+            object={jobLead}
             isLoading={postEntryLoading}
             setComponentType={setComponentType}
             onAddEntry={onAddEntry}

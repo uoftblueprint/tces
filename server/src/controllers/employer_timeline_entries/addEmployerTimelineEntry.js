@@ -3,6 +3,7 @@ const EmployerTimelineEntry = require("../../models/employer_timeline_entry.mode
 const {
   submitPlacementUpdateEntryInTimelines,
 } = require("../../utils/placement_entry_util");
+const JobLead = require("../../models/job_lead.model");
 
 const addEmployerTimelineEntryRequestHandler = async (req, res) => {
   try {
@@ -21,13 +22,10 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    if (
-      ["contact"].includes(type) &&
-      (!user || !title || !body || !client || !employer)
-    ) {
+    if (["contact"].includes(type) && (!user || !body || !employer)) {
       return res.status(400).json({
         status: "fail",
-        message: `For type ${type}, user, title, employer, body, and client must be defined`,
+        message: `For type ${type}, user, employer, and body must be defined`,
         data: null,
       });
     }
@@ -35,30 +33,20 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     if (
       type === "placement" &&
       // eslint-disable-next-line camelcase
-      (!user || !client || !job_lead || !employer)
+      (!user || !client || !job_lead)
     ) {
       return res.status(400).json({
         status: "fail",
         message:
-          "For type placement, user, title, employer, body, client, and job_lead must be defined",
+          "For type placement, user, client, and job_lead must be defined",
         data: null,
       });
     }
 
-    if (type === "contact" && (!user || !title || !body || !contact)) {
+    if (type === "note" && (!user || !body || !employer)) {
       return res.status(400).json({
         status: "fail",
-        message:
-          "For type note, user, employer, title, contact and body must be defined",
-        data: null,
-      });
-    }
-
-    if (type === "note" && (!user || !title || !body || !employer)) {
-      return res.status(400).json({
-        status: "fail",
-        message:
-          "For type note, user, employer, title, and body must be defined",
+        message: "For type note, user, employer, and body must be defined",
         data: null,
       });
     }
@@ -66,16 +54,33 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
     let employerTimelineEntry;
 
     if (type === "placement") {
+      const jobLeadObject = await JobLead.findOne({ where: { id: job_lead } });
       employerTimelineEntry = await submitPlacementUpdateEntryInTimelines(
         // eslint-disable-next-line camelcase
-        { type, client, job_lead, user: user.id, employer },
+        {
+          type,
+          client,
+          job_lead,
+          user: user.id,
+          employer: jobLeadObject.employer,
+        },
         "employer",
       );
     } else {
+      let bodyTitle = title;
+
+      if (type === "note") {
+        bodyTitle = `${user.first_name} ${user.last_name} Added Note`;
+      }
+
+      if (type === "contact") {
+        bodyTitle = `${user.first_name} ${user.last_name} Contacted Employer`;
+      }
+
       employerTimelineEntry = await EmployerTimelineEntry.create({
         date_added: new Date(),
         type,
-        title,
+        title: bodyTitle,
         body,
         contact,
         client,

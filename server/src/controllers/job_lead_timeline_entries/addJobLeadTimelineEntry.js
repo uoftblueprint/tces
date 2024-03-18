@@ -48,9 +48,6 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
 
     if (type === "placement") {
       const jobLeadObject = await JobLead.findOne({ where: { id: job_lead } });
-      const employerObject = await Employer.findOne({
-        where: { id: jobLeadObject.employer },
-      });
       jobLeadTimelineEntry = await submitPlacementUpdateEntryInTimelines(
         // eslint-disable-next-line camelcase
         {
@@ -58,7 +55,7 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
           client,
           job_lead,
           user: user.id,
-          employer: employerObject ? employerObject.id : 1,
+          employer: jobLeadObject.employer,
           body,
         },
         "job_lead",

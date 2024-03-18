@@ -20,6 +20,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
   if (body) {
     mainBody += body;
   }
+
   const jobLeadBody = await JobLeadTimelineEntry.create({
     date_added: new Date(),
     type,
@@ -35,7 +36,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
     date_added: new Date(),
     type,
     title,
-    body,
+    body: mainBody,
     client,
     // eslint-disable-next-line camelcase
     job_lead,
@@ -46,7 +47,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
     date_added: new Date(),
     type,
     title,
-    body,
+    body: mainBody,
     client,
     employer,
     // eslint-disable-next-line camelcase

@@ -16,9 +16,9 @@ import ClientType from "../../../prop-types/ClientType";
 
 function ContactedEntryComponent({
   contactType,
-  client,
+  object,
   setComponentType,
-  managedClients,
+  managedObjects,
   onAddEntry,
 }) {
   const [selectedValue, setSelectedValue] = useState(null);
@@ -38,21 +38,29 @@ function ContactedEntryComponent({
       const newContactEntryObject = {
         type: "contact",
         body: notes,
-        object: selectedValue.id,
+        object:
+          contactType === "Employer"
+            ? selectedValue.employerID
+            : selectedValue.id,
       };
       onAddEntry(newContactEntryObject);
     }
   };
 
   useEffect(() => {
-    if (client) {
+    if (object) {
+      let matchingObject;
+      if (contactType === "Employer") {
+        matchingObject = managedObjects.find((c) => c.employerID === object.id);
+      } else {
+        matchingObject = managedObjects.find((c) => c.id === object.id);
+      }
 
-      const matchingClient = managedClients.find(c => c.id === client.id);
-      if (matchingClient) {
-        setSelectedValue(matchingClient);
+      if (matchingObject) {
+        setSelectedValue(matchingObject);
       }
     }
-  }, [client]);
+  }, [object]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -96,7 +104,7 @@ function ContactedEntryComponent({
           <MenuItem value={null} disabled>
             Select a Client
           </MenuItem>
-          {managedClients.map((clientOb) => (
+          {managedObjects.map((clientOb) => (
             <MenuItem key={clientOb.id} value={clientOb}>
               {clientOb.name}
             </MenuItem>
@@ -135,10 +143,11 @@ function ContactedEntryComponent({
 }
 
 ContactedEntryComponent.propTypes = {
-  client: ClientType.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  object: PropTypes.any.isRequired,
   contactType: PropTypes.string.isRequired,
   setComponentType: PropTypes.func.isRequired,
-  managedClients: PropTypes.arrayOf(ClientType).isRequired,
+  managedObjects: PropTypes.arrayOf(ClientType).isRequired,
   onAddEntry: PropTypes.func.isRequired,
 };
 

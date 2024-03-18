@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
+import { Link as MuiLink } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import CardComponent from "../../card-template-component";
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 function EmployerPlacementComponent({ ...entry }) {
@@ -14,13 +17,21 @@ function EmployerPlacementComponent({ ...entry }) {
       dateAdded={entry.dateAdded}
       body={
         <span>
-          <a href="#" style={linkStyle}>
-            {entry.client.name}
-          </a>
+          <MuiLink
+            component={RouterLink}
+            to={`/clients/${entry.client?.id}`}
+            style={linkStyle}
+          >
+            {entry.client?.name}
+          </MuiLink>
           {" was placed in "}
-          <a href="#" style={linkStyle}>
-            {entry.jobLead.name}
-          </a>
+          <MuiLink
+            component={RouterLink}
+            to={`/job-leads/${entry.jobLead?.id}`}
+            style={linkStyle}
+          >
+            {entry.jobLead?.job_title}
+          </MuiLink>
         </span>
       }
       imageUrl="/img/timelineIconCheck.svg"
