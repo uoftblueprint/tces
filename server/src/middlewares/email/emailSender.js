@@ -107,3 +107,5 @@ cron.schedule("0 0 * * *", () => {
   console.log("Running the client closure check scheduler.");
   checkClientClosures();
 });
+
+export { checkClientClosures, sendEmail };
