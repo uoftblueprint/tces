@@ -98,8 +98,8 @@ const Client = sequelize.define("clients", {
     },
     validate: {
       isInJobLead(value) {
-        if (value !== -1 && !User.findByPk(value)) {
-          throw new Error("User does not exist");
+        if (value !== -1 && !JobLead.findByPk(value)) {
+          throw new Error("Job lead does not exist");
         }
       },
     },
