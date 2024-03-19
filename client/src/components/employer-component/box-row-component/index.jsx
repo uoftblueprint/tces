@@ -37,6 +37,7 @@ function BoxRowComponent({
               onChange={(event) => setRightSide(event.target.value)}
               disabled={!editable}
               required={required}
+              error={!rightSide}
             />
           ) : (
             <div

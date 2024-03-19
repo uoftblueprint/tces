@@ -8,7 +8,7 @@ function ErrorComponent({ message }) {
   return (
     <ErrorContainer>
       <ErrorMessage>Error: {message}</ErrorMessage>
-      <BackButton onClick={() => navigate("/logout")}>
+      <BackButton onClick={() => navigate("/dashboard")}>
         Back to Main Menu
       </BackButton>
     </ErrorContainer>

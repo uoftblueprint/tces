@@ -17,6 +17,7 @@ import EmployerType from "../../../prop-types/EmployerType";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { modifyEmployerInfo } from "../../../utils/api";
 import ErrorScreenComponent from "../../shared/error-screen-component";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
 function EmployerInformationCard({ employer, setSnackBarMessage }) {
   const [editable, setEditable] = useState(false);
@@ -34,6 +35,8 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
@@ -69,6 +72,10 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const cancelEdit = () => {
     setConfirmEditDialog(false);
+  };
+
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
   };
 
   const cancelEditUnsaved = () => {
@@ -108,6 +115,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
         setSnackBarMessage("Job lead updated successfully.");
         setEditable(false);
       } else {
+        setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job lead.");
       }
     } catch (error) {
@@ -260,6 +268,10 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           )}
         </form>
       </CardContent>
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
+      />
     </Card>
   );
 }
