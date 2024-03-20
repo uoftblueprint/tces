@@ -17,6 +17,7 @@ const getAllClientsRequestHandler = async (req, res) => {
       active,
       r_and_i,
       closed,
+      job_lead_placement,
     } = req.query;
 
     let query = {};
@@ -73,6 +74,9 @@ const getAllClientsRequestHandler = async (req, res) => {
 
     if (owner) {
       query.owner = owner;
+    }
+    if (job_lead_placement) {
+      query.job_lead_placement = job_lead_placement;
     }
     let status_options = [];
     if (active === "true") {
