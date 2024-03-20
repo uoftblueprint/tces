@@ -50,7 +50,7 @@ function JobLeadDashboardComponent({
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
     const queryParams = new URLSearchParams({})
-    if (pageSize && page){
+    if (pageSize || page){
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
     }

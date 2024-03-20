@@ -50,7 +50,7 @@ function ClientDashboardComponent({
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
     const queryParams = new URLSearchParams({})
-    if (pageSize && page){
+    if (pageSize || page){
       // we initially include pagination model first
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
