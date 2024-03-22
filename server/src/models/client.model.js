@@ -2,6 +2,7 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 const User = require("./user.model");
+const JobLead = require("./job_lead.model");
 
 const Client = sequelize.define("clients", {
   id: {
@@ -87,6 +88,21 @@ const Client = sequelize.define("clients", {
   status_at_12_months: {
     type: DataTypes.ENUM(["employed", "training", "no_results"]),
     allowNull: true,
+  },
+  job_lead_placement: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: JobLead,
+      key: "id",
+    },
+    validate: {
+      isInJobLead(value) {
+        if (value !== -1 && !JobLead.findByPk(value)) {
+          throw new Error("Job lead does not exist");
+        }
+      },
+    },
   },
 });
 
