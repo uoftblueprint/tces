@@ -57,6 +57,7 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
 
   // update client job lead placement
   await Client.update(
+    // eslint-disable-next-line camelcase
     { job_lead_placement: job_lead },
     { where: { id: client } },
   );
