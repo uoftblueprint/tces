@@ -55,6 +55,12 @@ const submitPlacementUpdateEntryInTimelines = async (data, pageType) => {
     user,
   });
 
+  // update client job lead placement
+  await Client.update(
+    { job_lead_placement: job_lead },
+    { where: { id: client } },
+  );
+
   if (pageType === "job_lead") {
     return jobLeadBody;
   }

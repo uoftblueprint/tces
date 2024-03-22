@@ -30,7 +30,7 @@ const addJobLeadTimelineEntryRequestHandler = async (req, res) => {
       return res.status(400).json({
         status: "fail",
         message:
-          "For type placement, user, title, body, client, and job_lead must be defined",
+          "For type placement, user, client, and job_lead must be defined",
         data: null,
       });
     }

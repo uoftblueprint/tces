@@ -34,10 +34,12 @@ function EditJobLeadTimelineComponent({
 
   const addEntry = async (entryObject) => {
     setPostEntryLoading(true);
-    const jobLeadEntryObject = {
-      ...entryObject,
-      job_lead: entryObject.object,
-    };
+    const jobLeadEntryObject = entryObject.job_lead
+      ? entryObject
+      : {
+          ...entryObject,
+          job_lead: entryObject.object,
+        };
     try {
       const response = await addJobLeadTimelineEntry(jobLeadEntryObject);
 

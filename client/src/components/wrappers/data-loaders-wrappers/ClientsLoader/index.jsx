@@ -32,6 +32,7 @@ function ClientsLoader({ setClients, children }) {
             statusAt9Months: cleanStatusString(client.status_at_9_months),
             statusAt12Months: cleanStatusString(client.status_at_12_months),
             statusAtExit: cleanStatusString(client.status_at_exit),
+            jobLeadPlacement: client.job_lead_placement,
           }));
           setClients(formattedClients);
         } else {
