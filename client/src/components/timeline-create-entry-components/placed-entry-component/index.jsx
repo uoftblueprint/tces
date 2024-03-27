@@ -51,7 +51,7 @@ function PlacedEntryComponent({
 
   const handleConfirmDialog = () => {
     if (openDialog) {
-      setClientValue(openDialog)
+      setClientValue(openDialog);
     }
     setOpenDialog(null);
   };

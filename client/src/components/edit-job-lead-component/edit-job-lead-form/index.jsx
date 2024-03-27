@@ -51,26 +51,26 @@ function EditJobLeadFormComponent({
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN
+    jobLead.compensationMin || NaN,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN
+    jobLead.compensationMax || NaN,
   );
   const [employmentType, setEmploymentType] = React.useState(
-    jobLead.employmentType || NaN
+    jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN
+    jobLead.hoursPerWeek || NaN,
   );
   const [noc, setNoc] = React.useState(jobLead.noc || "");
   const [expirationDate, setExpirationDate] = React.useState(
-    dayjs(jobLead.expirationDate) || null
+    dayjs(jobLead.expirationDate) || null,
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || ""
+    jobLead.numOfPostions || "",
   );
   const [jobDescription, setJobDescription] = React.useState(
-    jobLead.jobDescription || ""
+    jobLead.jobDescription || "",
   );
 
   const toggleEditMode = () => {
@@ -105,7 +105,7 @@ function EditJobLeadFormComponent({
     const text = displayCompensationRange(
       minCompensation,
       maxCompensation,
-      "/hour"
+      "/hour",
     );
     navigator.clipboard.writeText(text).then(
       () => {
@@ -113,7 +113,7 @@ function EditJobLeadFormComponent({
       },
       () => {
         setSnackBarMessage("Failed to copy");
-      }
+      },
     );
   };
 
@@ -338,7 +338,7 @@ function EditJobLeadFormComponent({
                           {displayCompensationRange(
                             minCompensation,
                             maxCompensation,
-                            "/hour"
+                            "/hour",
                           )}
                         </Typography>
                       </Grid>
@@ -470,7 +470,7 @@ function EditJobLeadFormComponent({
                 ) : (
                   renderViewValue(
                     "Expiration Date",
-                    formateDateObjToStr(expirationDate)
+                    formateDateObjToStr(expirationDate),
                   )
                 )}
               </Grid>
