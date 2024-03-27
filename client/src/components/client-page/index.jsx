@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
@@ -247,10 +248,8 @@ export default function ClientPage({
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
-    <Box sx={{ ml: 9, mr: 9, mt: 3 }}>
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
-      >
+    <Box>
+      <div style={{ display: "flex", alignItems: "center", margin: "20px" }}>
         <IconButton
           onClick={handleBackClick}
           sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
@@ -273,7 +272,7 @@ export default function ClientPage({
             borderRadius: "8px",
             boxShadow: 2,
             p: 3,
-            mr: 9,
+            mr: 6.5,
           }}
         >
           <Box sx={{ textAlign: "center", mr: 2 }}>
@@ -304,26 +303,26 @@ export default function ClientPage({
           />
         )}
       </div>
-      <form onSubmit={commitEdit}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gridColumnGap: "30px",
+          width: "100%",
+          alignItems: "flex-start",
+        }}
+      >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            gridColumnGap: "30px",
-            width: "100%",
-            alignItems: "flex-start",
+            width: "66%",
+            borderRadius: 2,
+            boxShadow: 3,
+            ml: 9,
+            mb: 9,
+            border: "1px solid #e0e0e0",
           }}
         >
-          <Box
-            sx={{
-              width: "66%",
-              borderRadius: 2,
-              boxShadow: 3,
-              ml: 9,
-              mb: 9,
-              border: "1px solid #e0e0e0",
-            }}
-          >
+          <form onSubmit={commitEdit}>
             <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={10}>
@@ -331,7 +330,7 @@ export default function ClientPage({
                     Personal Information
                   </Typography>
                 </Grid>
-                <Grid item xs={1.9} align="right">
+                <Grid item xs={1.5} align="right">
                   <IconButton
                     type={shouldSubmit ? "submit" : "button"}
                     size="small"
@@ -350,678 +349,345 @@ export default function ClientPage({
               </Grid>
             </Box>
             <Divider />
-
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              <Grid container direction="row" alignItems="center">
-                {isEditMode ? (
-                  <>
-                    <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Name
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        align="left"
-                        color={clientInfo.firstName ? "black" : "#A9A9A9"}
-                      >
-                        {clientInfo.firstName
-                          ? clientInfo.firstName
-                          : "Enter Name..."}
-                      </Typography>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Name
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={editedName}
-                        fullWidth
-                        onChange={handleNameChange}
-                        error={!editedName}
-                        required
-                      />
-                    </Grid>
-                  </>
-                )}
-              </Grid>
-            </Box>
-
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              <Grid container direction="row" alignItems="center">
-                {isEditMode ? (
-                  <>
-                    <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Email
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        align="left"
-                        color={clientInfo.email ? "black" : "#A9A9A9"}
-                      >
-                        {clientInfo.email ? clientInfo.email : "Enter Email..."}
-                      </Typography>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Email
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={editedEmail}
-                        fullWidth
-                        onChange={handleEmailChange}
-                        error={!editedEmail}
-                      />
-                    </Grid>
-                  </>
-                )}
-              </Grid>
-            </Box>
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              <Grid container direction="row" alignItems="center">
-                {isEditMode ? (
-                  <>
-                    <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Phone Number
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={7.5}>
-                      <Typography
-                        gutterBottom
-                        variant="body1"
-                        align="left"
-                        color={clientInfo.phone ? "black" : "#A9A9A9"}
-                      >
-                        {clientInfo.phone
-                          ? clientInfo.phone
-                          : "Enter Phone Number..."}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={0.5} id="info-card-icon">
-                      <IconButton>
-                        <ContentCopyIcon
-                          onClick={() => handleCopyClick(clientInfo.phone)}
-                        />
-                      </IconButton>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Phone Number
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        value={editedPhone}
-                        onChange={handlePhoneChange}
-                        fullWidth
-                        id="phone"
-                        name="phone"
-                        InputProps={{
-                          inputComponent: TextMaskCustom,
-                        }}
-                        error={!editedPhone}
-                      />
-                    </Grid>
-                  </>
-                )}
-              </Grid>
-            </Box>
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              <Grid container direction="row" alignItems="center">
-                {isEditMode ? (
-                  <>
-                    <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Status
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography variant="body1" align="left">
-                        <Chip
-                          variant="filled"
-                          label={
-                            clientInfo.status === "R And I"
-                              ? "R&I"
-                              : clientInfo.status
-                          }
-                        />
-                      </Typography>
-                    </Grid>
-                  </>
-                ) : (
-                  <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
-                        Status
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      item
-                      xs={10}
-                      sx={{
-                        "& .MuiOutlinedInput-input": {
-                          display: "flex",
-                          alignItems: "flex-start",
-                        },
-                      }}
-                    >
-                      <Select
-                        fullWidth
-                        value={editedStatus}
-                        onChange={handleStatusChange}
-                        renderValue={() =>
-                          editedStatus && (
-                            <Chip
-                              label={editedStatus}
-                              onMouseDown={(event) => {
-                                event.stopPropagation();
-                              }}
-                            />
-                          )
-                        }
-                        error={!editedStatus}
-                        required
-                      >
-                        <MenuItem value="Active">Active</MenuItem>
-                        <MenuItem value="R&I">R&I</MenuItem>
-                        <MenuItem value="Closed">Closed</MenuItem>
-                      </Select>
-                    </Grid>
-                  </>
-                )}
-              </Grid>
-            </Box>
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Closure Date
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7.5}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            {clientInfo.closure_date}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={0.5} id="info-card-icon">
-                          <IconButton>
-                            <ContentCopyIcon
-                              onClick={() =>
-                                handleCopyClick(clientInfo.closure_date)
-                              }
-                            />
-                          </IconButton>
-                        </Grid>
+            <Stack spacing={2} sx={{ m: 2 }}>
+                <Grid container direction="row" alignItems="center">
+                  {isEditMode ? (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Name
+                        </Typography>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : null}
-
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Time Since Closure
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7.5}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            {clientInfo.time_since_closure} Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={0.5} id="info-card-icon">
-                          <IconButton>
-                            <ContentCopyIcon
-                              onClick={() =>
-                                handleCopyClick(
-                                  `${clientInfo.time_since_closure} Months`
-                                )
-                              }
-                            />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : null}
-
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At Exit
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_exit ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_exit}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {isStatusExitVisible && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={1.5}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At Exit
-                          </Typography>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={10}
-                          sx={{
-                            "& .MuiOutlinedInput-input": {
-                              display: "flex",
-                              alignItems: "flex-start",
-                            },
-                          }}
+                      <Grid item xs={8}>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          align="left"
+                          color={clientInfo.firstName ? "black" : "#A9A9A9"}
                         >
-                          <Select
-                            fullWidth
-                            value={editedStatusExit}
-                            onChange={handleStatusExitChange}
-                            renderValue={() =>
-                              editedStatusExit && (
-                                <Chip
-                                  label={editedStatusExit}
-                                  onDelete={() =>
-                                    handleChipDelete("statusExit")
-                                  }
-                                  onMouseDown={(event) => {
-                                    event.stopPropagation();
-                                  }}
-                                />
-                              )
+                          {clientInfo.firstName
+                            ? clientInfo.firstName
+                            : "Enter Name..."}
+                        </Typography>
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Name
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <TextField
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          value={editedName}
+                          fullWidth
+                          onChange={handleNameChange}
+                          error={!editedName}
+                          required
+                        />
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+
+              <Divider variant="middle" />
+                <Grid container direction="row" alignItems="center">
+                  {isEditMode ? (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Email
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          align="left"
+                          color={clientInfo.email ? "black" : "#A9A9A9"}
+                        >
+                          {clientInfo.email
+                            ? clientInfo.email
+                            : "Enter Email..."}
+                        </Typography>
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Email
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <TextField
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          value={editedEmail}
+                          fullWidth
+                          onChange={handleEmailChange}
+                          error={!editedEmail}
+                        />
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              <Divider variant="middle" />
+                <Grid container alignItems="center">
+                  {isEditMode ? (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Phone Number
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={7}>
+                        <Typography
+                          gutterBottom
+                          variant="body1"
+                          align="left"
+                          color={clientInfo.phone ? "black" : "#A9A9A9"}
+                        >
+                          {clientInfo.phone
+                            ? clientInfo.phone
+                            : "Enter Phone Number..."}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={1} id="info-card-icon">
+                        <IconButton>
+                          <ContentCopyIcon
+                            onClick={() => handleCopyClick(clientInfo.phone)}
+                          />
+                        </IconButton>
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Phone Number
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <TextField
+                          value={editedPhone}
+                          onChange={handlePhoneChange}
+                          fullWidth
+                          id="phone"
+                          name="phone"
+                          InputProps={{
+                            inputComponent: TextMaskCustom,
+                          }}
+                          error={!editedPhone}
+                        />
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              <Divider variant="middle" />
+                <Grid container direction="row" alignItems="center">
+                  {isEditMode ? (
+                    <>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Status
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <Typography variant="body1" align="left">
+                          <Chip
+                            variant="filled"
+                            label={
+                              clientInfo.status === "R And I"
+                                ? "R&I"
+                                : clientInfo.status
                             }
-                            error={!editedStatusExit}
-                            required
-                          >
-                            <MenuItem value="Employed">Employed</MenuItem>
-                            <MenuItem value="Training">Training</MenuItem>
-                            <MenuItem value="No Results">No Results</MenuItem>
-                          </Select>
-                        </Grid>
+                          />
+                        </Typography>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            )}
-
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 3 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 3 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_3 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_3}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 3 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
+                    </>
+                  ) : (
                     <>
-                      <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
-                            <Typography
-                              gutterBottom
-                              variant="body1"
-                              align="left"
-                            >
-                              Status At 3 Months
-                            </Typography>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={10}
-                            sx={{
-                              "& .MuiOutlinedInput-input": {
-                                display: "flex",
-                                alignItems: "flex-start",
-                              },
-                            }}
-                          >
-                            <Select
-                              fullWidth
-                              value={editedStatus3}
-                              onChange={handleStatus3Change}
-                              renderValue={() =>
-                                editedStatus3 && (
-                                  <Chip
-                                    label={editedStatus3}
-                                    onDelete={() => handleChipDelete("status3")}
-                                    onMouseDown={(event) => {
-                                      event.stopPropagation();
-                                    }}
-                                  />
-                                )
-                              }
-                              error={!editedStatus3}
-                              required
-                            >
-                              <MenuItem value="Employed">Employed</MenuItem>
-                              <MenuItem value="Training">Training</MenuItem>
-                              <MenuItem value="No Results">No Results</MenuItem>
-                            </Select>
-                          </Grid>
-                        </Grid>
-                      </Box>
+                      <Grid item xs={4}>
+                        <Typography gutterBottom variant="body1" align="left" sx={{ ml: 2 }}>
+                          Status
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={8}
+                        sx={{
+                          "& .MuiOutlinedInput-input": {
+                            display: "flex",
+                            alignItems: "flex-start",
+                          },
+                        }}
+                      >
+                        <Select
+                          fullWidth
+                          value={editedStatus}
+                          onChange={handleStatusChange}
+                          renderValue={() =>
+                            editedStatus && (
+                              <Chip
+                                label={editedStatus}
+                                onMouseDown={(event) => {
+                                  event.stopPropagation();
+                                }}
+                              />
+                            )
+                          }
+                          error={!editedStatus}
+                          required
+                        >
+                          <MenuItem value="Active">Active</MenuItem>
+                          <MenuItem value="R&I">R&I</MenuItem>
+                          <MenuItem value="Closed">Closed</MenuItem>
+                        </Select>
+                      </Grid>
                     </>
                   )}
-              </div>
-            )}
-
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 6 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 6 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_6 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_6}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 6 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
+                </Grid>
+              {isEditMode ? (
+                /* eslint-disable react/jsx-no-useless-fragment */
+                <>
+                  {clientInfo.status === "Closed" && (
                     <>
                       <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Closure Date
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
                             >
-                              Status At 6 Months
+                              {clientInfo.closure_date}
                             </Typography>
                           </Grid>
-                          <Grid
-                            item
-                            xs={10}
-                            sx={{
-                              "& .MuiOutlinedInput-input": {
-                                display: "flex",
-                                alignItems: "flex-start",
-                              },
-                            }}
-                          >
-                            <Select
-                              fullWidth
-                              value={editedStatus6}
-                              onChange={handleStatus6Change}
-                              renderValue={() =>
-                                editedStatus6 && (
-                                  <Chip
-                                    label={editedStatus6}
-                                    onDelete={() => handleChipDelete("status6")}
-                                    onMouseDown={(event) => {
-                                      event.stopPropagation();
-                                    }}
-                                  />
-                                )
-                              }
-                              error={!editedStatus6}
-                              required
-                            >
-                              <MenuItem value="Employed">Employed</MenuItem>
-                              <MenuItem value="Training">Training</MenuItem>
-                              <MenuItem value="No Results">No Results</MenuItem>
-                            </Select>
+                          <Grid item xs={1} id="info-card-icon">
+                            <IconButton>
+                              <ContentCopyIcon
+                                onClick={() =>
+                                  handleCopyClick(clientInfo.closure_date)
+                                }
+                              />
+                            </IconButton>
                           </Grid>
                         </Grid>
-                      </Box>
                     </>
                   )}
-              </div>
-            )}
+                </>
+                /* eslint-disable react/jsx-no-useless-fragment */
+              ) : null}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 9 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 9 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_9 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_9}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 9 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
+              {isEditMode ? (
+                <>
+                  {clientInfo.status === "Closed" && (
                     <>
                       <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Time Since Closure
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={7}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
                             >
-                              Status At 9 Months
+                              {clientInfo.time_since_closure} Months
                             </Typography>
                           </Grid>
-                          <Grid
-                            item
-                            xs={10}
-                            sx={{
-                              "& .MuiOutlinedInput-input": {
-                                display: "flex",
-                                alignItems: "flex-start",
-                              },
-                            }}
-                          >
-                            <Select
-                              fullWidth
-                              value={editedStatus9}
-                              onChange={handleStatus9Change}
-                              renderValue={() =>
-                                editedStatus9 && (
-                                  <Chip
-                                    label={editedStatus9}
-                                    onDelete={() => handleChipDelete("status9")}
-                                    onMouseDown={(event) => {
-                                      event.stopPropagation();
-                                    }}
-                                  />
-                                )
-                              }
-                              error={!editedStatus9}
-                              required
-                            >
-                              <MenuItem value="Employed">Employed</MenuItem>
-                              <MenuItem value="Training">Training</MenuItem>
-                              <MenuItem value="No Results">No Results</MenuItem>
-                            </Select>
+                          <Grid item xs={1} id="info-card-icon">
+                            <IconButton>
+                              <ContentCopyIcon
+                                onClick={() =>
+                                  handleCopyClick(
+                                    `${clientInfo.time_since_closure} Months`
+                                  )
+                                }
+                              />
+                            </IconButton>
                           </Grid>
                         </Grid>
-                      </Box>
                     </>
                   )}
-              </div>
-            )}
+                </>
+              ) : null}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 12 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 12 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_12 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_12}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 12 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
+              {isEditMode ? (
+                <>
+                  {clientInfo.status === "Closed" && (
                     <>
                       <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
+                              sx={{ ml: 2 }}
                             >
-                              Status At 12 Months
+                              Status At Exit
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Typography variant="body1" align="left">
+                              {clientInfo.status_at_exit ? (
+                                <Chip
+                                  variant="filled"
+                                  label={clientInfo.status_at_exit}
+                                />
+                              ) : (
+                                "Unknown"
+                              )}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {isStatusExitVisible && (
+                    <>
+                      <Divider variant="middle" />
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Status At Exit
                             </Typography>
                           </Grid>
                           <Grid
                             item
-                            xs={10}
+                            xs={8}
                             sx={{
                               "& .MuiOutlinedInput-input": {
                                 display: "flex",
@@ -1031,14 +697,14 @@ export default function ClientPage({
                           >
                             <Select
                               fullWidth
-                              value={editedStatus12}
-                              onChange={handleStatus12Change}
+                              value={editedStatusExit}
+                              onChange={handleStatusExitChange}
                               renderValue={() =>
-                                editedStatus12 && (
+                                editedStatusExit && (
                                   <Chip
-                                    label={editedStatus12}
+                                    label={editedStatusExit}
                                     onDelete={() =>
-                                      handleChipDelete("status12")
+                                      handleChipDelete("statusExit")
                                     }
                                     onMouseDown={(event) => {
                                       event.stopPropagation();
@@ -1046,7 +712,7 @@ export default function ClientPage({
                                   />
                                 )
                               }
-                              error={!editedStatus12}
+                              error={!editedStatusExit}
                               required
                             >
                               <MenuItem value="Employed">Employed</MenuItem>
@@ -1055,39 +721,413 @@ export default function ClientPage({
                             </Select>
                           </Grid>
                         </Grid>
-                      </Box>
                     </>
                   )}
-              </div>
-            )}
+                </>
+              )}
 
-            {isEditMode ? null : (
-              <div>
-                <Divider variant="middle" />
-                <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                  <Grid container direction="row" alignItems="center">
-                    <Grid item xs={11.5} align="right">
-                      <Button
-                        type="submit"
-                        variant="text"
-                        color="primary"
-                        size="small"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Saving..." : "Save Changes"}
-                      </Button>
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 3 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 3 Months
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                              <Typography variant="body1" align="left">
+                                {clientInfo.status_at_3 ? (
+                                  <Chip
+                                    variant="filled"
+                                    label={clientInfo.status_at_3}
+                                  />
+                                ) : (
+                                  "Unknown"
+                                )}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 3 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 3 Months
+                              </Typography>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={8}
+                              sx={{
+                                "& .MuiOutlinedInput-input": {
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                },
+                              }}
+                            >
+                              <Select
+                                fullWidth
+                                value={editedStatus3}
+                                onChange={handleStatus3Change}
+                                renderValue={() =>
+                                  editedStatus3 && (
+                                    <Chip
+                                      label={editedStatus3}
+                                      onDelete={() =>
+                                        handleChipDelete("status3")
+                                      }
+                                      onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                      }}
+                                    />
+                                  )
+                                }
+                                error={!editedStatus3}
+                                required
+                              >
+                                <MenuItem value="Employed">Employed</MenuItem>
+                                <MenuItem value="Training">Training</MenuItem>
+                                <MenuItem value="No Results">
+                                  No Results
+                                </MenuItem>
+                              </Select>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              )}
+
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 6 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 6 Months
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                              <Typography variant="body1" align="left">
+                                {clientInfo.status_at_6 ? (
+                                  <Chip
+                                    variant="filled"
+                                    label={clientInfo.status_at_6}
+                                  />
+                                ) : (
+                                  "Unknown"
+                                )}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 6 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 6 Months
+                              </Typography>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={8}
+                              sx={{
+                                "& .MuiOutlinedInput-input": {
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                },
+                              }}
+                            >
+                              <Select
+                                fullWidth
+                                value={editedStatus6}
+                                onChange={handleStatus6Change}
+                                renderValue={() =>
+                                  editedStatus6 && (
+                                    <Chip
+                                      label={editedStatus6}
+                                      onDelete={() =>
+                                        handleChipDelete("status6")
+                                      }
+                                      onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                      }}
+                                    />
+                                  )
+                                }
+                                error={!editedStatus6}
+                                required
+                              >
+                                <MenuItem value="Employed">Employed</MenuItem>
+                                <MenuItem value="Training">Training</MenuItem>
+                                <MenuItem value="No Results">
+                                  No Results
+                                </MenuItem>
+                              </Select>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              )}
+
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 9 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 9 Months
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                              <Typography variant="body1" align="left">
+                                {clientInfo.status_at_9 ? (
+                                  <Chip
+                                    variant="filled"
+                                    label={clientInfo.status_at_9}
+                                  />
+                                ) : (
+                                  "Unknown"
+                                )}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 9 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 9 Months
+                              </Typography>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={8}
+                              sx={{
+                                "& .MuiOutlinedInput-input": {
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                },
+                              }}
+                            >
+                              <Select
+                                fullWidth
+                                value={editedStatus9}
+                                onChange={handleStatus9Change}
+                                renderValue={() =>
+                                  editedStatus9 && (
+                                    <Chip
+                                      label={editedStatus9}
+                                      onDelete={() =>
+                                        handleChipDelete("status9")
+                                      }
+                                      onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                      }}
+                                    />
+                                  )
+                                }
+                                error={!editedStatus9}
+                                required
+                              >
+                                <MenuItem value="Employed">Employed</MenuItem>
+                                <MenuItem value="Training">Training</MenuItem>
+                                <MenuItem value="No Results">
+                                  No Results
+                                </MenuItem>
+                              </Select>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              )}
+
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 12 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 12 Months
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={8}>
+                              <Typography variant="body1" align="left">
+                                {clientInfo.status_at_12 ? (
+                                  <Chip
+                                    variant="filled"
+                                    label={clientInfo.status_at_12}
+                                  />
+                                ) : (
+                                  "Unknown"
+                                )}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 12 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item xs={4}>
+                              <Typography
+                                gutterBottom
+                                variant="body1"
+                                align="left"
+                                sx={{ ml: 2 }}
+                              >
+                                Status At 12 Months
+                              </Typography>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={8}
+                              sx={{
+                                "& .MuiOutlinedInput-input": {
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                },
+                              }}
+                            >
+                              <Select
+                                fullWidth
+                                value={editedStatus12}
+                                onChange={handleStatus12Change}
+                                renderValue={() =>
+                                  editedStatus12 && (
+                                    <Chip
+                                      label={editedStatus12}
+                                      onDelete={() =>
+                                        handleChipDelete("status12")
+                                      }
+                                      onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                      }}
+                                    />
+                                  )
+                                }
+                                error={!editedStatus12}
+                                required
+                              >
+                                <MenuItem value="Employed">Employed</MenuItem>
+                                <MenuItem value="Training">Training</MenuItem>
+                                <MenuItem value="No Results">
+                                  No Results
+                                </MenuItem>
+                              </Select>
+                            </Grid>
+                          </Grid>
+                      </>
+                    )}
+                </>
+              )}
+
+              {isEditMode ? null : (
+                <div>
+                  <Divider variant="middle" />
+                    <Grid container direction="row" alignItems="center">
+                      <Grid item xs={11.5} align="right">
+                        <Button
+                          type="submit"
+                          variant="text"
+                          color="primary"
+                          size="small"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Saving..." : "Save Changes"}
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Box>
-              </div>
-            )}
-          </Box>
-          <ClientTimelineComponent
-            client={clientInfo}
-            managedClients={managedClients}
-          />
+                </div>
+              )}
+            </Stack>
+          </form>
         </Box>
-      </form>
+        <ClientTimelineComponent
+          client={clientInfo}
+          managedClients={managedClients}
+        />
+      </Box>
       <ConfirmDialog
         open={confirmEditDialog}
         title="Confirm Edit"
