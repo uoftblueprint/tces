@@ -53,7 +53,11 @@ function ClientTable({
       editable: false,
       sortable: false,
       filterable: false,
-      renderCell: (params) => <Chip label={params.value === "R And I" ? "R&I" : (params.value ?? "unknown")} />,
+      renderCell: (params) => (
+        <Chip
+          label={params.value === "R And I" ? "R&I" : params.value ?? "unknown"}
+        />
+      ),
     },
     {
       field: "dateUpdated",

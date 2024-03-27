@@ -10,11 +10,17 @@ import { fetchClientById } from "../../utils/api";
 import UserType from "../../prop-types/UserType";
 import { cleanStatusString } from "../../utils/users";
 import { formatDateStr, monthsSince } from "../../utils/date";
+import ClientType from "../../prop-types/ClientType";
 // import { getUserByIdHelper } from "../../utils/users";
 
 // const [managedUsers, setManagedUsers] = React.useState([]);
 
-function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
+function ClientPage({
+  managedUsers,
+  getUserById,
+  setSnackBarMessage,
+  managedClients,
+}) {
   const [clientLoaded, setClientLoaded] = React.useState(false);
   const [clientObject, setClientObject] = React.useState(null);
 
@@ -31,7 +37,9 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
         if (response.ok) {
           const clientData = await response.json();
           const initialClientInfo = {
+            id: clientData.data.client.id,
             clientID: clientData.data.client.id,
+            name: clientData.data.client.name,
             firstName: clientData.data.client.name,
             email: clientData.data.client.email,
             phone: clientData.data.client.phone_number,
@@ -82,6 +90,7 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
           clientInfo={clientObject}
           monthsSinceClosure={clientObject.time_since_closure}
           managedUsers={managedUsers}
+          managedClients={managedClients}
           getUserById={getUserById}
           setSnackBarMessage={setSnackBarMessage}
         />
@@ -92,6 +101,7 @@ function ClientPage({ managedUsers, getUserById, setSnackBarMessage }) {
 
 ClientPage.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
   getUserById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
 };

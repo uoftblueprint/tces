@@ -4,10 +4,12 @@ import ErrorComponent from "../../components/shared/error-screen-component";
 import EditJobLeadComponent from "../../components/edit-job-lead-component";
 import JobLeadType from "../../prop-types/JobLeadType";
 import UserType from "../../prop-types/UserType";
+import ClientType from "../../prop-types/ClientType";
 
 function EditJobLead({
   managedJobLeads,
   managedUsers,
+  managedClients,
   getUserById,
   getEmployerById,
   setLocalExitRoute,
@@ -24,6 +26,8 @@ function EditJobLead({
   return (
     <EditJobLeadComponent
       managedUsers={managedUsers}
+      managedClients={managedClients}
+      managedJobLeads={managedJobLeads}
       jobLead={jobLeadToEdit}
       getUserById={getUserById}
       getEmployerById={getEmployerById}
@@ -36,6 +40,7 @@ function EditJobLead({
 EditJobLead.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
   getUserById: PropTypes.func.isRequired,
   getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,

@@ -10,7 +10,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
   const [errorDisplay, setError] = useState(null);
 
   useEffect(() => {
-    const fetchManagedUsers = async () => {
+    const fetchManagedJobLeads = async () => {
       try {
         // fetch all
         const response = await getFilteredJobLeads("");
@@ -46,7 +46,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
       }
     };
 
-    fetchManagedUsers();
+    fetchManagedJobLeads();
   }, []);
 
   if (loading) return <LoadingComponent isLoading={loading} />;

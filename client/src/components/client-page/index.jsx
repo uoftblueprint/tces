@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
@@ -25,10 +25,12 @@ import ErrorScreenComponent from "../shared/error-screen-component";
 import { modifyClient } from "../../utils/api";
 import ConfirmDialog from "../shared/confirm-dialog-component";
 import FormSubmissionErrorDialog from "../shared/form-submission-error-dialog";
+import ClientTimelineComponent from "./client-timeline";
+import ClientType from "../../prop-types/ClientType";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref
+  ref,
 ) {
   return (
     <IMaskInput
@@ -54,6 +56,7 @@ export default function ClientPage({
   monthsSinceClosure,
   getUserById,
   managedUsers,
+  managedClients,
   setSnackBarMessage,
 }) {
   // Edit mode is initially set to true due to the structure of the inline if-else statements for rendering the form fields
@@ -111,7 +114,7 @@ export default function ClientPage({
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
   // If the database value is r_and_i, render it as r&i
   const [editedStatus, setEditedStatus] = React.useState(
-    clientInfo.status === "R And I" ? "R&I" : clientInfo.status
+    clientInfo.status === "R And I" ? "R&I" : clientInfo.status,
   );
 
   const [editedStatusExit, setEditedStatusExit] = React.useState(
@@ -245,17 +248,8 @@ export default function ClientPage({
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
-    <div
-      style={{
-        marginLeft: "40px",
-        marginRight: "40px",
-        marginTop: "40px",
-        marginBottom: "40px",
-      }}
-    >
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
-      >
+    <Box>
+      <div style={{ display: "flex", alignItems: "center", margin: "20px" }}>
         <IconButton
           onClick={handleBackClick}
           sx={{ color: "gray", marginRight: 2, marginLeft: 2 }}
@@ -278,6 +272,7 @@ export default function ClientPage({
             borderRadius: "8px",
             boxShadow: 2,
             p: 3,
+            mr: 6.5,
           }}
         >
           <Box sx={{ textAlign: "center", mr: 2 }}>
@@ -308,9 +303,26 @@ export default function ClientPage({
           />
         )}
       </div>
-      <form onSubmit={commitEdit}>
-        <Paper>
-          <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gridColumnGap: "30px",
+          width: "100%",
+          alignItems: "flex-start",
+        }}
+      >
+        <Box
+          sx={{
+            width: "66%",
+            borderRadius: 2,
+            boxShadow: 3,
+            ml: 9,
+            mb: 9,
+            border: "1px solid #e0e0e0",
+          }}
+        >
+          <form onSubmit={commitEdit}>
             <Box paddingTop={2} paddingBottom={2} paddingLeft={2}>
               <Grid container direction="row" alignItems="center">
                 <Grid item xs={10}>
@@ -318,7 +330,7 @@ export default function ClientPage({
                     Personal Information
                   </Typography>
                 </Grid>
-                <Grid item xs={1.9} align="right">
+                <Grid item xs={1.5} align="right">
                   <IconButton
                     type={shouldSubmit ? "submit" : "button"}
                     size="small"
@@ -331,21 +343,23 @@ export default function ClientPage({
                       }
                     }}
                   >
-                    <EditIcon
-                      color={isEditMode ? "default" : "primary" }
-                    />
+                    <EditIcon color={isEditMode ? "default" : "primary"} />
                   </IconButton>
                 </Grid>
               </Grid>
             </Box>
             <Divider />
-
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+            <Stack spacing={2} sx={{ m: 2 }}>
               <Grid container direction="row" alignItems="center">
                 {isEditMode ? (
                   <>
                     <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Name
                       </Typography>
                     </Grid>
@@ -364,12 +378,17 @@ export default function ClientPage({
                   </>
                 ) : (
                   <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
+                    <Grid item xs={4}>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Name
                       </Typography>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={8}>
                       <TextField
                         type="text"
                         id="firstName"
@@ -384,15 +403,18 @@ export default function ClientPage({
                   </>
                 )}
               </Grid>
-            </Box>
 
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              <Divider variant="middle" />
               <Grid container direction="row" alignItems="center">
                 {isEditMode ? (
                   <>
                     <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Email
                       </Typography>
                     </Grid>
@@ -409,12 +431,17 @@ export default function ClientPage({
                   </>
                 ) : (
                   <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
+                    <Grid item xs={4}>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Email
                       </Typography>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={8}>
                       <TextField
                         type="text"
                         id="firstName"
@@ -428,18 +455,21 @@ export default function ClientPage({
                   </>
                 )}
               </Grid>
-            </Box>
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-              <Grid container direction="row" alignItems="center">
+              <Divider variant="middle" />
+              <Grid container alignItems="center">
                 {isEditMode ? (
                   <>
                     <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Phone Number
                       </Typography>
                     </Grid>
-                    <Grid item xs={7.5}>
+                    <Grid item xs={7}>
                       <Typography
                         gutterBottom
                         variant="body1"
@@ -451,7 +481,7 @@ export default function ClientPage({
                           : "Enter Phone Number..."}
                       </Typography>
                     </Grid>
-                    <Grid item xs={0.5} id="info-card-icon">
+                    <Grid item xs={1} id="info-card-icon">
                       <IconButton>
                         <ContentCopyIcon
                           onClick={() => handleCopyClick(clientInfo.phone)}
@@ -461,12 +491,17 @@ export default function ClientPage({
                   </>
                 ) : (
                   <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
+                    <Grid item xs={4}>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Phone Number
                       </Typography>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={8}>
                       <TextField
                         value={editedPhone}
                         onChange={handlePhoneChange}
@@ -482,40 +517,48 @@ export default function ClientPage({
                   </>
                 )}
               </Grid>
-            </Box>
-            <Divider variant="middle" />
-            <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              <Divider variant="middle" />
               <Grid container direction="row" alignItems="center">
                 {isEditMode ? (
                   <>
                     <Grid item xs={4}>
-                      <Typography gutterBottom variant="body1" align="left">
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Status
                       </Typography>
                     </Grid>
                     <Grid item xs={8}>
                       <Typography variant="body1" align="left">
                         <Chip
-                        variant="filled"
-                        label={
-                          clientInfo.status === "R And I"
-                            ? "R&I"
-                            : clientInfo.status
-                        }
-                      />
+                          variant="filled"
+                          label={
+                            clientInfo.status === "R And I"
+                              ? "R&I"
+                              : clientInfo.status
+                          }
+                        />
                       </Typography>
                     </Grid>
                   </>
                 ) : (
                   <>
-                    <Grid item xs={1.5}>
-                      <Typography gutterBottom variant="body1" align="left">
+                    <Grid item xs={4}>
+                      <Typography
+                        gutterBottom
+                        variant="body1"
+                        align="left"
+                        sx={{ ml: 2 }}
+                      >
                         Status
                       </Typography>
                     </Grid>
                     <Grid
                       item
-                      xs={10}
+                      xs={8}
                       sx={{
                         "& .MuiOutlinedInput-input": {
                           display: "flex",
@@ -548,25 +591,29 @@ export default function ClientPage({
                   </>
                 )}
               </Grid>
-            </Box>
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                /* eslint-disable react/jsx-no-useless-fragment */
+                <>
+                  {clientInfo.status === "Closed" && (
+                    <>
+                      <Divider variant="middle" />
                       <Grid container direction="row" alignItems="center">
                         <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
+                          <Typography
+                            gutterBottom
+                            variant="body1"
+                            align="left"
+                            sx={{ ml: 2 }}
+                          >
                             Closure Date
                           </Typography>
                         </Grid>
-                        <Grid item xs={7.5}>
+                        <Grid item xs={7}>
                           <Typography gutterBottom variant="body1" align="left">
                             {clientInfo.closure_date}
                           </Typography>
                         </Grid>
-                        <Grid item xs={0.5} id="info-card-icon">
+                        <Grid item xs={1} id="info-card-icon">
                           <IconButton>
                             <ContentCopyIcon
                               onClick={() =>
@@ -576,56 +623,63 @@ export default function ClientPage({
                           </IconButton>
                         </Grid>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : null}
+                    </>
+                  )}
+                </>
+              ) : /* eslint-disable react/jsx-no-useless-fragment */
+              null}
 
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {clientInfo.status === "Closed" && (
+                    <>
+                      <Divider variant="middle" />
                       <Grid container direction="row" alignItems="center">
                         <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
+                          <Typography
+                            gutterBottom
+                            variant="body1"
+                            align="left"
+                            sx={{ ml: 2 }}
+                          >
                             Time Since Closure
                           </Typography>
                         </Grid>
-                        <Grid item xs={7.5}>
+                        <Grid item xs={7}>
                           <Typography gutterBottom variant="body1" align="left">
                             {clientInfo.time_since_closure} Months
                           </Typography>
                         </Grid>
-                        <Grid item xs={0.5} id="info-card-icon">
+                        <Grid item xs={1} id="info-card-icon">
                           <IconButton>
                             <ContentCopyIcon
                               onClick={() =>
                                 handleCopyClick(
-                                  `${clientInfo.time_since_closure} Months`
+                                  `${clientInfo.time_since_closure} Months`,
                                 )
                               }
                             />
                           </IconButton>
                         </Grid>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : null}
+                    </>
+                  )}
+                </>
+              ) : null}
 
-            {isEditMode ? (
-              <div>
-                {clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {clientInfo.status === "Closed" && (
+                    <>
+                      <Divider variant="middle" />
                       <Grid container direction="row" alignItems="center">
                         <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
+                          <Typography
+                            gutterBottom
+                            variant="body1"
+                            align="left"
+                            sx={{ ml: 2 }}
+                          >
                             Status At Exit
                           </Typography>
                         </Grid>
@@ -642,25 +696,28 @@ export default function ClientPage({
                           </Typography>
                         </Grid>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {isStatusExitVisible && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {isStatusExitVisible && (
+                    <>
+                      <Divider variant="middle" />
                       <Grid container direction="row" alignItems="center">
-                        <Grid item xs={1.5}>
-                          <Typography gutterBottom variant="body1" align="left">
+                        <Grid item xs={4}>
+                          <Typography
+                            gutterBottom
+                            variant="body1"
+                            align="left"
+                            sx={{ ml: 2 }}
+                          >
                             Status At Exit
                           </Typography>
                         </Grid>
                         <Grid
                           item
-                          xs={10}
+                          xs={8}
                           sx={{
                             "& .MuiOutlinedInput-input": {
                               display: "flex",
@@ -694,62 +751,65 @@ export default function ClientPage({
                           </Select>
                         </Grid>
                       </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            )}
+                    </>
+                  )}
+                </>
+              )}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 3 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 3 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_3 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_3}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 3 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
-                    <>
-                      <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 3 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Status At 3 Months
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Typography variant="body1" align="left">
+                              {clientInfo.status_at_3 ? (
+                                <Chip
+                                  variant="filled"
+                                  label={clientInfo.status_at_3}
+                                />
+                              ) : (
+                                "Unknown"
+                              )}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 3 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
                             >
                               Status At 3 Months
                             </Typography>
                           </Grid>
                           <Grid
                             item
-                            xs={10}
+                            xs={8}
                             sx={{
                               "& .MuiOutlinedInput-input": {
                                 display: "flex",
@@ -781,62 +841,65 @@ export default function ClientPage({
                             </Select>
                           </Grid>
                         </Grid>
-                      </Box>
-                    </>
-                  )}
-              </div>
-            )}
+                      </>
+                    )}
+                </>
+              )}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 6 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 6 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_6 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_6}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 6 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
-                    <>
-                      <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 6 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Status At 6 Months
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Typography variant="body1" align="left">
+                              {clientInfo.status_at_6 ? (
+                                <Chip
+                                  variant="filled"
+                                  label={clientInfo.status_at_6}
+                                />
+                              ) : (
+                                "Unknown"
+                              )}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 6 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
                             >
                               Status At 6 Months
                             </Typography>
                           </Grid>
                           <Grid
                             item
-                            xs={10}
+                            xs={8}
                             sx={{
                               "& .MuiOutlinedInput-input": {
                                 display: "flex",
@@ -868,62 +931,65 @@ export default function ClientPage({
                             </Select>
                           </Grid>
                         </Grid>
-                      </Box>
-                    </>
-                  )}
-              </div>
-            )}
+                      </>
+                    )}
+                </>
+              )}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 9 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 9 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_9 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_9}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 9 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
-                    <>
-                      <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 9 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Status At 9 Months
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Typography variant="body1" align="left">
+                              {clientInfo.status_at_9 ? (
+                                <Chip
+                                  variant="filled"
+                                  label={clientInfo.status_at_9}
+                                />
+                              ) : (
+                                "Unknown"
+                              )}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 9 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
                             >
                               Status At 9 Months
                             </Typography>
                           </Grid>
                           <Grid
                             item
-                            xs={10}
+                            xs={8}
                             sx={{
                               "& .MuiOutlinedInput-input": {
                                 display: "flex",
@@ -955,62 +1021,65 @@ export default function ClientPage({
                             </Select>
                           </Grid>
                         </Grid>
-                      </Box>
-                    </>
-                  )}
-              </div>
-            )}
+                      </>
+                    )}
+                </>
+              )}
 
-            {isEditMode ? (
-              <div>
-                {monthsSinceClosure >= 12 && clientInfo.status === "Closed" && (
-                  <>
-                    <Divider variant="middle" />
-                    <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
-                      <Grid container direction="row" alignItems="center">
-                        <Grid item xs={4}>
-                          <Typography gutterBottom variant="body1" align="left">
-                            Status At 12 Months
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="body1" align="left">
-                            {clientInfo.status_at_12 ? (
-                              <Chip
-                                variant="filled"
-                                label={clientInfo.status_at_12}
-                              />
-                            ) : (
-                              "Unknown"
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div>
-                {monthsSinceClosure >= 12 &&
-                  clientInfo.status === "Closed" &&
-                  isStatusExitVisible && (
-                    <>
-                      <Divider variant="middle" />
-                      <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? (
+                <>
+                  {monthsSinceClosure >= 12 &&
+                    clientInfo.status === "Closed" && (
+                      <>
+                        <Divider variant="middle" />
                         <Grid container direction="row" alignItems="center">
-                          <Grid item xs={1.5}>
+                          <Grid item xs={4}>
                             <Typography
                               gutterBottom
                               variant="body1"
                               align="left"
+                              sx={{ ml: 2 }}
+                            >
+                              Status At 12 Months
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Typography variant="body1" align="left">
+                              {clientInfo.status_at_12 ? (
+                                <Chip
+                                  variant="filled"
+                                  label={clientInfo.status_at_12}
+                                />
+                              ) : (
+                                "Unknown"
+                              )}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
+                </>
+              ) : (
+                <>
+                  {monthsSinceClosure >= 12 &&
+                    clientInfo.status === "Closed" &&
+                    isStatusExitVisible && (
+                      <>
+                        <Divider variant="middle" />
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={4}>
+                            <Typography
+                              gutterBottom
+                              variant="body1"
+                              align="left"
+                              sx={{ ml: 2 }}
                             >
                               Status At 12 Months
                             </Typography>
                           </Grid>
                           <Grid
                             item
-                            xs={10}
+                            xs={8}
                             sx={{
                               "& .MuiOutlinedInput-input": {
                                 display: "flex",
@@ -1044,16 +1113,14 @@ export default function ClientPage({
                             </Select>
                           </Grid>
                         </Grid>
-                      </Box>
-                    </>
-                  )}
-              </div>
-            )}
+                      </>
+                    )}
+                </>
+              )}
 
-            {isEditMode ? null : (
-              <div>
-                <Divider variant="middle" />
-                <Box paddingTop={2} paddingBottom={1} paddingLeft={3}>
+              {isEditMode ? null : (
+                <div>
+                  <Divider variant="middle" />
                   <Grid container direction="row" alignItems="center">
                     <Grid item xs={11.5} align="right">
                       <Button
@@ -1067,12 +1134,16 @@ export default function ClientPage({
                       </Button>
                     </Grid>
                   </Grid>
-                </Box>
-              </div>
-            )}
-          </Box>
-        </Paper>
-      </form>
+                </div>
+              )}
+            </Stack>
+          </form>
+        </Box>
+        <ClientTimelineComponent
+          client={clientInfo}
+          managedClients={managedClients}
+        />
+      </Box>
       <ConfirmDialog
         open={confirmEditDialog}
         title="Confirm Edit"
@@ -1084,7 +1155,7 @@ export default function ClientPage({
         open={formSubmissionErrorDialog}
         onBack={backToFormFromError}
       />
-    </div>
+    </Box>
   );
 }
 
@@ -1104,6 +1175,7 @@ ClientPage.propTypes = {
     owner: PropTypes.number,
     creator: PropTypes.number,
   }).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
   monthsSinceClosure: PropTypes.number.isRequired,
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   getUserById: PropTypes.func.isRequired,

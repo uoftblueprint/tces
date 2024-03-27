@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Link as MuiLink } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import CardComponent from "../../card-template-component";
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
@@ -9,7 +11,7 @@ function EmployerJobComponent({ ...entry }) {
   };
 
   const imageUrl =
-    entry.typeJob === "add"
+    entry.type === "job_lead_add"
       ? "/img/timelineIconStar.svg"
       : "/img/timelineIconDelete.svg";
 
@@ -18,9 +20,13 @@ function EmployerJobComponent({ ...entry }) {
       title={entry.title}
       dateAdded={entry.dateAdded}
       body={
-        <a href="#" style={linkStyle}>
-          {entry.jobLead.title}
-        </a>
+        <MuiLink
+          component={RouterLink}
+          to={`/job-leads/${entry.jobLead?.id}`}
+          style={linkStyle}
+        >
+          {entry.jobLead?.job_title}
+        </MuiLink>
       }
       imageUrl={imageUrl}
     />
