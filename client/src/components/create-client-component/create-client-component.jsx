@@ -19,12 +19,25 @@ import UserType from "../../prop-types/UserType";
 function CreateClientComponent({ currUser }) {
   const navigate = useNavigate();
   const [clients, setClients] = useState([
-    { fullName: "", phoneNumber: "", email: "" },
+    { id: `client-${Date.now()}`, fullName: "", phoneNumber: "", email: "" },
   ]);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmSubmitDialog, setConfirmSubmitDialog] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
+
+  const handleAddClient = () => {
+    setClients((currentClients) => [
+      ...currentClients,
+      { id: `client-${Date.now()}`, fullName: "", phoneNumber: "", email: "" },
+    ]);
+  };
+
+  const handleDeleteClient = (clientId) => {
+    setClients((currentClients) =>
+      currentClients.filter((client) => client.id !== clientId),
+    );
+  };
 
   const onConfirmExit = () => {
     setDialogOpen(false);
@@ -71,30 +84,22 @@ function CreateClientComponent({ currUser }) {
             Input information about the client
           </Typography>
         </Header>
-        {clients.map((client, i) => (
+        {clients.map((client) => (
           <ClientCard
             key={client.id}
-            index={i}
+            client={client}
             setClientData={(newClientData) =>
               setClients((prevClients) =>
-                prevClients
-                  .slice(0, i)
-                  .concat([newClientData])
-                  .concat(prevClients.slice(i + 1)),
+                prevClients.map((pc) =>
+                  pc.id === client.id ? { ...pc, ...newClientData } : pc,
+                ),
               )
             }
+            showDeleteIcon={clients.length > 1}
+            onDelete={() => handleDeleteClient(client.id)}
           />
         ))}
-        <AddButton
-          onClick={() =>
-            setClients([
-              ...clients,
-              { fullName: "", phoneNumber: "", email: "" },
-            ])
-          }
-        >
-          + Add Another Client
-        </AddButton>
+        <AddButton onClick={handleAddClient}>+ Add Another Client</AddButton>
         <Stack direction="row">
           <Discard
             variant="outlined"

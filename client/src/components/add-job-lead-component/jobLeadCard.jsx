@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import {
   FormControl,
+  IconButton,
   InputLabel,
   Select,
   MenuItem,
@@ -12,6 +13,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
 import EmployerType from "../../prop-types/EmployerType";
 import { JOB_TYPES } from "../../utils/contants";
@@ -19,15 +21,31 @@ import { JOB_TYPES } from "../../utils/contants";
 function JobLeadContent({
   jobLeadData,
   handleInputChange,
+  handleDeleteJobLead,
   isAddEmployer,
   employers,
 }) {
   return (
     <>
-      {jobLeadData.map((lead) => (
+      {jobLeadData.map((lead, index, array) => (
         <JobLeadContainer key={lead.id}>
-          <H3>Job Lead {lead.id + 1}</H3>
-
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <H3>Job Lead {lead.id + 1}</H3>
+            {array.length > 1 && (
+              <IconButton
+                onClick={() => handleDeleteJobLead(lead.id)}
+                aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
+          </div>
           {/* Employer Name Field */}
           {!isAddEmployer && (
             <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
@@ -254,6 +272,7 @@ JobLeadContent.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadData: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
+  handleDeleteJobLead: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
   employers: PropTypes.arrayOf(EmployerType).isRequired,
 };
