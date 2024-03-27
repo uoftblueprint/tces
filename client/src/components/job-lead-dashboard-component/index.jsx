@@ -10,6 +10,7 @@ import ErrorComponent from "../shared/error-screen-component";
 import { getFilteredJobLeads } from "../../utils/api";
 import { formatDateStr } from "../../utils/date";
 import LoadingScreenComponent from "../shared/loading-screen-component";
+import { JOB_TYPES } from "../../utils/contants";
 
 function JobLeadDashboardComponent({
   managedJobLeads,
@@ -31,23 +32,29 @@ function JobLeadDashboardComponent({
     maxHoursPerWeek: 100,
   });
   const [owners, setOwners] = React.useState([]);
+  const [parentFilterParams, setParentFilterParams] = React.useState({
+    searchTitleQuery: "",
+      startDateCreated: null,
+      endDateCreated: null,
+      startDateExpired: null,
+      endDateExpired: null,
+      compensationRange: [null, null],
+      hoursPerWeekRange: [null, null],
+      ownerId: -1,
+      searchNOCQuery: "",
+      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+        acc[jobType] = true;
+        return acc;
+      }, {})
+  })
 
-  // helper to generate query params based on pagination model state and filter configs
-  const declareFilterJobLeadsQueryParams = (
-    filterParams,
-    customPageModel = null,
-  ) => {
-    let { pageSize, page } = paginationModel;
-    if (customPageModel) {
-      page = customPageModel.page;
-      pageSize = customPageModel.pageSize;
-      setPaginationModel(customPageModel);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({})
+    if (pageSize || page){
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
     }
-    // we initially include pagination model first
-    const queryParams = new URLSearchParams({
-      pageSize,
-      page,
-    });
+    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -102,6 +109,21 @@ function JobLeadDashboardComponent({
       );
 
     return queryParams;
+  }
+
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterJobLeadsQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+      setPaginationModel(customPageModel);
+    }
+
+    return generateFilterParams(filterParams, page, pageSize);
   };
 
   // function to handle the apply filter button
@@ -164,7 +186,9 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} />
+        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} 
+                  generateFilterParams={generateFilterParams}
+                  filterParams={parentFilterParams} />
         <Box
           sx={{
             display: "flex",
@@ -181,6 +205,7 @@ function JobLeadDashboardComponent({
             jobLeadAggregates={aggregates}
             setPaginationModel={setPaginationModel}
             owners={owners}
+            setParentFilterParams={setParentFilterParams}
           />
           <JobLeadDashboardTableComponent
             managedJobLeads={managedJobLeads}

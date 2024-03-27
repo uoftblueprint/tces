@@ -15,6 +15,7 @@ import { cleanStatusString } from "../../utils/users";
 import ErrorComponent from "../shared/error-screen-component";
 import LoadingScreenComponent from "../shared/loading-screen-component";
 import ClientType from "../../prop-types/ClientType";
+import { STATUS_TYPES } from "../../utils/contants";
 
 function ClientDashboardComponent({
   managedClients,
@@ -32,23 +33,28 @@ function ClientDashboardComponent({
   });
   const [rowCount, setRowCount] = useState(managedClients.length);
   const [owners, setOwners] = React.useState([]);
+  const [parentFilterParams, setParentFilterParams] = useState({
+    name: "",
+    phoneNumber: "",
+    dateUpdatedFrom: null,
+    dateUpdatedUntil: null,
+    dateRegisteredFrom: null,
+    dateRegisteredUntil: null,
+    owner: -1,
+    status: STATUS_TYPES.reduce((acc, statusType) => {
+      acc[statusType] = true;
+      return acc;
+    }, {}),
+    actionStatus: "all",
+  });
 
-  // helper to generate query params based on pagination model state and filter configs
-  const declareFilterJobLeadsQueryParams = (
-    filterParams,
-    customPageModel = null,
-  ) => {
-    let { pageSize, page } = paginationModel;
-    if (customPageModel) {
-      page = customPageModel.page;
-      pageSize = customPageModel.pageSize;
-      setPaginationModel(customPageModel);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({})
+    if (pageSize || page){
+      // we initially include pagination model first
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
     }
-    // we initially include pagination model first
-    const queryParams = new URLSearchParams({
-      pageSize,
-      page,
-    });
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -82,6 +88,20 @@ function ClientDashboardComponent({
       queryParams.append("closed", filterParams.status.closed);
 
     return queryParams;
+  }
+
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterJobLeadsQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+      setPaginationModel(customPageModel);
+    }
+    return generateFilterParams(filterParams, page, pageSize);
   };
 
   // function to handle the apply filter button
@@ -127,6 +147,31 @@ function ClientDashboardComponent({
       setLoading(false);
     }
   };
+
+  // export logic
+  const generateCSV = async () => {
+    const req = await getFilteredClients(generateFilterParams(parentFilterParams));
+    const {data} = await req.json();
+    const csvData = [["Name", "Phone Number", "Email", "Status", "Date Updated", "Owner"]];
+
+    data.rows.forEach((clt) => csvData.push([
+      clt.name, 
+      clt.phone_number,
+      clt.email,
+      cleanStatusString(clt.status),
+      formatDateStr(clt.date_updated), 
+      clt.ownerName])
+    );
+    const csvContent = `${csvData.map(e => e.join(",")).join("\n")}`
+    const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8"})
+    const href = window.URL.createObjectURL(blob)
+    const link = document.createElement("a");
+    link.setAttribute("href", href);
+    link.setAttribute("download", "client_data.csv");
+    document.body.appendChild(link); // Required for FF
+      
+    link.click(); // This will download the data file named "my_data.csv".
+  }
 
   // triggers on initialization of job leads dashboard screen
   React.useEffect(() => {
@@ -175,7 +220,7 @@ function ClientDashboardComponent({
                   },
                 }}
                 startIcon={<DownloadIcon />}
-                onClick={() => {}}
+                onClick={generateCSV}
               >
                 EXPORT CURRENT FILTER VIEW ({rowCount} Clients)
               </Button>
@@ -213,6 +258,7 @@ function ClientDashboardComponent({
               handleApplyFilter={handleApplyFilter}
               setPaginationModel={setPaginationModel}
               owners={owners}
+              setParentFilterParams={setParentFilterParams}
             />
             <ClientTable
               clientData={managedClients}

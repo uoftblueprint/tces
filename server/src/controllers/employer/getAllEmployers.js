@@ -1,6 +1,7 @@
 const logger = require("pino")();
 const { Op, Sequelize } = require("sequelize");
 const Employer = require("../../models/employer.model");
+const User = require("../../models/user.model");
 
 const getAllEmployersRequestHandler = async (req, res) => {
   try {
@@ -8,7 +9,6 @@ const getAllEmployersRequestHandler = async (req, res) => {
     const pageSize = req?.query?.pageSize
       ? parseInt(req.query.pageSize, 10)
       : null;
-
     const {
       employerName,
       phoneNumber,
@@ -57,7 +57,16 @@ const getAllEmployersRequestHandler = async (req, res) => {
       searchConfig.offset = page * pageSize;
     }
 
-    const employers = await Employer.findAll(searchConfig);
+    let employers = await Employer.findAll(searchConfig);
+
+    employers = employers.map((employer) => {
+      return employer.get({ plain: true });
+    });
+
+    for (emp of employers) {
+      const owner = await User.findOne({ where: { id: emp.owner } });
+      owner ? (emp.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+    }
 
     const totalEmployers = await Employer.count({ where: query });
 
