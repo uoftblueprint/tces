@@ -1,0 +1,21 @@
+{ 
+    "family": "blueprint-prod",
+    "containerDefinitions": [
+        {
+            "name": "blueprint-prod",
+            "image": "044978490528.dkr.ecr.us-east-2.amazonaws.com/tces-deploy",
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "networkMode": "bridge"
+}

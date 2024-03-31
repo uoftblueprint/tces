@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const compression = require("compression");
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
 
 const app = express();
 const port = 8000;
@@ -18,8 +21,24 @@ const SQLiteStore = require("connect-sqlite3")(session);
 // Import passport configuration
 require("./src/configs/passport");
 
+// Compress all routes
+app.use(compression()); 
+
+// https://www.npmjs.com/package/helmet sets http headers 
+app.use(helmet());
+
+// Set up rate limiter: maximum of 100 requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
+
 // So that we can send and receive JSON through express
 app.use(express.json());
+
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
