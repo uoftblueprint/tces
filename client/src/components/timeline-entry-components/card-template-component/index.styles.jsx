@@ -51,7 +51,7 @@ const Title = styled.h4`
 
 const DateText = styled.div`
   color: var(--Light-Text-Secondary, rgba(0, 0, 0, 0.6));
-  font-size: 6px;
+  font-size: 8px;
 `;
 
 const Body = styled.p`

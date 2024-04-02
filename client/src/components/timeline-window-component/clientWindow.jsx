@@ -21,7 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import {
   SearchField,
-  SearchFieldContainer,
+  SearchFieldContainerTimeline,
 } from "../dashboard-component/index.styles";
 
 import ClientTimelineEntriesComponent from "../client-page/client-timeline/client-timeline-entries";
@@ -150,7 +150,7 @@ function ClientTimelineViewComponent({
         </TabContext>
       </Grid>
       <Grid item>
-        <SearchFieldContainer>
+        <SearchFieldContainerTimeline>
           <SearchField
             fullWidth
             placeholder="Search..."
@@ -205,7 +205,7 @@ function ClientTimelineViewComponent({
               ),
             }}
           />
-        </SearchFieldContainer>
+        </SearchFieldContainerTimeline>
       </Grid>
     </>
   );

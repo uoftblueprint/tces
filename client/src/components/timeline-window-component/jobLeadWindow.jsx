@@ -22,7 +22,7 @@ import IconButton from "@mui/material/IconButton";
 import JobLeadType from "../../prop-types/JobLeadType";
 import {
   SearchField,
-  SearchFieldContainer,
+  SearchFieldContainerTimeline,
 } from "../dashboard-component/index.styles";
 import JobLeadTimelineEntriesComponent from "../edit-job-lead-component/edit-job-lead-timeline/job-lead-timeline-entries";
 
@@ -141,7 +141,7 @@ function EditJobLeadTimelineViewComponent({
         </TabContext>
       </Grid>
       <Grid item>
-        <SearchFieldContainer>
+        <SearchFieldContainerTimeline>
           <SearchField
             fullWidth
             placeholder="Search..."
@@ -196,7 +196,7 @@ function EditJobLeadTimelineViewComponent({
               ),
             }}
           />
-        </SearchFieldContainer>
+        </SearchFieldContainerTimeline>
       </Grid>
     </>
   );

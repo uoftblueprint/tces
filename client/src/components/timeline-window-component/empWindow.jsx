@@ -21,7 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import {
   SearchField,
-  SearchFieldContainer,
+  SearchFieldContainerTimeline,
 } from "../dashboard-component/index.styles";
 import EmployerTimelineEntriesComponent from "../employer-component/employer-timeline/employer-timeline-entries";
 import EmployerType from "../../prop-types/EmployerType";
@@ -162,8 +162,10 @@ function EmployerTimelineViewComponent({
           </TabPanel>
         </TabContext>
       </Grid>
-      <Grid item>
-        <SearchFieldContainer>
+      <Grid
+        item
+      >
+        <SearchFieldContainerTimeline>
           <SearchField
             fullWidth
             placeholder="Search..."
@@ -218,7 +220,7 @@ function EmployerTimelineViewComponent({
               ),
             }}
           />
-        </SearchFieldContainer>
+        </SearchFieldContainerTimeline>
       </Grid>
     </>
   );

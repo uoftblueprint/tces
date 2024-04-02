@@ -152,10 +152,6 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       );
     }
 
-    jobLeads = jobLeads.map((jl) => {
-      return jl.get({ plain: true });
-    });
-
     for (jl of jobLeads) {
       const owner = await User.findOne({ where: { id: jl.owner } });
       owner ? (jl.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
