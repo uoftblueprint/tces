@@ -6,7 +6,12 @@ import JobLeadType from "../../../../prop-types/JobLeadType";
 import { getFilteredJobLeadsTimelineEntries } from "../../../../utils/api";
 import JobLeadEntryComponent from "../../../timeline-entry-components/job-lead-entry-component";
 
-function JobLeadTimelineEntriesComponent({ jobLead, type, externalError, globalSearchQuery }) {
+function JobLeadTimelineEntriesComponent({
+  jobLead,
+  type,
+  externalError,
+  globalSearchQuery,
+}) {
   const [timelineEntries, setTimelineEntries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOb, setError] = useState(null);
@@ -81,12 +86,11 @@ function JobLeadTimelineEntriesComponent({ jobLead, type, externalError, globalS
     if (externalError) {
       setError(externalError);
     }
-
   }, [externalError]);
 
   useEffect(() => {
     fetchJobLeadsTimelineEntries(globalSearchQuery);
-  }, [globalSearchQuery])
+  }, [globalSearchQuery]);
 
   if (loading) {
     return (
