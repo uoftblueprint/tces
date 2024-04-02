@@ -3,7 +3,7 @@ module.exports = {
     return {};
   },
   findAll: () => {
-    return {};
+    return [];
   },
   count: () => {
     return {};
