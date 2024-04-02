@@ -54,6 +54,8 @@ const updateClientRequestHandler = async (req, res) => {
 
     req.body.values.date_updated = new Date();
 
+    console.log("hello world", req.body.values);
+
     await client.set(req.body.values);
     await client.save();
 
@@ -75,8 +77,15 @@ const updateClientRequestHandler = async (req, res) => {
     });
 
     const createTimelineEntry = async (field, value) => {
-      const title = `${userObject.first_name} ${userObject.last_name} updated ${field} to "${value}" for ${client.name}`;
-      const body = `${userObject.first_name} ${userObject.last_name} has updated the ${field} to "${value}" for ${client.name}.`;
+      const formatValue = (str) => {
+        return str
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      };
+
+      const title = `${userObject.first_name} ${userObject.last_name} updated ${field} to "${formatValue(value)}" for ${client.name}`;
+      const body = `${userObject.first_name} ${userObject.last_name} has updated the ${field} to "${formatValue(value)}" for ${client.name}.`;
 
       await ClientTimelineEntry.create({
         date_added: new Date(),

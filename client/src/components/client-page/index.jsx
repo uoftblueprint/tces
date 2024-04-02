@@ -204,22 +204,23 @@ export default function ClientPage({
 
     const updatedClientInfo = {
       ...clientInfo,
-      name: clientInfo.firstName !== editedName ? editedName : null,
-      email: clientInfo.email !== editedEmail ? editedEmail : null,
-      phone: clientInfo.phone !== editedPhone ? editedPhone : null,
-      status: clientInfo.status !== sanitizedStatus ? sanitizedStatus : null,
+      name: clientInfo.firstName !== editedName ? editedName : undefined,
+      email: clientInfo.email !== editedEmail ? editedEmail : undefined,
+      phone: clientInfo.phone !== editedPhone ? editedPhone : undefined,
+      status:
+        clientInfo.status !== sanitizedStatus ? sanitizedStatus : undefined,
       status_at_exit:
         clientInfo.status_at_exit !== editedStatusExit
           ? editedStatusExit
-          : null,
+          : undefined,
       status_at_3:
-        clientInfo.status_at_3 !== editedStatus3 ? editedStatus3 : null,
+        clientInfo.status_at_3 !== editedStatus3 ? editedStatus3 : undefined,
       status_at_6:
-        clientInfo.status_at_6 !== editedStatus6 ? editedStatus6 : null,
+        clientInfo.status_at_6 !== editedStatus6 ? editedStatus6 : undefined,
       status_at_9:
-        clientInfo.status_at_9 !== editedStatus9 ? editedStatus9 : null,
+        clientInfo.status_at_9 !== editedStatus9 ? editedStatus9 : undefined,
       status_at_12:
-        clientInfo.status_at_12 !== editedStatus12 ? editedStatus12 : null,
+        clientInfo.status_at_12 !== editedStatus12 ? editedStatus12 : undefined,
     };
 
     try {
