@@ -133,6 +133,7 @@ function JobLeadDashboardComponent({
           expirationDate: formatDateStr(jobLead.expiration_date),
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
+          clientCount: jobLead.client_count,
         }));
         setOwners(jobLeadsData.uniqueOwners);
         setAggregates(jobLeadsData.aggregates);

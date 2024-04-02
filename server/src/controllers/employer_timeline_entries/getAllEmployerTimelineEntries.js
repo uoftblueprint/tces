@@ -25,7 +25,10 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
     }
 
     if (search_query) {
-      query.title = { [Op.like]: `%${search_query}%` };
+      query[Op.or] = [
+        { title: { [Op.like]: `%${search_query}%` } },
+        { body: { [Op.like]: `%${search_query}%` } },
+      ];
     }
 
     const totalCount = await JobLeadTimelineEntry.count({

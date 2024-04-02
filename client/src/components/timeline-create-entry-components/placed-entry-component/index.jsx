@@ -51,7 +51,7 @@ function PlacedEntryComponent({
 
   const handleConfirmDialog = () => {
     if (openDialog) {
-      setClientValue(openDialog)
+      setClientValue(openDialog);
     }
     setOpenDialog(null);
   };
@@ -150,11 +150,15 @@ function PlacedEntryComponent({
             <MenuItem value={null} disabled>
               Select a Job Lead
             </MenuItem>
-            {managedJobLeads.map((jobLeadOb) => (
-              <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
-                {jobLeadOb.jobTitle}
-              </MenuItem>
-            ))}
+            {managedJobLeads
+              .filter(
+                (jobLeadOb) => jobLeadOb.numOfPostions > jobLeadOb.clientCount,
+              )
+              .map((jobLeadOb) => (
+                <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
+                  {jobLeadOb.jobTitle}
+                </MenuItem>
+              ))}
           </Select>
           <TextField
             fullWidth

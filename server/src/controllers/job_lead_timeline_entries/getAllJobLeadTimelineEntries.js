@@ -23,7 +23,10 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
     }
 
     if (search_query) {
-      query.title = { [Op.like]: `%${search_query}%` };
+      query[Op.or] = [
+        { title: { [Op.like]: `%${search_query}%` } },
+        { body: { [Op.like]: `%${search_query}%` } },
+      ];
     }
 
     const totalCount = await JobLeadTimelineEntry.count({
@@ -32,10 +35,8 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
 
     const searchConfig = {
       where: query,
-      order: [['date_added', 'DESC']],
+      order: [["date_added", "DESC"]],
     };
-
-
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;

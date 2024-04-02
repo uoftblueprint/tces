@@ -33,6 +33,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
             expirationDate: formatDateStr(jobLead.expiration_date),
             employmentType: jobLead.employment_type,
             numOfPostions: jobLead.num_of_positions,
+            clientCount: jobLead.client_count,
           }));
           setManagedJobLeads(formattedJobLeads);
         } else {
