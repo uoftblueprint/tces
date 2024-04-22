@@ -3,6 +3,7 @@ const { Op, literal, Sequelize } = require("sequelize");
 const { escape } = require("validator");
 const JobLead = require("../../models/job_lead.model");
 const User = require("../../models/user.model");
+const Employer = require("../../models/employer.model");
 
 function isValidNOCQuery(query) {
   // only numbers
@@ -31,6 +32,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       ownerId,
       searchNOCQuery,
       jobTypes,
+      companyName,
     } = req.query;
 
     const query = {};
@@ -50,6 +52,21 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
         ...query.creation_date,
         [Op.lte]: endDate,
       };
+    }
+
+    let employerIds = [];
+    if (companyName) {
+      const employers = await Employer.findAll({
+        where: {
+          name: { [Op.like]: `%${companyName}%` }
+        },
+        attributes: ['id']
+      });
+      employerIds = employers.map(employer => employer.id);
+    }
+
+    if (employerIds.length > 0) {
+      query.employerId = { [Op.in]: employerIds };
     }
 
     if (startDateExpired) {

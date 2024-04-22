@@ -33,7 +33,7 @@ function JobLeadDashboardFiltersComponent({
   handleApplyFilter,
   jobLeadAggregates,
   owners,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -51,6 +51,8 @@ function JobLeadDashboardFiltersComponent({
 
   // setting local state for filter config
   const [searchTitleQuery, setSearchTitleQuery] = React.useState("");
+  const [searchEmployerNameQuery, setSearchEmployerNameQuery] =
+    React.useState("");
   const [startDateCreated, setStartDateCreated] = React.useState(null);
   const [endDateCreated, setEndDateCreated] = React.useState(null);
   const [startDateExpired, setStartDateExpired] = React.useState(null);
@@ -102,6 +104,11 @@ function JobLeadDashboardFiltersComponent({
   const onTitleSearch = (event) => {
     const query = event.target.value;
     setSearchTitleQuery(query);
+  };
+
+  const onEmployerNameSearch = (event) => {
+    const query = event.target.value;
+    setSearchEmployerNameQuery(query);
   };
 
   const onNOCSearch = (event) => {
@@ -157,6 +164,7 @@ function JobLeadDashboardFiltersComponent({
   const applyFilters = (isInvokedByPageChange = false) => {
     const filterParams = {
       searchTitleQuery,
+      searchEmployerNameQuery,
       startDateCreated,
       endDateCreated,
       startDateExpired,
@@ -183,6 +191,7 @@ function JobLeadDashboardFiltersComponent({
   const onFilterReset = () => {
     setNoFilterMode(true);
     setSearchTitleQuery("");
+    setSearchEmployerNameQuery("");
     setStartDateCreated(null);
     setEndDateCreated(null);
     setStartDateExpired(null);
@@ -198,18 +207,19 @@ function JobLeadDashboardFiltersComponent({
     });
     setParentFilterParams({
       searchTitleQuery: "",
-        startDateCreated: null,
-        endDateCreated: null,
-        startDateExpired: null,
-        endDateExpired: null,
-        compensationRange: [null, null],
-        hoursPerWeekRange: [null, null],
-        ownerId: -1,
-        searchNOCQuery: "",
-        jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
-          acc[jobType] = true;
-          return acc;
-        }, {})
+      searchEmployerNameQuery: "",
+      startDateCreated: null,
+      endDateCreated: null,
+      startDateExpired: null,
+      endDateExpired: null,
+      compensationRange: [null, null],
+      hoursPerWeekRange: [null, null],
+      ownerId: -1,
+      searchNOCQuery: "",
+      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+        acc[jobType] = true;
+        return acc;
+      }, {}),
     });
   };
 
@@ -259,6 +269,33 @@ function JobLeadDashboardFiltersComponent({
                 type="text"
                 value={searchTitleQuery}
                 onChange={onTitleSearch}
+                size="small"
+                style={{
+                  borderWidth: "10px",
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Typography>
+            {/* Employer Name Filter */}
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              align="left"
+              gutterBottom
+            >
+              Employer Name
+            </Typography>
+            <Typography sx={{ mb: 0.5 }} color="text.secondary">
+              <TextField
+                type="text"
+                value={searchEmployerNameQuery}
+                onChange={onEmployerNameSearch}
                 size="small"
                 style={{
                   borderWidth: "10px",
