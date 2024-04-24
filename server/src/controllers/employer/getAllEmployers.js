@@ -2,6 +2,7 @@ const logger = require("pino")();
 const { Op, Sequelize } = require("sequelize");
 const Employer = require("../../models/employer.model");
 const User = require("../../models/user.model");
+const EmployerContact = require("../../models/employer_contact.model");
 
 const getAllEmployersRequestHandler = async (req, res) => {
   try {
@@ -16,12 +17,28 @@ const getAllEmployersRequestHandler = async (req, res) => {
       endDateAdded,
       ownerId,
       postalCode,
+      employerContactName,
     } = req.query;
 
     const query = {};
     if (employerName) {
       query.name = { [Op.like]: `%${employerName}%` };
     }
+
+    let employerContactIds = [];
+    if (employerContactName) {
+      const employerContacts = await EmployerContact.findAll({
+        where: {
+          name: { [Op.like]: `%${employerContactName}%` },
+        },
+      });
+      employerContactIds = employerContacts.map((contact) => contact.id);
+    }
+
+    if (employerContactIds.length > 0) {
+      query.employer_contact_id = { [Op.in]: employerContactIds };
+    }
+
     if (phoneNumber) {
       query.phone_number = { [Op.like]: `%${phoneNumber}%` };
     }

@@ -24,7 +24,7 @@ function EmployerDashboardFilter({
   handleApplyFilter,
   owners,
   getUserById,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);
@@ -34,6 +34,7 @@ function EmployerDashboardFilter({
   // local filter states
   const ownerOptions = getOwnerIds(owners, getUserById);
   const [employerName, setEmployerName] = useState("");
+  const [contactName, setContactName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
@@ -55,6 +56,7 @@ function EmployerDashboardFilter({
   const applyFilters = (isInvokedByPageChange = false) => {
     const filterParams = {
       employerName,
+      contactName,
       phoneNumber,
       dateFrom,
       dateTo,
@@ -77,12 +79,14 @@ function EmployerDashboardFilter({
   const onFilterReset = () => {
     setNoFilterMode(true);
     setEmployerName("");
+    setContactName("");
     setPhoneNumber("");
     setDateFrom(null);
     setDateTo(null);
     setPostalCode("");
     setParentFilterParams({
       employerName: "",
+      contactName: "",
       phoneNumber: "",
       dateFrom: null,
       dateTo: null,
@@ -130,6 +134,29 @@ function EmployerDashboardFilter({
           size="small"
           value={employerName}
           onChange={handleInputChange(setEmployerName)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mb: 2 }}
+        />
+
+        <Typography
+          sx={{ fontSize: 14, mb: 2 }}
+          color="text.secondary"
+          align="left"
+          gutterBottom
+        >
+          Contact Name
+        </Typography>
+        <TextField
+          type="text"
+          size="small"
+          value={contactName}
+          onChange={handleInputChange(setContactName)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
