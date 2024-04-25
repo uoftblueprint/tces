@@ -1,17 +1,17 @@
 # CITATION https://docs.github.com/en/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service -- this article was great for automated deployment with ecs
 
 
-name: Deploy to Prod Environment
+name: Deploy to Dev Environment
 
 on:
   push:
-    branches: [ "prod" ]
+    branches: [ "main" ]
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: prod-deployment
+    environment: dev-deployment
 
     steps:
 
@@ -43,9 +43,9 @@ jobs:
       - name: Build, tag, and push backend image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: tces-deploy
+          REPOSITORY: tces-dev
         run: |
-          # Build a docker container and
+          # Build a docker image and
           # push it to ECR so that it can
           # be deployed to ECS.
           cd server
@@ -56,7 +56,7 @@ jobs:
       - name: Deploy Amazon ECS task definition produced in task-def-backend-scraper to host the containers
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: aws/prod-task-definition.json
-          service: blueprint-prod
-          cluster: blueprint-prod 
+          task-definition: aws/dev-task-definition.json
+          service: blueprint-dev
+          cluster: blueprint-dev
           wait-for-service-stability: true
