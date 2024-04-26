@@ -128,6 +128,7 @@ function EmployerTimelineComponent({
         )}
         {componentType === "add-placement" && (
           <PlacedEntryComponent
+            employer={employer}
             isLoading={postEntryLoading}
             setComponentType={setComponentType}
             managedJobLeads={managedJobLeads}

@@ -19,8 +19,10 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import ClientType from "../../../prop-types/ClientType";
+import EmployerType from "../../../prop-types/EmployerType";
 
 function PlacedEntryComponent({
+  employer,
   jobLead,
   onAddEntry,
   setComponentType,
@@ -152,6 +154,12 @@ function PlacedEntryComponent({
             </MenuItem>
             {managedJobLeads
               .filter(
+                (jobLeadOb) =>
+                  !employer ||
+                  (jobLeadOb.employerID &&
+                    jobLeadOb.employerID === employer.id),
+              )
+              .filter(
                 (jobLeadOb) => jobLeadOb.numOfPostions > jobLeadOb.clientCount,
               )
               .map((jobLeadOb) => (
@@ -213,6 +221,8 @@ function PlacedEntryComponent({
 }
 
 PlacedEntryComponent.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  employer: EmployerType,
   jobLead: JobLeadType.isRequired,
   setComponentType: PropTypes.func.isRequired,
   onAddEntry: PropTypes.func.isRequired,
