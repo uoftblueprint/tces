@@ -1,22 +1,9 @@
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { ErrorContainer, ErrorMessage, BackButton } from "./index.styles";
+import Error500Component from "../error-components/500-error-component";
 
-function ErrorComponent({ message }) {
-  const navigate = useNavigate();
-
+function ErrorComponent() {
   return (
-    <ErrorContainer>
-      <ErrorMessage>Error: {message}</ErrorMessage>
-      <BackButton onClick={() => navigate("/dashboard")}>
-        Back to Main Menu
-      </BackButton>
-    </ErrorContainer>
+      <Error500Component/>
   );
 }
-
-ErrorComponent.propTypes = {
-  message: PropTypes.string.isRequired,
-};
 
 export default ErrorComponent;
