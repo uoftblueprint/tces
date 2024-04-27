@@ -4,7 +4,11 @@ import dayjs from "dayjs";
 import AddCompanyInfo from "./company-info-component";
 import AddEmployerInfo from "./employer-contact-component";
 import AddEmployerJobLead from "./employer-job-lead-component";
-import { createEmployer, createJobLeads } from "../../utils/api";
+import {
+  createEmployer,
+  createEmployerContacts,
+  createJobLeads,
+} from "../../utils/api";
 import UserType from "../../prop-types/UserType";
 import ErrorScreenComponent from "../shared/error-screen-component";
 
@@ -114,6 +118,24 @@ function AddEmployer({ currUser }) {
     }
   };
 
+  const addContacts = async (contacts) => {
+    try {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const newContact of contacts) {
+        // eslint-disable-next-line no-await-in-loop
+        const response = await createEmployerContacts(newContact);
+
+        if (!response.ok) {
+          setErrorObj(response);
+        }
+      }
+    } catch (error) {
+      setErrorObj(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const onSubmit = async () => {
     setIsLoading(true);
     const employerBody = {
@@ -121,14 +143,29 @@ function AddEmployer({ currUser }) {
       ...employerData.companyInfo[1],
     };
 
-    // const contactBody = employerBody.employerContacts
-
     addEmployer(employerBody);
   };
 
   // triggers whenever employerID is declared thus employer has been created -> so create job lead with the employer id
   useEffect(() => {
     if (employerID) {
+      if (employerData.employerContacts.length > 0) {
+        const contacts = employerData.employerContacts;
+
+        const contactsBody = contacts.map((contact) => {
+          return {
+            name: contact.name,
+            job_type: contact.jobTitle,
+            phone_number: contact.phoneNumber,
+            email: contact.email,
+            alt_phone_number: contact.alternatePhoneNumber,
+            employer: employerID,
+          };
+        });
+
+        addContacts(contactsBody);
+      }
+
       if (employerData.jobLeads[0].title) {
         const jobLeadsBody = employerData.jobLeads.map((jobLead) => {
           return {
@@ -136,10 +173,10 @@ function AddEmployer({ currUser }) {
             employer: employerID,
           };
         });
-        addJobLeads(jobLeadsBody).then(() => navigate("/employers"));
-      } else {
-        navigate("/employers");
+        addJobLeads(jobLeadsBody);
       }
+
+      navigate("/employers");
     }
   }, [employerID]);
 
