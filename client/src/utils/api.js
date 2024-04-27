@@ -315,6 +315,43 @@ const getEmployerContacts = async (queryParams) => {
   return response;
 };
 
+const createEmployerContacts = async (employerContactBody) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employer_contacts`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employerContactBody),
+  });
+  return response;
+};
+
+const modifyEmployerContactInfo = async (modifiedContactInfo) => {
+  const modifyContactBody = {
+    name: modifiedContactInfo.name,
+    email: modifiedContactInfo.email,
+    job_type: modifiedContactInfo.job_type,
+    phone_number: modifiedContactInfo.phone_number,
+    alt_phone_number: modifiedContactInfo.alt_phone_number,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employer_contacts/${modifiedContactInfo.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyContactBody),
+    },
+  );
+  return response;
+};
+
 const modifyEmployerInfo = async (modifiedEmployerInfo) => {
   const modifyEmployerBody = {
     values: {
@@ -458,5 +495,7 @@ export {
   getEmployer,
   getUserName,
   getEmployerContacts,
+  createEmployerContacts,
+  modifyEmployerContactInfo,
   modifyEmployerInfo,
 };

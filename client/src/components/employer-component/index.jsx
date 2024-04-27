@@ -48,6 +48,7 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
         const { data } = json;
 
         const processedContacts = data.map((contact) => ({
+          id: contact.id,
           name: contact.name,
           jobTitle: contact.job_type,
           email: contact.email,
@@ -89,7 +90,9 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
             />
 
             <ContactsInformationCard
+              employer={employer}
               contacts={contacts}
+              setContacts={setContacts}
               setSnackBarMessage={setSnackBarMessage}
             />
 
