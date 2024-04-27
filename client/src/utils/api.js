@@ -1,5 +1,3 @@
-import mockEmployerContacts from "../mock-data/mockEmployerContacts";
-
 const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
@@ -302,9 +300,18 @@ const getUserName = async (userID) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const getEmployerContacts = async (employerID) => {
-  const response = mockEmployerContacts;
-
+const getEmployerContacts = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employer_contacts?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
   return response;
 };
 
