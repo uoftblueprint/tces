@@ -24,7 +24,6 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 function AddJobLead({
   jobLeadData,
   setJobLeadData,
-  resetInitialState,
   employers,
   setLocalExitRoute,
   currUser,
@@ -73,10 +72,6 @@ function AddJobLead({
       lead.id === id ? { ...lead, [field]: input } : lead,
     );
     setJobLeadData(updatedJobLeads);
-  };
-
-  const handleResetInputs = () => {
-    resetInitialState();
   };
 
   const handleSubmit = async (e) => {
@@ -160,8 +155,7 @@ function AddJobLead({
                   <Button onClick={handleClose}>CANCEL</Button>
                   <Button
                     onClick={() => {
-                      handleClose();
-                      handleResetInputs();
+                      navigate("/dashboard");
                     }}
                     autoFocus
                   >
@@ -208,7 +202,6 @@ AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadData: PropTypes.array.isRequired,
   setJobLeadData: PropTypes.func.isRequired,
-  resetInitialState: PropTypes.func.isRequired,
   employers: PropTypes.arrayOf(EmployerType).isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,

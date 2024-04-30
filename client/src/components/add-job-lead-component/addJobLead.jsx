@@ -33,17 +33,12 @@ function AddJobLeadParent({ employers, setLocalExitRoute, currUser }) {
     }));
   };
 
-  const resetJobLeadData = () => {
-    setJobLeadData(initialState);
-  };
-
   return (
     <div>
       <AddJobLead
         jobLeadData={jobLeadData.jobLeads}
         employers={employers}
         setJobLeadData={updateJobLeadData}
-        resetInitialState={resetJobLeadData}
         setLocalExitRoute={setLocalExitRoute}
         currUser={currUser}
       />
