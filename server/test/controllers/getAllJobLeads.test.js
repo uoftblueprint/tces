@@ -69,7 +69,6 @@ describe("getAllJobLeads test suite", () => {
   it("Returns 200 on success", async () => {
     mock("../../src/models/job_lead.model", {
       ...mockGetManyClients,
-      findAll: vi.fn().mockResolvedValue(mockUniqueOwners),
     });
     getAllJobLeadsRequestHandler = mock.reRequire(
       "../../src/controllers/job_lead/getAllJobLeads",

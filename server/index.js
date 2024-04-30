@@ -27,6 +27,8 @@ const employerRouter = require("./src/routes/employer");
 const userRouter = require("./src/routes/user");
 const clientRouter = require("./src/routes/client");
 const jobLeadRouter = require("./src/routes/job_lead");
+const employerContactRouter = require("./src/routes/employer_contact");
+
 const JobLeadTimelineRouter = require("./src/routes/job_lead_timeline_entries");
 const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries");
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
@@ -50,6 +52,7 @@ app.use("/employers", employerRouter);
 app.use("/users", userRouter);
 app.use("/clients", clientRouter);
 app.use("/job_leads", jobLeadRouter);
+app.use("/employer_contacts", employerContactRouter);
 app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);

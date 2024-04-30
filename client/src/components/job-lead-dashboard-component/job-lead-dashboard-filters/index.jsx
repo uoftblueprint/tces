@@ -33,6 +33,7 @@ function JobLeadDashboardFiltersComponent({
   handleApplyFilter,
   jobLeadAggregates,
   owners,
+  setParentFilterParams
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -174,6 +175,7 @@ function JobLeadDashboardFiltersComponent({
         page: 0,
       };
     }
+    setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(filterParams, customPageModel);
   };
@@ -193,6 +195,21 @@ function JobLeadDashboardFiltersComponent({
     handleApplyFilter(null, {
       pageSize: 10,
       page: 0,
+    });
+    setParentFilterParams({
+      searchTitleQuery: "",
+        startDateCreated: null,
+        endDateCreated: null,
+        startDateExpired: null,
+        endDateExpired: null,
+        compensationRange: [null, null],
+        hoursPerWeekRange: [null, null],
+        ownerId: -1,
+        searchNOCQuery: "",
+        jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+          acc[jobType] = true;
+          return acc;
+        }, {})
     });
   };
 
@@ -462,6 +479,7 @@ JobLeadDashboardFiltersComponent.propTypes = {
   jobLeadAggregates: PropTypes.object.isRequired,
   owners: PropTypes.arrayOf(PropTypes.number).isRequired,
   handleApplyFilter: PropTypes.func.isRequired,
+  setParentFilterParams: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

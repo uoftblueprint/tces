@@ -3,10 +3,10 @@ module.exports = {
     return {};
   },
   findAll: () => {
-    return {};
+    return [];
   },
   findAndCountAll: () => {
-    return {};
+    return { rows: [] };
   },
   count: () => {
     return {};
