@@ -8,7 +8,7 @@ import { BoxDivider } from "./index.styles";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref
+  ref,
 ) {
   return (
     <IMaskInput

@@ -27,7 +27,7 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref
+  ref,
 ) {
   return (
     <IMaskInput
@@ -106,23 +106,23 @@ export default function ClientPage({
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
   // If the database value is r_and_i, render it as r&i
   const [editedStatus, setEditedStatus] = React.useState(
-    clientInfo.status === "R And I" ? "R&I" : clientInfo.status
+    clientInfo.status === "R And I" ? "R&I" : clientInfo.status,
   );
 
   const [editedStatusExit, setEditedStatusExit] = React.useState(
-    clientInfo.status_at_exit
+    clientInfo.status_at_exit,
   );
   const [editedStatus3, setEditedStatus3] = React.useState(
-    clientInfo.status_at_3
+    clientInfo.status_at_3,
   );
   const [editedStatus6, setEditedStatus6] = React.useState(
-    clientInfo.status_at_6
+    clientInfo.status_at_6,
   );
   const [editedStatus9, setEditedStatus9] = React.useState(
-    clientInfo.status_at_9
+    clientInfo.status_at_9,
   );
   const [editedStatus12, setEditedStatus12] = React.useState(
-    clientInfo.status_at_12
+    clientInfo.status_at_12,
   );
 
   const handleNameChange = (event) => {
@@ -577,7 +577,7 @@ export default function ClientPage({
                           <ContentCopyIcon
                             onClick={() =>
                               handleCopyClick(
-                                `${clientInfo.time_since_closure} Months`
+                                `${clientInfo.time_since_closure} Months`,
                               )
                             }
                           />
