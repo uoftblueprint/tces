@@ -34,27 +34,27 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     searchTitleQuery: "",
-      startDateCreated: null,
-      endDateCreated: null,
-      startDateExpired: null,
-      endDateExpired: null,
-      compensationRange: [null, null],
-      hoursPerWeekRange: [null, null],
-      ownerId: -1,
-      searchNOCQuery: "",
-      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
-        acc[jobType] = true;
-        return acc;
-      }, {})
-  })
+    searchEmployerNameQuery: "",
+    startDateCreated: null,
+    endDateCreated: null,
+    startDateExpired: null,
+    endDateExpired: null,
+    compensationRange: [null, null],
+    hoursPerWeekRange: [null, null],
+    ownerId: -1,
+    searchNOCQuery: "",
+    jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+      acc[jobType] = true;
+      return acc;
+    }, {}),
+  });
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
-    const queryParams = new URLSearchParams({})
-    if (pageSize || page){
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
     }
-    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -62,25 +62,30 @@ function JobLeadDashboardComponent({
     // ensure these filter configs are defined before passing in query
     if (filterParams.searchTitleQuery)
       queryParams.append("searchTitleQuery", filterParams.searchTitleQuery);
+    if (filterParams.searchEmployerNameQuery)
+      queryParams.append(
+        "searchEmployerNameQuery",
+        filterParams.searchEmployerNameQuery
+      );
     if (filterParams.startDateCreated)
       queryParams.append(
         "startDateCreated",
-        filterParams.startDateCreated.toISOString(),
+        filterParams.startDateCreated.toISOString()
       );
     if (filterParams.endDateCreated)
       queryParams.append(
         "endDateCreated",
-        filterParams.endDateCreated.toISOString(),
+        filterParams.endDateCreated.toISOString()
       );
     if (filterParams.startDateExpired)
       queryParams.append(
         "startDateExpired",
-        filterParams.startDateExpired.toISOString(),
+        filterParams.startDateExpired.toISOString()
       );
     if (filterParams.endDateExpired)
       queryParams.append(
         "endDateExpired",
-        filterParams.endDateExpired.toISOString(),
+        filterParams.endDateExpired.toISOString()
       );
     if (
       filterParams.compensationRange &&
@@ -105,16 +110,16 @@ function JobLeadDashboardComponent({
     if (filterParams.jobTypeSelect)
       queryParams.append(
         "jobTypes",
-        JSON.stringify(filterParams.jobTypeSelect),
+        JSON.stringify(filterParams.jobTypeSelect)
       );
 
     return queryParams;
-  }
+  };
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (
     filterParams,
-    customPageModel = null,
+    customPageModel = null
   ) => {
     let { pageSize, page } = paginationModel;
     if (customPageModel) {
@@ -130,7 +135,7 @@ function JobLeadDashboardComponent({
   const handleApplyFilter = async (filterParams, customPageModel = null) => {
     const queryParams = declareFilterJobLeadsQueryParams(
       filterParams,
-      customPageModel,
+      customPageModel
     );
 
     // fetch the data
@@ -186,9 +191,11 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} 
-                  generateFilterParams={generateFilterParams}
-                  filterParams={parentFilterParams} />
+        <JobLeadDashboardHeaderComponent
+          jobLeadsResultsCount={rowCount}
+          generateFilterParams={generateFilterParams}
+          filterParams={parentFilterParams}
+        />
         <Box
           sx={{
             display: "flex",

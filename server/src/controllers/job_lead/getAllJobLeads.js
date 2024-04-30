@@ -32,7 +32,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       ownerId,
       searchNOCQuery,
       jobTypes,
-      companyName,
+      searchEmployerNameQuery,
     } = req.query;
 
     const query = {};
@@ -55,10 +55,10 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     }
 
     let employerIds = [];
-    if (companyName) {
+    if (searchEmployerNameQuery) {
       const employers = await Employer.findAll({
         where: {
-          name: { [Op.like]: `%${companyName}%` }
+          name: { [Op.like]: `%${searchEmployerNameQuery}%` }
         },
         attributes: ['id']
       });
@@ -66,7 +66,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     }
 
     if (employerIds.length > 0) {
-      query.employerId = { [Op.in]: employerIds };
+      query.employer = { [Op.in]: employerIds };
     }
 
     if (startDateExpired) {
