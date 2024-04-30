@@ -28,7 +28,7 @@ import FormSubmissionErrorDialog from "../shared/form-submission-error-dialog";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
-  ref
+  ref,
 ) {
   return (
     <IMaskInput
@@ -111,7 +111,7 @@ export default function ClientPage({
   const [editedPhone, setEditedPhone] = React.useState(clientInfo.phone);
   // If the database value is r_and_i, render it as r&i
   const [editedStatus, setEditedStatus] = React.useState(
-    clientInfo.status === "R And I" ? "R&I" : clientInfo.status
+    clientInfo.status === "R And I" ? "R&I" : clientInfo.status,
   );
 
   const [editedStatusExit, setEditedStatusExit] = React.useState(
@@ -331,9 +331,7 @@ export default function ClientPage({
                       }
                     }}
                   >
-                    <EditIcon
-                      color={isEditMode ? "default" : "primary" }
-                    />
+                    <EditIcon color={isEditMode ? "default" : "primary"} />
                   </IconButton>
                 </Grid>
               </Grid>
@@ -496,13 +494,13 @@ export default function ClientPage({
                     <Grid item xs={8}>
                       <Typography variant="body1" align="left">
                         <Chip
-                        variant="filled"
-                        label={
-                          clientInfo.status === "R And I"
-                            ? "R&I"
-                            : clientInfo.status
-                        }
-                      />
+                          variant="filled"
+                          label={
+                            clientInfo.status === "R And I"
+                              ? "R&I"
+                              : clientInfo.status
+                          }
+                        />
                       </Typography>
                     </Grid>
                   </>
@@ -604,7 +602,7 @@ export default function ClientPage({
                             <ContentCopyIcon
                               onClick={() =>
                                 handleCopyClick(
-                                  `${clientInfo.time_since_closure} Months`
+                                  `${clientInfo.time_since_closure} Months`,
                                 )
                               }
                             />

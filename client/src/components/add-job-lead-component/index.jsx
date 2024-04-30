@@ -148,14 +148,14 @@ function AddJobLead({
                 <DialogContent>
                   <DialogContentText>
                     You will lose all your progress and return to the and return
-                    to the dashboard.
+                    to the job leads page.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>CANCEL</Button>
                   <Button
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/job-leads");
                     }}
                     autoFocus
                   >
