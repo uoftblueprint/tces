@@ -2,7 +2,9 @@ version: "3"
 
 services:
   react-app:
-    build: client/
+    build: 
+      context: client
+      dockerfile: Dockerfile
     command: npm start
     environment: 
       - CHOKIDAR_USEPOLLING=true
@@ -15,7 +17,9 @@ services:
       - ./client:/client/
     
   express-app:
-    build: server/
+    build: 
+      context: server
+      dockerfile: Dockerfile
     command: npx nodemon index.js
     environment: 
       - CHOKIDAR_USEPOLLING=true
