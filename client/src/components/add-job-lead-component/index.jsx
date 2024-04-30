@@ -139,7 +139,14 @@ function AddJobLead({
               handleInputChange={handleInputChange}
             />
 
-            <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+            <ButtonL
+              onClick={(e) => {
+                e.preventDefault();
+                handleAddJobLead();
+              }}
+            >
+              + Add Another Job Lead
+            </ButtonL>
             <ButtonContainer>
               <Button
                 sx={{ justifySelf: "flex-end" }}

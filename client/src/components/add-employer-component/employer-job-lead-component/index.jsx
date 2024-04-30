@@ -102,7 +102,14 @@ function AddEmployerJobLead({
               handleInputChange={handleInputChange}
               isAddEmployer
             />
-            <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+            <ButtonL
+              onClick={(e) => {
+                e.preventDefault();
+                handleAddJobLead();
+              }}
+            >
+              + Add Another Job Lead
+            </ButtonL>
             <Pagination
               count={3}
               shape="rounded"
