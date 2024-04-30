@@ -17,7 +17,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
       endDateAdded,
       ownerId,
       postalCode,
-      employerContactName,
+      contactName,
     } = req.query;
 
     const query = {};
@@ -26,14 +26,17 @@ const getAllEmployersRequestHandler = async (req, res) => {
     }
 
     let employerContactIds = [];
-    if (employerContactName) {
+    if (contactName) {
       const employerContacts = await EmployerContact.findAll({
         where: {
-          name: { [Op.like]: `%${employerContactName}%` },
+          name: { [Op.like]: `%${contactName}%` },
         },
       });
       employerContactIds = employerContacts.map((contact) => contact.id);
     }
+
+    logger.info(`Employer contact ids: ${employerContactIds}`);
+    logger.info(`Employer Name: ${contactName}`);
 
     if (employerContactIds.length > 0) {
       query.employer_contact_id = { [Op.in]: employerContactIds };
