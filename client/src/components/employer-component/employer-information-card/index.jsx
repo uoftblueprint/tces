@@ -183,6 +183,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
             rightSide={employerPhoneNumber}
             setRightSide={setEmployerPhoneNumber}
             editable={editable}
+            isPhoneNumber
           />
           <BoxRowComponent
             leftSide="Fax"

@@ -294,6 +294,7 @@ function ContactsInformationCard({
               rightSideWrapper={phoneNumberWrapper}
               setRightSide={setPhoneNumber}
               editable={editable || addable}
+              isPhoneNumber
             />
             <BoxRowComponent
               leftSide="Alternative Phone Number"
@@ -302,6 +303,7 @@ function ContactsInformationCard({
               editable={editable || addable}
               setRightSide={setAlternativePhoneNumber}
               required={false}
+              isPhoneNumber
             />
             {!editable && !addable ? (
               <Grid

@@ -1,8 +1,34 @@
+import * as React from "react";
 import { Grid, Typography, TextField } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { IMaskInput } from "react-imask";
 
 import PropTypes from "prop-types";
 import { BoxDivider } from "./index.styles";
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(
+  { onChange, name, ...other },
+  ref
+) {
+  return (
+    <IMaskInput
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...other}
+      mask="(#00) 000-0000x0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 function BoxRowComponent({
   leftSide,
@@ -12,6 +38,7 @@ function BoxRowComponent({
   setRightSide,
   rightSideWrapper,
   required,
+  isPhoneNumber,
 }) {
   return (
     <>
@@ -29,15 +56,30 @@ function BoxRowComponent({
           </span>
         </Grid>
         <Grid item xs={8}>
+          {/* eslint-disable-next-line no-nested-ternary */}
           {editable ? (
-            <TextField
-              variant="outlined"
-              fullWidth
-              value={rightSide}
-              onChange={(event) => setRightSide(event.target.value)}
-              disabled={!editable}
-              required={required}
-            />
+            isPhoneNumber ? (
+              <TextField
+                variant="outlined"
+                fullWidth
+                value={rightSide}
+                onChange={(event) => setRightSide(event.target.value)}
+                disabled={!editable}
+                required={required}
+                InputProps={{
+                  inputComponent: TextMaskCustom,
+                }}
+              />
+            ) : (
+              <TextField
+                variant="outlined"
+                fullWidth
+                value={rightSide}
+                onChange={(event) => setRightSide(event.target.value)}
+                disabled={!editable}
+                required={required}
+              />
+            )
           ) : (
             <div
               style={{
@@ -76,6 +118,7 @@ BoxRowComponent.propTypes = {
   setRightSide: PropTypes.func,
   rightSideWrapper: PropTypes.func,
   required: PropTypes.bool,
+  isPhoneNumber: PropTypes.bool,
 };
 
 BoxRowComponent.defaultProps = {
@@ -86,6 +129,7 @@ BoxRowComponent.defaultProps = {
     return rightSide;
   },
   required: true,
+  isPhoneNumber: false,
 };
 
 export default BoxRowComponent;
