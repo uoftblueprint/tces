@@ -41,6 +41,7 @@ import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/M
 import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
+import Error404 from "./pages/errors/404-error";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -381,6 +382,9 @@ function App() {
               </AuthGuard>
             }
           />
+        </Route>
+        <Route element={<Navbar isAdmin={currUser.isAdmin} />}>
+          <Route path="*" element={<Error404 />} />
         </Route>
       </Routes>
     </Router>
