@@ -14,7 +14,6 @@ function EditJobLeadComponent({
   managedClients,
   jobLead,
   getUserById,
-  getEmployerById,
   setLocalExitRoute,
   setSnackBarMessage,
   setManagedJobLeads,
@@ -41,7 +40,6 @@ function EditJobLeadComponent({
       >
         <EditJobLeadFormComponent
           jobLead={jobLead}
-          getEmployerById={getEmployerById}
           setSnackBarMessage={setSnackBarMessage}
         />
         <EditJobLeadTimelineComponent
@@ -62,7 +60,6 @@ EditJobLeadComponent.propTypes = {
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
-  getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   setManagedClients: PropTypes.func.isRequired,

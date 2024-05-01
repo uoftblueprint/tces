@@ -92,7 +92,7 @@ function ContactedEntryComponent({
       <Divider />
       <CardContent>
         <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>
-          Select the {contactType} Contact
+          Select the {contactType}
         </Typography>
         <Select
           fullWidth
@@ -102,7 +102,7 @@ function ContactedEntryComponent({
           required
         >
           <MenuItem value={null} disabled>
-            Select a Client
+            Select a {contactType}
           </MenuItem>
           {managedObjects.map((clientOb) => (
             <MenuItem key={clientOb.id} value={clientOb}>

@@ -36,7 +36,6 @@ import EditJobLead from "./pages/edit-job-lead";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
-import getEmployerByIdHelper from "./utils/employers";
 import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
@@ -77,11 +76,6 @@ function App() {
   const [snackBarMessage, setSnackBarMessage] = React.useState("");
 
   // Helper Utils
-
-  // Get employer object given employer ID
-  const getEmployerById = (employerID) => {
-    return getEmployerByIdHelper(employers, employerID);
-  };
 
   // Get user object given user ID
   const getUserById = (userID) => {
@@ -256,7 +250,6 @@ function App() {
                       managedUsers={managedUsers}
                       managedJobLeads={managedJobLeads}
                       managedClients={managedClients}
-                      getEmployerById={getEmployerById}
                       getUserById={getUserById}
                       setLocalExitRoute={setLocalExitRoute}
                       setSnackBarMessage={setSnackBarMessage}

@@ -56,6 +56,7 @@ function ClientTimelineEntriesComponent({
           title: entry.title,
           body: entry.body,
           client: entry.client_details,
+          jobLead: entry.job_lead_details
         }));
         setTimelineEntries(formattedEntries);
         setTotalEntriesCount(clientTimelineEntries.totalCount);

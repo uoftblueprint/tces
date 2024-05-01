@@ -221,6 +221,21 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
   return response;
 };
 
+const getJobLead = async (jobLeadID) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_leads/${jobLeadID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 const getFilteredJobLeads = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
@@ -539,6 +554,7 @@ export {
   getFilteredEmployers,
   createJobLeads,
   getFilteredJobLeads,
+  getJobLead,
   modifyJobLead,
   getFilteredClients,
   createClients,

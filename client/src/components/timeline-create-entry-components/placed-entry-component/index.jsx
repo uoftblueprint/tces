@@ -4,7 +4,6 @@ import {
   Box,
   Avatar,
   CardContent,
-  TextField,
   Button,
   Typography,
   Divider,
@@ -31,7 +30,6 @@ function PlacedEntryComponent({
 }) {
   const [clientValue, setClientValue] = useState(null);
   const [jobLeadValue, setjobLeadValue] = useState(null);
-  const [notes, setNotes] = useState("");
   const [openDialog, setOpenDialog] = useState(null);
 
   const handleSubmitDirect = () => {
@@ -39,7 +37,6 @@ function PlacedEntryComponent({
       const newPlacementEntryObject = {
         type: "placement",
         client: clientValue.id,
-        body: notes,
         job_lead: jobLeadValue.id,
         employer: jobLeadValue.employerID,
       };
@@ -72,10 +69,6 @@ function PlacedEntryComponent({
 
   const handleJobLeadChange = (e) => {
     setjobLeadValue(e.target.value);
-  };
-
-  const handleNoteChange = (e) => {
-    setNotes(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -168,15 +161,6 @@ function PlacedEntryComponent({
                 </MenuItem>
               ))}
           </Select>
-          <TextField
-            fullWidth
-            label="Add additional notes"
-            margin="normal"
-            multiline
-            variant="outlined"
-            value={notes}
-            onChange={handleNoteChange}
-          />
           <Box
             sx={{
               display: "flex",

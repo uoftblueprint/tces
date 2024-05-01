@@ -37,11 +37,10 @@ import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog
 
 function EditJobLeadFormComponent({
   jobLead,
-  getEmployerById,
   setSnackBarMessage,
 }) {
   const navigate = useNavigate();
-  const employer = getEmployerById(jobLead.employerID);
+  const employer = jobLead.employerDetails;
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
     useState(false);
@@ -263,7 +262,7 @@ function EditJobLeadFormComponent({
                   }}
                   required
                 >
-                  <Typography>{employer.name}</Typography>
+                  <Typography>{employer?.name}</Typography>
                 </Button>
               </Grid>
             </Grid>
@@ -570,7 +569,6 @@ function EditJobLeadFormComponent({
 
 EditJobLeadFormComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
-  getEmployerById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
