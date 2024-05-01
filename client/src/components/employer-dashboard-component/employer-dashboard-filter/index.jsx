@@ -24,6 +24,7 @@ function EmployerDashboardFilter({
   handleApplyFilter,
   owners,
   getUserById,
+  setParentFilterParams
 }) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);
@@ -68,6 +69,7 @@ function EmployerDashboardFilter({
         page: 0,
       };
     }
+    setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(filterParams, customPageModel);
   };
@@ -79,6 +81,14 @@ function EmployerDashboardFilter({
     setDateFrom(null);
     setDateTo(null);
     setPostalCode("");
+    setParentFilterParams({
+      employerName: "",
+      phoneNumber: "",
+      dateFrom: null,
+      dateTo: null,
+      ownerId: -1,
+      postalCode: "",
+    });
     setIgnorePaginationChange(true);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(null, {
@@ -250,6 +260,7 @@ EmployerDashboardFilter.propTypes = {
   handleApplyFilter: PropTypes.func.isRequired,
   owners: PropTypes.arrayOf(PropTypes.number).isRequired,
   getUserById: PropTypes.func.isRequired,
+  setParentFilterParams: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

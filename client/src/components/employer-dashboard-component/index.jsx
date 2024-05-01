@@ -21,23 +21,22 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
   const [rowCount, setRowCount] = React.useState(employers.length);
   const [owners, setOwners] = React.useState([]);
   const [errorOb, setError] = React.useState(null);
+  const [parentFilterParams, setParentFilterParams] = React.useState({
+    employerName: "",
+    phoneNumber: "",
+    dateFrom: null,
+    dateTo: null,
+    ownerId: -1,
+    postalCode: "",
+  });
 
-  // helper to generate query params based on pagination model state and filter configs
-  const declareFilterEmployerQueryParams = (
-    filterParams,
-    customPageModel = null,
-  ) => {
-    let { pageSize, page } = paginationModel;
-    if (customPageModel) {
-      page = customPageModel.page;
-      pageSize = customPageModel.pageSize;
-      setPaginationModel(customPageModel);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({})
+    if (pageSize || page){
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
     }
-    // we initially include pagination model first
-    const queryParams = new URLSearchParams({
-      pageSize,
-      page,
-    });
+    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -55,7 +54,20 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     if (filterParams.postalCode)
       queryParams.append("postalCode", filterParams.postalCode);
 
-    return queryParams;
+    return queryParams
+  }
+
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterEmployerQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;      
+    }
+    return generateFilterParams(filterParams, page, pageSize);
   };
 
   // function to handle the apply filter button
@@ -115,6 +127,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     initialFetch().then(() => setInitialLoading(false));
   }, []);
 
+
   // if there is an error render the error screen
   if (errorOb) return <ErrorComponent message={errorOb.message} />;
 
@@ -122,7 +135,10 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     <Container>
       <LoadingScreenComponent isLoading={initialLoading}>
         <DashboardContainer>
-          <EmployerDashboardHeader numEntries={rowCount} />
+          <EmployerDashboardHeader 
+          numEntries={rowCount} 
+          generateFilterParams={generateFilterParams}
+              filterParams={parentFilterParams}/>
           <Box
             sx={{
               display: "flex",
@@ -138,6 +154,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
               paginationModel={paginationModel}
               owners={owners}
               getUserById={getUserById}
+              setParentFilterParams={setParentFilterParams}
             />
             <EmployerDashboardTable
               managedEmployers={employers}

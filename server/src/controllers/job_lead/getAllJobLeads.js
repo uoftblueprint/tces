@@ -2,6 +2,7 @@ const logger = require("pino")();
 const { Op, literal, Sequelize } = require("sequelize");
 const { escape } = require("validator");
 const JobLead = require("../../models/job_lead.model");
+const User = require("../../models/user.model");
 
 function isValidNOCQuery(query) {
   // only numbers
@@ -132,7 +133,16 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       searchConfig.offset = pageSize * page;
     }
 
-    const jobLeads = await JobLead.findAll(searchConfig);
+    let jobLeads = await JobLead.findAll(searchConfig);
+
+    jobLeads = jobLeads.map((jl) => {
+      return jl.get({ plain: true });
+    });
+
+    for (jl of jobLeads) {
+      const owner = await User.findOne({ where: { id: jl.owner } });
+      owner ? (jl.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+    }
 
     const maxCompensationSoFar = await JobLead.max("compensation_max");
     const minCompensationSoFar = await JobLead.min("compensation_min");

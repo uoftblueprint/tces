@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
+const Employer = require("./employer.model");
 
 const EmployerContact = sequelize.define("employer_contacts", {
   id: {
@@ -16,7 +17,7 @@ const EmployerContact = sequelize.define("employer_contacts", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  job_title: {
+  job_type: {
     type: DataTypes.STRING,
     allowNull: true,
   },
@@ -27,6 +28,21 @@ const EmployerContact = sequelize.define("employer_contacts", {
   alt_phone_number: {
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  employer: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Employer,
+      key: "id",
+    },
+    validate: {
+      isInEmployer(value) {
+        if (!Employer.findByPk(value)) {
+          throw new Error("Employer does not exist");
+        }
+      },
+    },
   },
 });
 
