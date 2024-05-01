@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
@@ -5,9 +6,13 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
+import UserType from "../../prop-types/UserType";
 
-export default function UserProfile() {
-  const handleBackClick = () => {};
+export default function UserProfile({ currUser }) {
+  const navigate = useNavigate();
+  const handleBackClick = () => {
+    navigate("/dashboard");
+  };
 
   return (
     <div style={{ marginTop: "40px" }}>
@@ -59,8 +64,7 @@ export default function UserProfile() {
                   align="left"
                   color="black"
                 >
-                  {/* {currUser.firstName} */}
-                  First Last
+                  {currUser.firstName}
                 </Typography>
               </Grid>
             </Grid>
@@ -81,8 +85,7 @@ export default function UserProfile() {
                   color="primary"
                   style={{ textDecoration: "underline" }}
                 >
-                  {/* {currUser.email} */}
-                  email@email.com
+                  {currUser.email}
                 </Typography>
               </Grid>
             </Grid>
@@ -92,3 +95,7 @@ export default function UserProfile() {
     </div>
   );
 }
+
+UserProfile.propTypes = {
+  currUser: UserType.isRequired,
+};
