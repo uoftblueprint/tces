@@ -34,27 +34,26 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     searchTitleQuery: "",
-      startDateCreated: null,
-      endDateCreated: null,
-      startDateExpired: null,
-      endDateExpired: null,
-      compensationRange: [null, null],
-      hoursPerWeekRange: [null, null],
-      ownerId: -1,
-      searchNOCQuery: "",
-      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
-        acc[jobType] = true;
-        return acc;
-      }, {})
-  })
+    startDateCreated: null,
+    endDateCreated: null,
+    startDateExpired: null,
+    endDateExpired: null,
+    compensationRange: [null, null],
+    hoursPerWeekRange: [null, null],
+    ownerId: -1,
+    searchNOCQuery: "",
+    jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+      acc[jobType] = true;
+      return acc;
+    }, {}),
+  });
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
-    const queryParams = new URLSearchParams({})
-    if (pageSize || page){
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
     }
-    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -109,7 +108,7 @@ function JobLeadDashboardComponent({
       );
 
     return queryParams;
-  }
+  };
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (
@@ -187,9 +186,11 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} 
-                  generateFilterParams={generateFilterParams}
-                  filterParams={parentFilterParams} />
+        <JobLeadDashboardHeaderComponent
+          jobLeadsResultsCount={rowCount}
+          generateFilterParams={generateFilterParams}
+          filterParams={parentFilterParams}
+        />
         <Box
           sx={{
             display: "flex",
