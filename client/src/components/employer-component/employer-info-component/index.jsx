@@ -71,7 +71,7 @@ function EmployerInfoComponent({
           marginLeft: 2,
         }}
         onClick={() => {
-          navigate("/dashboard");
+          navigate("/employers");
         }}
         size="small"
       >

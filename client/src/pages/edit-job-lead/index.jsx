@@ -14,6 +14,8 @@ function EditJobLead({
   getEmployerById,
   setLocalExitRoute,
   setSnackBarMessage,
+  setManagedClients,
+  setManagedJobLeads,
 }) {
   const errorMessage = "Job lead to edit not found.";
   const { jobLeadID } = useParams();
@@ -33,6 +35,8 @@ function EditJobLead({
       getEmployerById={getEmployerById}
       setLocalExitRoute={setLocalExitRoute}
       setSnackBarMessage={setSnackBarMessage}
+      setManagedJobLeads={setManagedJobLeads}
+      setManagedClients={setManagedClients}
     />
   );
 }
@@ -45,6 +49,8 @@ EditJobLead.propTypes = {
   getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
 };
 
 export default EditJobLead;

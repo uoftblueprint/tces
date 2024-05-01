@@ -5,7 +5,11 @@ import LoadingComponent from "../../../shared/loading-screen-component";
 import { getFilteredJobLeads } from "../../../../utils/api";
 import { formatDateStr } from "../../../../utils/date";
 
-function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
+function ManagedJobLeadsLoader({
+  customQueryParams,
+  setManagedJobLeads,
+  children,
+}) {
   const [loading, setLoading] = useState(true);
   const [errorDisplay, setError] = useState(null);
 
@@ -13,7 +17,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
     const fetchManagedJobLeads = async () => {
       try {
         // fetch all
-        const response = await getFilteredJobLeads("");
+        const response = await getFilteredJobLeads(customQueryParams);
         if (response.ok) {
           const jobLeadsData = await response.json();
 
@@ -57,7 +61,13 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
 }
 
 ManagedJobLeadsLoader.propTypes = {
+  customQueryParams: PropTypes.string,
   setManagedJobLeads: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
+
+ManagedJobLeadsLoader.defaultProps = {
+  customQueryParams: "",
+};
+
 export default ManagedJobLeadsLoader;

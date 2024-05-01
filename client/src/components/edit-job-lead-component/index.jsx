@@ -17,6 +17,8 @@ function EditJobLeadComponent({
   getEmployerById,
   setLocalExitRoute,
   setSnackBarMessage,
+  setManagedJobLeads,
+  setManagedClients,
 }) {
   return (
     <EditContainer>
@@ -46,6 +48,8 @@ function EditJobLeadComponent({
           jobLead={jobLead}
           managedJobLeads={managedJobLeads}
           managedClients={managedClients}
+          setManagedJobLeads={setManagedJobLeads}
+          setManagedClients={setManagedClients}
         />
       </Box>
     </EditContainer>
@@ -61,6 +65,8 @@ EditJobLeadComponent.propTypes = {
   getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

@@ -9,8 +9,13 @@ import { addClientTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
 import ContactedEntryComponent from "../../timeline-create-entry-components/contacted-entry-component";
 import ClientTimelineViewComponent from "../../timeline-window-component/clientWindow";
+import ClientsLoader from "../../wrappers/data-loaders-wrappers/ClientsLoader";
 
-function ClientTimelineComponent({ client, managedClients }) {
+function ClientTimelineComponent({
+  client,
+  managedClients,
+  setManagedClients,
+}) {
   const [componentType, setComponentType] = useState("default"); // "add-contact" , "add-note"
   const [postEntryLoading, setPostEntryLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
@@ -44,12 +49,12 @@ function ClientTimelineComponent({ client, managedClients }) {
     }
   };
 
-  const onAddEntry = (entryObject) => {
+  const onAddEntry = async (entryObject) => {
     const clientEntryObject = {
       ...entryObject,
       client: entryObject.object,
     };
-    addEntry(clientEntryObject);
+    await addEntry(clientEntryObject);
   };
 
   return (
@@ -119,13 +124,15 @@ function ClientTimelineComponent({ client, managedClients }) {
           />
         )}
         {componentType === "add-contact" && (
-          <ContactedEntryComponent
-            object={client}
-            contactType="Client"
-            managedObjects={managedClients}
-            setComponentType={setComponentType}
-            onAddEntry={onAddEntry}
-          />
+          <ClientsLoader setClients={setManagedClients}>
+            <ContactedEntryComponent
+              object={client}
+              contactType="Client"
+              managedObjects={managedClients}
+              setComponentType={setComponentType}
+              onAddEntry={onAddEntry}
+            />
+          </ClientsLoader>
         )}
       </Grid>
     </Box>
@@ -135,6 +142,7 @@ function ClientTimelineComponent({ client, managedClients }) {
 ClientTimelineComponent.propTypes = {
   client: ClientType.isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
+  setManagedClients: PropTypes.func.isRequired,
 };
 
 export default ClientTimelineComponent;

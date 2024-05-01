@@ -58,6 +58,7 @@ export default function ClientPage({
   managedUsers,
   managedClients,
   setSnackBarMessage,
+  setManagedClients,
 }) {
   // Edit mode is initially set to true due to the structure of the inline if-else statements for rendering the form fields
   const [isEditMode, setIsEditMode] = React.useState(true);
@@ -1150,6 +1151,7 @@ export default function ClientPage({
         <ClientTimelineComponent
           client={clientInfo}
           managedClients={managedClients}
+          setManagedClients={setManagedClients}
         />
       </Box>
       <ConfirmDialog
@@ -1188,5 +1190,6 @@ ClientPage.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   getUserById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
   // managedUsers: PropTypes.arrayOf(UserType).isRequired,
 };

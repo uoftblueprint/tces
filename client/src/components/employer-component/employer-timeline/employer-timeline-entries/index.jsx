@@ -13,7 +13,7 @@ function EmployerTimelineEntriesComponent({
   globalSearchQuery,
 }) {
   const [timelineEntries, setTimelineEntries] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errorOb, setError] = useState(null);
   const [totalEntriesCount, setTotalEntriesCount] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
@@ -80,7 +80,7 @@ function EmployerTimelineEntriesComponent({
   };
 
   useEffect(() => {
-    fetchEmployersTimelineEntries();
+    fetchEmployersTimelineEntries(globalSearchQuery);
   }, [paginationModel]);
 
   useEffect(() => {

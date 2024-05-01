@@ -13,7 +13,7 @@ function JobLeadTimelineEntriesComponent({
   globalSearchQuery,
 }) {
   const [timelineEntries, setTimelineEntries] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errorOb, setError] = useState(null);
   const [totalEntriesCount, setTotalEntriesCount] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
@@ -79,7 +79,7 @@ function JobLeadTimelineEntriesComponent({
   };
 
   useEffect(() => {
-    fetchJobLeadsTimelineEntries();
+    fetchJobLeadsTimelineEntries(globalSearchQuery);
   }, [paginationModel]);
 
   useEffect(() => {

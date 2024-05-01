@@ -12,6 +12,9 @@ function EmployerPage({
   managedClients,
   managedEmployers,
   managedJobLeads,
+  setManagedJobLeads,
+  setManagedEmployers,
+  setManagedClients,
 }) {
   return (
     <EmployerComponent
@@ -21,6 +24,9 @@ function EmployerPage({
       managedClients={managedClients}
       managedEmployers={managedEmployers}
       setSnackBarMessage={setSnackBarMessage}
+      setManagedEmployers={setManagedEmployers}
+      setManagedClients={setManagedClients}
+      setManagedJobLeads={setManagedJobLeads}
     />
   );
 }
@@ -32,6 +38,9 @@ EmployerPage.propTypes = {
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   managedEmployers: PropTypes.arrayOf(EmployerType).isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
+  setManagedEmployers: PropTypes.func.isRequired,
 };
 
 export default EmployerPage;

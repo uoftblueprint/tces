@@ -20,6 +20,7 @@ function ClientPage({
   getUserById,
   setSnackBarMessage,
   managedClients,
+  setManagedClients,
 }) {
   const [clientLoaded, setClientLoaded] = React.useState(false);
   const [clientObject, setClientObject] = React.useState(null);
@@ -93,6 +94,7 @@ function ClientPage({
           managedClients={managedClients}
           getUserById={getUserById}
           setSnackBarMessage={setSnackBarMessage}
+          setManagedClients={setManagedClients}
         />
       )}
     </LoadingScreenComponent>
@@ -104,6 +106,7 @@ ClientPage.propTypes = {
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
   getUserById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
 };
 
 export default ClientPage;

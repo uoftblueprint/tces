@@ -32,6 +32,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       ownerId,
       searchNOCQuery,
       jobTypes,
+      employer,
     } = req.query;
 
     const query = {};
@@ -95,6 +96,10 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
 
     if (ownerId && ownerId !== "-1") {
       query.owner = ownerId;
+    }
+
+    if (employer) {
+      query.employer = employer;
     }
 
     query[Op.and] = [...(query[Op.and] || [])];

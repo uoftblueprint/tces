@@ -27,6 +27,9 @@ function EmployerComponent({
   managedJobLeads,
   managedClients,
   managedEmployers,
+  setManagedEmployers,
+  setManagedJobLeads,
+  setManagedClients,
 }) {
   // default, this gets overriden once the useEffect() finishes. to avoid a not available error.
   const [employer, setEmployer] = useState(null);
@@ -95,6 +98,9 @@ function EmployerComponent({
               managedJobLeads={managedJobLeads}
               managedClients={managedClients}
               managedEmployers={managedEmployers}
+              setManagedEmployers={setManagedEmployers}
+              setManagedClients={setManagedClients}
+              setManagedJobLeads={setManagedJobLeads}
             />
           </Box>
         </EmployerContainer>
@@ -110,6 +116,9 @@ EmployerComponent.propTypes = {
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   managedEmployers: PropTypes.arrayOf(EmployerType).isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
+  setManagedEmployers: PropTypes.func.isRequired,
 };
 
 export default EmployerComponent;
