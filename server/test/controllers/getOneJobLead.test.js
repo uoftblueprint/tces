@@ -34,6 +34,7 @@ describe("getOneJobLead test suite", () => {
   describe("Valid requests", () => {
     beforeEach(() => {
       mock("../../src/models/job_lead.model", mockGetOneClient);
+      mock("../../src/models/employer.model", mockGetOneClient);
       getOneJobLeadRequestHandler = mock.reRequire(
         "../../src/controllers/job_lead/getOneJobLead",
       );

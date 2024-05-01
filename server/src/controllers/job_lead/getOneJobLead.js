@@ -9,14 +9,16 @@ const getOneJobLeadRequestHandler = async (req, res) => {
 
     const job_lead = await JobLead.findOne({ where: { id: job_lead_id } });
 
-    const employerDetails = job_lead.employer
+    const employerDetails = job_lead?.employer
       ? await Employer.findOne({ where: { id: job_lead.employer } })
       : null;
 
-    const processedJobLead = {
-      ...job_lead.toJSON(),
-      employer_details: employerDetails ? employerDetails.toJSON() : null,
-    };
+    const processedJobLead = employerDetails
+      ? {
+          ...job_lead.toJSON(),
+          employer_details: employerDetails ? employerDetails.toJSON() : null,
+        }
+      : job_lead;
 
     if (job_lead) {
       return res.status(200).json({
