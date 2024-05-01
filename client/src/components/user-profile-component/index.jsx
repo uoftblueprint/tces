@@ -11,7 +11,7 @@ import UserType from "../../prop-types/UserType";
 export default function UserProfile({ currUser }) {
   const navigate = useNavigate();
   const handleBackClick = () => {
-    navigate("/dashboard");
+    navigate(-1);
   };
 
   return (
