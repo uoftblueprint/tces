@@ -1,7 +1,9 @@
 require("dotenv").config();
+const logger = require("pino")();
 const nodemailer = require("nodemailer");
 const cron = require("node-cron");
 const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 
@@ -14,8 +16,8 @@ let transporter = nodemailer.createTransport({
 });
 
 const createMessage = async (client) => {
-  const employer = await User.findByPk(client.owner);
-  if (!employer) {
+  const tces_employee = await User.findByPk(client.owner);
+  if (!tces_employee) {
     return null;
   }
 
@@ -36,7 +38,7 @@ const createMessage = async (client) => {
     12 * (today.getFullYear() - closureDate2.getFullYear());
 
   const message = `
-      Dear ${employer.first_name} ${employer.last_name},
+      Dear ${tces_employee.first_name} ${tces_employee.last_name},
   
       This is a reminder about the client "${client.name}" who was closed on ${closureDate}. It has now been ${monthsSinceClosure} months since their closure. 
   
@@ -65,15 +67,14 @@ const sendEmail = (client) => {
   });
 };
 
-const checkClientClosures = async () => {
+const checkClientClosureForMonth = async (checkMonths) => {
   const today = new Date();
-  const checkMonths = [3, 6, 9, 12];
+  const targetDate = new Date();
+  const clients = []
 
   for (const month of checkMonths) {
-    const targetDate = new Date();
     targetDate.setMonth(today.getMonth() - month);
-
-    const clients = await Client.findAll({
+    const clientsForMonth = await Client.findAll({
       where: {
         status: "closed",
         closure_date: {
@@ -97,9 +98,22 @@ const checkClientClosures = async () => {
       },
     });
 
-    for (let client of clients) {
-      sendEmail(client);
-    }
+    clients.push(...clientsForMonth);
+  }
+
+  return clients;
+};
+
+const checkClientClosures = async () => {
+  const checkMonths = [3, 6, 9, 12];
+  const clients = [];
+
+  const clientsForMonth = await checkClientClosureForMonth(checkMonths);
+  clients.push(clientsForMonth);
+  logger.info(`Found ${clients.length} clients to send emails to.`);
+
+  for (let client of clients) {
+    sendEmail(client);
   }
 };
 
@@ -108,4 +122,4 @@ cron.schedule("0 0 * * *", () => {
   checkClientClosures();
 });
 
-export { checkClientClosures, sendEmail };
+export { checkClientClosures, checkClientClosureForMonth, sendEmail };
