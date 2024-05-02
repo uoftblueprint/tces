@@ -91,25 +91,49 @@ function ContactedEntryComponent({
       </CardContent>
       <Divider />
       <CardContent>
-        <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>
-          Select the {contactType}
-        </Typography>
-        <Select
-          fullWidth
-          value={selectedValue}
-          onChange={handleValueChange}
-          sx={{ borderRadius: "10px" }}
-          required
-        >
-          <MenuItem value={null} disabled>
-            Select a {contactType}
-          </MenuItem>
-          {managedObjects.map((clientOb) => (
-            <MenuItem key={clientOb.id} value={clientOb}>
-              {clientOb.name}
-            </MenuItem>
-          ))}
-        </Select>
+        {object && (
+          <>
+            <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>
+              {contactType}
+            </Typography>
+            <TextField
+              value={object.name}
+              InputProps={{
+                readOnly: true,
+              }}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              sx={{
+                backgroundColor: "rgba(245, 245, 245, 1)",
+                borderRadius: 1,
+              }}
+            />
+          </>
+        )}
+        {!object && (
+          <>
+            <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>
+              Select the {contactType}
+            </Typography>
+            <Select
+              fullWidth
+              value={selectedValue}
+              onChange={handleValueChange}
+              sx={{ borderRadius: "10px" }}
+              required
+            >
+              <MenuItem value={null} disabled>
+                Select a {contactType}
+              </MenuItem>
+              {managedObjects.map((clientOb) => (
+                <MenuItem key={clientOb.id} value={clientOb}>
+                  {clientOb.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </>
+        )}
         <TextField
           fullWidth
           label="Add additional notes"

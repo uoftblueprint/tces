@@ -154,19 +154,15 @@ function EmployerTimelineComponent({
           </ManagedJobLeadsLoader>
         )}
         {componentType === "add-contact" && (
-          <ManagedJobLeadsLoader setManagedJobLeads={setManagedJobLeads}>
-            <ClientsLoader setClients={setManagedClients}>
-              <EmployersLoader setEmployers={setManagedEmployers}>
-                <ContactedEntryComponent
-                  object={employer}
-                  contactType="Employer"
-                  managedObjects={managedEmployers}
-                  setComponentType={setComponentType}
-                  onAddEntry={onAddEntry}
-                />
-              </EmployersLoader>
-            </ClientsLoader>
-          </ManagedJobLeadsLoader>
+          <EmployersLoader setEmployers={setManagedEmployers}>
+            <ContactedEntryComponent
+              object={employer}
+              contactType="Employer"
+              managedObjects={managedEmployers}
+              setComponentType={setComponentType}
+              onAddEntry={onAddEntry}
+            />
+          </EmployersLoader>
         )}
       </Grid>
     </Box>

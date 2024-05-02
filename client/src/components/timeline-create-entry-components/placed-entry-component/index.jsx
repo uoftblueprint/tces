@@ -14,6 +14,8 @@ import {
   DialogContentText,
   DialogActions,
   DialogContent,
+  TextField,
+  Tooltip,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import JobLeadType from "../../../prop-types/JobLeadType";
@@ -31,6 +33,7 @@ function PlacedEntryComponent({
   const [clientValue, setClientValue] = useState(null);
   const [jobLeadValue, setjobLeadValue] = useState(null);
   const [openDialog, setOpenDialog] = useState(null);
+  const [submitEnabled, setSubmitEnabled] = useState(true);
 
   const handleSubmitDirect = () => {
     if (jobLeadValue && clientValue) {
@@ -79,8 +82,15 @@ function PlacedEntryComponent({
   useEffect(() => {
     if (jobLead) {
       setjobLeadValue(jobLead);
+
+      if (jobLead.numOfPostions <= jobLead.clientCount) {
+        setSubmitEnabled(false);
+      }
     }
   }, [jobLead]);
+
+  const jobLeadsFilledMessage =
+    "Position Capacity Has Been Filled For This Job Lead";
 
   return (
     <>
@@ -131,36 +141,66 @@ function PlacedEntryComponent({
               </MenuItem>
             ))}
           </Select>
-          <Typography sx={{ color: "rgba(117, 117, 117, 1)", marginTop: 1 }}>
-            Select the Job Lead
-          </Typography>
-          <Select
-            fullWidth
-            value={jobLeadValue}
-            onChange={handleJobLeadChange}
-            sx={{ borderRadius: "10px" }}
-            disabled={isJobLeadPage}
-            required
-          >
-            <MenuItem value={null} disabled>
-              Select a Job Lead
-            </MenuItem>
-            {managedJobLeads
-              .filter(
-                (jobLeadOb) =>
-                  !employer ||
-                  (jobLeadOb.employerID &&
-                    jobLeadOb.employerID === employer.id),
-              )
-              .filter(
-                (jobLeadOb) => jobLeadOb.numOfPostions > jobLeadOb.clientCount,
-              )
-              .map((jobLeadOb) => (
-                <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
-                  {jobLeadOb.jobTitle}
+          {jobLead && (
+            <>
+              <Typography
+                sx={{ color: "rgba(117, 117, 117, 1)", marginTop: 1 }}
+              >
+                Selected Job Lead
+              </Typography>
+
+              <TextField
+                value={jobLead.jobTitle}
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                sx={{
+                  backgroundColor: "rgba(245, 245, 245, 1)",
+                  borderRadius: 1,
+                }}
+              />
+            </>
+          )}
+          {!jobLead && (
+            <>
+              <Typography
+                sx={{ color: "rgba(117, 117, 117, 1)", marginTop: 1 }}
+              >
+                Select the Job Lead
+              </Typography>
+              <Select
+                fullWidth
+                value={jobLeadValue}
+                onChange={handleJobLeadChange}
+                sx={{ borderRadius: "10px" }}
+                disabled={isJobLeadPage}
+                required
+              >
+                <MenuItem value={null} disabled>
+                  Select a Job Lead
                 </MenuItem>
-              ))}
-          </Select>
+                {managedJobLeads
+                  .filter(
+                    (jobLeadOb) =>
+                      !employer ||
+                      (jobLeadOb.employerID &&
+                        jobLeadOb.employerID === employer.id),
+                  )
+                  .filter(
+                    (jobLeadOb) =>
+                      jobLeadOb.numOfPostions > jobLeadOb.clientCount,
+                  )
+                  .map((jobLeadOb) => (
+                    <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
+                      {jobLeadOb.jobTitle}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -174,9 +214,17 @@ function PlacedEntryComponent({
             >
               DISCARD
             </Button>
-            <Button variant="contained" type="submit">
-              POST
-            </Button>
+            <Tooltip title={!submitEnabled ? jobLeadsFilledMessage : ""}>
+              <span>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={!submitEnabled}
+                >
+                  POST
+                </Button>
+              </span>
+            </Tooltip>
           </Box>
         </CardContent>
       </form>
@@ -195,6 +243,7 @@ function PlacedEntryComponent({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
+
           <Button onClick={handleConfirmDialog} autoFocus>
             Confirm
           </Button>
@@ -207,7 +256,8 @@ function PlacedEntryComponent({
 PlacedEntryComponent.propTypes = {
   // eslint-disable-next-line react/require-default-props
   employer: EmployerType,
-  jobLead: JobLeadType.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  jobLead: JobLeadType,
   setComponentType: PropTypes.func.isRequired,
   onAddEntry: PropTypes.func.isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,

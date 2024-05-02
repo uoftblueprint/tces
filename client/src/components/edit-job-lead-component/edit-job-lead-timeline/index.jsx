@@ -11,13 +11,11 @@ import PlacedEntryComponent from "../../timeline-create-entry-components/placed-
 import { addJobLeadTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
 import ClientsLoader from "../../wrappers/data-loaders-wrappers/ClientsLoader";
-import ManagedJobLeadsLoader from "../../wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 
 function EditJobLeadTimelineComponent({
   jobLead,
   managedJobLeads,
   managedClients,
-  setManagedJobLeads,
   setManagedClients,
 }) {
   const [componentType, setComponentType] = useState("default"); // "add-note" , "add-placement"
@@ -130,18 +128,16 @@ function EditJobLeadTimelineComponent({
           />
         )}
         {componentType === "add-placement" && (
-          <ManagedJobLeadsLoader setManagedJobLeads={setManagedJobLeads}>
-            <ClientsLoader setClients={setManagedClients}>
-              <PlacedEntryComponent
-                jobLead={jobLead}
-                isLoading={postEntryLoading}
-                setComponentType={setComponentType}
-                managedJobLeads={managedJobLeads}
-                managedClients={managedClients}
-                onAddEntry={onAddEntry}
-              />
-            </ClientsLoader>
-          </ManagedJobLeadsLoader>
+          <ClientsLoader setClients={setManagedClients}>
+            <PlacedEntryComponent
+              jobLead={jobLead}
+              isLoading={postEntryLoading}
+              setComponentType={setComponentType}
+              managedJobLeads={managedJobLeads}
+              managedClients={managedClients}
+              onAddEntry={onAddEntry}
+            />
+          </ClientsLoader>
         )}
       </Grid>
     </Box>
@@ -153,7 +149,6 @@ EditJobLeadTimelineComponent.propTypes = {
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
   setManagedClients: PropTypes.func.isRequired,
-  setManagedJobLeads: PropTypes.func.isRequired,
 };
 
 export default EditJobLeadTimelineComponent;

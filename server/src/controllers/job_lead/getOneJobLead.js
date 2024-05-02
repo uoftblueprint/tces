@@ -13,10 +13,16 @@ const getOneJobLeadRequestHandler = async (req, res) => {
       ? await Employer.findOne({ where: { id: job_lead.employer } })
       : null;
 
+
+    const client_count = await Client.count({
+      where: { job_lead_placement: job_lead.id },
+    });
+
     const processedJobLead = employerDetails
       ? {
           ...job_lead.toJSON(),
           employer_details: employerDetails ? employerDetails.toJSON() : null,
+          client_count,
         }
       : job_lead;
 
