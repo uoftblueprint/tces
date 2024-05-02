@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -8,20 +9,61 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
+  Autocomplete,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import ErrorComponent from "../shared/error-screen-component";
 import { JobLeadContainer, H3 } from "./index.styles";
-import EmployerType from "../../prop-types/EmployerType";
 import { JOB_TYPES } from "../../utils/contants";
+import { getFilteredEmployers } from "../../utils/api";
 
-function JobLeadContent({
-  jobLeadData,
-  handleInputChange,
-  isAddEmployer,
-  employers,
-}) {
+function JobLeadContent({ jobLeadData, handleInputChange, isAddEmployer }) {
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [error, setError] = useState(null);
+
+  const handleSearch = async (searchTerm) => {
+    if (searchTerm.length > 3) {
+      const queryParams = new URLSearchParams();
+      queryParams.append("employerName", searchTerm);
+      try {
+        const response = await getFilteredEmployers(queryParams.toString());
+        if (response.ok) {
+          const employersData = await response.json();
+          const formattedEmployers = employersData.data.map((employer) => ({
+            employerID: employer.id,
+            name: employer.name,
+            creatorID: employer.creator,
+            ownerID: employer.owner,
+            address: employer.address,
+            city: employer.city,
+            postalCode: employer.postal_code,
+            province: employer.province,
+            secondaryAddress: employer.secondary_address,
+            secondaryCity: employer.secondary_city,
+            secondaryPostalCode: employer.secondary_postal_code,
+            secondaryProvince: employer.secondary_province,
+            dateAdded: employer.date_added,
+            email: employer.email,
+            fax: employer.fax,
+            legalName: employer.legal_name,
+            naicsCode: employer.naics_code,
+            phoneNumber: employer.phone_number,
+            website: employer.website,
+          }));
+          setOptions(formattedEmployers);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Fetch failed.");
+        }
+      } catch (err) {
+        setError(err);
+      }
+    }
+  };
+
   return (
     <>
       {jobLeadData.map((lead) => (
@@ -31,27 +73,32 @@ function JobLeadContent({
           {/* Employer Name Field */}
           {!isAddEmployer && (
             <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-              <InputLabel id={`nameLabel-${lead.id}`}>Employer Name</InputLabel>
-              <Select
-                sx={{ textAlign: "left" }}
-                labelId={`nameLabel-${lead.id}`}
+              <Autocomplete
                 id={`employer-${lead.id}`}
-                value={lead.employer}
-                label="Employer Name"
-                onChange={(e) =>
-                  handleInputChange(e.target.value, lead.id, "employer")
-                }
-                required={!isAddEmployer}
-              >
-                {employers.map((employer) => (
-                  <MenuItem
-                    key={employer.employerID}
-                    value={employer.employerID}
-                  >
-                    {employer.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                open={open}
+                onOpen={() => {
+                  setOpen(true);
+                }}
+                onClose={() => {
+                  setOpen(false);
+                }}
+                onChange={(event, newValue) => {
+                  handleInputChange(newValue, lead.id, "employer");
+                }}
+                onInputChange={(event, newInputValue) => {
+                  handleSearch(newInputValue);
+                }}
+                options={options}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField
+                    // eslint-disable-next-line
+                    {...params}
+                    label="Employer Name"
+                    variant="outlined"
+                  />
+                )}
+              />
               <FormHelperText>*Required</FormHelperText>
             </FormControl>
           )}
@@ -255,7 +302,6 @@ JobLeadContent.propTypes = {
   jobLeadData: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
-  employers: PropTypes.arrayOf(EmployerType).isRequired,
 };
 
 JobLeadContent.defaultProps = {

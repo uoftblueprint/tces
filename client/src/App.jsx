@@ -278,13 +278,10 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <AddJobLeadPage
-                      employers={employers}
-                      currUser={currUser}
-                      setLocalExitRoute={setLocalExitRoute}
-                    />
-                  </EmployersLoader>
+                  <AddJobLeadPage
+                    currUser={currUser}
+                    setLocalExitRoute={setLocalExitRoute}
+                  />
                 </AuthGuard>
               }
             />
