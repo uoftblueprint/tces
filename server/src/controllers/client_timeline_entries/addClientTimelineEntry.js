@@ -1,12 +1,10 @@
 const logger = require("pino")();
 const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
-const JobLead = require("../../models/job_lead.model");
-const Employer = require("../../models/employer.model");
 
 const addClientTimelineEntryRequestHandler = async (req, res) => {
   try {
     // eslint-disable-next-line camelcase
-    const { type, title, body, client, job_lead } = req.body.entry;
+    const { type, title, body, client, job_lead, employer } = req.body.entry;
 
     const { user } = req;
 
@@ -19,37 +17,39 @@ const addClientTimelineEntryRequestHandler = async (req, res) => {
       });
     }
 
-    if (
-      ["update", "contact"].includes(type) &&
-      (!user || !title || !body || !client)
-    ) {
+    if (["contact"].includes(type) && (!user || !body || !client)) {
       return res.status(400).json({
         status: "fail",
-        message: `For type ${type}, user, title, body, and client must be defined`,
+        message: `For type ${type}, user, body, and client must be defined`,
         data: null,
       });
     }
 
-    if (type === "note" && (!user || !title || !body)) {
+    if (type === "note" && (!user || !client || !body)) {
       return res.status(400).json({
         status: "fail",
-        message: "For type note, user, title, and body must be defined",
+        message: "For type note, user, client, body must be defined",
         data: null,
       });
     }
 
-    const jobLead = await JobLead.findOne({ where: { id: job_lead } });
-    const employer = await Employer.findOne({
-      where: { id: jobLead.employer },
-    });
+    let bodyTitle = title;
+
+    if (type === "note") {
+      bodyTitle = `${user.first_name} ${user.last_name} Added Note`;
+    }
+
+    if (type === "contact") {
+      bodyTitle = `${user.first_name} ${user.last_name} Contacted Client`;
+    }
 
     const clientTimelineEntry = await ClientTimelineEntry.create({
       date_added: new Date(),
       type,
-      title,
+      title: bodyTitle,
       body,
       client,
-      employer: employer.id,
+      employer,
       // eslint-disable-next-line camelcase
       job_lead,
       user: user.id,
