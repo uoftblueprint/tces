@@ -34,7 +34,10 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     searchTitleQuery: "",
+<<<<<<< HEAD
     searchEmployerNameQuery: "",
+=======
+>>>>>>> 2d5cb74d38df061582429b8b98ad04c9fda147ef
     startDateCreated: null,
     endDateCreated: null,
     startDateExpired: null,
@@ -160,6 +163,7 @@ function JobLeadDashboardComponent({
           expirationDate: formatDateStr(jobLead.expiration_date),
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
+          clientCount: jobLead.client_count,
         }));
         setOwners(jobLeadsData.uniqueOwners);
         setAggregates(jobLeadsData.aggregates);

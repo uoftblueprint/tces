@@ -49,8 +49,8 @@ function ClientDashboardComponent({
   });
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
-    const queryParams = new URLSearchParams({})
-    if (pageSize || page){
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
       // we initially include pagination model first
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
@@ -88,7 +88,7 @@ function ClientDashboardComponent({
       queryParams.append("closed", filterParams.status.closed);
 
     return queryParams;
-  }
+  };
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (
@@ -133,6 +133,7 @@ function ClientDashboardComponent({
           statusAt9Months: cleanStatusString(client.status_at_9_months),
           statusAt12Months: cleanStatusString(client.status_at_12_months),
           statusAtExit: cleanStatusString(client.status_at_exit),
+          jobLeadPlacement: client.job_lead_placement,
         }));
         setOwners(clientsData.uniqueOwners);
         setManagedClients(formattedClients);
@@ -150,28 +151,34 @@ function ClientDashboardComponent({
 
   // export logic
   const generateCSV = async () => {
-    const req = await getFilteredClients(generateFilterParams(parentFilterParams));
-    const {data} = await req.json();
-    const csvData = [["Name", "Phone Number", "Email", "Status", "Date Updated", "Owner"]];
-
-    data.rows.forEach((clt) => csvData.push([
-      clt.name, 
-      clt.phone_number,
-      clt.email,
-      cleanStatusString(clt.status),
-      formatDateStr(clt.date_updated), 
-      clt.ownerName])
+    const req = await getFilteredClients(
+      generateFilterParams(parentFilterParams),
     );
-    const csvContent = `${csvData.map(e => e.join(",")).join("\n")}`
-    const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8"})
-    const href = window.URL.createObjectURL(blob)
+    const { data } = await req.json();
+    const csvData = [
+      ["Name", "Phone Number", "Email", "Status", "Date Updated", "Owner"],
+    ];
+
+    data.rows.forEach((clt) =>
+      csvData.push([
+        clt.name,
+        clt.phone_number,
+        clt.email,
+        cleanStatusString(clt.status),
+        formatDateStr(clt.date_updated),
+        clt.ownerName,
+      ]),
+    );
+    const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    const href = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", href);
     link.setAttribute("download", "client_data.csv");
     document.body.appendChild(link); // Required for FF
-      
+
     link.click(); // This will download the data file named "my_data.csv".
-  }
+  };
 
   // triggers on initialization of job leads dashboard screen
   React.useEffect(() => {

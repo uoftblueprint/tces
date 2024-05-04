@@ -8,33 +8,41 @@ import { HeaderContainer } from "../index.styles";
 import { getFilteredEmployers } from "../../../utils/api";
 import { formatDateStr } from "../../../utils/date";
 
-function EmployerDashboardHeader({ numEntries, generateFilterParams, filterParams }) {
+function EmployerDashboardHeader({
+  numEntries,
+  generateFilterParams,
+  filterParams,
+}) {
   const navigate = useNavigate();
 
   const generateCSV = async () => {
     const req = await getFilteredEmployers(generateFilterParams(filterParams));
-    const {data} = await req.json()
+    const { data } = await req.json();
     console.log(data);
-    const csvData = [["Employer Name", "Date", "Phone Number", "Email", "Owner"]]
+    const csvData = [
+      ["Employer Name", "Date", "Phone Number", "Email", "Owner"],
+    ];
 
-    data.forEach((emp) => csvData.push([
-      emp.name, 
-      formatDateStr(emp.date_added), 
-      emp.phone_number, 
-      emp.email, 
-      emp.ownerName])
-    )
-    console.log(csvData.map(e => e.join(",")).join("\n"))
-    const csvContent = `${csvData.map(e => e.join(",")).join("\n")}`
-    const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8"})
-    const href = window.URL.createObjectURL(blob)
+    data.forEach((emp) =>
+      csvData.push([
+        emp.name,
+        formatDateStr(emp.date_added),
+        emp.phone_number,
+        emp.email,
+        emp.ownerName,
+      ]),
+    );
+    console.log(csvData.map((e) => e.join(",")).join("\n"));
+    const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    const href = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", href);
     link.setAttribute("download", "employer_data.csv");
     document.body.appendChild(link); // Required for FF
-      
+
     link.click(); // This will download the data file named "my_data.csv".
-  }
+  };
 
   const handleBackClick = () => {
     navigate("/dashboard");

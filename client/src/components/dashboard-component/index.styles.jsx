@@ -11,11 +11,17 @@ const MainContainer = styled.div`
   border-radius: 4px 4px 0 0 !important;
   margin-top: 20px;
 `;
+
+
 const SearchFieldContainer = styled.div`
   background-color: white;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   border-radius: 0 0 4px 4px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+`;
+
+const SearchFieldContainerTimeline = styled(SearchFieldContainer)`
+    margin-top: 10px !important;
 `;
 
 const SearchField = styled(TextField)`
@@ -47,4 +53,4 @@ const Divider = styled(Box)`
   margin-bottom: 10px;
 `;
 
-export { MainContainer, SearchFieldContainer, SearchField, Divider };
+export { MainContainer, SearchFieldContainer, SearchField, Divider, SearchFieldContainerTimeline };

@@ -1,7 +1,10 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getAllJobLeadsRequestHandler from "../../src/controllers/job_lead/getAllJobLeads";
+
 const mock = require("mock-require");
 const mockGetManyClients = require("../mocks/mockGetAllObjects");
+
+const Client = require("../../src/models/client.model");
 
 const mockUniqueOwners = [{ owner: "Owner1" }, { owner: "Owner2" }];
 
@@ -29,9 +32,7 @@ describe("getAllJobLeads test suite", () => {
     status: (code) => {
       mockRes.statusCode = code;
       return {
-        json: (message) => {
-          return;
-        },
+        json: (message) => {},
       };
     },
     statusCode: 0,
@@ -44,6 +45,10 @@ describe("getAllJobLeads test suite", () => {
 
   it("Does not call findOne", async () => {
     mock("../../src/models/job_lead.model", mockGetManyClients);
+    mock("../../src/models/client.model", {
+      ...mockGetManyClients,
+      count: vi.fn().mockResolvedValue(10),
+    });
     getAllJobLeadsRequestHandler = mock.reRequire(
       "../../src/controllers/job_lead/getAllJobLeads",
     );
@@ -59,6 +64,10 @@ describe("getAllJobLeads test suite", () => {
     getAllJobLeadsRequestHandler = mock.reRequire(
       "../../src/controllers/job_lead/getAllJobLeads",
     );
+    mock("../../src/models/client.model", {
+      ...mockGetManyClients,
+      count: vi.fn().mockResolvedValue(10),
+    });
 
     const spy = vi.spyOn(mockGetManyClients, "findAll");
 
@@ -69,10 +78,13 @@ describe("getAllJobLeads test suite", () => {
   it("Returns 200 on success", async () => {
     mock("../../src/models/job_lead.model", {
       ...mockGetManyClients,
+      findAll: vi.fn().mockResolvedValue([mockUniqueOwners]),
     });
-    getAllJobLeadsRequestHandler = mock.reRequire(
-      "../../src/controllers/job_lead/getAllJobLeads",
-    );
+    mock("../../src/models/client.model", {
+      ...mockGetManyClients,
+      count: vi.fn().mockResolvedValue(10),
+    });
+
     await getAllJobLeadsRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
   });
