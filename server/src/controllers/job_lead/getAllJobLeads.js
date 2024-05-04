@@ -33,6 +33,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       ownerId,
       searchNOCQuery,
       jobTypes,
+      employer,
       searchEmployerNameQuery,
     } = req.query;
 
