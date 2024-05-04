@@ -15,37 +15,56 @@ import { getFilteredJobLeads } from "../../../utils/api";
 import { formatDateStr } from "../../../utils/date";
 import { displayCompensationRange } from "../../../utils/jobLeads";
 
-
-function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount, generateFilterParams, filterParams }) {
+function JobLeadDashboardHeaderComponent({
+  jobLeadsResultsCount,
+  generateFilterParams,
+  filterParams,
+}) {
   const navigate = useNavigate();
 
   const generateCSV = async () => {
     const req = await getFilteredJobLeads(generateFilterParams(filterParams));
-    const {data} = await req.json()
-    const csvData = [["Title", "Compensation", "Hours/Week", "Type", "Date Created", "Expiry Date", "Owner", "NOC Code"]]
+    const { data } = await req.json();
+    const csvData = [
+      [
+        "Title",
+        "Compensation",
+        "Hours/Week",
+        "Type",
+        "Date Created",
+        "Expiry Date",
+        "Owner",
+        "NOC Code",
+      ],
+    ];
 
-    data.forEach((jl) => csvData.push([
-      jl.job_title,
-      displayCompensationRange(jl.compensation_min,jl.compensation_max ,"/hour"),
-      jl.hours_per_week,
-      jl.employment_type,
-      formatDateStr(jl.creation_date),
-      formatDateStr(jl.expiration_date),
-      jl.ownerName,
-      jl.national_occupation_code
-      ])
-    )
-    console.log(csvData.map(e => e.join(",")).join("\n"))
-    const csvContent = `${csvData.map(e => e.join(",")).join("\n")}`
-    const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8"})
-    const href = window.URL.createObjectURL(blob)
+    data.forEach((jl) =>
+      csvData.push([
+        jl.job_title,
+        displayCompensationRange(
+          jl.compensation_min,
+          jl.compensation_max,
+          "/hour",
+        ),
+        jl.hours_per_week,
+        jl.employment_type,
+        formatDateStr(jl.creation_date),
+        formatDateStr(jl.expiration_date),
+        jl.ownerName,
+        jl.national_occupation_code,
+      ]),
+    );
+    console.log(csvData.map((e) => e.join(",")).join("\n"));
+    const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    const href = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", href);
     link.setAttribute("download", "job_lead_data.csv");
     document.body.appendChild(link); // Required for FF
-      
+
     link.click(); // This will download the data file named "my_data.csv".
-  }
+  };
 
   const handleBackClick = () => {
     navigate("/dashboard");

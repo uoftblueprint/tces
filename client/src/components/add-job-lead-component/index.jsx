@@ -24,7 +24,6 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 function AddJobLead({
   jobLeadData,
   setJobLeadData,
-  resetInitialState,
   employers,
   setLocalExitRoute,
   currUser,
@@ -68,15 +67,20 @@ function AddJobLead({
     ]);
   };
 
+  const handleDeleteJobLead = (id) => {
+    const filteredData = jobLeadData.filter((lead) => lead.id !== id);
+    const updatedData = filteredData.map((lead, index) => ({
+      ...lead,
+      id: index,
+    }));
+    setJobLeadData(updatedData);
+  };
+
   const handleInputChange = (input, id, field) => {
     const updatedJobLeads = jobLeadData.map((lead) =>
       lead.id === id ? { ...lead, [field]: input } : lead,
     );
     setJobLeadData(updatedJobLeads);
-  };
-
-  const handleResetInputs = () => {
-    resetInitialState();
   };
 
   const handleSubmit = async (e) => {
@@ -137,9 +141,17 @@ function AddJobLead({
               jobLeadData={jobLeadData}
               employers={employers}
               handleInputChange={handleInputChange}
+              handleDeleteJobLead={handleDeleteJobLead}
             />
 
-            <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+            <ButtonL
+              onClick={(e) => {
+                e.preventDefault();
+                handleAddJobLead();
+              }}
+            >
+              + Add Another Job Lead
+            </ButtonL>
             <ButtonContainer>
               <Button
                 sx={{ justifySelf: "flex-end" }}
@@ -153,15 +165,14 @@ function AddJobLead({
                 <DialogContent>
                   <DialogContentText>
                     You will lose all your progress and return to the and return
-                    to the dashboard.
+                    to the job leads page.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>CANCEL</Button>
                   <Button
                     onClick={() => {
-                      handleClose();
-                      handleResetInputs();
+                      navigate("/job-leads");
                     }}
                     autoFocus
                   >
@@ -208,7 +219,6 @@ AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadData: PropTypes.array.isRequired,
   setJobLeadData: PropTypes.func.isRequired,
-  resetInitialState: PropTypes.func.isRequired,
   employers: PropTypes.arrayOf(EmployerType).isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,

@@ -32,12 +32,11 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
   });
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
-    const queryParams = new URLSearchParams({})
-    if (pageSize || page){
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
     }
-    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -57,8 +56,8 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     if (filterParams.postalCode)
       queryParams.append("postalCode", filterParams.postalCode);
 
-    return queryParams
-  }
+    return queryParams;
+  };
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterEmployerQueryParams = (
@@ -68,7 +67,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     let { pageSize, page } = paginationModel;
     if (customPageModel) {
       page = customPageModel.page;
-      pageSize = customPageModel.pageSize;      
+      pageSize = customPageModel.pageSize;
     }
     return generateFilterParams(filterParams, page, pageSize);
   };
@@ -130,7 +129,6 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     initialFetch().then(() => setInitialLoading(false));
   }, []);
 
-
   // if there is an error render the error screen
   if (errorOb) return <ErrorComponent message={errorOb.message} />;
 
@@ -138,10 +136,11 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     <Container>
       <LoadingScreenComponent isLoading={initialLoading}>
         <DashboardContainer>
-          <EmployerDashboardHeader 
-          numEntries={rowCount} 
-          generateFilterParams={generateFilterParams}
-              filterParams={parentFilterParams}/>
+          <EmployerDashboardHeader
+            numEntries={rowCount}
+            generateFilterParams={generateFilterParams}
+            filterParams={parentFilterParams}
+          />
           <Box
             sx={{
               display: "flex",
