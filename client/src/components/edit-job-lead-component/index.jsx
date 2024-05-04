@@ -4,6 +4,7 @@ import JobLeadType from "../../prop-types/JobLeadType";
 import { EditContainer } from "./index.styles";
 import EditJobLeadHeaderComponent from "./edit-job-lead-header";
 import EditJobLeadFormComponent from "./edit-job-lead-form";
+import EditJobLeadLinkagesComponent from "./edit-job-lead-linkages";
 import UserType from "../../prop-types/UserType";
 
 function EditJobLeadComponent({
@@ -31,11 +32,21 @@ function EditJobLeadComponent({
           width: "100%",
         }}
       >
-        <EditJobLeadFormComponent
-          jobLead={jobLead}
-          getEmployerById={getEmployerById}
-          setSnackBarMessage={setSnackBarMessage}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gridColumnGap: "30px",
+            width: "100%",
+          }}
+        >
+          <EditJobLeadFormComponent
+            jobLead={jobLead}
+            getEmployerById={getEmployerById}
+            setSnackBarMessage={setSnackBarMessage}
+          />
+          <EditJobLeadLinkagesComponent jobLead={jobLead} />
+        </Box>
         <Box
           sx={{
             width: "33%",
