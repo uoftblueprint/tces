@@ -34,10 +34,7 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     searchTitleQuery: "",
-<<<<<<< HEAD
     searchEmployerNameQuery: "",
-=======
->>>>>>> 2d5cb74d38df061582429b8b98ad04c9fda147ef
     startDateCreated: null,
     endDateCreated: null,
     startDateExpired: null,
