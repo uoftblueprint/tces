@@ -427,6 +427,7 @@ const modifyClient = async (modifiedClient) => {
       status_at_6_months: modifiedClient.status_at_6?.toLowerCase(),
       status_at_9_months: modifiedClient.status_at_9?.toLowerCase(),
       status_at_12_months: modifiedClient.status_at_12?.toLowerCase(),
+      job_lead_placement: modifiedClient.jobLeadPlacement,
     },
   };
 

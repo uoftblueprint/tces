@@ -35,10 +35,7 @@ import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { JOB_TYPES } from "../../../utils/contants";
 import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
-function EditJobLeadFormComponent({
-  jobLead,
-  setSnackBarMessage,
-}) {
+function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const navigate = useNavigate();
   const employer = jobLead.employerDetails;
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);

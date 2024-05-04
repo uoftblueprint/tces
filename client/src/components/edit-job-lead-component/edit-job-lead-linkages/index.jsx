@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   IconButton,
@@ -16,142 +16,181 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { HeaderContainer } from "../index.styles";
-import { getFilteredClients } from "../../../utils/api";
+import { getFilteredClients, modifyClient } from "../../../utils/api";
 import JobLeadType from "../../../prop-types/JobLeadType";
+import { formatDateStr } from "../../../utils/date";
+import ConfirmDialog from "../../shared/confirm-dialog-component";
 
 function EditJobLeadLinkagesComponent({ jobLead }) {
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [clientToRemove, setClientToRemove] = useState(null);
 
-  useEffect(() => {
-    async function fetchClients() {
-      const queryParams = new URLSearchParams();
-      queryParams.append("job_lead_placement", jobLead.id);
-      try {
-        const response = await getFilteredClients(queryParams);
-        setClients(response.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
+  const fetchClients = useCallback(async () => {
+    const queryParams = new URLSearchParams();
+    queryParams.append("job_lead_placement", jobLead.id);
+    try {
+      setIsLoading(true);
+      const response = await getFilteredClients(queryParams.toString());
+      if (response.ok) {
+        const clientsData = await response.json();
+        const formattedClients = clientsData.data.rows.map((client) => ({
+          clientID: client.id,
+          name: client.name,
+          dateClosed: formatDateStr(client.closure_date),
+          jobLeadPlacement: client.job_lead_placement,
+        }));
+        setClients(formattedClients);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Fetch failed.");
       }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
     }
-
-    fetchClients();
   }, [jobLead.id]);
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          width: "90%",
-          borderRadius: 2,
-          boxShadow: 3,
-          ml: 9,
-          mb: 2,
-          border: "1px solid #e0e0e0",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
 
-  if (error) {
-    return (
-      <Box
-        sx={{
-          width: "90%",
-          borderRadius: 2,
-          boxShadow: 3,
-          ml: 9,
-          mb: 2,
-          border: "1px solid #e0e0e0",
-        }}
-      >
-        <Typography variant="h6">Error fetching clients</Typography>
-      </Box>
-    );
-  }
+  const unlinkClientAndJobLead = async (client) => {
+    setIsLoading(true);
+
+    const updatedClientInfo = {
+      ...client,
+      jobLeadPlacement: -1,
+    };
+
+    try {
+      const response = await modifyClient(updatedClientInfo);
+
+      if (response.ok) {
+        // Refresh your clients list here
+        fetchClients();
+      }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+      setConfirmEditDialog(false);
+    }
+  };
+
+  const updateClientToRemove = (client) => {
+    setClientToRemove(client);
+    setConfirmEditDialog(true);
+  };
 
   return (
-    <Box
-      sx={{
-        width: "90%",
-        borderRadius: 2,
-        boxShadow: 3,
-        ml: 9,
-        mb: 2,
-        border: "1px solid #e0e0e0",
-      }}
-    >
-      <HeaderContainer>
-        <Typography variant="h6">Clients Hired</Typography>
-      </HeaderContainer>
-      <Divider sx={{ mt: 2 }} />
-      <Stack spacing={2} sx={{ m: 2 }}>
-        <TableContainer
-          sx={{
-            mx: 2,
-          }}
-        >
-          <Table>
-            <TableHead>
-              <TableRow
+    <>
+      <Box
+        sx={{
+          width: "90%",
+          borderRadius: 2,
+          boxShadow: 3,
+          ml: 9,
+          mb: 2,
+          border: "1px solid #e0e0e0",
+        }}
+      >
+        <HeaderContainer>
+          <Typography variant="h6">Clients Hired</Typography>
+        </HeaderContainer>
+        <Divider sx={{ mt: 2 }} />
+        <Stack spacing={2} sx={{ m: 2 }}>
+          {(() => {
+            if (isLoading) {
+              return <CircularProgress />;
+            }
+            if (error) {
+              return (
+                <Typography variant="body1" color="error">
+                  {error}
+                </Typography>
+              );
+            }
+            return (
+              <TableContainer
                 sx={{
-                  borderBottom: "1px solid #e0e0e0",
-                  mb: 2,
+                  mx: 2,
                 }}
               >
-                <TableCell>
-                  <b>Client Name</b>
-                </TableCell>
-                <TableCell>
-                  <b>Closure Date</b>
-                </TableCell>
-                <TableCell>
-                  <b>Actions</b>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {clients &&
-                clients.map((client) => (
-                  <>
-                    <TableRow key={client.id}>
+                <Table>
+                  <TableHead>
+                    <TableRow
+                      sx={{
+                        borderBottom: "1px solid #e0e0e0",
+                        mb: 2,
+                      }}
+                    >
                       <TableCell>
-                        <Link to={`/client/${client.id}`}>
-                          <b>
-                            {client.first_name} {client.last_name}
-                          </b>
-                        </Link>
+                        <b>Client Name</b>
                       </TableCell>
                       <TableCell>
-                        {client.closure_date
-                          ? new Date(client.closure_date).toLocaleDateString()
-                          : "N/A"}
+                        <b>Closure Date</b>
                       </TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="secondary"
-                          onClick={() => {
-                            // change the job_lead_placement value to null and remove the client from the list
-                            
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
+                      <TableCell />
                     </TableRow>
-                    <Divider sx={{ my: 2 }} />
-                  </>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Stack>
-    </Box>
+                  </TableHead>
+                  <TableBody>
+                    {clients &&
+                      clients.map((client) => (
+                        <TableRow key={client.clientID}>
+                          <TableCell>
+                            <Link to={`/clients/${client.clientID}`}>
+                              {client.name}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            {client.closure_date
+                              ? new Date(
+                                  client.closure_date,
+                                ).toLocaleDateString()
+                              : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              onClick={() => {
+                                // change the job_lead_placement value to null and remove the client from the list
+                                updateClientToRemove(client);
+                              }}
+                            >
+                              <DeleteIcon
+                                sx={{
+                                  color: "#757575",
+                                }}
+                              />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            );
+          })()}
+        </Stack>
+      </Box>
+      <ConfirmDialog
+        open={confirmEditDialog}
+        title="Confirm Removal"
+        message="Are you sure you unassign this client from this job lead?"
+        onConfirm={async () => {
+          try {
+            await unlinkClientAndJobLead(clientToRemove);
+            setClientToRemove(null);
+          } catch (err) {
+            setError(err);
+          }
+        }}
+        onCancel={() => setConfirmEditDialog(false)}
+      />
+    </>
   );
 }
 
