@@ -59,11 +59,11 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
     if (searchEmployerNameQuery) {
       const employers = await Employer.findAll({
         where: {
-          name: { [Op.like]: `%${searchEmployerNameQuery}%` }
+          name: { [Op.like]: `%${searchEmployerNameQuery}%` },
         },
-        attributes: ['id']
+        attributes: ["id"],
       });
-      employerIds = employers.map(employer => employer.id);
+      employerIds = employers.map((employer) => employer.id);
     }
 
     if (employerIds.length > 0) {
