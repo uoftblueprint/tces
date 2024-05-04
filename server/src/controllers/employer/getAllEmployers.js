@@ -25,26 +25,57 @@ const getAllEmployersRequestHandler = async (req, res) => {
       query.name = { [Op.like]: `%${employerName}%` };
     }
 
-    let employerContactIds = [];
+    let employerContacts = [];
     if (contactName) {
-      const employerContacts = await EmployerContact.findAll({
+      employerContacts = await EmployerContact.findAll({
         where: {
           name: { [Op.like]: `%${contactName}%` },
         },
       });
-      employerContactIds = employerContacts.map((contact) => contact.id);
-    }
-
-    logger.info(`Employer contact ids: ${employerContactIds}`);
-    logger.info(`Employer Name: ${contactName}`);
-
-    if (employerContactIds.length > 0) {
-      query.employer_contact_id = { [Op.in]: employerContactIds };
+      logger.info(employerContacts)
     }
 
     if (phoneNumber) {
-      query.phone_number = { [Op.like]: `%${phoneNumber}%` };
+      // Validate that phoneNumber only contains digits
+      if (/^\d+$/.test(phoneNumber)) {
+        // Checking with Employer Table
+        const employerPhoneNumber = await Employer.findAll({
+          where: {
+            phoneNumber: Sequelize.literal(
+              `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+            ),
+          },
+        });
+
+        // Checking with EmployerContact Table
+        const phoneNumberContacts = await EmployerContact.findAll({
+          where: {
+            [Op.or]: [
+              {
+                phone_number: Sequelize.literal(
+                  `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                ),
+              },
+              {
+                alt_phone_number: Sequelize.literal(
+                  `REGEXP_REPLACE(alt_phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                ),
+              },
+            ],
+          },
+        });
+        employerContacts = [...employerPhoneNumber, ...phoneNumberContacts, ...employerContacts];
+      } else {
+        // Handle invalid phoneNumber
+        logger.error("phoneNumber should only contain digits");
+      }
     }
+
+    if (contactName || phoneNumber) {
+      const employerIds = employerContacts.map((contact) => contact.employer);
+      query.id = { [Op.in]: employerIds };
+    }
+
     if (startDateAdded) {
       const startDate = new Date(startDateAdded);
       startDate.setHours(0, 0, 0, 0);
