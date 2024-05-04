@@ -43,7 +43,7 @@ const getAllClientsRequestHandler = async (req, res) => {
         );
       } else {
         // Handle invalid phoneNumber
-        logger.error('phoneNumber should only contain digits');
+        logger.error("phoneNumber should only contain digits");
       }
     }
 

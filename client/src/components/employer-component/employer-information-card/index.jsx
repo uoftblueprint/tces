@@ -24,13 +24,13 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
 
   const [employerName, setEmployerName] = useState(employer.name);
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
-    employer.phoneNumber,
+    employer.phone_number,
   );
   const [employerFax, setEmployerFax] = useState(employer.fax);
   const [employerEmail, setEmployerEmail] = useState(employer.email);
   const [employerWebsite, setEmployerWebsite] = useState(employer.website);
   const [employerNAICSCode, setEmployerNAICSCode] = useState(
-    employer.naicsCode,
+    employer.naics_code,
   );
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
@@ -82,15 +82,19 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
     setConfirmCancelEditDialog(false);
   };
 
+  const handleUpdateNaics = (newVal) => {
+    setEmployerNAICSCode(newVal.replace(/\D/g, ""))
+  }
+
   const handleConfirmCancel = () => {
     setConfirmCancelEditDialog(false);
     setEditable(false);
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phoneNumber);
+    setEmployerPhoneNumber(employer.phone_number);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naicsCode);
+    setEmployerNAICSCode(employer.naics_code);
     setEmployerAddress(employer.address);
   };
 
@@ -105,9 +109,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
       fax: employerFax,
       email: employerEmail,
       website: employerWebsite,
-      naics_code: employerNAICSCode,
       address: employerAddress,
     };
+    if (employerNAICSCode){
+      modifiedEmployerInfo.naics_code = Number(employerNAICSCode)
+    }
 
     try {
       const response = await modifyEmployerInfo(modifiedEmployerInfo);
@@ -130,11 +136,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   // on initial startup, since useState() does not work on passed in props
   useEffect(() => {
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phoneNumber);
+    setEmployerPhoneNumber(employer.phone_number);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naicsCode);
+    setEmployerNAICSCode(employer.naics_code);
     setEmployerAddress(employer.address);
   }, [employer]);
 
@@ -221,7 +227,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           <BoxRowComponent
             leftSide="NAICS Code"
             rightSide={employerNAICSCode}
-            setRightSide={setEmployerNAICSCode}
+            setRightSide={handleUpdateNaics}
             editable={editable}
           />
           <BoxRowComponent
