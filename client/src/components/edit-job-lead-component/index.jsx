@@ -42,14 +42,13 @@ function EditJobLeadComponent({
             display: "flex",
             flexDirection: "column",
             gridColumnGap: "30px",
-            width: "100%",
-            maxHeight: "100vh",
-          alignItems: "flex-start",
-        }}
+            width: "66%",
+            alignItems: "flex-start",
+          }}
         >
           <EditJobLeadFormComponent
             jobLead={jobLead}
-              setSnackBarMessage={setSnackBarMessage}
+            setSnackBarMessage={setSnackBarMessage}
           />
           <EditJobLeadLinkagesComponent jobLead={jobLead} />
         </Box>

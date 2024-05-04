@@ -186,7 +186,7 @@ function EditJobLeadFormComponent({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,

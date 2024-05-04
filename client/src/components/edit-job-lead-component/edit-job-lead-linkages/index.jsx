@@ -1,9 +1,3 @@
-// Fetch all the clients that are linked with this job lead
-// Use an unpaginated getAll request filtering on job_lead_placements, using the passed job lead ID
-
-// This card will mimic a table displaying the client's name, closure date
-// You will have the ability to delete the client from the job lead, which will remove the job_lead_placement record and free up the job to be assigned to someone else
-// You should be able to click on the client's name to be taken to the client's profile page
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -51,7 +45,7 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
     return (
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,
@@ -68,7 +62,7 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
     return (
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,
@@ -84,7 +78,7 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
   return (
     <Box
       sx={{
-        width: "66%",
+        width: "90%",
         borderRadius: 2,
         boxShadow: 3,
         ml: 9,
