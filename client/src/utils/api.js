@@ -221,6 +221,21 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
   return response;
 };
 
+const getJobLead = async (jobLeadID) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_leads/${jobLeadID}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 const getFilteredJobLeads = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
@@ -430,6 +445,102 @@ const modifyClient = async (modifiedClient) => {
   return response;
 };
 
+const getFilteredJobLeadsTimelineEntries = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_leads_timeline?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const addJobLeadTimelineEntry = async (entryObject) => {
+  const jobLeadEntryBody = {
+    entry: entryObject,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/job_leads_timeline`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobLeadEntryBody),
+  });
+  return response;
+};
+
+const getFilteredClientTimelineEntries = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients_timeline?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const addClientTimelineEntry = async (entryObject) => {
+  const jobLeadEntryBody = {
+    entry: entryObject,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/clients_timeline`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobLeadEntryBody),
+  });
+  return response;
+};
+
+const getFilteredEmployerTimelineEntries = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employers_timeline?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const addEmployerTimelineEntry = async (entryObject) => {
+  const jobLeadEntryBody = {
+    entry: entryObject,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employers_timeline`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobLeadEntryBody),
+  });
+  return response;
+};
+
 export {
   login,
   logout,
@@ -443,6 +554,7 @@ export {
   getFilteredEmployers,
   createJobLeads,
   getFilteredJobLeads,
+  getJobLead,
   modifyJobLead,
   getFilteredClients,
   createClients,
@@ -452,4 +564,10 @@ export {
   getUserName,
   getEmployerContacts,
   modifyEmployerInfo,
+  getFilteredJobLeadsTimelineEntries,
+  addJobLeadTimelineEntry,
+  getFilteredClientTimelineEntries,
+  addClientTimelineEntry,
+  getFilteredEmployerTimelineEntries,
+  addEmployerTimelineEntry,
 };

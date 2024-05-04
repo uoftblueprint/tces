@@ -5,15 +5,19 @@ import LoadingComponent from "../../../shared/loading-screen-component";
 import { getFilteredJobLeads } from "../../../../utils/api";
 import { formatDateStr } from "../../../../utils/date";
 
-function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
+function ManagedJobLeadsLoader({
+  customQueryParams,
+  setManagedJobLeads,
+  children,
+}) {
   const [loading, setLoading] = useState(true);
   const [errorDisplay, setError] = useState(null);
 
   useEffect(() => {
-    const fetchManagedUsers = async () => {
+    const fetchManagedJobLeads = async () => {
       try {
         // fetch all
-        const response = await getFilteredJobLeads("");
+        const response = await getFilteredJobLeads(customQueryParams);
         if (response.ok) {
           const jobLeadsData = await response.json();
 
@@ -33,6 +37,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
             expirationDate: formatDateStr(jobLead.expiration_date),
             employmentType: jobLead.employment_type,
             numOfPostions: jobLead.num_of_positions,
+            clientCount: jobLead.client_count,
           }));
           setManagedJobLeads(formattedJobLeads);
         } else {
@@ -46,7 +51,7 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
       }
     };
 
-    fetchManagedUsers();
+    fetchManagedJobLeads();
   }, []);
 
   if (loading) return <LoadingComponent isLoading={loading} />;
@@ -56,7 +61,13 @@ function ManagedJobLeadsLoader({ setManagedJobLeads, children }) {
 }
 
 ManagedJobLeadsLoader.propTypes = {
+  customQueryParams: PropTypes.string,
   setManagedJobLeads: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
+
+ManagedJobLeadsLoader.defaultProps = {
+  customQueryParams: "",
+};
+
 export default ManagedJobLeadsLoader;
