@@ -83,8 +83,8 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   };
 
   const handleUpdateNaics = (newVal) => {
-    setEmployerNAICSCode(newVal.replace(/\D/g, ""))
-  }
+    setEmployerNAICSCode(newVal.replace(/\D/g, ""));
+  };
 
   const handleConfirmCancel = () => {
     setConfirmCancelEditDialog(false);
@@ -111,8 +111,8 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
       website: employerWebsite,
       address: employerAddress,
     };
-    if (employerNAICSCode){
-      modifiedEmployerInfo.naics_code = Number(employerNAICSCode)
+    if (employerNAICSCode) {
+      modifiedEmployerInfo.naics_code = Number(employerNAICSCode);
     }
 
     try {
