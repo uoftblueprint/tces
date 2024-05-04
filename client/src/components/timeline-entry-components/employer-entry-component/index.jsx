@@ -8,7 +8,7 @@ import EmployerNoteComponent from "./note-entry-component";
 function EmployerEntryComponent({ entry }) {
   const { type, ...otherProps } = entry;
 
-  console.log(entry)
+  console.log(entry);
 
   const renderComponent = () => {
     switch (entry.type) {

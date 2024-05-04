@@ -35,7 +35,7 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
 
     const searchConfig = {
       where: query,
-      order: [['date_added', 'DESC']],
+      order: [["date_added", "DESC"]],
     };
 
     if (page != null && pageSize != null) {
@@ -49,7 +49,7 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
     const processedClientTimelineEntries = await Promise.all(
       clientTimelineEntries.map(async (entry) => {
         const jobLeadDetails = entry.job_lead
-          ? await JobLead.findOne({ where: { id: entry.job_lead} })
+          ? await JobLead.findOne({ where: { id: entry.job_lead } })
           : null;
         const clientDetails = entry.client
           ? await Client.findOne({ where: { id: entry.client } })
