@@ -65,27 +65,27 @@ function JobLeadDashboardComponent({
     if (filterParams.searchEmployerNameQuery)
       queryParams.append(
         "searchEmployerNameQuery",
-        filterParams.searchEmployerNameQuery
+        filterParams.searchEmployerNameQuery,
       );
     if (filterParams.startDateCreated)
       queryParams.append(
         "startDateCreated",
-        filterParams.startDateCreated.toISOString()
+        filterParams.startDateCreated.toISOString(),
       );
     if (filterParams.endDateCreated)
       queryParams.append(
         "endDateCreated",
-        filterParams.endDateCreated.toISOString()
+        filterParams.endDateCreated.toISOString(),
       );
     if (filterParams.startDateExpired)
       queryParams.append(
         "startDateExpired",
-        filterParams.startDateExpired.toISOString()
+        filterParams.startDateExpired.toISOString(),
       );
     if (filterParams.endDateExpired)
       queryParams.append(
         "endDateExpired",
-        filterParams.endDateExpired.toISOString()
+        filterParams.endDateExpired.toISOString(),
       );
     if (
       filterParams.compensationRange &&
@@ -110,7 +110,7 @@ function JobLeadDashboardComponent({
     if (filterParams.jobTypeSelect)
       queryParams.append(
         "jobTypes",
-        JSON.stringify(filterParams.jobTypeSelect)
+        JSON.stringify(filterParams.jobTypeSelect),
       );
 
     return queryParams;
@@ -119,7 +119,7 @@ function JobLeadDashboardComponent({
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (
     filterParams,
-    customPageModel = null
+    customPageModel = null,
   ) => {
     let { pageSize, page } = paginationModel;
     if (customPageModel) {
@@ -135,7 +135,7 @@ function JobLeadDashboardComponent({
   const handleApplyFilter = async (filterParams, customPageModel = null) => {
     const queryParams = declareFilterJobLeadsQueryParams(
       filterParams,
-      customPageModel
+      customPageModel,
     );
 
     // fetch the data

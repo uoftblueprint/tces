@@ -162,9 +162,7 @@ function EmployerTimelineViewComponent({
           </TabPanel>
         </TabContext>
       </Grid>
-      <Grid
-        item
-      >
+      <Grid item>
         <SearchFieldContainerTimeline>
           <SearchField
             fullWidth
