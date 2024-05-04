@@ -33,7 +33,7 @@ function JobLeadDashboardFiltersComponent({
   handleApplyFilter,
   jobLeadAggregates,
   owners,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -198,18 +198,18 @@ function JobLeadDashboardFiltersComponent({
     });
     setParentFilterParams({
       searchTitleQuery: "",
-        startDateCreated: null,
-        endDateCreated: null,
-        startDateExpired: null,
-        endDateExpired: null,
-        compensationRange: [null, null],
-        hoursPerWeekRange: [null, null],
-        ownerId: -1,
-        searchNOCQuery: "",
-        jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
-          acc[jobType] = true;
-          return acc;
-        }, {})
+      startDateCreated: null,
+      endDateCreated: null,
+      startDateExpired: null,
+      endDateExpired: null,
+      compensationRange: [null, null],
+      hoursPerWeekRange: [null, null],
+      ownerId: -1,
+      searchNOCQuery: "",
+      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+        acc[jobType] = true;
+        return acc;
+      }, {}),
     });
   };
 

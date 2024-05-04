@@ -31,7 +31,7 @@ function FilterCard({
   paginationModel,
   owners,
   handleApplyFilter,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -96,13 +96,10 @@ function FilterCard({
         rAndI: statusSelect["R&I"],
         closed: statusSelect.Closed,
       },
-    }
+    };
     setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
-    handleApplyFilter(
-      filterParams,
-      customPageModel,
-    );
+    handleApplyFilter(filterParams, customPageModel);
   };
 
   const onFilterReset = () => {

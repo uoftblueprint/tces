@@ -24,7 +24,7 @@ function EmployerDashboardFilter({
   handleApplyFilter,
   owners,
   getUserById,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);

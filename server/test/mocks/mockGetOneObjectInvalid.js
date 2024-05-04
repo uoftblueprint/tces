@@ -5,4 +5,7 @@ module.exports = {
   findAll: () => {
     return {};
   },
+  count: () => {
+    return 0;
+  },
 };
