@@ -43,9 +43,16 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
+    cookie: {
+      httpOnly: true,
+      secure: !process.env.FRONTEND_URL.includes("localhost"),
+      sameSite: process.env.FRONTEND_URL.includes("localhost") ? "Lax" : "None",
+    },
   }),
 );
-app.use(passport.authenticate("session"));
+
+app.use(passport.initialize({}));
+app.use(passport.session({}));
 
 app.use("/", authRouter);
 app.use("/employers", employerRouter);
@@ -59,4 +66,5 @@ app.use("/clients_timeline", ClientTimelineRouter);
 
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
+  console.log(`Binded port with ${process.env.FRONTEND_URL}`);
 });
