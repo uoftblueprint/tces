@@ -68,6 +68,14 @@ function FilterCard({
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const handlePhoneNumberChange = (event) => {
+    // Remove all non-numeric characters from the input
+    setValues({
+      ...values,
+      phoneNumber: event.target.value.replace(/\D/g, ""),
+    });
+  };
+
   const handleDateChange = (prop) => (newValue) => {
     setValues({ ...values, [prop]: newValue });
   };
@@ -194,7 +202,7 @@ function FilterCard({
           <TextField
             type="text"
             value={values.phoneNumber}
-            onChange={handleChange("phoneNumber")}
+            onChange={handlePhoneNumberChange}
             size="small"
             style={{
               borderWidth: "10px",
