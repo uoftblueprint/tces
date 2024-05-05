@@ -49,6 +49,7 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           cd server
+          cat .env
           docker build -f prod.Dockerfile -t $REGISTRY/$REPOSITORY:latest .
           docker push $REGISTRY/$REPOSITORY:latest
 
