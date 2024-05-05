@@ -34,27 +34,27 @@ function JobLeadDashboardComponent({
   const [owners, setOwners] = React.useState([]);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     searchTitleQuery: "",
-      startDateCreated: null,
-      endDateCreated: null,
-      startDateExpired: null,
-      endDateExpired: null,
-      compensationRange: [null, null],
-      hoursPerWeekRange: [null, null],
-      ownerId: -1,
-      searchNOCQuery: "",
-      jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
-        acc[jobType] = true;
-        return acc;
-      }, {})
-  })
+    searchEmployerNameQuery: "",
+    startDateCreated: null,
+    endDateCreated: null,
+    startDateExpired: null,
+    endDateExpired: null,
+    compensationRange: [null, null],
+    hoursPerWeekRange: [null, null],
+    ownerId: -1,
+    searchNOCQuery: "",
+    jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+      acc[jobType] = true;
+      return acc;
+    }, {}),
+  });
 
   const generateFilterParams = (filterParams, page = null, pageSize = null) => {
-    const queryParams = new URLSearchParams({})
-    if (pageSize || page){
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
       queryParams.append("page", page);
       queryParams.append("pageSize", pageSize);
     }
-    
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -62,6 +62,11 @@ function JobLeadDashboardComponent({
     // ensure these filter configs are defined before passing in query
     if (filterParams.searchTitleQuery)
       queryParams.append("searchTitleQuery", filterParams.searchTitleQuery);
+    if (filterParams.searchEmployerNameQuery)
+      queryParams.append(
+        "searchEmployerNameQuery",
+        filterParams.searchEmployerNameQuery,
+      );
     if (filterParams.startDateCreated)
       queryParams.append(
         "startDateCreated",
@@ -109,7 +114,7 @@ function JobLeadDashboardComponent({
       );
 
     return queryParams;
-  }
+  };
 
   // helper to generate query params based on pagination model state and filter configs
   const declareFilterJobLeadsQueryParams = (
@@ -155,6 +160,7 @@ function JobLeadDashboardComponent({
           expirationDate: formatDateStr(jobLead.expiration_date),
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
+          clientCount: jobLead.client_count,
         }));
         setOwners(jobLeadsData.uniqueOwners);
         setAggregates(jobLeadsData.aggregates);
@@ -186,9 +192,11 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} 
-                  generateFilterParams={generateFilterParams}
-                  filterParams={parentFilterParams} />
+        <JobLeadDashboardHeaderComponent
+          jobLeadsResultsCount={rowCount}
+          generateFilterParams={generateFilterParams}
+          filterParams={parentFilterParams}
+        />
         <Box
           sx={{
             display: "flex",

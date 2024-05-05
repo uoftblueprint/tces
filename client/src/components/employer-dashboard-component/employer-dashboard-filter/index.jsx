@@ -24,7 +24,7 @@ function EmployerDashboardFilter({
   handleApplyFilter,
   owners,
   getUserById,
-  setParentFilterParams
+  setParentFilterParams,
 }) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);
@@ -42,6 +42,11 @@ function EmployerDashboardFilter({
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
+  };
+
+  const handlePhoneNumberChange = (event) => {
+    // Remove all non-numeric characters from the input
+    setPhoneNumber(event.target.value.replace(/\D/g, ""));
   };
 
   const handleDateChange = (setter) => (newValue) => {
@@ -152,7 +157,7 @@ function EmployerDashboardFilter({
           type="text"
           size="small"
           value={phoneNumber}
-          onChange={handleInputChange(setPhoneNumber)}
+          onChange={handlePhoneNumberChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
