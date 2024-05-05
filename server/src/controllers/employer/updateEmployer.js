@@ -24,7 +24,6 @@ const updateEmployerRequestHandler = async (req, res) => {
         data: null,
       });
     }
-
     await employer.set(req.body.values);
     await employer.save();
 

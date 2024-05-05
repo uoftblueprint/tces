@@ -4,6 +4,7 @@ const { escape } = require("validator");
 const JobLead = require("../../models/job_lead.model");
 const Client = require("../../models/client.model");
 const User = require("../../models/user.model");
+const Employer = require("../../models/employer.model");
 
 function isValidNOCQuery(query) {
   // only numbers
@@ -33,6 +34,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       searchNOCQuery,
       jobTypes,
       employer,
+      searchEmployerNameQuery,
     } = req.query;
 
     const query = {};
@@ -52,6 +54,17 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
         ...query.creation_date,
         [Op.lte]: endDate,
       };
+    }
+
+    if (searchEmployerNameQuery) {
+      const employers = await Employer.findAll({
+        where: {
+          name: { [Op.like]: `%${searchEmployerNameQuery}%` },
+        },
+        attributes: ["id"],
+      });
+      const employerIds = employers.map((employer) => employer.id);
+      query.employer = { [Op.in]: employerIds };
     }
 
     if (startDateExpired) {

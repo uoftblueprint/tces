@@ -45,6 +45,11 @@ function EmployerDashboardFilter({
     setter(event.target.value);
   };
 
+  const handlePhoneNumberChange = (event) => {
+    // Remove all non-numeric characters from the input
+    setPhoneNumber(event.target.value.replace(/\D/g, ""));
+  };
+
   const handleDateChange = (setter) => (newValue) => {
     setter(newValue);
   };
@@ -179,7 +184,7 @@ function EmployerDashboardFilter({
           type="text"
           size="small"
           value={phoneNumber}
-          onChange={handleInputChange(setPhoneNumber)}
+          onChange={handlePhoneNumberChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

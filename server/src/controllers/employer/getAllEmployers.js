@@ -158,7 +158,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
     logger.error(`Unexpected server error: ${err}`);
     return res.status(500).json({
       status: "error",
-      message: "An unexpected server error occured.",
+      message: "An unexpected server error occurred.",
     });
   }
 };

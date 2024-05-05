@@ -35,7 +35,7 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   return (
     <IMaskInput
       {...other}
-      mask="(#00) 000-0000"
+      mask="(#00) 000-0000x0000"
       definitions={{
         "#": /[1-9]/,
       }}
@@ -120,17 +120,22 @@ export default function ClientPage({
 
   const [editedStatusExit, setEditedStatusExit] = React.useState(
     clientInfo.status_at_exit,
+    clientInfo.status_at_exit,
   );
   const [editedStatus3, setEditedStatus3] = React.useState(
+    clientInfo.status_at_3,
     clientInfo.status_at_3,
   );
   const [editedStatus6, setEditedStatus6] = React.useState(
     clientInfo.status_at_6,
+    clientInfo.status_at_6,
   );
   const [editedStatus9, setEditedStatus9] = React.useState(
     clientInfo.status_at_9,
+    clientInfo.status_at_9,
   );
   const [editedStatus12, setEditedStatus12] = React.useState(
+    clientInfo.status_at_12,
     clientInfo.status_at_12,
   );
 
