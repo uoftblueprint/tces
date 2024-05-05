@@ -105,8 +105,6 @@ function JobLeadContent({
                   setOpen(false);
                 }}
                 onChange={(event, newValue) => {
-                  console.log("value");
-                  console.log(newValue);
                   handleInputChange(newValue.employerID, lead.id, "employer");
                 }}
                 onInputChange={(event, newInputValue) => {
