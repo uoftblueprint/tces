@@ -76,7 +76,7 @@ app.use(
     cookie: {
       sameSite: process.env.DEPLOY ? "none" : "Lax",
       httpOnly: true,
-      secure: process.env.DEPLOY,
+      secure: process.env.DEPLOY ? true : false,
     }
   }),
 );
