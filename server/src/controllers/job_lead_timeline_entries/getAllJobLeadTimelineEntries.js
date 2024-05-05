@@ -49,7 +49,7 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
     const processedJobLeadTimelineEntries = await Promise.all(
       rawJobLeadTimelineEntries.map(async (entry) => {
         const jobLeadDetails = entry.job_lead
-          ? await JobLead.findOne({ where: { id: job_lead } })
+          ? await JobLead.findOne({ where: { id: entry.job_lead } })
           : null;
         const clientDetails = entry.client
           ? await Client.findOne({ where: { id: entry.client } })
