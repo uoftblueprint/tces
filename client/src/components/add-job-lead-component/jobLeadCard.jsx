@@ -19,12 +19,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
 import { getFilteredEmployers } from "../../utils/api";
+import ErrorScreenComponent from "../shared/error-screen-component";
 
-function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, isAddEmployer }) {
+function JobLeadContent({
+  jobLeadData,
+  handleInputChange,
+  handleDeleteJobLead,
+  isAddEmployer,
+}) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
-  console.log(error);
 
   const handleSearch = async (searchTerm) => {
     if (searchTerm.length >= 2) {
@@ -65,6 +70,8 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
       }
     }
   };
+
+  if (error) return <ErrorScreenComponent message={error} />;
 
   return (
     <>
