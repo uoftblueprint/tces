@@ -229,10 +229,13 @@ function ContactsInformationCard({
   return (
     <Card
       style={{
-        width: "33%",
-        borderRadius: 2,
+        width: "50%",
+        borderRadius: 8,
         boxShadow: 3,
         border: "1px solid #e0e0e0",
+      }}
+      sx={{
+        mr: 2,
       }}
     >
       <CardContent

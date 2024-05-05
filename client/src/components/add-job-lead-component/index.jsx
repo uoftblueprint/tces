@@ -92,7 +92,7 @@ function AddJobLead({
       );
 
       if (response.ok) {
-        navigate("/job-leads");
+        navigate(-1);
       } else {
         setErrorObj(response);
       }
@@ -169,7 +169,7 @@ function AddJobLead({
                   <Button onClick={handleClose}>CANCEL</Button>
                   <Button
                     onClick={() => {
-                      navigate("/job-leads");
+                      navigate(-1);
                     }}
                     autoFocus
                   >
