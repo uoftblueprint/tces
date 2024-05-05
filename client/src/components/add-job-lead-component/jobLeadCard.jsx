@@ -100,7 +100,9 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
                   setOpen(false);
                 }}
                 onChange={(event, newValue) => {
-                  handleInputChange(newValue, lead.id, "employer");
+                  console.log("value")
+                  console.log(newValue)
+                  handleInputChange(newValue.employerID, lead.id, "employer");
                 }}
                 onInputChange={(event, newInputValue) => {
                   handleSearch(newInputValue);
@@ -141,7 +143,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
             </InputLabel>
             <OutlinedInput
               id={`minCompensation-${lead.id}`}
-              type="number"
+              type="text"
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -150,7 +152,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
               value={lead.minCompensation}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value >= 0)
+                if (value >= 0 && /^\d*\.?\d*$/.test(value))
                   handleInputChange(value, lead.id, "minCompensation");
               }}
               required={!isAddEmployer}
@@ -164,7 +166,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
             </InputLabel>
             <OutlinedInput
               id={`maxCompensation-${lead.id}`}
-              type="number"
+              type="text"
               inputProps={{ min: 0 }}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
@@ -173,7 +175,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
               value={lead.maxCompensation}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value >= 0)
+                if (value >= 0 && /^\d*\.?\d*$/.test(value))
                   handleInputChange(value, lead.id, "maxCompensation");
               }}
               required={!isAddEmployer}
@@ -185,19 +187,19 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
             fullWidth
             sx={{ m: 1, width: "47%" }}
             id={`hoursPerWeek-${lead.id}`}
-            type="number"
+            type="text"
             label="Hours per week"
             inputProps={{ min: 0 }}
             value={lead.hoursPerWeek}
             onChange={(e) => {
               const { value } = e.target;
-              if (value >= 0) handleInputChange(value, lead.id, "hoursPerWeek");
+              if (value >= 0 && /^\d*\.?\d*$/.test(value)) handleInputChange(value, lead.id, "hoursPerWeek");
             }}
             required={!isAddEmployer}
           />
 
           {/* National Occupation Code Field */}
-          <TextField
+          <TextField 
             fullWidth
             type="number"
             inputProps={{ min: 0 }}
