@@ -64,11 +64,17 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
+    cookie: {
+      sameSite: "none",
+      httpOnly: true,
+      secure: true
+    },
+    proxy: true
   }),
 );
 app.use(passport.authenticate("session"));
 
-app.options('*', cors())
+app.set("trust proxy", 1)
 
 app.use("/", authRouter);
 app.use("/employers", employerRouter);
