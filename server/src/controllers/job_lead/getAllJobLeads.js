@@ -56,7 +56,6 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       };
     }
 
-    let employerIds = [];
     if (searchEmployerNameQuery) {
       const employers = await Employer.findAll({
         where: {
@@ -64,10 +63,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
         },
         attributes: ["id"],
       });
-      employerIds = employers.map((employer) => employer.id);
-    }
-
-    if (employerIds.length > 0) {
+      const employerIds = employers.map((employer) => employer.id);
       query.employer = { [Op.in]: employerIds };
     }
 
