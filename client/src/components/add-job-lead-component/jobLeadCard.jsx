@@ -26,7 +26,7 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
   const [error, setError] = useState(null);
 
   const handleSearch = async (searchTerm) => {
-    if (searchTerm.length > 3) {
+    if (searchTerm.length >= 2) {
       const queryParams = new URLSearchParams();
       queryParams.append("employerName", searchTerm);
       try {
