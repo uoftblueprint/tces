@@ -27,6 +27,7 @@ jobs:
           echo "${{ secrets.ENV_VARIABLES }}" > .env
           echo "${{ secrets.PRIVATE_KEY }}" > privatekey.pem
           echo "${{ secrets.CERTIFICATE }}" > certificate.pem
+          echo "${{ secrets.CA }}" > ca.pem
 
       # Log into aws
       - name: Configure AWS credentials

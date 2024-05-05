@@ -79,11 +79,19 @@ app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 
 if (process.env.DEPLOY){
+  app.use((req, res, next) => {
+    if(req.protocol === 'http') {
+      res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
   let privateKey = fs.readFileSync( 'privatekey.pem' );
   let certificate = fs.readFileSync( 'certificate.pem' );
+  let ca = fs.readFileSync( 'ca.pem' );
 
   https.createServer({
       key: privateKey,
+      ca: ca,
       cert: certificate
   }, app).listen(port);
 }else{

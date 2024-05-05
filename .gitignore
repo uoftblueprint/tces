@@ -32,3 +32,4 @@
 # private key and certificate
 certificate.pem
 privatekey.pem
+ca.pem
