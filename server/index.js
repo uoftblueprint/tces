@@ -14,7 +14,7 @@ const corsOption = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
 }; 
-
+ 
 // Session storage imports
 const passport = require("passport");
 const session = require("express-session");
