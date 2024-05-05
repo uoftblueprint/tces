@@ -41,6 +41,15 @@ app.use(limiter);
 // So that we can send and receive JSON through express
 app.use(express.json());
 
+if (process.env.DEPLOY){
+  app.use((req, res, next) => {
+    if(req.protocol === 'http') {
+      res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
+}
+
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
@@ -84,12 +93,6 @@ app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 
 if (process.env.DEPLOY){
-  app.use((req, res, next) => {
-    if(req.protocol === 'http') {
-      res.redirect(301, `https://${req.headers.host}${req.url}`);
-    }
-    next();
-  });
   let privateKey = fs.readFileSync( 'privatekey.pem' );
   let certificate = fs.readFileSync( 'certificate.pem' );
   let ca = fs.readFileSync( 'ca.pem' );
