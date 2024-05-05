@@ -1,18 +1,23 @@
 import PropTypes from "prop-types";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import JobLeadType from "../../prop-types/JobLeadType";
 import { EditContainer } from "./index.styles";
 import EditJobLeadHeaderComponent from "./edit-job-lead-header";
 import EditJobLeadFormComponent from "./edit-job-lead-form";
+import EditJobLeadTimelineComponent from "./edit-job-lead-timeline";
 import UserType from "../../prop-types/UserType";
+import ClientType from "../../prop-types/ClientType";
 
 function EditJobLeadComponent({
   managedUsers,
+  managedJobLeads,
+  managedClients,
   jobLead,
   getUserById,
-  getEmployerById,
   setLocalExitRoute,
   setSnackBarMessage,
+  setManagedJobLeads,
+  setManagedClients,
 }) {
   return (
     <EditContainer>
@@ -29,28 +34,21 @@ function EditJobLeadComponent({
           flexDirection: "row",
           gridColumnGap: "30px",
           width: "100%",
+          maxHeight: "100vh",
+          alignItems: "flex-start",
         }}
       >
         <EditJobLeadFormComponent
           jobLead={jobLead}
-          getEmployerById={getEmployerById}
           setSnackBarMessage={setSnackBarMessage}
         />
-        <Box
-          sx={{
-            width: "33%",
-            borderRadius: 2,
-            boxShadow: 3,
-            mr: 9,
-            mb: 9,
-            p: 3,
-            border: "1px solid #e0e0e0",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Temp Timeline
-          </Typography>
-        </Box>
+        <EditJobLeadTimelineComponent
+          jobLead={jobLead}
+          managedJobLeads={managedJobLeads}
+          managedClients={managedClients}
+          setManagedJobLeads={setManagedJobLeads}
+          setManagedClients={setManagedClients}
+        />
       </Box>
     </EditContainer>
   );
@@ -58,11 +56,14 @@ function EditJobLeadComponent({
 
 EditJobLeadComponent.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
   jobLead: JobLeadType.isRequired,
   getUserById: PropTypes.func.isRequired,
-  getEmployerById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

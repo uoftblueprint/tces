@@ -23,18 +23,7 @@ function ClientEntryComponent({ entry }) {
     }
   };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "200px",
-      }}
-    >
-      {renderComponent()}
-    </div>
-  );
+  return renderComponent();
 }
 
 ClientEntryComponent.propTypes = {

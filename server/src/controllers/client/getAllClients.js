@@ -36,7 +36,15 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (phone_number) {
-      query.phone_number = { [Op.like]: `%${phone_number}%` };
+      // Validate that phoneNumber only contains digits
+      if (/^\d+$/.test(phoneNumber)) {
+        query.phoneNumber = Sequelize.literal(
+          `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
+        );
+      } else {
+        // Handle invalid phoneNumber
+        logger.error("phoneNumber should only contain digits");
+      }
     }
 
     if (date_updated_from) {

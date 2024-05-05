@@ -260,6 +260,9 @@ function ContactsInformationCard({ employer, contacts, setSnackBarMessage }) {
     <Card
       style={{
         width: "33%",
+        borderRadius: 2,
+        boxShadow: 3,
+        border: "1px solid #e0e0e0",
       }}
     >
       <CardContent
@@ -332,6 +335,7 @@ function ContactsInformationCard({ employer, contacts, setSnackBarMessage }) {
               rightSideWrapper={phoneNumberWrapper}
               setRightSide={setPhoneNumber}
               editable={editable || addable}
+              isPhoneNumber
             />
             <BoxRowComponent
               leftSide="Alternative Phone Number"
@@ -340,6 +344,7 @@ function ContactsInformationCard({ employer, contacts, setSnackBarMessage }) {
               editable={editable || addable}
               setRightSide={setAlternativePhoneNumber}
               required={false}
+              isPhoneNumber
             />
             {!editable && !addable ? (
               <Grid

@@ -15,7 +15,6 @@ import {
 import dayjs from "dayjs";
 import JobLeadContent from "./jobLeadCard";
 import { Container, ButtonContainer, ButtonL } from "./index.styles";
-import EmployerType from "../../prop-types/EmployerType";
 import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
@@ -24,7 +23,6 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 function AddJobLead({
   jobLeadData,
   setJobLeadData,
-  employers,
   setLocalExitRoute,
   currUser,
 }) {
@@ -65,6 +63,15 @@ function AddJobLead({
         numPositions: NaN,
       },
     ]);
+  };
+
+  const handleDeleteJobLead = (id) => {
+    const filteredData = jobLeadData.filter((lead) => lead.id !== id);
+    const updatedData = filteredData.map((lead, index) => ({
+      ...lead,
+      id: index,
+    }));
+    setJobLeadData(updatedData);
   };
 
   const handleInputChange = (input, id, field) => {
@@ -130,8 +137,8 @@ function AddJobLead({
           <form onSubmit={confirmSubmit}>
             <JobLeadContent
               jobLeadData={jobLeadData}
-              employers={employers}
               handleInputChange={handleInputChange}
+              handleDeleteJobLead={handleDeleteJobLead}
             />
 
             <ButtonL
@@ -209,7 +216,6 @@ AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadData: PropTypes.array.isRequired,
   setJobLeadData: PropTypes.func.isRequired,
-  employers: PropTypes.arrayOf(EmployerType).isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };

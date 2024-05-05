@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { IMaskInput } from "react-imask";
 import {
   TextField,
+  IconButton,
   FormHelperText,
   Select,
   FormControl,
@@ -20,6 +21,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Container,
   ButtonContainer,
@@ -35,7 +37,7 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   return (
     <IMaskInput
       {...other} // eslint-disable-line react/jsx-props-no-spreading
-      mask="(#00) 000-0000"
+      mask="(#00) 000-0000x0000"
       definitions={{
         "#": /[1-9]/,
       }}
@@ -100,6 +102,16 @@ function AddCompanyInfo({
       ]);
     }
     setShowAddSecondaryButton(false);
+  };
+
+  const handleDeleteSecondary = (id) => {
+    const filteredData = employerData.filter((lead) => lead.id !== id);
+    const updatedData = filteredData.map((lead, index) => ({
+      ...lead,
+      id: index,
+    }));
+    setEmployerData(updatedData);
+    setShowAddSecondaryButton(true);
   };
 
   const handleInputChange = (input, id, field) => {
@@ -334,7 +346,21 @@ function AddCompanyInfo({
                 )}
                 {lead.id > 0 && ( // Render secondary address inputs only for additional addresses
                   <>
-                    <H3>Secondary Address</H3>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <H3>Secondary Address</H3>
+                      <IconButton
+                        onClick={() => handleDeleteSecondary(lead.id)}
+                        aria-label="delete"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
                     <TextField
                       fullWidth
                       sx={{ m: 1, width: "96%" }}

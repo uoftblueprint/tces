@@ -36,8 +36,6 @@ import EditJobLead from "./pages/edit-job-lead";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
-import getEmployerByIdHelper from "./utils/employers";
-import ManagedJobLeadsLoader from "./components/wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
 import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
@@ -80,11 +78,6 @@ function App() {
   const [snackBarMessage, setSnackBarMessage] = React.useState("");
 
   // Helper Utils
-
-  // Get employer object given employer ID
-  const getEmployerById = (employerID) => {
-    return getEmployerByIdHelper(employers, employerID);
-  };
 
   // Get user object given user ID
   const getUserById = (userID) => {
@@ -254,22 +247,18 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedJobLeadsLoader
-                    setManagedJobLeads={setManagedJobLeads}
-                  >
-                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                      <EmployersLoader setEmployers={setEmployers}>
-                        <EditJobLead
-                          managedUsers={managedUsers}
-                          managedJobLeads={managedJobLeads}
-                          getEmployerById={getEmployerById}
-                          getUserById={getUserById}
-                          setLocalExitRoute={setLocalExitRoute}
-                          setSnackBarMessage={setSnackBarMessage}
-                        />
-                      </EmployersLoader>
-                    </ManagedUsersLoader>
-                  </ManagedJobLeadsLoader>
+                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
+                    <EditJobLead
+                      managedUsers={managedUsers}
+                      managedJobLeads={managedJobLeads}
+                      managedClients={managedClients}
+                      getUserById={getUserById}
+                      setLocalExitRoute={setLocalExitRoute}
+                      setSnackBarMessage={setSnackBarMessage}
+                      setManagedJobLeads={setManagedJobLeads}
+                      setManagedClients={setManagedClients}
+                    />
+                  </ManagedUsersLoader>
                 </AuthGuard>
               }
             />
@@ -280,13 +269,10 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <AddJobLeadPage
-                      employers={employers}
-                      currUser={currUser}
-                      setLocalExitRoute={setLocalExitRoute}
-                    />
-                  </EmployersLoader>
+                  <AddJobLeadPage
+                    currUser={currUser}
+                    setLocalExitRoute={setLocalExitRoute}
+                  />
                 </AuthGuard>
               }
             />
@@ -301,7 +287,13 @@ function App() {
                     <EmployerPage
                       getUserById={getUserById}
                       managedUsers={managedUsers}
+                      managedEmployers={employers}
+                      managedClients={managedClients}
+                      managedJobLeads={managedJobLeads}
                       setSnackBarMessage={setSnackBarMessage}
+                      setManagedEmployers={setEmployers}
+                      setManagedClients={setManagedClients}
+                      setManagedJobLeads={setManagedJobLeads}
                     />
                   </ManagedUsersLoader>
                 </AuthGuard>
@@ -329,9 +321,11 @@ function App() {
                 >
                   <ManagedUsersLoader setManagedUsers={setManagedUsers}>
                     <ClientPage
+                      managedClients={managedClients}
                       managedUsers={managedUsers}
                       getUserById={getUserById}
                       setSnackBarMessage={setSnackBarMessage}
+                      setManagedClients={setManagedClients}
                     />
                   </ManagedUsersLoader>
                 </AuthGuard>
