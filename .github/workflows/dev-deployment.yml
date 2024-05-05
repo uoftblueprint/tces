@@ -1,0 +1,65 @@
+# CITATION https://docs.github.com/en/actions/deployment/deploying-to-your-cloud-provider/deploying-to-amazon-elastic-container-service -- this article was great for automated deployment with ecs
+
+
+name: Deploy to Dev Environment
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: dev-deployment
+
+    steps:
+
+      # bring code from the github repo into the action
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # creating env file from environment variables
+      - name: Create env file
+        run: |
+          cd server
+          touch .env
+          echo "${{ secrets.ENV_VARIABLES }}" > .env
+          echo "${{ secrets.PRIVATE_KEY }}" > privatekey.pem
+          echo "${{ secrets.CERTIFICATE }}" > certificate.pem
+          echo "${{ secrets.CA }}" > ca.pem
+
+      # Log into aws
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      # logging into ecr using the credentials in the last step (set as environment variables)
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      # Building and pushing image to backend ECR repo
+      - name: Build, tag, and push backend image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: tces-dev
+        run: |
+          # Build a docker image and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          cd server
+          docker build -f prod.Dockerfile -t $REGISTRY/$REPOSITORY:latest .
+          docker push $REGISTRY/$REPOSITORY:latest
+
+      # Use the task definition in 
+      - name: Deploy Amazon ECS task definition produced in task-def-backend-scraper to host the containers
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: aws/dev-task-definition.json
+          service: blueprint-dev
+          cluster: blueprint-dev
+          wait-for-service-stability: true

@@ -2,7 +2,9 @@ version: "3"
 
 services:
   react-app:
-    build: client/
+    build: 
+      context: client
+      dockerfile: Dockerfile
     command: npm start
     environment: 
       - CHOKIDAR_USEPOLLING=true
@@ -13,10 +15,12 @@ services:
       - 3000:3000
     volumes:
       - ./client:/client/
-      - /client/node_modules
+      - /client/node_modules/
     
   express-app:
-    build: server/
+    build: 
+      context: server
+      dockerfile: Dockerfile
     command: npx nodemon index.js
     environment: 
       - CHOKIDAR_USEPOLLING=true
@@ -25,5 +29,5 @@ services:
       - 8000:8000
     volumes:
       - ./server:/server/
-      - /server/node_modules
+      - /server/node_modules/
     

@@ -22,7 +22,6 @@ passport.use(
       32,
       "sha256",
     );
-
     if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
       return cb(null, false, { message: "Incorrect username or password." });
     }
