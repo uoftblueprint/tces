@@ -68,6 +68,8 @@ app.use(
 );
 app.use(passport.authenticate("session"));
 
+app.options('*', cors())
+
 app.use("/", authRouter);
 app.use("/employers", employerRouter);
 app.use("/users", userRouter);
