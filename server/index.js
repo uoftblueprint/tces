@@ -4,6 +4,8 @@ const cors = require("cors");
 const compression = require("compression");
 const helmet = require("helmet");
 const RateLimit = require("express-rate-limit");
+const https = require("https");
+const fs = require('node:fs');
 
 const app = express();
 const port = 8000;
@@ -76,6 +78,16 @@ app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 
-app.listen(port, () => {
-  console.log(`TCES Backend listening on port ${port}`);
-});
+if (process.env.DEPLOY){
+  let privateKey = fs.readFileSync( 'privatekey.pem' );
+  let certificate = fs.readFileSync( 'certificate.pem' );
+
+  https.createServer({
+      key: privateKey,
+      cert: certificate
+  }, app).listen(port);
+}else{
+  app.listen(port, () => {
+    console.log(`TCES Backend listening on port ${port}`);
+  });
+}

@@ -20,11 +20,13 @@ jobs:
         uses: actions/checkout@v4
 
       # creating env file from environment variables
-      - name: Create env file
+      - name: Create env file, cert file & private key
         run: |
           cd server
           touch .env
           echo "${{ secrets.ENV_VARIABLES }}" > .env
+          echo "${{ secrets.PRIVATE_KEY }}" > privatekey.pem
+          echo "${{ secrets.CERTIFICATE }}" > certificate.pem
 
       # Log into aws
       - name: Configure AWS credentials
@@ -49,7 +51,6 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           cd server
-          cat .env
           docker build -f prod.Dockerfile -t $REGISTRY/$REPOSITORY:latest .
           docker push $REGISTRY/$REPOSITORY:latest
 

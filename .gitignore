@@ -28,3 +28,7 @@
 # Editor directories and files
 **/.idea
 **/.vscode
+
+# private key and certificate
+certificate.pem
+privatekey.pem

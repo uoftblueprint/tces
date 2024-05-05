@@ -25,6 +25,8 @@ jobs:
           cd server
           touch .env
           echo "${{ secrets.ENV_VARIABLES }}" > .env
+          echo "${{ secrets.PRIVATE_KEY }}" > privatekey.pem
+          echo "${{ secrets.CERTIFICATE }}" > certificate.pem
 
       # Log into aws
       - name: Configure AWS credentials
