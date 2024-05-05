@@ -20,7 +20,12 @@ import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
 import { getFilteredEmployers } from "../../utils/api";
 
-function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, isAddEmployer }) {
+function JobLeadContent({
+  jobLeadData,
+  handleInputChange,
+  handleDeleteJobLead,
+  isAddEmployer,
+}) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
@@ -100,8 +105,8 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
                   setOpen(false);
                 }}
                 onChange={(event, newValue) => {
-                  console.log("value")
-                  console.log(newValue)
+                  console.log("value");
+                  console.log(newValue);
                   handleInputChange(newValue.employerID, lead.id, "employer");
                 }}
                 onInputChange={(event, newInputValue) => {
@@ -193,13 +198,14 @@ function JobLeadContent({ jobLeadData, handleInputChange, handleDeleteJobLead, i
             value={lead.hoursPerWeek}
             onChange={(e) => {
               const { value } = e.target;
-              if (value >= 0 && /^\d*\.?\d*$/.test(value)) handleInputChange(value, lead.id, "hoursPerWeek");
+              if (value >= 0 && /^\d*\.?\d*$/.test(value))
+                handleInputChange(value, lead.id, "hoursPerWeek");
             }}
             required={!isAddEmployer}
           />
 
           {/* National Occupation Code Field */}
-          <TextField 
+          <TextField
             fullWidth
             type="number"
             inputProps={{ min: 0 }}

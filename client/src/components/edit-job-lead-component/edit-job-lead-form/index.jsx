@@ -75,7 +75,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
 
   const handleMinCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value)
+      let newValue = Number(event.target.value);
       if (newValue < 0) {
         newValue = 0;
       }
@@ -87,7 +87,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
 
   const handleMaxCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value)
+      let newValue = Number(event.target.value);
       if (newValue < 0) {
         newValue = 0;
       }
