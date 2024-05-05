@@ -25,16 +25,19 @@ const getAllEmployersRequestHandler = async (req, res) => {
       query.name = { [Op.like]: `%${employerName}%` };
     }
 
-    let employerContacts = [];
+    // Holds onto the employer ids that match the search criteria
+    let idsFromName = [];
     if (contactName) {
       employerContacts = await EmployerContact.findAll({
         where: {
           name: { [Op.like]: `%${contactName}%` },
         },
       });
-      logger.info(employerContacts)
+      // Extract employer ids from the matching contacts
+      idsFromName = employerContacts.map((result) => result.employer);
     }
 
+    let idsFromPhoneNumber = [];
     if (phoneNumber) {
       // Validate that phoneNumber only contains digits
       if (/^\d+$/.test(phoneNumber)) {
@@ -64,16 +67,31 @@ const getAllEmployersRequestHandler = async (req, res) => {
             ],
           },
         });
-        employerContacts = [...employerPhoneNumber, ...phoneNumberContacts, ...employerContacts];
+
+        // Extract employer ids from the matching phone numbers
+        const employerIds = employerPhoneNumber.map(result => result.id);
+        const contactIds = phoneNumberContacts.map(result => result.employer);
+
+        // Combine ids from both tables
+        idsFromPhoneNumber = [...employerIds, ...contactIds];
       } else {
         // Handle invalid phoneNumber
         logger.error("phoneNumber should only contain digits");
       }
     }
 
-    if (contactName || phoneNumber) {
-      const employerIds = employerContacts.map((contact) => contact.employer);
-      query.id = { [Op.in]: employerIds };
+    // Handle the various combinations of search criteria via ids
+    const commonIds = idsFromName.filter((id) => idsFromPhoneNumber.includes(id));
+    if (phoneNumber && contactName) {
+      query.id = { [Op.in]: commonIds };
+    }
+
+    if (phoneNumber && !contactName) {
+      query.id = { [Op.in]: idsFromPhoneNumber };
+    }
+
+    if (!phoneNumber && contactName) {
+      query.id = { [Op.in]: idsFromName };
     }
 
     if (startDateAdded) {
