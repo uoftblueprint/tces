@@ -25,6 +25,7 @@
     "helmet": "^7.1.0",
     "mock-require": "^3.0.3",
     "mysql2": "^3.6.2",
+    "nodemon": "^3.1.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pino": "^8.16.0",
