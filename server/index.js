@@ -48,7 +48,7 @@ if (process.env.DEPLOY){
     }
     next();
   });
-}
+} 
 
 
 // Import router for all authentication API endpoints
