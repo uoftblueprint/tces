@@ -13,7 +13,7 @@ const port = 8000;
 const corsOption = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
-};
+}; 
 
 // Session storage imports
 const passport = require("passport");
