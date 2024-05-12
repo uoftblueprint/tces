@@ -74,8 +74,8 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   };
 
   const handleMinCompensationChange = (event) => {
-    let newValue = parseInt(event.target.value, 10);
-    if (newValue) {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      let newValue = Number(event.target.value);
       if (newValue < 0) {
         newValue = 0;
       }
@@ -86,8 +86,8 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   };
 
   const handleMaxCompensationChange = (event) => {
-    let newValue = parseInt(event.target.value, 10);
-    if (newValue) {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      let newValue = Number(event.target.value);
       if (newValue < 0) {
         newValue = 0;
       }
@@ -183,11 +183,11 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,
-          mb: 9,
+          mb: 2,
           border: "1px solid #e0e0e0",
         }}
       >
@@ -288,7 +288,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                           <InputAdornment position="start">$</InputAdornment>
                         }
                         endAdornment={
-                          <InputAdornment position="end">/hours</InputAdornment>
+                          <InputAdornment position="end">/hour</InputAdornment>
                         }
                         label="Compensation Minimum"
                         value={minCompensation}
@@ -313,7 +313,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                           <InputAdornment position="start">$</InputAdornment>
                         }
                         endAdornment={
-                          <InputAdornment position="end">/hours</InputAdornment>
+                          <InputAdornment position="end">/hour</InputAdornment>
                         }
                         label="Compensation Maximum"
                         value={maxCompensation}
@@ -401,9 +401,8 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                     }
                     value={hoursPerWeek}
                     onChange={(event) => {
-                      const value = parseInt(event.target.value, 10);
-                      if (!value || value >= 0) {
-                        setHoursPerWeek(value);
+                      if (/^\d*\.?\d*$/.test(event.target.value)) {
+                        setHoursPerWeek(Number(event.target.value));
                       }
                     }}
                     error={!hoursPerWeek}

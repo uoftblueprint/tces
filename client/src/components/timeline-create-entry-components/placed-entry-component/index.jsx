@@ -77,6 +77,7 @@ function PlacedEntryComponent({
   const handleSubmit = (e) => {
     e.preventDefault();
     handleSubmitDirect();
+    window.location.reload();
   };
 
   useEffect(() => {

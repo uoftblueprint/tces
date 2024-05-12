@@ -65,6 +65,7 @@ function EditJobLeadTimelineComponent({
     <Box
       sx={{
         width: "33%",
+        height: "100%",
         borderRadius: 2,
         boxShadow: 3,
         mr: 9,
