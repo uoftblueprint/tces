@@ -183,11 +183,11 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,
-          mb: 9,
+          mb: 2,
           border: "1px solid #e0e0e0",
         }}
       >

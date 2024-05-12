@@ -471,12 +471,36 @@ const modifyClient = async (modifiedClient) => {
       status_at_6_months: modifiedClient.status_at_6?.toLowerCase(),
       status_at_9_months: modifiedClient.status_at_9?.toLowerCase(),
       status_at_12_months: modifiedClient.status_at_12?.toLowerCase(),
+      job_lead_placement: modifiedClient.jobLeadPlacement,
     },
   };
 
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/clients/${modifiedClient.clientID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyClientBody),
+    },
+  );
+  return response;
+};
+
+const unlinkClient = async (clientID) => {
+  const modifyClientBody = {
+    values: {
+      id: clientID,
+      job_lead_placement: -1,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${clientID}`,
     {
       method: "PUT",
       credentials: "include",
@@ -605,6 +629,7 @@ export {
   fetchClientById,
   modifyClient,
   getEmployer,
+  unlinkClient,
   getUserName,
   getEmployerContacts,
   createEmployerContacts,
