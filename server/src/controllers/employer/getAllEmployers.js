@@ -2,6 +2,7 @@ const logger = require("pino")();
 const { Op, Sequelize } = require("sequelize");
 const Employer = require("../../models/employer.model");
 const User = require("../../models/user.model");
+const EmployerContact = require("../../models/employer_contact.model");
 
 const getAllEmployersRequestHandler = async (req, res) => {
   try {
@@ -16,23 +17,83 @@ const getAllEmployersRequestHandler = async (req, res) => {
       endDateAdded,
       ownerId,
       postalCode,
+      contactName,
     } = req.query;
 
     const query = {};
     if (employerName) {
       query.name = { [Op.like]: `%${employerName}%` };
     }
+
+    // Holds onto the employer ids that match the search criteria
+    let idsFromName = [];
+    if (contactName) {
+      employerContacts = await EmployerContact.findAll({
+        where: {
+          name: { [Op.like]: `%${contactName}%` },
+        },
+      });
+      // Extract employer ids from the matching contacts
+      idsFromName = employerContacts.map((result) => result.employer);
+    }
+
+    let idsFromPhoneNumber = [];
     if (phoneNumber) {
       // Validate that phoneNumber only contains digits
       if (/^\d+$/.test(phoneNumber)) {
-        query.phoneNumber = Sequelize.literal(
-          `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
-        );
+        // Checking with Employer Table
+        const employerPhoneNumber = await Employer.findAll({
+          where: {
+            phoneNumber: Sequelize.literal(
+              `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+            ),
+          },
+        });
+
+        // Checking with EmployerContact Table
+        const phoneNumberContacts = await EmployerContact.findAll({
+          where: {
+            [Op.or]: [
+              {
+                phone_number: Sequelize.literal(
+                  `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                ),
+              },
+              {
+                alt_phone_number: Sequelize.literal(
+                  `REGEXP_REPLACE(alt_phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                ),
+              },
+            ],
+          },
+        });
+
+        // Extract employer ids from the matching phone numbers
+        const employerIds = employerPhoneNumber.map(result => result.id);
+        const contactIds = phoneNumberContacts.map(result => result.employer);
+
+        // Combine ids from both tables
+        idsFromPhoneNumber = [...employerIds, ...contactIds];
       } else {
         // Handle invalid phoneNumber
         logger.error("phoneNumber should only contain digits");
       }
     }
+
+    // Handle the various combinations of search criteria via ids
+    const commonIds = idsFromName.filter((id) => idsFromPhoneNumber.includes(id));
+    if (phoneNumber && contactName) {
+      query.id = { [Op.in]: commonIds };
+    }
+
+    if (phoneNumber && !contactName) {
+      query.id = { [Op.in]: idsFromPhoneNumber };
+    }
+
+    if (!phoneNumber && contactName) {
+      query.id = { [Op.in]: idsFromName };
+    }
+
     if (startDateAdded) {
       const startDate = new Date(startDateAdded);
       startDate.setHours(0, 0, 0, 0);

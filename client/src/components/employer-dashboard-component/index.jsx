@@ -23,6 +23,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
   const [errorOb, setError] = React.useState(null);
   const [parentFilterParams, setParentFilterParams] = React.useState({
     employerName: "",
+    contactName: "",
     phoneNumber: "",
     dateFrom: null,
     dateTo: null,
@@ -42,6 +43,8 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     // ensure these filter configs are defined before passing in query
     if (filterParams.employerName)
       queryParams.append("employerName", filterParams.employerName);
+    if (filterParams.contactName)
+      queryParams.append("contactName", filterParams.contactName);
     if (filterParams.phoneNumber)
       queryParams.append("phoneNumber", filterParams.phoneNumber);
     if (filterParams.dateFrom)
