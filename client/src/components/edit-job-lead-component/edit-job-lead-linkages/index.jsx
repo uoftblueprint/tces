@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { HeaderContainer } from "../index.styles";
-import { getFilteredClients, modifyClient } from "../../../utils/api";
+import { getFilteredClients, unlinkClient } from "../../../utils/api";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import { formatDateStr } from "../../../utils/date";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
@@ -59,19 +59,11 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
   }, [fetchClients]);
 
   const unlinkClientAndJobLead = async (client) => {
-    setIsLoading(true);
-
-    const updatedClientInfo = {
-      ...client,
-      jobLeadPlacement: -1,
-    };
-
     try {
-      const response = await modifyClient(updatedClientInfo);
+      const response = await unlinkClient(client.clientID)
 
       if (response.ok) {
-        // Refresh your clients list here
-        fetchClients();
+        window.location.reload();
       }
     } catch (err) {
       setError(err);
@@ -110,7 +102,7 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
             if (error) {
               return (
                 <Typography variant="body1" color="error">
-                  {error}
+                  {error.message}
                 </Typography>
               );
             }

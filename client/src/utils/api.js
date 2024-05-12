@@ -446,6 +446,29 @@ const modifyClient = async (modifiedClient) => {
   return response;
 };
 
+const unlinkClient = async (clientID) => {
+  const modifyClientBody = {
+    values: {
+      id: clientID,
+      job_lead_placement: -1,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${clientID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyClientBody),
+    },
+  );
+  return response;
+};
+
 const getFilteredJobLeadsTimelineEntries = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
@@ -562,6 +585,7 @@ export {
   fetchClientById,
   modifyClient,
   getEmployer,
+  unlinkClient,
   getUserName,
   getEmployerContacts,
   modifyEmployerInfo,
