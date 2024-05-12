@@ -54,7 +54,7 @@ function AddEmployerJobLead({
         title: "",
         minCompensation: NaN,
         maxCompensation: NaN,
-        hoursPerWeek: NaN,
+        hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),

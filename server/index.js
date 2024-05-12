@@ -5,7 +5,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 const RateLimit = require("express-rate-limit");
 const https = require("https");
-const fs = require('node:fs');
+const fs = require("node:fs");
 
 const app = express();
 const port = 8000;
@@ -13,8 +13,8 @@ const port = 8000;
 const corsOption = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
-}; 
- 
+};
+
 // Session storage imports
 const passport = require("passport");
 const session = require("express-session");
@@ -24,9 +24,9 @@ const SQLiteStore = require("connect-sqlite3")(session);
 require("./src/configs/passport");
 
 // Compress all routes
-app.use(compression()); 
+app.use(compression());
 
-// https://www.npmjs.com/package/helmet sets http headers 
+// https://www.npmjs.com/package/helmet sets http headers
 app.use(helmet());
 
 // Set up rate limiter: maximum of 100 requests per minute
@@ -41,15 +41,14 @@ app.use(limiter);
 // So that we can send and receive JSON through express
 app.use(express.json());
 
-if (process.env.DEPLOY){
+if (process.env.DEPLOY) {
   app.use((req, res, next) => {
-    if(req.protocol === 'http') {
+    if (req.protocol === "http") {
       res.redirect(301, `https://${req.headers.host}${req.url}`);
     }
     next();
   });
-} 
-
+}
 
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
@@ -77,7 +76,7 @@ app.use(
       sameSite: process.env.DEPLOY ? "none" : "Lax",
       httpOnly: true,
       secure: process.env.DEPLOY ? true : false,
-    }
+    },
   }),
 );
 app.use(passport.authenticate("session"));
@@ -92,17 +91,22 @@ app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 
-if (process.env.DEPLOY){
-  let privateKey = fs.readFileSync( 'privatekey.pem' );
-  let certificate = fs.readFileSync( 'certificate.pem' );
-  let ca = fs.readFileSync( 'ca.pem' );
+if (process.env.DEPLOY) {
+  let privateKey = fs.readFileSync("privatekey.pem");
+  let certificate = fs.readFileSync("certificate.pem");
+  let ca = fs.readFileSync("ca.pem");
 
-  https.createServer({
-      key: privateKey,
-      ca: ca,
-      cert: certificate
-  }, app).listen(port);
-}else{
+  https
+    .createServer(
+      {
+        key: privateKey,
+        ca: ca,
+        cert: certificate,
+      },
+      app,
+    )
+    .listen(port);
+} else {
   app.listen(port, () => {
     console.log(`TCES Backend listening on port ${port}`);
   });

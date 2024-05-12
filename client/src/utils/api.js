@@ -186,7 +186,7 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
       num_of_positions: parseInt(jobLead.numPositions, 10),
       compensation_max: jobLead.maxCompensation ?? 0,
       compensation_min: jobLead.minCompensation ?? 0,
-      hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
+      hours_per_week: jobLead.hoursPerWeek ?? null,
       national_occupation_code: parseInt(jobLead.nationalOC, 10),
       job_description: jobLead.description,
       creation_date: jobLead.creationDate
