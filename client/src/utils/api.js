@@ -260,7 +260,7 @@ const modifyJobLead = async (modifiedJobLead) => {
       hours_per_week: modifiedJobLead.hoursPerWeek,
       national_occupation_code: modifiedJobLead.noc,
       expiration_date: modifiedJobLead.expirationDate,
-      number_of_positions: modifiedJobLead.numberOfPositions,
+      num_of_positions: modifiedJobLead.numberOfPositions,
       job_description: modifiedJobLead.jobDescription,
     },
   };
