@@ -13,7 +13,7 @@ function AddJobLeadParent({ setLocalExitRoute, currUser }) {
         title: "",
         minCompensation: 0,
         maxCompensation: 0,
-        hoursPerWeek: NaN,
+        hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),
