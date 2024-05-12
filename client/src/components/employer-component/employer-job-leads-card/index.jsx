@@ -165,7 +165,7 @@ function EmployerJobLeadsCard({
       </CardContent>
       <CardContent>
         <Button variant="contained" onClick={() => navigate("/job-leads")}>
-          VIEW FULL LIST
+          VIEW ALL JOB LEADS
         </Button>
       </CardContent>
     </Card>
