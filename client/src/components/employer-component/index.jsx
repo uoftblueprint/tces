@@ -49,9 +49,27 @@ function EmployerComponent({
     };
 
     const updateContacts = async () => {
-      const res = await getEmployerContacts(employerID);
+      const queryParams = {
+        employer: employerID,
+      };
+      const queryString = new URLSearchParams(queryParams).toString();
+      const res = await getEmployerContacts(queryString);
 
-      await setContacts(res);
+      const json = await res.json();
+      if (json.status === "success") {
+        const { data } = json;
+
+        const processedContacts = data.map((contact) => ({
+          id: contact.id,
+          name: contact.name,
+          jobTitle: contact.job_type,
+          email: contact.email,
+          phoneNumber: contact.phone_number,
+          alternatePhoneNumber: contact.alt_phone_number,
+        }));
+
+        await setContacts(processedContacts);
+      }
     };
 
     updateEmployer();
@@ -89,7 +107,9 @@ function EmployerComponent({
             />
 
             <ContactsInformationCard
+              employer={employer}
               contacts={contacts}
+              setContacts={setContacts}
               setSnackBarMessage={setSnackBarMessage}
             />
 
