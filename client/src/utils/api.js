@@ -1,5 +1,3 @@
-import mockEmployerContacts from "../mock-data/mockEmployerContacts";
-
 const { REACT_APP_API_BASE_URL } = process.env;
 
 const login = async (email, password) => {
@@ -188,7 +186,7 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
       num_of_positions: parseInt(jobLead.numPositions, 10),
       compensation_max: jobLead.maxCompensation ?? 0,
       compensation_min: jobLead.minCompensation ?? 0,
-      hours_per_week: parseInt(jobLead.hoursPerWeek, 10),
+      hours_per_week: jobLead.hoursPerWeek ?? null,
       national_occupation_code: parseInt(jobLead.nationalOC, 10),
       job_description: jobLead.description,
       creation_date: jobLead.creationDate
@@ -262,7 +260,7 @@ const modifyJobLead = async (modifiedJobLead) => {
       hours_per_week: modifiedJobLead.hoursPerWeek,
       national_occupation_code: modifiedJobLead.noc,
       expiration_date: modifiedJobLead.expirationDate,
-      number_of_positions: modifiedJobLead.numberOfPositions,
+      num_of_positions: modifiedJobLead.numberOfPositions,
       job_description: modifiedJobLead.jobDescription,
     },
   };
@@ -317,9 +315,55 @@ const getUserName = async (userID) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const getEmployerContacts = async (employerID) => {
-  const response = mockEmployerContacts;
+const getEmployerContacts = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employer_contacts?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
 
+const createEmployerContacts = async (employerContactBody) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/employer_contacts`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employerContactBody),
+  });
+  return response;
+};
+
+const modifyEmployerContactInfo = async (modifiedContactInfo) => {
+  const modifyContactBody = {
+    name: modifiedContactInfo.name,
+    email: modifiedContactInfo.email,
+    job_type: modifiedContactInfo.job_type,
+    phone_number: modifiedContactInfo.phone_number,
+    alt_phone_number: modifiedContactInfo.alt_phone_number,
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/employer_contacts/${modifiedContactInfo.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyContactBody),
+    },
+  );
   return response;
 };
 
@@ -427,12 +471,36 @@ const modifyClient = async (modifiedClient) => {
       status_at_6_months: modifiedClient.status_at_6?.toLowerCase(),
       status_at_9_months: modifiedClient.status_at_9?.toLowerCase(),
       status_at_12_months: modifiedClient.status_at_12?.toLowerCase(),
+      job_lead_placement: modifiedClient.jobLeadPlacement,
     },
   };
 
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/clients/${modifiedClient.clientID}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyClientBody),
+    },
+  );
+  return response;
+};
+
+const unlinkClient = async (clientID) => {
+  const modifyClientBody = {
+    values: {
+      id: clientID,
+      job_lead_placement: -1,
+    },
+  };
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/clients/${clientID}`,
     {
       method: "PUT",
       credentials: "include",
@@ -561,8 +629,11 @@ export {
   fetchClientById,
   modifyClient,
   getEmployer,
+  unlinkClient,
   getUserName,
   getEmployerContacts,
+  createEmployerContacts,
+  modifyEmployerContactInfo,
   modifyEmployerInfo,
   getFilteredJobLeadsTimelineEntries,
   addJobLeadTimelineEntry,

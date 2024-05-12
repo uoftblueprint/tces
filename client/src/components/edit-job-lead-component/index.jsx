@@ -5,6 +5,7 @@ import { EditContainer } from "./index.styles";
 import EditJobLeadHeaderComponent from "./edit-job-lead-header";
 import EditJobLeadFormComponent from "./edit-job-lead-form";
 import EditJobLeadTimelineComponent from "./edit-job-lead-timeline";
+import EditJobLeadLinkagesComponent from "./edit-job-lead-linkages";
 import UserType from "../../prop-types/UserType";
 import ClientType from "../../prop-types/ClientType";
 
@@ -34,14 +35,23 @@ function EditJobLeadComponent({
           flexDirection: "row",
           gridColumnGap: "30px",
           width: "100%",
-          maxHeight: "100vh",
-          alignItems: "flex-start",
         }}
       >
-        <EditJobLeadFormComponent
-          jobLead={jobLead}
-          setSnackBarMessage={setSnackBarMessage}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gridColumnGap: "30px",
+            width: "66%",
+            alignItems: "flex-start",
+          }}
+        >
+          <EditJobLeadFormComponent
+            jobLead={jobLead}
+            setSnackBarMessage={setSnackBarMessage}
+          />
+          <EditJobLeadLinkagesComponent jobLead={jobLead} />
+        </Box>
         <EditJobLeadTimelineComponent
           jobLead={jobLead}
           managedJobLeads={managedJobLeads}

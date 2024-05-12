@@ -39,6 +39,8 @@ import { getUserByIdHelper } from "./utils/users";
 import ClientPage from "./pages/client-page";
 import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
+import Error404 from "./pages/errors/404-error";
+import UserProfile from "./pages/user-profile";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -340,6 +342,17 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/settings"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <UserProfile currUser={currUser} />
+                </AuthGuard>
+              }
+            />
           </Route>
           <Route
             path="/admin/create-user"
@@ -375,6 +388,10 @@ function App() {
               </AuthGuard>
             }
           />
+        </Route>
+        {/* route to error 404 on invalid url */}
+        <Route element={<Navbar isAdmin={currUser.isAdmin} />}>
+          <Route path="*" element={<Error404 />} />
         </Route>
       </Routes>
     </Router>

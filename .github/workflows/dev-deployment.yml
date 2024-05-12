@@ -6,6 +6,7 @@ name: Deploy to Dev Environment
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   deploy:

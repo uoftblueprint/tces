@@ -22,7 +22,7 @@ const addJobLeadsRequestHandler = async (req, res) => {
           body,
           employer: jobLead ? jobLead.employer : -1,
           job_lead: jobLead ? jobLead.id : -1,
-          user: req.user,
+          user: req.user.id,
         });
 
         jobLeads.push(jobLead);
