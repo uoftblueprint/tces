@@ -29,7 +29,6 @@ function JobLeadContent({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
-  console.log(error);
 
   const handleSearch = async (searchTerm) => {
     if (searchTerm.length >= 2) {
@@ -66,6 +65,7 @@ function JobLeadContent({
           setError(errorData.message || "Fetch failed.");
         }
       } catch (err) {
+        console.log(error);
         setError(err);
       }
     }

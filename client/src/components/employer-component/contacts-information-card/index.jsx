@@ -306,7 +306,7 @@ function ContactsInformationCard({ employer, contacts, setSnackBarMessage }) {
         </div>
       </CardContent>
       <Divider />
-      {contacts.length > 0 ? (
+      {contacts.length > 0 || addable ? (
         <CardContent>
           <form onSubmit={commitEdit}>
             <BoxRowComponent
