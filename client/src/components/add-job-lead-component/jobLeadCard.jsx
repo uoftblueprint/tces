@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
 import { getFilteredEmployers } from "../../utils/api";
+import ErrorComponent from "../shared/error-screen-component";
 
 function JobLeadContent({
   jobLeadData,
@@ -70,6 +71,8 @@ function JobLeadContent({
       }
     }
   };
+
+  if (error) return <ErrorComponent message={error} />;
 
   return (
     <>
