@@ -47,23 +47,41 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN,
+    jobLead.minCompensation !== undefined &&
+      !Number.isNaN(jobLead.minCompensation) &&
+      jobLead.minCompensation !== null
+      ? jobLead.compensationMin
+      : NaN,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN,
+    jobLead.maxCompensation !== undefined &&
+      !Number.isNaN(jobLead.maxCompensation) &&
+      jobLead.maxCompensation !== null
+      ? jobLead.compensationMax
+      : NaN,
   );
   const [employmentType, setEmploymentType] = React.useState(
     jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN,
+    jobLead.hoursPerWeek !== undefined &&
+      !Number.isNaN(jobLead.hoursPerWeek) &&
+      jobLead.hoursPerWeek !== null
+      ? jobLead.hoursPerWeek
+      : NaN,
   );
-  const [noc, setNoc] = React.useState(jobLead.noc || "");
+  const [noc, setNoc] = React.useState(
+    jobLead.noc !== undefined &&
+      jobLead.noc !== null &&
+      jobLead.noc.toString().length > 0
+      ? jobLead.noc.toString()
+      : "",
+  );
   const [expirationDate, setExpirationDate] = React.useState(
     dayjs(jobLead.expirationDate) || null,
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || "",
+    jobLead.numOfPostions !== undefined ? jobLead.numOfPostions : 0,
   );
   const [jobDescription, setJobDescription] = React.useState(
     jobLead.jobDescription || "",
@@ -114,7 +132,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   };
 
   const renderViewValue = (typeValue, value, prefix = "", postfix = "") => {
-    if (value) {
+    if (value !== undefined && value !== null && !Number.isNaN(value)) {
       return (
         <Typography variant="body1" gutterBottom>
           {prefix}
@@ -293,7 +311,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
-                        error={!minCompensation}
+                        error={minCompensation === undefined}
                         required
                       />
                     </FormControl>
@@ -318,7 +336,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
-                        error={!maxCompensation}
+                        error={minCompensation === undefined}
                         required
                       />
                     </FormControl>
@@ -327,7 +345,8 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
               ) : (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  {minCompensation && maxCompensation ? (
+                  {minCompensation !== undefined &&
+                  maxCompensation !== undefined ? (
                     <>
                       <Grid item xs={8} md={7}>
                         <Typography>
@@ -428,7 +447,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                     value={noc}
                     disabled={!isEditMode}
                     onChange={(event) => setNoc(event.target.value)}
-                    error={!noc}
+                    error={jobLead.noc.toString().length === 0}
                     required
                   />
                 ) : (
