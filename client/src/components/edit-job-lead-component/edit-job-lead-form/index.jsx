@@ -47,26 +47,25 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.minCompensation !== undefined &&
-      !Number.isNaN(jobLead.minCompensation) &&
-      jobLead.minCompensation !== null
+    jobLead.compensationMin !== undefined &&
+      jobLead.compensationMin !== null &&
+      !Number.isNaN(jobLead.compensationMin)
       ? jobLead.compensationMin
       : NaN,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.maxCompensation !== undefined &&
-      !Number.isNaN(jobLead.maxCompensation) &&
-      jobLead.maxCompensation !== null
+    jobLead.compensationMax !== undefined &&
+      jobLead.compensationMax !== null &&
+      !Number.isNaN(jobLead.compensationMax)
       ? jobLead.compensationMax
       : NaN,
   );
+
   const [employmentType, setEmploymentType] = React.useState(
     jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek !== undefined &&
-      !Number.isNaN(jobLead.hoursPerWeek) &&
-      jobLead.hoursPerWeek !== null
+    jobLead.hoursPerWeek !== undefined && jobLead.hoursPerWeek !== null
       ? jobLead.hoursPerWeek
       : NaN,
   );
@@ -131,8 +130,14 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
     );
   };
 
-  const renderViewValue = (typeValue, value, prefix = "", postfix = "") => {
-    if (value !== undefined && value !== null && !Number.isNaN(value)) {
+  const renderViewValue = (
+    typeValue,
+    value,
+    prefix = "",
+    postfix = "",
+    forceError = false,
+  ) => {
+    if (value !== undefined && value !== null && !forceError) {
       return (
         <Typography variant="body1" gutterBottom>
           {prefix}
