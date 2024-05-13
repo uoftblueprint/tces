@@ -47,23 +47,23 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN,
+    jobLead.compensationMin,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN,
+    jobLead.compensationMax,
   );
   const [employmentType, setEmploymentType] = React.useState(
     jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN,
+    jobLead.hoursPerWeek || null,
   );
   const [noc, setNoc] = React.useState(jobLead.noc || "");
   const [expirationDate, setExpirationDate] = React.useState(
     dayjs(jobLead.expirationDate) || null,
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || "",
+    jobLead.numOfPostions || null,
   );
   const [jobDescription, setJobDescription] = React.useState(
     jobLead.jobDescription || "",
@@ -75,25 +75,17 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
 
   const handleMinCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMinCompensation(newValue);
-    } else {
-      setMinCompensation(NaN);
+      setMinCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
   const handleMaxCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMaxCompensation(newValue);
-    } else {
-      setMaxCompensation(NaN);
+      setMaxCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
@@ -282,7 +274,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
@@ -307,7 +299,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
@@ -327,7 +319,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
               ) : (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  {minCompensation && maxCompensation ? (
+                  {minCompensation !== null && maxCompensation !== null ? (
                     <>
                       <Grid item xs={8} md={7}>
                         <Typography>

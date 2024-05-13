@@ -52,15 +52,15 @@ function AddJobLead({
         id: newId,
         employer: NaN,
         title: "",
-        minCompensation: NaN,
-        maxCompensation: NaN,
+        minCompensation: null,
+        maxCompensation: null,
         hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),
         expirationDate: dayjs().add(1, "month"),
         employmentType: NaN,
-        numPositions: NaN,
+        numPositions: null,
       },
     ]);
   };
@@ -92,7 +92,7 @@ function AddJobLead({
       );
 
       if (response.ok) {
-        navigate("/job-leads");
+        navigate(-1);
       } else {
         setErrorObj(response);
       }
@@ -169,7 +169,7 @@ function AddJobLead({
                   <Button onClick={handleClose}>CANCEL</Button>
                   <Button
                     onClick={() => {
-                      navigate("/job-leads");
+                      navigate(-1);
                     }}
                     autoFocus
                   >

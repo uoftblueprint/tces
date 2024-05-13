@@ -73,10 +73,9 @@ function EmployerTimelineComponent({
   return (
     <Box
       sx={{
-        width: "33%",
         borderRadius: 2,
         boxShadow: 3,
-        mr: 9,
+        mr: 10,
         mb: 9,
         border: "1px solid #e0e0e0",
       }}
