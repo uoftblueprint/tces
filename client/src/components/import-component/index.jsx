@@ -97,7 +97,7 @@ function importComponent() {
     }
 
     // Replace url with target route
-    fetch("http://localhost:8000/import", {
+    fetch("http://localhost:8000/upload", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
