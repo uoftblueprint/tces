@@ -50,15 +50,15 @@ function AddEmployer({ currUser }) {
       {
         id: 0,
         title: "",
-        minCompensation: NaN,
-        maxCompensation: NaN,
+        minCompensation: null,
+        maxCompensation: null,
         hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),
         expirationDate: dayjs().add(1, "month"),
         employmentType: NaN,
-        numPositions: NaN,
+        numPositions: null,
       },
     ],
   };

@@ -31,7 +31,6 @@ function EmployerDashboardHeader({
         emp.ownerName,
       ]),
     );
-
     const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
     const href = window.URL.createObjectURL(blob);

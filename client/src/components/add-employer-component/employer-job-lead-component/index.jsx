@@ -52,15 +52,15 @@ function AddEmployerJobLead({
       {
         id: newId,
         title: "",
-        minCompensation: 0,
-        maxCompensation: 0,
-        hoursPerWeek: 0,
+        minCompensation: null,
+        maxCompensation: null,
+        hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),
         expirationDate: dayjs().add(1, "month"),
         employmentType: NaN,
-        numPositions: 0,
+        numPositions: null,
       },
     ]);
   };

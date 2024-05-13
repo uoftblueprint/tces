@@ -92,25 +92,17 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
 
   const handleMinCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMinCompensation(newValue);
-    } else {
-      setMinCompensation(NaN);
+      setMinCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
   const handleMaxCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMaxCompensation(newValue);
-    } else {
-      setMaxCompensation(NaN);
+      setMaxCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
@@ -305,7 +297,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
@@ -330,7 +322,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>

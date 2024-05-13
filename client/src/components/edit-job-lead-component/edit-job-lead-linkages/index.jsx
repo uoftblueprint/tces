@@ -60,7 +60,7 @@ function EditJobLeadLinkagesComponent({ jobLead }) {
 
   const unlinkClientAndJobLead = async (client) => {
     try {
-      const response = await unlinkClient(client.clientID)
+      const response = await unlinkClient(client.clientID);
 
       if (response.ok) {
         window.location.reload();
