@@ -316,7 +316,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
-                        error={minCompensation === undefined}
+                        error={!Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -341,7 +341,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
-                        error={minCompensation === undefined}
+                        error={!Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -510,7 +510,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                     value={numberOfPositions}
                     onChange={(e) => setNumberOfPositions(e.target.value)}
                     disabled={!isEditMode}
-                    error={!numberOfPositions}
+                    error={!Number.isNaN(numberOfPositions)}
                     required
                   />
                 ) : (
