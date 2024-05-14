@@ -30,7 +30,6 @@ function JobLeadContent({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
-  console.log(error);
 
   const handleSearch = async (searchTerm) => {
     if (searchTerm.length >= 2) {

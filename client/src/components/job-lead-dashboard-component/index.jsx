@@ -89,8 +89,8 @@ function JobLeadDashboardComponent({
       );
     if (
       filterParams.compensationRange &&
-      filterParams.compensationRange[0] &&
-      filterParams.compensationRange[1]
+      !Number.isNaN(filterParams.compensationRange[0]) &&
+      !Number.isNaN(filterParams.compensationRange[1])
     ) {
       queryParams.append("minCompensation", filterParams.compensationRange[0]);
       queryParams.append("maxCompensation", filterParams.compensationRange[1]);
