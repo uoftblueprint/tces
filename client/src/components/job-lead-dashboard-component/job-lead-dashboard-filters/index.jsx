@@ -493,7 +493,7 @@ function JobLeadDashboardFiltersComponent({
             onClick={onApplyFilterClick}
             sx={{ width: "100%" }}
           >
-            APPLY FLILTER
+            APPLY FILTER
           </Button>
           <Button
             onClick={onFilterReset}

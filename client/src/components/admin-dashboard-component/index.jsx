@@ -20,16 +20,27 @@ import UserType from "../../prop-types/UserType";
 import ConfirmDialog from "../shared/confirm-dialog-component";
 
 import { DashboardContainer, HeaderContainer } from "./index.styles";
-import { deleteUser } from "../../utils/api";
+import { deleteUser, getAllUsers } from "../../utils/api";
 import ErrorComponent from "../shared/error-screen-component";
 
 function AdminDashboardComponent({ managedUsers, removeUser }) {
   const navigate = useNavigate();
+  const [initialLoading, setInitialLoading] = React.useState(true);
+  const [initialLoad, setInitialLoad] = React.useState(true);
+  const [noFilterMode, setNoFilterMode] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredRows, setFilteredRows] = React.useState(managedUsers);
   const [confirmDeleteDialog, setConfirmDeleteDialog] = React.useState(false);
   const [userToDelete, setUserToDelete] = React.useState(null);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+  const [rowCount, setRowCount] = React.useState(managedUsers.length);
+  const [ignorePaginationChange, setIgnorePaginationChange] =
+    React.useState(false);
+  const [paginationModel, setPaginationModel] = React.useState({
+    pageSize: 10,
+    page: 0,
+  });
 
   React.useEffect(() => {
     setFilteredRows(managedUsers);
@@ -38,16 +49,102 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
   const handleSearch = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
+  };
 
-    const filtered = managedUsers.filter((row) => {
-      return row.displayName.toLowerCase().includes(query.toLowerCase());
-    });
-    setFilteredRows(filtered);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
+    }
+    queryParams.append("avoidAdmins", true);
+
+    // early return if no filter params are provided
+    if (!filterParams) return queryParams;
+
+    // ensure these filter configs are defined before passing in query
+    if (filterParams.searchQuery)
+      queryParams.append("name", filterParams.searchQuery);
+
+    return queryParams;
+  };
+
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterJobLeadsQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+      setPaginationModel(customPageModel);
+    }
+
+    return generateFilterParams(filterParams, page, pageSize);
+  };
+
+  // function to handle the apply filter button
+  const handleApplyFilter = async (filterParams, customPageModel = null) => {
+    const queryParams = declareFilterJobLeadsQueryParams(
+      filterParams,
+      customPageModel,
+    );
+
+    // fetch the data
+    try {
+      setLoading(true);
+      const response = await getAllUsers(queryParams.toString());
+      if (response.ok) {
+        const usersData = await response.json();
+
+        const formattedUsers = usersData.data.rows.map((user) => ({
+          userID: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          isAdmin: user.is_admin,
+          id: user.id,
+          displayName: `${user.first_name} ${user.last_name}`,
+        }));
+        setFilteredRows(formattedUsers);
+        setRowCount(usersData.data.count);
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Fetch failed.");
+      }
+    } catch (error) {
+      setErrorMessage(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFilterReset = () => {
+    setNoFilterMode(true);
     setSearchQuery("");
-    setFilteredRows(managedUsers);
+    setIgnorePaginationChange(true);
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(null, {
+      pageSize: 10,
+      page: 0,
+    });
+  };
+
+  const applyFilters = (isInvokedByPageChange = false) => {
+    const filterParams = {
+      searchQuery,
+    };
+    setIgnorePaginationChange(true);
+    let customPageModel = null;
+    if (!isInvokedByPageChange) {
+      customPageModel = {
+        pageSize: 10,
+        page: 0,
+      };
+    }
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(filterParams, customPageModel);
   };
 
   const handleBackClick = () => {
@@ -78,6 +175,7 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
       setUserToDelete(null);
     }
     setConfirmDeleteDialog(false);
+    handleApplyFilter(null);
   };
 
   const handleCancelDelete = () => {
@@ -85,11 +183,33 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
     setUserToDelete(null);
   };
 
+  React.useEffect(() => {
+    if (!initialLoad && !ignorePaginationChange) {
+      if (noFilterMode) {
+        handleApplyFilter(null);
+      } else {
+        applyFilters(true);
+      }
+    } else {
+      setInitialLoad(false);
+      setIgnorePaginationChange(false);
+    }
+  }, [paginationModel]);
+
+  // triggers on initialization of job leads dashboard screen
+  React.useEffect(() => {
+    // fetch job leads with default configs
+    const initialFetch = async () => {
+      await handleApplyFilter(null);
+    };
+    initialFetch().then(() => setInitialLoading(false));
+  }, []);
+
   const columns = [
     {
       field: "displayName",
       headerName: "Name",
-      width: 535,
+      width: 400,
       editable: false,
       sortable: false,
       filterable: false,
@@ -97,7 +217,7 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
     {
       field: "email",
       headerName: "Email",
-      width: 535,
+      width: 400,
       editable: false,
       sortable: false,
       filterable: false,
@@ -208,11 +328,11 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
             display: "flex",
             flexDirection: "row",
             gridColumnGap: "30px",
-            height: 400,
+            height: "100%",
             width: "100%",
           }}
         >
-          <Card sx={{ width: 235, height: 175, marginLeft: 2 }}>
+          <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4 }}>
             <CardContent>
               <Typography
                 sx={{ fontSize: 14 }}
@@ -241,9 +361,21 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
                 />
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button size="small" onClick={handleFilterReset}>
-                Reset Filters
+            <CardActions
+              sx={{ display: "flex", p: 2, flexDirection: "column" }}
+            >
+              <Button
+                variant="contained"
+                onClick={() => applyFilters(false)}
+                sx={{ width: "100%" }}
+              >
+                APPLY FILTER
+              </Button>
+              <Button
+                onClick={handleFilterReset}
+                sx={{ mt: 2, alignSelf: "flex-start" }}
+              >
+                RESET FILTERS
               </Button>
             </CardActions>
           </Card>
@@ -262,14 +394,12 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
             }}
             rows={filteredRows}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
-                },
-              },
-            }}
+            rowCount={rowCount}
+            loading={loading || initialLoading}
             pageSizeOptions={[10]}
+            paginationModel={paginationModel}
+            paginationMode="server"
+            onPaginationModelChange={setPaginationModel}
             disableColumnSelector
             disableColumnMenu
           />

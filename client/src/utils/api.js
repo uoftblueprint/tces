@@ -55,15 +55,29 @@ const createUser = async (firstName, lastName, userEmail, userPassword) => {
   return response;
 };
 
-const getAllUsers = async () => {
-  // eslint-disable-next-line no-useless-catch
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/users`, {
+const getUser = async (userID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
     method: "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
   });
+  return response;
+};
+
+const getAllUsers = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/users/?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
   return response;
 };
 
@@ -614,6 +628,7 @@ export {
   logout,
   isUserLoggedIn,
   createUser,
+  getUser,
   getAllUsers,
   modifyUser,
   deleteUser,
