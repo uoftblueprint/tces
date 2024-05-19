@@ -22,13 +22,12 @@ import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import { valuetext, getOwnerIds } from "../../../utils/jobLeads";
+import { valuetext } from "../../../utils/jobLeads";
 
 import { JOB_TYPES } from "../../../utils/contants";
 
 function JobLeadDashboardFiltersComponent({
   managedJobLeads,
-  getUserById,
   paginationModel,
   handleApplyFilter,
   jobLeadAggregates,
@@ -233,7 +232,7 @@ function JobLeadDashboardFiltersComponent({
     if (initialLoad && managedJobLeads?.length > 0) {
       setCompensationRange([minCompensation, maxCompensation]);
       setHoursPerWeekRange([minHoursPerWeek, maxHoursPerWeek]);
-      setOwnerOptions(getOwnerIds(owners, getUserById));
+      setOwnerOptions(owners);
       setInitialLoad(false);
     }
   }, [managedJobLeads]);
@@ -493,7 +492,7 @@ function JobLeadDashboardFiltersComponent({
             onClick={onApplyFilterClick}
             sx={{ width: "100%" }}
           >
-            APPLY FLILTER
+            APPLY FILTER
           </Button>
           <Button
             onClick={onFilterReset}

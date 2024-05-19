@@ -185,13 +185,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <JobLeadDashboard
-                      managedJobLeads={managedJobLeads}
-                      setManagedJobLeads={setManagedJobLeads}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <JobLeadDashboard
+                    managedJobLeads={managedJobLeads}
+                    setManagedJobLeads={setManagedJobLeads}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />

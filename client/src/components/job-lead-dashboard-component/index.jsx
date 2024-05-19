@@ -148,6 +148,7 @@ function JobLeadDashboardComponent({
           id: jobLead.id,
           jobLeadID: jobLead.id,
           ownerID: jobLead.owner,
+          ownerDetails: jobLead.owner_details,
           creatorID: jobLead.creator,
           employerID: jobLead.employer,
           jobTitle: jobLead.job_title,

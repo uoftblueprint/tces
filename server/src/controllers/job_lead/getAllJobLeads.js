@@ -161,10 +161,22 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
           const client_count = await Client.count({
             where: { job_lead_placement: jobLead.id },
           });
+
+          const owner = await User.findOne({ where: { id: jobLead.owner } });
+
+          const owner_details = owner
+            ? {
+                ownerID: owner.id,
+                userName: owner
+                  ? `${owner.first_name} ${owner.last_name}`
+                  : `User ${owner.id}`,
+              }
+            : null;
           return {
             ...jobLead.toJSON(),
             // eslint-disable-next-line camelcase
             client_count,
+            owner_details,
           };
         }),
       );
@@ -187,7 +199,17 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       raw: true,
     });
     const uniqueOwnersList = Array.isArray(uniqueOwners)
-      ? uniqueOwners.map((owner) => owner.owner)
+      ? await Promise.all(
+          uniqueOwners.map(async (owner) => {
+            const user = await User.findOne({ where: { id: owner.owner } });
+            return {
+              ownerID: owner.owner,
+              userName: user
+                ? `${user.first_name} ${user.last_name}`
+                : `User ${owner.owner}`,
+            };
+          }),
+        )
       : [];
 
     return res.status(200).json({
