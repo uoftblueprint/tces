@@ -15,12 +15,7 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-const createMessage = async (client) => {
-  const tces_employee = await User.findByPk(client.owner);
-  if (!tces_employee) {
-    return null;
-  }
-
+const createMessage = (client, tces_employee) => {
   const closureDate = new Date(client.closure_date).toLocaleDateString(
     "en-US",
     {
@@ -48,12 +43,13 @@ const createMessage = async (client) => {
   return message;
 };
 
-const sendEmail = (client) => {
-  const message = createMessage(client);
+const sendEmail = async (client) => {
+  const tces_employee = await User.findByPk(client.owner);
+  const message = createMessage(client, tces_employee);
 
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
-    to: client.email,
+    to: tces_employee.email,
     subject: "TCES CRM Client Status - Needs Attention",
     text: message,
   };
@@ -70,7 +66,7 @@ const sendEmail = (client) => {
 const checkClientClosureForMonth = async (checkMonths) => {
   const today = new Date();
   const targetDate = new Date();
-  const clients = []
+  const clients = [];
 
   for (const month of checkMonths) {
     targetDate.setMonth(today.getMonth() - month);
@@ -101,25 +97,51 @@ const checkClientClosureForMonth = async (checkMonths) => {
     clients.push(...clientsForMonth);
   }
 
+  // This should consist of unique client objects
   return clients;
 };
 
+// const getClosedClients = async () => {
+//   const clients = await Client.findAll({
+//     where: {
+//       status: "closed",
+//     },
+//   });
+//   return clients
+// }
+
 const checkClientClosures = async () => {
   const checkMonths = [3, 6, 9, 12];
-  const clients = [];
 
-  const clientsForMonth = await checkClientClosureForMonth(checkMonths);
-  clients.push(clientsForMonth);
-  logger.info(`Found ${clients.length} clients to send emails to.`);
+  // const clients = await getClosedClients(checkMonths);
+  const clients = await checkClientClosureForMonth(checkMonths);
+  console.log(`Found ${clients.length} clients to send emails to.`);
 
   for (let client of clients) {
-    sendEmail(client);
+    try {
+      // Client's owner is extracted and an email is sent to them.
+      await sendEmail(client);
+    } catch (error) {
+      console.log(`Could not notify ${client.name}'s owner.`);
+    }
   }
 };
 
-cron.schedule("0 0 * * *", () => {
-  console.log("Running the client closure check scheduler.");
-  checkClientClosures();
-});
-
-export { checkClientClosures, checkClientClosureForMonth, sendEmail };
+const beginScheduler = () => {
+  cron.schedule(
+    "0 0 * * *",
+    () => {
+      console.log("Running the client closure check scheduler.");
+      checkClientClosures();
+    },
+    {
+      recoverMissedExecutions: true,
+    },
+  );
+};
+module.exports = {
+  checkClientClosures,
+  checkClientClosureForMonth,
+  sendEmail,
+  beginScheduler,
+};

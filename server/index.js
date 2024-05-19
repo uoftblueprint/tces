@@ -54,6 +54,10 @@ app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 
+const beginScheduler =
+  require("./src/middlewares/email/emailSender").beginScheduler;
+beginScheduler();
+
 app.listen(port, () => {
   console.log(`TCES Backend listening on port ${port}`);
 });
