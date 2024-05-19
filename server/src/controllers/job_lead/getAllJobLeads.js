@@ -2,6 +2,9 @@ const logger = require("pino")();
 const { Op, literal, Sequelize } = require("sequelize");
 const { escape } = require("validator");
 const JobLead = require("../../models/job_lead.model");
+const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
+const Employer = require("../../models/employer.model");
 
 function isValidNOCQuery(query) {
   // only numbers
@@ -30,6 +33,8 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       ownerId,
       searchNOCQuery,
       jobTypes,
+      employer,
+      searchEmployerNameQuery,
     } = req.query;
 
     const query = {};
@@ -49,6 +54,17 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
         ...query.creation_date,
         [Op.lte]: endDate,
       };
+    }
+
+    if (searchEmployerNameQuery) {
+      const employers = await Employer.findAll({
+        where: {
+          name: { [Op.like]: `%${searchEmployerNameQuery}%` },
+        },
+        attributes: ["id"],
+      });
+      const employerIds = employers.map((employer) => employer.id);
+      query.employer = { [Op.in]: employerIds };
     }
 
     if (startDateExpired) {
@@ -95,6 +111,10 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       query.owner = ownerId;
     }
 
+    if (employer) {
+      query.employer = employer;
+    }
+
     query[Op.and] = [...(query[Op.and] || [])];
 
     // make sure to only query if it is a valid NOC query (only numbers)
@@ -132,7 +152,28 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       searchConfig.offset = pageSize * page;
     }
 
-    const jobLeads = await JobLead.findAll(searchConfig);
+    let jobLeads = await JobLead.findAll(searchConfig);
+
+    if (Array.isArray(jobLeads)) {
+      jobLeads = await Promise.all(
+        jobLeads.map(async (jobLead) => {
+          // eslint-disable-next-line camelcase
+          const client_count = await Client.count({
+            where: { job_lead_placement: jobLead.id },
+          });
+          return {
+            ...jobLead.toJSON(),
+            // eslint-disable-next-line camelcase
+            client_count,
+          };
+        }),
+      );
+    }
+
+    for (jl of jobLeads) {
+      const owner = await User.findOne({ where: { id: jl.owner } });
+      owner ? (jl.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+    }
 
     const maxCompensationSoFar = await JobLead.max("compensation_max");
     const minCompensationSoFar = await JobLead.min("compensation_min");

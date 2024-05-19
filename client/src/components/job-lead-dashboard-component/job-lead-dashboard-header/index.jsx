@@ -11,9 +11,59 @@ import Typography from "@mui/material/Typography";
 
 import IconButton from "@mui/material/IconButton";
 import { HeaderContainer } from "../index.styles";
+import { getFilteredJobLeads } from "../../../utils/api";
+import { formatDateStr } from "../../../utils/date";
+import { displayCompensationRange } from "../../../utils/jobLeads";
 
-function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
+function JobLeadDashboardHeaderComponent({
+  jobLeadsResultsCount,
+  generateFilterParams,
+  filterParams,
+}) {
   const navigate = useNavigate();
+
+  const generateCSV = async () => {
+    const req = await getFilteredJobLeads(generateFilterParams(filterParams));
+    const { data } = await req.json();
+    const csvData = [
+      [
+        "Title",
+        "Compensation",
+        "Hours/Week",
+        "Type",
+        "Date Created",
+        "Expiry Date",
+        "Owner",
+        "NOC Code",
+      ],
+    ];
+
+    data.forEach((jl) =>
+      csvData.push([
+        jl.job_title,
+        displayCompensationRange(
+          jl.compensation_min,
+          jl.compensation_max,
+          "/hour",
+        ),
+        jl.hours_per_week,
+        jl.employment_type,
+        formatDateStr(jl.creation_date),
+        formatDateStr(jl.expiration_date),
+        jl.ownerName,
+        jl.national_occupation_code,
+      ]),
+    );
+    const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    const href = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", href);
+    link.setAttribute("download", "job_lead_data.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
+  };
 
   const handleBackClick = () => {
     navigate("/dashboard");
@@ -80,7 +130,7 @@ function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
             },
           }}
           startIcon={<DownloadIcon />}
-          onClick={() => {}}
+          onClick={generateCSV}
         >
           EXPORT CURRENT FILTER VIEW ({jobLeadsResultsCount} Job Leads)
         </Button>
@@ -108,6 +158,10 @@ function JobLeadDashboardHeaderComponent({ jobLeadsResultsCount }) {
 
 JobLeadDashboardHeaderComponent.propTypes = {
   jobLeadsResultsCount: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  filterParams: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  generateFilterParams: PropTypes.object.isRequired,
   // eslint-disable-next-line
 };
 

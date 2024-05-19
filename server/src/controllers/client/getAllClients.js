@@ -1,6 +1,7 @@
 const logger = require("pino")();
 const Sequelize = require("sequelize");
 const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
 
 const { Op } = Sequelize;
 
@@ -17,6 +18,7 @@ const getAllClientsRequestHandler = async (req, res) => {
       active,
       r_and_i,
       closed,
+      job_lead_placement,
     } = req.query;
 
     let query = {};
@@ -34,7 +36,15 @@ const getAllClientsRequestHandler = async (req, res) => {
     }
 
     if (phone_number) {
-      query.phone_number = { [Op.like]: `%${phone_number}%` };
+      // Validate that phoneNumber only contains digits
+      if (/^\d+$/.test(phoneNumber)) {
+        query.phoneNumber = Sequelize.literal(
+          `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
+        );
+      } else {
+        // Handle invalid phoneNumber
+        logger.error("phoneNumber should only contain digits");
+      }
     }
 
     if (date_updated_from) {
@@ -74,6 +84,9 @@ const getAllClientsRequestHandler = async (req, res) => {
     if (owner) {
       query.owner = owner;
     }
+    if (job_lead_placement) {
+      query.job_lead_placement = job_lead_placement;
+    }
     let status_options = [];
     if (active === "true") {
       status_options = ["active"];
@@ -106,7 +119,16 @@ const getAllClientsRequestHandler = async (req, res) => {
       };
     }
 
-    const clients = await Client.findAndCountAll(query_options);
+    let clients = await Client.findAndCountAll(query_options);
+
+    clients.rows = clients.rows.map((client) => {
+      return client.get({ plain: true });
+    });
+
+    for (clt of clients.rows) {
+      const owner = await User.findOne({ where: { id: clt.owner } });
+      owner ? (clt.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+    }
 
     const uniqueOwners = await Client.findAll({
       attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],

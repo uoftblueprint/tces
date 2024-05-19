@@ -21,29 +21,30 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
   const [rowCount, setRowCount] = React.useState(employers.length);
   const [owners, setOwners] = React.useState([]);
   const [errorOb, setError] = React.useState(null);
+  const [parentFilterParams, setParentFilterParams] = React.useState({
+    employerName: "",
+    contactName: "",
+    phoneNumber: "",
+    dateFrom: null,
+    dateTo: null,
+    ownerId: -1,
+    postalCode: "",
+  });
 
-  // helper to generate query params based on pagination model state and filter configs
-  const declareFilterEmployerQueryParams = (
-    filterParams,
-    customPageModel = null,
-  ) => {
-    let { pageSize, page } = paginationModel;
-    if (customPageModel) {
-      page = customPageModel.page;
-      pageSize = customPageModel.pageSize;
-      setPaginationModel(customPageModel);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
     }
-    // we initially include pagination model first
-    const queryParams = new URLSearchParams({
-      pageSize,
-      page,
-    });
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
     // ensure these filter configs are defined before passing in query
     if (filterParams.employerName)
       queryParams.append("employerName", filterParams.employerName);
+    if (filterParams.contactName)
+      queryParams.append("contactName", filterParams.contactName);
     if (filterParams.phoneNumber)
       queryParams.append("phoneNumber", filterParams.phoneNumber);
     if (filterParams.dateFrom)
@@ -56,6 +57,19 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
       queryParams.append("postalCode", filterParams.postalCode);
 
     return queryParams;
+  };
+
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterEmployerQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+    }
+    return generateFilterParams(filterParams, page, pageSize);
   };
 
   // function to handle the apply filter button
@@ -122,7 +136,11 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
     <Container>
       <LoadingScreenComponent isLoading={initialLoading}>
         <DashboardContainer>
-          <EmployerDashboardHeader numEntries={rowCount} />
+          <EmployerDashboardHeader
+            numEntries={rowCount}
+            generateFilterParams={generateFilterParams}
+            filterParams={parentFilterParams}
+          />
           <Box
             sx={{
               display: "flex",
@@ -138,6 +156,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
               paginationModel={paginationModel}
               owners={owners}
               getUserById={getUserById}
+              setParentFilterParams={setParentFilterParams}
             />
             <EmployerDashboardTable
               managedEmployers={employers}

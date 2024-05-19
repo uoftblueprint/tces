@@ -52,17 +52,26 @@ function AddEmployerJobLead({
       {
         id: newId,
         title: "",
-        minCompensation: NaN,
-        maxCompensation: NaN,
-        hoursPerWeek: NaN,
+        minCompensation: null,
+        maxCompensation: null,
+        hoursPerWeek: null,
         nationalOC: NaN,
         description: "",
         creationDate: dayjs(),
         expirationDate: dayjs().add(1, "month"),
         employmentType: NaN,
-        numPositions: NaN,
+        numPositions: null,
       },
     ]);
+  };
+
+  const handleDeleteJobLead = (id) => {
+    const filteredData = employerData.filter((lead) => lead.id !== id);
+    const updatedData = filteredData.map((lead, index) => ({
+      ...lead,
+      id: index,
+    }));
+    setEmployerData(updatedData);
   };
 
   const handleInputChange = (input, id, field) => {
@@ -100,9 +109,17 @@ function AddEmployerJobLead({
             <JobLeadContent
               jobLeadData={employerData}
               handleInputChange={handleInputChange}
+              handleDeleteJobLead={handleDeleteJobLead}
               isAddEmployer
             />
-            <ButtonL onClick={handleAddJobLead}>+ Add Another Job Lead</ButtonL>
+            <ButtonL
+              onClick={(e) => {
+                e.preventDefault();
+                handleAddJobLead();
+              }}
+            >
+              + Add Another Job Lead
+            </ButtonL>
             <Pagination
               count={3}
               shape="rounded"

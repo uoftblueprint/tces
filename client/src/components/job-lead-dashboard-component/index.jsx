@@ -10,6 +10,7 @@ import ErrorComponent from "../shared/error-screen-component";
 import { getFilteredJobLeads } from "../../utils/api";
 import { formatDateStr } from "../../utils/date";
 import LoadingScreenComponent from "../shared/loading-screen-component";
+import { JOB_TYPES } from "../../utils/contants";
 
 function JobLeadDashboardComponent({
   managedJobLeads,
@@ -31,23 +32,29 @@ function JobLeadDashboardComponent({
     maxHoursPerWeek: 100,
   });
   const [owners, setOwners] = React.useState([]);
+  const [parentFilterParams, setParentFilterParams] = React.useState({
+    searchTitleQuery: "",
+    searchEmployerNameQuery: "",
+    startDateCreated: null,
+    endDateCreated: null,
+    startDateExpired: null,
+    endDateExpired: null,
+    compensationRange: [null, null],
+    hoursPerWeekRange: [null, null],
+    ownerId: -1,
+    searchNOCQuery: "",
+    jobTypeSelect: JOB_TYPES.reduce((acc, jobType) => {
+      acc[jobType] = true;
+      return acc;
+    }, {}),
+  });
 
-  // helper to generate query params based on pagination model state and filter configs
-  const declareFilterJobLeadsQueryParams = (
-    filterParams,
-    customPageModel = null,
-  ) => {
-    let { pageSize, page } = paginationModel;
-    if (customPageModel) {
-      page = customPageModel.page;
-      pageSize = customPageModel.pageSize;
-      setPaginationModel(customPageModel);
+  const generateFilterParams = (filterParams, page = null, pageSize = null) => {
+    const queryParams = new URLSearchParams({});
+    if (pageSize || page) {
+      queryParams.append("page", page);
+      queryParams.append("pageSize", pageSize);
     }
-    // we initially include pagination model first
-    const queryParams = new URLSearchParams({
-      pageSize,
-      page,
-    });
 
     // early return if no filter params are provided
     if (!filterParams) return queryParams;
@@ -55,6 +62,11 @@ function JobLeadDashboardComponent({
     // ensure these filter configs are defined before passing in query
     if (filterParams.searchTitleQuery)
       queryParams.append("searchTitleQuery", filterParams.searchTitleQuery);
+    if (filterParams.searchEmployerNameQuery)
+      queryParams.append(
+        "searchEmployerNameQuery",
+        filterParams.searchEmployerNameQuery,
+      );
     if (filterParams.startDateCreated)
       queryParams.append(
         "startDateCreated",
@@ -104,6 +116,21 @@ function JobLeadDashboardComponent({
     return queryParams;
   };
 
+  // helper to generate query params based on pagination model state and filter configs
+  const declareFilterJobLeadsQueryParams = (
+    filterParams,
+    customPageModel = null,
+  ) => {
+    let { pageSize, page } = paginationModel;
+    if (customPageModel) {
+      page = customPageModel.page;
+      pageSize = customPageModel.pageSize;
+      setPaginationModel(customPageModel);
+    }
+
+    return generateFilterParams(filterParams, page, pageSize);
+  };
+
   // function to handle the apply filter button
   const handleApplyFilter = async (filterParams, customPageModel = null) => {
     const queryParams = declareFilterJobLeadsQueryParams(
@@ -133,6 +160,7 @@ function JobLeadDashboardComponent({
           expirationDate: formatDateStr(jobLead.expiration_date),
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
+          clientCount: jobLead.client_count,
         }));
         setOwners(jobLeadsData.uniqueOwners);
         setAggregates(jobLeadsData.aggregates);
@@ -164,7 +192,11 @@ function JobLeadDashboardComponent({
   return (
     <DashboardContainer>
       <LoadingScreenComponent isLoading={initialLoading}>
-        <JobLeadDashboardHeaderComponent jobLeadsResultsCount={rowCount} />
+        <JobLeadDashboardHeaderComponent
+          jobLeadsResultsCount={rowCount}
+          generateFilterParams={generateFilterParams}
+          filterParams={parentFilterParams}
+        />
         <Box
           sx={{
             display: "flex",
@@ -181,6 +213,7 @@ function JobLeadDashboardComponent({
             jobLeadAggregates={aggregates}
             setPaginationModel={setPaginationModel}
             owners={owners}
+            setParentFilterParams={setParentFilterParams}
           />
           <JobLeadDashboardTableComponent
             managedJobLeads={managedJobLeads}

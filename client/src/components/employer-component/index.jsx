@@ -1,9 +1,5 @@
 // import * as React from "react";
-
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -12,15 +8,31 @@ import PropTypes from "prop-types";
 import { getEmployer, getEmployerContacts } from "../../utils/api";
 
 import UserType from "../../prop-types/UserType";
-import { EmployerContainer, MainContainer, Divider } from "./index.styles";
+import { MainContainer } from "./index.styles";
 
 import EmployerInfoComponent from "./employer-info-component";
 import EmployerInformationCard from "./employer-information-card";
 import ContactsInformationCard from "./contacts-information-card";
+import EmployerTimelineComponent from "./employer-timeline";
+import EmployerType from "../../prop-types/EmployerType";
+import JobLeadType from "../../prop-types/JobLeadType";
+import ClientType from "../../prop-types/ClientType";
+import LoadingComponent from "../shared/loading-screen-component";
+import EmployerJobLeadsCard from "./employer-job-leads-card";
 
-function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
+function EmployerComponent({
+  getUserById,
+  managedUsers,
+  setSnackBarMessage,
+  managedJobLeads,
+  managedClients,
+  managedEmployers,
+  setManagedEmployers,
+  setManagedJobLeads,
+  setManagedClients,
+}) {
   // default, this gets overriden once the useEffect() finishes. to avoid a not available error.
-  const [employer, setEmployer] = useState({ owner: 1, creator: 1 });
+  const [employer, setEmployer] = useState(null);
   const [contacts, setContacts] = useState({});
 
   const { employerID } = useParams();
@@ -37,14 +49,36 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
     };
 
     const updateContacts = async () => {
-      const res = await getEmployerContacts(employerID);
+      const queryParams = {
+        employer: employerID,
+      };
+      const queryString = new URLSearchParams(queryParams).toString();
+      const res = await getEmployerContacts(queryString);
 
-      await setContacts(res);
+      const json = await res.json();
+      if (json.status === "success") {
+        const { data } = json;
+
+        const processedContacts = data.map((contact) => ({
+          id: contact.id,
+          name: contact.name,
+          jobTitle: contact.job_type,
+          email: contact.email,
+          phoneNumber: contact.phone_number,
+          alternatePhoneNumber: contact.alt_phone_number,
+        }));
+
+        await setContacts(processedContacts);
+      }
     };
 
     updateEmployer();
     updateContacts();
   }, []);
+
+  if (employer === null || contacts === null) {
+    return <LoadingComponent isLoading />;
+  }
 
   return (
     <>
@@ -56,51 +90,59 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
       />
 
       <MainContainer style={{ display: "flex" }}>
-        <EmployerContainer>
+        <Box
+          style={{
+            width: "66%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
-              gridColumnGap: "30px",
-              marginTop: "10px",
               width: "100%",
+              justifyContent: "space-between",
+              marginBottom: "20px",
             }}
           >
             <EmployerInformationCard
               employer={employer}
               setSnackBarMessage={setSnackBarMessage}
             />
-
             <ContactsInformationCard
+              employer={employer}
               contacts={contacts}
+              setContacts={setContacts}
               setSnackBarMessage={setSnackBarMessage}
             />
-
-            <Card style={{ width: "33%" }}>
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  align="left"
-                  gutterBottom
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    margin: 0,
-                  }}
-                >
-                  Activity Timeline (placeholder)
-                </Typography>
-              </CardContent>
-              <Divider />
-              <CardContent>
-                <Typography sx={{ mb: 0.5 }} color="text.secondary">
-                  Placeholder
-                </Typography>
-              </CardContent>
-            </Card>
           </Box>
-        </EmployerContainer>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              marginBottom: "10%",
+            }}
+          >
+            <EmployerJobLeadsCard
+              employerID={employerID}
+              managedJobLeads={managedJobLeads}
+              setManagedJobLeads={setManagedJobLeads}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ width: "33%" }}>
+          <EmployerTimelineComponent
+            employer={employer}
+            managedJobLeads={managedJobLeads}
+            managedClients={managedClients}
+            managedEmployers={managedEmployers}
+            setManagedEmployers={setManagedEmployers}
+            setManagedClients={setManagedClients}
+            setManagedJobLeads={setManagedJobLeads}
+          />
+        </Box>
       </MainContainer>
     </>
   );
@@ -109,7 +151,13 @@ function EmployerComponent({ getUserById, managedUsers, setSnackBarMessage }) {
 EmployerComponent.propTypes = {
   getUserById: PropTypes.func.isRequired,
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
+  managedClients: PropTypes.arrayOf(ClientType).isRequired,
+  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
+  managedEmployers: PropTypes.arrayOf(EmployerType).isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  setManagedClients: PropTypes.func.isRequired,
+  setManagedJobLeads: PropTypes.func.isRequired,
+  setManagedEmployers: PropTypes.func.isRequired,
 };
 
 export default EmployerComponent;

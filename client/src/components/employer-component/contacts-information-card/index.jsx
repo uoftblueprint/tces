@@ -13,19 +13,23 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import { useEffect, useState } from "react";
-
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Divider } from "../index.styles";
 
 import BoxRowComponent from "../box-row-component";
 import ContactType from "../../../prop-types/ContactType";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
+import EmployerType from "../../../prop-types/EmployerType";
+import {
+  createEmployerContacts,
+  modifyEmployerContactInfo,
+} from "../../../utils/api";
+import ErrorComponent from "../../shared/error-screen-component";
 
-function ContactsInformationCard({
-  contacts,
-  // setSnackBarMessage
-}) {
+function ContactsInformationCard({ employer, contacts, setSnackBarMessage }) {
   const [contactPage, setContactPage] = useState(1);
+  const [errorObj, setErrorObj] = useState(null);
   const [name, setName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [email, setEmail] = useState("");
@@ -35,6 +39,8 @@ function ContactsInformationCard({
   const [addable, setAddable] = useState(false);
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [confirmAddDialog, setConfirmAddDialog] = useState(false);
   const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [confirmCancelAddDialog, setConfirmCancelAddDialog] = useState(false);
@@ -82,6 +88,10 @@ function ContactsInformationCard({
     setConfirmEditDialog(false);
   };
 
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
+  };
+
   const cancelEditUnsaved = () => {
     setConfirmCancelEditDialog(false);
   };
@@ -97,22 +107,45 @@ function ContactsInformationCard({
     setAlternativePhoneNumber(contacts[newContactPage].alternatePhoneNumber);
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
+    setIsLoading(true);
     setConfirmAddDialog(false);
-    // push a new contact locally
-    contacts.push({
+
+    const newAddContact = {
       name,
-      jobTitle,
       email,
-      phoneNumber,
-      alternativePhoneNumber,
-    });
+      job_type: jobTitle,
+      phone_number: phoneNumber,
+      alt_phone_number: alternativePhoneNumber,
+      employer: employer.id,
+    };
 
-    // here, we would call the API to also save the contact on db
+    try {
+      const response = await createEmployerContacts(newAddContact);
 
-    setAddable(false);
-    setContactPage(contacts.length);
-    setIsLoading(false);
+      const jsonBody = await response.json();
+
+      if (!response.ok) {
+        setErrorObj(response);
+      } else {
+        const contact = jsonBody.data.employer_contact;
+
+        contacts.push({
+          id: contact.id,
+          name: contact.name,
+          jobTitle: contact.job_type,
+          email: contact.email,
+          phoneNumber: contact.phone_number,
+          alternatePhoneNumber: contact.alt_phone_number,
+        });
+      }
+    } catch (error) {
+      setErrorObj(error);
+    } finally {
+      setAddable(false);
+      setContactPage(contacts.length);
+      setIsLoading(false);
+    }
   };
 
   const cancelAdd = () => {
@@ -139,34 +172,37 @@ function ContactsInformationCard({
 
     setIsLoading(true);
 
-    // const modifiedEmployerInfo = {
-    //   id: employer.id,
-    //   name: employerName,
-    //   phone_number: employerPhoneNumber,
-    //   fax: employerFax,
-    //   email: employerEmail,
-    //   website: employerWebsite,
-    //   naics_code: employerNAICSCode,
-    //   address: employerAddress,
-    // };
+    const contactId = contacts[contactPage - 1].id;
 
-    // try {
-    //   const response = await modifyEmployerInfo(modifiedEmployerInfo);
-    //   console.warn(employer);
-    //   console.warn(response);
-    //   if (response.ok) {
-    //     setSnackBarMessage("Job lead updated successfully.");
-    //     setEditable(false);
-    //   } else {
-    //     setSnackBarMessage("Failed to update job lead.");
-    //   }
-    // } catch (error) {
-    //   setErrorObj(error);
-    //   setSnackBarMessage("An error occurred.");
-    // } finally {
-    //   setIsLoading(false);
-    //   setConfirmEditDialog(false);
-    // }
+    const modifiedContact = {
+      id: contactId,
+      name,
+      email,
+      job_type: jobTitle,
+      phone_number: phoneNumber,
+      alt_phone_number: alternativePhoneNumber,
+      employer: employer.id,
+    };
+
+    try {
+      const response = await modifyEmployerContactInfo(modifiedContact);
+
+      if (response.ok) {
+        setSnackBarMessage("Contact updated successfully.");
+        setEditable(false);
+      } else {
+        setFormSubmissionErrorDialog(true);
+        setSnackBarMessage("Failed to update contact.");
+      }
+    } catch (error) {
+      setErrorObj(error);
+      setSnackBarMessage("An error occurred.");
+    } finally {
+      setIsLoading(false);
+      setConfirmEditDialog(false);
+    }
+
+    setIsLoading(false);
   };
 
   const leftButtonClick = () => {
@@ -218,10 +254,18 @@ function ContactsInformationCard({
     return <a href={`tel:${contactAltPhone}`}>{contactAltPhone}</a>;
   };
 
+  if (errorObj) return <ErrorComponent message={errorObj.message} />;
+
   return (
     <Card
       style={{
-        width: "33%",
+        width: "50%",
+        borderRadius: 8,
+        boxShadow: 3,
+        border: "1px solid #e0e0e0",
+      }}
+      sx={{
+        mr: 2,
       }}
     >
       <CardContent
@@ -265,7 +309,7 @@ function ContactsInformationCard({
         </div>
       </CardContent>
       <Divider />
-      {contacts.length > 0 ? (
+      {contacts.length > 0 || addable ? (
         <CardContent>
           <form onSubmit={commitEdit}>
             <BoxRowComponent
@@ -294,6 +338,7 @@ function ContactsInformationCard({
               rightSideWrapper={phoneNumberWrapper}
               setRightSide={setPhoneNumber}
               editable={editable || addable}
+              isPhoneNumber
             />
             <BoxRowComponent
               leftSide="Alternative Phone Number"
@@ -302,6 +347,7 @@ function ContactsInformationCard({
               editable={editable || addable}
               setRightSide={setAlternativePhoneNumber}
               required={false}
+              isPhoneNumber
             />
             {!editable && !addable ? (
               <Grid
@@ -405,13 +451,19 @@ function ContactsInformationCard({
           />
         </Box>
       )}
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
+      />
     </Card>
   );
 }
 
 ContactsInformationCard.propTypes = {
+  employer: EmployerType.isRequired,
   contacts: ContactType.isRequired,
-  // setSnackBarMessage: PropTypes.func.isRequired,
+  // setContacts: PropTypes.func.isRequired,
+  setSnackBarMessage: PropTypes.func.isRequired,
 };
 
 export default ContactsInformationCard;

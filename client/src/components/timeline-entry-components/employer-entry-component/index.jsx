@@ -10,8 +10,8 @@ function EmployerEntryComponent({ entry }) {
 
   const renderComponent = () => {
     switch (entry.type) {
-      case "job":
-        return <EmployerJobComponent {...otherProps} />;
+      case "job_lead_add":
+        return <EmployerJobComponent {...entry} />;
       case "contact":
         return <EmployerContactComponent {...otherProps} />;
       case "placement":
@@ -23,18 +23,7 @@ function EmployerEntryComponent({ entry }) {
     }
   };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "200px",
-      }}
-    >
-      {renderComponent()}
-    </div>
-  );
+  return renderComponent();
 }
 
 EmployerEntryComponent.propTypes = {

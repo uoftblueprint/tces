@@ -17,23 +17,26 @@ import EmployerType from "../../../prop-types/EmployerType";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { modifyEmployerInfo } from "../../../utils/api";
 import ErrorScreenComponent from "../../shared/error-screen-component";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
 function EmployerInformationCard({ employer, setSnackBarMessage }) {
   const [editable, setEditable] = useState(false);
 
   const [employerName, setEmployerName] = useState(employer.name);
   const [employerPhoneNumber, setEmployerPhoneNumber] = useState(
-    employer.phoneNumber,
+    employer.phone_number,
   );
   const [employerFax, setEmployerFax] = useState(employer.fax);
   const [employerEmail, setEmployerEmail] = useState(employer.email);
   const [employerWebsite, setEmployerWebsite] = useState(employer.website);
   const [employerNAICSCode, setEmployerNAICSCode] = useState(
-    employer.naicsCode,
+    employer.naics_code,
   );
   const [employerAddress, setEmployerAddress] = useState(employer.address);
 
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [confirmCancelEditDialog, setConfirmCancelEditDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
@@ -71,19 +74,27 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
     setConfirmEditDialog(false);
   };
 
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
+  };
+
   const cancelEditUnsaved = () => {
     setConfirmCancelEditDialog(false);
+  };
+
+  const handleUpdateNaics = (newVal) => {
+    setEmployerNAICSCode(newVal.replace(/\D/g, ""));
   };
 
   const handleConfirmCancel = () => {
     setConfirmCancelEditDialog(false);
     setEditable(false);
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phoneNumber);
+    setEmployerPhoneNumber(employer.phone_number);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naicsCode);
+    setEmployerNAICSCode(employer.naics_code);
     setEmployerAddress(employer.address);
   };
 
@@ -98,9 +109,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
       fax: employerFax,
       email: employerEmail,
       website: employerWebsite,
-      naics_code: employerNAICSCode,
       address: employerAddress,
     };
+    if (employerNAICSCode) {
+      modifiedEmployerInfo.naics_code = Number(employerNAICSCode);
+    }
 
     try {
       const response = await modifyEmployerInfo(modifiedEmployerInfo);
@@ -108,6 +121,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
         setSnackBarMessage("Job lead updated successfully.");
         setEditable(false);
       } else {
+        setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job lead.");
       }
     } catch (error) {
@@ -122,11 +136,11 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   // on initial startup, since useState() does not work on passed in props
   useEffect(() => {
     setEmployerName(employer.name);
-    setEmployerPhoneNumber(employer.phoneNumber);
+    setEmployerPhoneNumber(employer.phone_number);
     setEmployerFax(employer.fax);
     setEmployerEmail(employer.email);
     setEmployerWebsite(employer.website);
-    setEmployerNAICSCode(employer.naicsCode);
+    setEmployerNAICSCode(employer.naics_code);
     setEmployerAddress(employer.address);
   }, [employer]);
 
@@ -135,7 +149,14 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
   return (
     <Card
       style={{
-        width: "33%",
+        width: "50%",
+        borderRadius: 8,
+        boxShadow: 3,
+        border: "1px solid #e0e0e0",
+      }}
+      sx={{
+        mr: 2,
+        ml: 9,
       }}
     >
       <CardContent
@@ -183,6 +204,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
             rightSide={employerPhoneNumber}
             setRightSide={setEmployerPhoneNumber}
             editable={editable}
+            isPhoneNumber
           />
           <BoxRowComponent
             leftSide="Fax"
@@ -209,7 +231,7 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           <BoxRowComponent
             leftSide="NAICS Code"
             rightSide={employerNAICSCode}
-            setRightSide={setEmployerNAICSCode}
+            setRightSide={handleUpdateNaics}
             editable={editable}
           />
           <BoxRowComponent
@@ -260,6 +282,10 @@ function EmployerInformationCard({ employer, setSnackBarMessage }) {
           )}
         </form>
       </CardContent>
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
+      />
     </Card>
   );
 }

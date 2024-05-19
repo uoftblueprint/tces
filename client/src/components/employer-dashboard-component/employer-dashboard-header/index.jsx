@@ -5,9 +5,42 @@ import AddIcon from "@mui/icons-material/Add";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { HeaderContainer } from "../index.styles";
+import { getFilteredEmployers } from "../../../utils/api";
+import { formatDateStr } from "../../../utils/date";
 
-function EmployerDashboardHeader({ numEntries }) {
+function EmployerDashboardHeader({
+  numEntries,
+  generateFilterParams,
+  filterParams,
+}) {
   const navigate = useNavigate();
+
+  const generateCSV = async () => {
+    const req = await getFilteredEmployers(generateFilterParams(filterParams));
+    const { data } = await req.json();
+    const csvData = [
+      ["Employer Name", "Date", "Phone Number", "Email", "Owner"],
+    ];
+
+    data.forEach((emp) =>
+      csvData.push([
+        emp.name,
+        formatDateStr(emp.date_added),
+        emp.phone_number,
+        emp.email,
+        emp.ownerName,
+      ]),
+    );
+    const csvContent = `${csvData.map((e) => e.join(",")).join("\n")}`;
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+    const href = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", href);
+    link.setAttribute("download", "employer_data.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
+  };
 
   const handleBackClick = () => {
     navigate("/dashboard");
@@ -71,7 +104,7 @@ function EmployerDashboardHeader({ numEntries }) {
           },
         }}
         startIcon={<DownloadIcon />}
-        onClick={() => {}}
+        onClick={generateCSV}
       >
         EXPORT CURRENT FILTER VIEW ({numEntries} EMPLOYERS)
       </Button>
@@ -100,6 +133,9 @@ function EmployerDashboardHeader({ numEntries }) {
 EmployerDashboardHeader.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   numEntries: PropTypes.number.isRequired,
+  generateFilterParams: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  filterParams: PropTypes.object.isRequired,
 };
 
 export default EmployerDashboardHeader;

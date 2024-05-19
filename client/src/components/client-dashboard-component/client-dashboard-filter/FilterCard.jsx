@@ -31,6 +31,7 @@ function FilterCard({
   paginationModel,
   owners,
   handleApplyFilter,
+  setParentFilterParams,
 }) {
   // setting and persisting initial state for option selection and slider range boundaries
   const [initialLoad, setInitialLoad] = React.useState(true);
@@ -67,6 +68,14 @@ function FilterCard({
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const handlePhoneNumberChange = (event) => {
+    // Remove all non-numeric characters from the input
+    setValues({
+      ...values,
+      phoneNumber: event.target.value.replace(/\D/g, ""),
+    });
+  };
+
   const handleDateChange = (prop) => (newValue) => {
     setValues({ ...values, [prop]: newValue });
   };
@@ -80,18 +89,17 @@ function FilterCard({
         page: 0,
       };
     }
-    // we want to reset pagination model when we apply a filter
-    handleApplyFilter(
-      {
-        ...values,
-        status: {
-          active: statusSelect.Active,
-          rAndI: statusSelect["R&I"],
-          closed: statusSelect.Closed,
-        },
+    const filterParams = {
+      ...values,
+      status: {
+        active: statusSelect.Active,
+        rAndI: statusSelect["R&I"],
+        closed: statusSelect.Closed,
       },
-      customPageModel,
-    );
+    };
+    setParentFilterParams(filterParams);
+    // we want to reset pagination model when we apply a filter
+    handleApplyFilter(filterParams, customPageModel);
   };
 
   const onFilterReset = () => {
@@ -107,6 +115,20 @@ function FilterCard({
     });
     setStatusSelect(initialStatusSelect);
     setIgnorePaginationChange(true);
+    setParentFilterParams({
+      name: "",
+      phoneNumber: "",
+      dateUpdatedFrom: null,
+      dateUpdatedUntil: null,
+      dateRegisteredFrom: null,
+      dateRegisteredUntil: null,
+      owner: -1,
+      status: STATUS_TYPES.reduce((acc, statusType) => {
+        acc[statusType] = true;
+        return acc;
+      }, {}),
+      actionStatus: "all",
+    });
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(null, {
       pageSize: 10,
@@ -180,7 +202,7 @@ function FilterCard({
           <TextField
             type="text"
             value={values.phoneNumber}
-            onChange={handleChange("phoneNumber")}
+            onChange={handlePhoneNumberChange}
             size="small"
             style={{
               borderWidth: "10px",
@@ -313,6 +335,7 @@ FilterCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   owners: PropTypes.arrayOf(PropTypes.number).isRequired,
   handleApplyFilter: PropTypes.func.isRequired,
+  setParentFilterParams: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

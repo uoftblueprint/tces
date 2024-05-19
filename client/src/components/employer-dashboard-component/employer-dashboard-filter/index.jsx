@@ -24,6 +24,7 @@ function EmployerDashboardFilter({
   handleApplyFilter,
   owners,
   getUserById,
+  setParentFilterParams,
 }) {
   // setting and persisting initial state
   const [noFilterMode, setNoFilterMode] = React.useState(true);
@@ -33,6 +34,7 @@ function EmployerDashboardFilter({
   // local filter states
   const ownerOptions = getOwnerIds(owners, getUserById);
   const [employerName, setEmployerName] = useState("");
+  const [contactName, setContactName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
@@ -41,6 +43,11 @@ function EmployerDashboardFilter({
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
+  };
+
+  const handlePhoneNumberChange = (event) => {
+    // Remove all non-numeric characters from the input
+    setPhoneNumber(event.target.value.replace(/\D/g, ""));
   };
 
   const handleDateChange = (setter) => (newValue) => {
@@ -54,6 +61,7 @@ function EmployerDashboardFilter({
   const applyFilters = (isInvokedByPageChange = false) => {
     const filterParams = {
       employerName,
+      contactName,
       phoneNumber,
       dateFrom,
       dateTo,
@@ -68,6 +76,7 @@ function EmployerDashboardFilter({
         page: 0,
       };
     }
+    setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(filterParams, customPageModel);
   };
@@ -75,10 +84,20 @@ function EmployerDashboardFilter({
   const onFilterReset = () => {
     setNoFilterMode(true);
     setEmployerName("");
+    setContactName("");
     setPhoneNumber("");
     setDateFrom(null);
     setDateTo(null);
     setPostalCode("");
+    setParentFilterParams({
+      employerName: "",
+      contactName: "",
+      phoneNumber: "",
+      dateFrom: null,
+      dateTo: null,
+      ownerId: -1,
+      postalCode: "",
+    });
     setIgnorePaginationChange(true);
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(null, {
@@ -136,13 +155,36 @@ function EmployerDashboardFilter({
           align="left"
           gutterBottom
         >
+          Contact Name
+        </Typography>
+        <TextField
+          type="text"
+          size="small"
+          value={contactName}
+          onChange={handleInputChange(setContactName)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mb: 2 }}
+        />
+
+        <Typography
+          sx={{ fontSize: 14, mb: 2 }}
+          color="text.secondary"
+          align="left"
+          gutterBottom
+        >
           Phone Number
         </Typography>
         <TextField
           type="text"
           size="small"
           value={phoneNumber}
-          onChange={handleInputChange(setPhoneNumber)}
+          onChange={handlePhoneNumberChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -250,6 +292,7 @@ EmployerDashboardFilter.propTypes = {
   handleApplyFilter: PropTypes.func.isRequired,
   owners: PropTypes.arrayOf(PropTypes.number).isRequired,
   getUserById: PropTypes.func.isRequired,
+  setParentFilterParams: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

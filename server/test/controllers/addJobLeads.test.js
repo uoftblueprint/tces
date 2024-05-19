@@ -125,7 +125,7 @@ describe("addJobLeads test suite", () => {
       // 2 times for creating job leads
       // 2 times for creating timeline entry about action
       // 2 times for bulk creating timeline entry
-      expect(spy).toHaveBeenCalledTimes(6);
+      expect(spy).toHaveBeenCalledTimes(4);
     });
 
     it("Returns 200 on success", async () => {

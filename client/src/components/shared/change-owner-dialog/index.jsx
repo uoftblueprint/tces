@@ -38,7 +38,7 @@ function ChangeOwnerDialog({
   setError,
 }) {
   const navigate = useNavigate();
-  const [owner, setOwner] = React.useState(currOwner.userID);
+  const [owner, setOwner] = React.useState(currOwner?.userID);
   const [isLoading, setIsLoading] = React.useState(false);
   const getDisplayUserName = (userID) => {
     const user = getUserByIdHelper(users, userID);
@@ -99,7 +99,7 @@ function ChangeOwnerDialog({
   };
 
   React.useEffect(() => {
-    setOwner(currOwner.userID);
+    setOwner(currOwner?.userID);
   }, [currOwner]);
 
   return (
@@ -117,13 +117,13 @@ function ChangeOwnerDialog({
       <DialogTitle>Change Owner</DialogTitle>
       <DialogContent>
         <FormControl fullWidth sx={{ m: 1, width: "300px" }}>
-          <InputLabel id={`nameLabel-${currOwner.userID}`}>
+          <InputLabel id={`nameLabel-${currOwner?.userID}`}>
             Owner Name
           </InputLabel>
           <Select
             sx={{ textAlign: "left" }}
-            labelId={`nameLabel-${currOwner.id}`}
-            id={`owner-${currOwner.id}`}
+            labelId={`nameLabel-${currOwner?.id}`}
+            id={`owner-${currOwner?.id}`}
             value={owner}
             label="Owner Name"
             onChange={handleInputChange}

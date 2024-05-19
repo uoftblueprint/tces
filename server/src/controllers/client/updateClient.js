@@ -2,6 +2,7 @@ const logger = require("pino")();
 const Client = require("../../models/client.model");
 const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
 const User = require("../../models/user.model");
+const JobLead = require("../../models/job_lead.model");
 
 const updateClientRequestHandler = async (req, res) => {
   try {
@@ -68,6 +69,7 @@ const updateClientRequestHandler = async (req, res) => {
       status_at_6_months,
       status_at_9_months,
       status_at_12_months,
+      job_lead_placement,
     } = req.body.values;
 
     const userObject = await User.findOne({
@@ -75,8 +77,21 @@ const updateClientRequestHandler = async (req, res) => {
     });
 
     const createTimelineEntry = async (field, value) => {
-      const title = `${userObject.first_name} ${userObject.last_name} updated ${field} to "${value}" for ${client.name}`;
-      const body = `${userObject.first_name} ${userObject.last_name} has updated the ${field} to "${value}" for ${client.name}.`;
+      const formatValue = (str) => {
+        return str
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      };
+
+      const title = `${userObject.first_name} ${
+        userObject.last_name
+      } updated ${field} to "${formatValue(value)}" for ${client.name}`;
+      const body = `${userObject.first_name} ${
+        userObject.last_name
+      } has updated the ${field} to "${formatValue(value)}" for ${
+        client.name
+      }.`;
 
       await ClientTimelineEntry.create({
         date_added: new Date(),
@@ -105,6 +120,8 @@ const updateClientRequestHandler = async (req, res) => {
       await createTimelineEntry("status at 9 months", status_at_9_months);
     if (status_at_12_months && userObject)
       await createTimelineEntry("status at 12 months", status_at_12_months);
+    if (job_lead_placement && job_lead_placement === -1 && userObject)
+      await createTimelineEntry("job lead placement", "none");
 
     return res.status(200).json({
       status: "success",

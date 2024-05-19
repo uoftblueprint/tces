@@ -33,37 +33,37 @@ import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobLead } from "../../../utils/api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { JOB_TYPES } from "../../../utils/contants";
+import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
-function EditJobLeadFormComponent({
-  jobLead,
-  getEmployerById,
-  setSnackBarMessage,
-}) {
+function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const navigate = useNavigate();
-  const employer = getEmployerById(jobLead.employerID);
+  const employer = jobLead.employerDetails;
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
+  const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
+    useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
   const [isEditMode, setIsEditMode] = React.useState(false);
+  const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN,
+    jobLead.compensationMin,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN,
+    jobLead.compensationMax,
   );
   const [employmentType, setEmploymentType] = React.useState(
     jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN,
+    jobLead.hoursPerWeek || null,
   );
   const [noc, setNoc] = React.useState(jobLead.noc || "");
   const [expirationDate, setExpirationDate] = React.useState(
     dayjs(jobLead.expirationDate) || null,
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || "",
+    jobLead.numOfPostions || null,
   );
   const [jobDescription, setJobDescription] = React.useState(
     jobLead.jobDescription || "",
@@ -74,26 +74,18 @@ function EditJobLeadFormComponent({
   };
 
   const handleMinCompensationChange = (event) => {
-    let newValue = parseInt(event.target.value, 10);
-    if (newValue) {
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMinCompensation(newValue);
-    } else {
-      setMinCompensation(NaN);
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setMinCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
   const handleMaxCompensationChange = (event) => {
-    let newValue = parseInt(event.target.value, 10);
-    if (newValue) {
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMaxCompensation(newValue);
-    } else {
-      setMaxCompensation(NaN);
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setMaxCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
@@ -137,6 +129,10 @@ function EditJobLeadFormComponent({
     setConfirmEditDialog(false);
   };
 
+  const returnToForm = () => {
+    setFormSubmissionErrorDialog(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -161,6 +157,7 @@ function EditJobLeadFormComponent({
         setSnackBarMessage("Job lead updated successfully.");
         setIsEditMode(false);
       } else {
+        setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job lead.");
       }
     } catch (error) {
@@ -178,11 +175,11 @@ function EditJobLeadFormComponent({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         sx={{
-          width: "66%",
+          width: "90%",
           borderRadius: 2,
           boxShadow: 3,
           ml: 9,
-          mb: 9,
+          mb: 2,
           border: "1px solid #e0e0e0",
         }}
       >
@@ -191,7 +188,18 @@ function EditJobLeadFormComponent({
             <Typography variant="h5" sx={{ flexGrow: 1 }}>
               Information
             </Typography>
-            <IconButton onClick={toggleEditMode} size="small">
+            <IconButton
+              type={shouldSubmit ? "submit" : "button"}
+              size="small"
+              onClick={() => {
+                if (isEditMode) {
+                  setShouldSubmit(true);
+                } else {
+                  toggleEditMode();
+                  setShouldSubmit(false);
+                }
+              }}
+            >
               <EditIcon sx={{ color: isEditMode ? "#3568E5" : "inherit" }} />
             </IconButton>
           </HeaderContainer>
@@ -211,6 +219,7 @@ function EditJobLeadFormComponent({
                     value={jobTitle}
                     onChange={(event) => setJobTitle(event.target.value)}
                     disabled={!isEditMode}
+                    error={!jobTitle}
                     required
                   />
                 ) : (
@@ -227,7 +236,11 @@ function EditJobLeadFormComponent({
               </Grid>
               <Grid item xs={9}>
                 <Button
-                  onClick={() => navigate(`employer/${jobLead.employerID}`)}
+                  onClick={() =>
+                    navigate(`/employers/${jobLead.employerID}`, {
+                      replace: true,
+                    })
+                  }
                   style={{
                     textDecoration: "underline",
                     color: "#3568E5",
@@ -238,7 +251,7 @@ function EditJobLeadFormComponent({
                   }}
                   required
                 >
-                  <Typography>{employer.name}</Typography>
+                  <Typography>{employer?.name}</Typography>
                 </Button>
               </Grid>
             </Grid>
@@ -261,17 +274,18 @@ function EditJobLeadFormComponent({
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
                         }
                         endAdornment={
-                          <InputAdornment position="end">/hours</InputAdornment>
+                          <InputAdornment position="end">/hour</InputAdornment>
                         }
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
+                        error={!minCompensation}
                         required
                       />
                     </FormControl>
@@ -285,17 +299,18 @@ function EditJobLeadFormComponent({
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobLead.jobLeadID}`}
-                        type="number"
+                        type="text"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
                         }
                         endAdornment={
-                          <InputAdornment position="end">/hours</InputAdornment>
+                          <InputAdornment position="end">/hour</InputAdornment>
                         }
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
+                        error={!maxCompensation}
                         required
                       />
                     </FormControl>
@@ -304,7 +319,7 @@ function EditJobLeadFormComponent({
               ) : (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  {minCompensation && maxCompensation ? (
+                  {minCompensation !== null && maxCompensation !== null ? (
                     <>
                       <Grid item xs={8} md={7}>
                         <Typography>
@@ -345,6 +360,7 @@ function EditJobLeadFormComponent({
                       onChange={(event) =>
                         setEmploymentType(event.target.value)
                       }
+                      error={!employmentType}
                       required
                     >
                       {JOB_TYPES.map((jobType) => (
@@ -377,11 +393,11 @@ function EditJobLeadFormComponent({
                     }
                     value={hoursPerWeek}
                     onChange={(event) => {
-                      const value = parseInt(event.target.value, 10);
-                      if (!value || value >= 0) {
-                        setHoursPerWeek(value);
+                      if (/^\d*\.?\d*$/.test(event.target.value)) {
+                        setHoursPerWeek(Number(event.target.value));
                       }
                     }}
+                    error={!hoursPerWeek}
                     required
                   />
                 ) : (
@@ -404,6 +420,7 @@ function EditJobLeadFormComponent({
                     value={noc}
                     disabled={!isEditMode}
                     onChange={(event) => setNoc(event.target.value)}
+                    error={!noc}
                     required
                   />
                 ) : (
@@ -421,7 +438,7 @@ function EditJobLeadFormComponent({
               <Grid item xs={9}>
                 {isEditMode ? (
                   <DatePicker
-                    label="Date"
+                    // label="Date"
                     slotProps={{ textField: { fullWidth: true } }}
                     value={expirationDate}
                     onChange={(newValue) => setExpirationDate(newValue)}
@@ -461,6 +478,7 @@ function EditJobLeadFormComponent({
                     value={numberOfPositions}
                     onChange={(e) => setNumberOfPositions(e.target.value)}
                     disabled={!isEditMode}
+                    error={!numberOfPositions}
                     required
                   />
                 ) : (
@@ -493,6 +511,7 @@ function EditJobLeadFormComponent({
                       borderColor: "#ced4da",
                     }}
                     onChange={(event) => setJobDescription(event.target.value)}
+                    error={!jobDescription}
                     required
                   />
                 ) : (
@@ -528,13 +547,16 @@ function EditJobLeadFormComponent({
         onConfirm={handleSubmit}
         onCancel={cancelEdit}
       />
+      <FormSubmissionErrorDialog
+        open={formSubmissionErrorDialog}
+        onBack={returnToForm}
+      />
     </LocalizationProvider>
   );
 }
 
 EditJobLeadFormComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
-  getEmployerById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };

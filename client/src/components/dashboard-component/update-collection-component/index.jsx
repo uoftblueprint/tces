@@ -1,25 +1,51 @@
 import PropTypes from "prop-types";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import JobUpdateType from "../../../prop-types/JobUpdateType";
-import { JobUpdatesContainer, UpdateDivider } from "./index.styles";
-import JobUpdateCardComponent from "../update-card-component";
+import { JobUpdatesContainer } from "./index.styles";
+import EmployerEntryComponent from "../../timeline-entry-components/employer-entry-component";
 
-function UpdatesCollection({ jobUpdates }) {
+function UpdatesCollection({
+  jobUpdates,
+  totalEntriesCount,
+  loadMoreEntries,
+  loading,
+}) {
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "65vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <JobUpdatesContainer>
       {jobUpdates.length > 0 ? (
-        jobUpdates.map((update) => (
-          <>
-            <JobUpdateCardComponent
-              action={update.action}
-              adminName={update.adminName}
-              userName={update.userName}
-              companyName={update.companyName}
-              date={update.date}
-            />
-            <UpdateDivider />
-          </>
-        ))
+        <>
+          {jobUpdates.map((entry) => (
+            <EmployerEntryComponent entry={entry} />
+          ))}
+          {totalEntriesCount > jobUpdates.length && (
+            <Box
+              sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2 }}
+            >
+              <Button
+                onClick={loadMoreEntries}
+                variant="contained"
+                color="primary"
+              >
+                Load More
+              </Button>
+            </Box>
+          )}
+        </>
       ) : (
         <Box textAlign="center" sx={{ mt: 4 }}>
           <img
@@ -35,6 +61,9 @@ function UpdatesCollection({ jobUpdates }) {
 
 UpdatesCollection.propTypes = {
   jobUpdates: PropTypes.arrayOf(JobUpdateType).isRequired,
+  totalEntriesCount: PropTypes.number.isRequired,
+  loadMoreEntries: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default UpdatesCollection;

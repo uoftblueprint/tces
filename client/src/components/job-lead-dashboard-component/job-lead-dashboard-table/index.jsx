@@ -52,16 +52,18 @@ function JobLeadDashboardTableComponent({
       sortable: false,
       filterable: false,
       valueGetter: (params) => {
-        const min = params.row.compensationMin
-          ? params.row.compensationMin.toFixed(2)
-          : 0;
-        const max = params.row.compensationMax
-          ? params.row.compensationMax.toFixed(2)
-          : 0;
-        if (min && max) {
+        const min =
+          params.row.compensationMin !== null
+            ? params.row.compensationMin.toFixed(2)
+            : 0;
+        const max =
+          params.row.compensationMax !== null
+            ? params.row.compensationMax.toFixed(2)
+            : 0;
+        if (min !== null && max !== null) {
           return `$${min}-$${max}`;
         }
-        if (min) {
+        if (min !== null) {
           return `$${min}`;
         }
         return `$${max}`;
