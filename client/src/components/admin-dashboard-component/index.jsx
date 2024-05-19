@@ -142,6 +142,8 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
         pageSize: 10,
         page: 0,
       };
+    } else {
+      setIgnorePaginationChange(false);
     }
     // we want to reset pagination model when we apply a filter
     handleApplyFilter(filterParams, customPageModel);
@@ -366,7 +368,10 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
             >
               <Button
                 variant="contained"
-                onClick={() => applyFilters(false)}
+                onClick={() => {
+                  setNoFilterMode(false);
+                  applyFilters(false)
+                }}
                 sx={{ width: "100%" }}
               >
                 APPLY FILTER
