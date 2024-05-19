@@ -297,7 +297,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobLead.jobLeadID}`}
-                        type="text"
+                        type="number"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
@@ -308,7 +308,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
-                        error={!Number.isNaN(minCompensation)}
+                        error={Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -322,7 +322,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobLead.jobLeadID}`}
-                        type="text"
+                        type="number"
                         fullWidth
                         startAdornment={
                           <InputAdornment position="start">$</InputAdornment>
@@ -333,7 +333,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
-                        error={!Number.isNaN(minCompensation)}
+                        error={Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -497,12 +497,21 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
               <Grid item xs={9}>
                 {isEditMode ? (
                   <TextField
+                    inputProps={{ type: "number" }}
                     variant="outlined"
                     fullWidth
                     value={numberOfPositions}
                     onChange={(e) => setNumberOfPositions(e.target.value)}
                     disabled={!isEditMode}
-                    error={!Number.isNaN(numberOfPositions)}
+                    error={
+                      !numberOfPositions ||
+                      numberOfPositions < jobLead.clientCount
+                    }
+                    helperText={
+                      numberOfPositions < jobLead.clientCount
+                        ? "Current client count for this job lead must not exceed the number of positions."
+                        : ""
+                    }
                     required
                   />
                 ) : (
@@ -553,7 +562,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       variant="text"
                       color="primary"
                       size="small"
-                      disabled={isLoading}
+                      disabled={isLoading || numberOfPositions < jobLead.clientCount}
                     >
                       {isLoading ? "Saving..." : "Save Changes"}
                     </Button>
