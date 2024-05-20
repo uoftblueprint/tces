@@ -181,6 +181,8 @@ function JobLeadDashboardFiltersComponent({
         pageSize: 10,
         page: 0,
       };
+    } else {
+      setIgnorePaginationChange(false);
     }
     setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
@@ -195,6 +197,8 @@ function JobLeadDashboardFiltersComponent({
     setEndDateCreated(null);
     setStartDateExpired(null);
     setEndDateExpired(null);
+    setCompensationRange([minCompensation, maxCompensation]);
+    setHoursPerWeekRange([minHoursPerWeek, maxHoursPerWeek]);
     setOwnerId(-1);
     setSearchNOCQuery("");
     setJobTypeSelect(initialJobTypeSelect);

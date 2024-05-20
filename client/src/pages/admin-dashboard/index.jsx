@@ -26,6 +26,7 @@ function AdminDashboard({ currUser, managedUsers, setManagedUsers }) {
     <AdminDashboardComponent
       managedUsers={processedManagedUsers}
       removeUser={removeUser}
+      currUser={currUser}
     />
   );
 }

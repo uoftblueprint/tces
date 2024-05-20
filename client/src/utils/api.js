@@ -55,15 +55,29 @@ const createUser = async (firstName, lastName, userEmail, userPassword) => {
   return response;
 };
 
-const getAllUsers = async () => {
-  // eslint-disable-next-line no-useless-catch
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/users`, {
+const getUser = async (userID) => {
+  const response = await fetch(`${REACT_APP_API_BASE_URL}/users/${userID}`, {
     method: "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
   });
+  return response;
+};
+
+const getAllUsers = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/users/?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
   return response;
 };
 
@@ -186,8 +200,18 @@ const createJobLeads = async (jobLeads, ownerID, creatorID) => {
       num_of_positions: parseInt(jobLead.numPositions, 10),
       compensation_max: jobLead.maxCompensation ?? 0,
       compensation_min: jobLead.minCompensation ?? 0,
-      hours_per_week: jobLead.hoursPerWeek ?? null,
-      national_occupation_code: parseInt(jobLead.nationalOC, 10),
+      hours_per_week:
+        jobLead.hoursPerWeek !== undefined &&
+        !Number.isNaN(jobLead.hoursPerWeek) &&
+        jobLead.hoursPerWeek !== null
+          ? jobLead.hoursPerWeek
+          : null,
+      national_occupation_code:
+        jobLead.nationalOC !== undefined &&
+        jobLead.nationalOC !== null &&
+        jobLead.nationalOC.toString().length > 0
+          ? parseInt(jobLead.nationalOC, 10)
+          : null,
       job_description: jobLead.description,
       creation_date: jobLead.creationDate
         ? jobLead.creationDate.toISOString().split("T")[0]
@@ -614,6 +638,7 @@ export {
   logout,
   isUserLoggedIn,
   createUser,
+  getUser,
   getAllUsers,
   modifyUser,
   deleteUser,

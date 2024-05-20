@@ -4,6 +4,17 @@ const ClientTimelineEntry = require("../../models/client_timeline_entry.model");
 const User = require("../../models/user.model");
 const JobLead = require("../../models/job_lead.model");
 
+function formatDateStr(dateStr) {
+  const date = new Date(dateStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${month.toString().padStart(2, "0")}/${day
+    .toString()
+    .padStart(2, "0")}/${year}`;
+}
+
 const updateClientRequestHandler = async (req, res) => {
   try {
     const { client_id } = req.params;
@@ -109,7 +120,7 @@ const updateClientRequestHandler = async (req, res) => {
       await createTimelineEntry("phone number", phone_number);
     if (status && userObject) await createTimelineEntry("status", status);
     if (closure_date && userObject)
-      await createTimelineEntry("closure date", closure_date);
+      await createTimelineEntry("closure date", formatDateStr(closure_date));
     if (status_at_exit && userObject)
       await createTimelineEntry("status at exit", status_at_exit);
     if (status_at_3_months && userObject)
