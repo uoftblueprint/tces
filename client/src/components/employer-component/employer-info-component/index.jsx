@@ -29,9 +29,9 @@ function EmployerInfoComponent({
 
   const navigate = useNavigate();
 
-  let owner = getUserById(employer.owner);
+  let owner = employer.owner_details;
 
-  let creator = getUserById(employer.creator);
+  let creator = employer.creator_details;
 
   useEffect(() => {
     owner = getUserById(employer.owner);
@@ -169,17 +169,19 @@ function EmployerInfoComponent({
           <UserChipComponent user={creator} />
         </Box>
       </Box>
-      <ChangeOwnerDialog
-        type="employer"
-        entity={employer}
-        currOwner={owner}
-        onCancel={onChangeOwnerCancel}
-        onConfirm={onOwnerChangeConfirm}
-        open={ownerChangeDialog}
-        users={managedUsers}
-        setSnackBarMessage={setSnackBarMessage}
-        setError={setError}
-      />
+      {ownerChangeDialog && (
+        <ChangeOwnerDialog
+          type="employer"
+          entity={employer}
+          currOwner={owner}
+          onCancel={onChangeOwnerCancel}
+          onConfirm={onOwnerChangeConfirm}
+          open={ownerChangeDialog}
+          users={managedUsers}
+          setSnackBarMessage={setSnackBarMessage}
+          setError={setError}
+        />
+      )}
     </HeaderContainer>
   );
 }

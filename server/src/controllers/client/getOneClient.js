@@ -1,12 +1,50 @@
 const logger = require("pino")();
 const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
 
 const getOneClientRequestHandler = async (req, res) => {
   try {
-    const client_id = req.params.client_id;
+    const { client_id } = req.params;
 
-    const client = await Client.findOne({ where: { id: client_id } });
+    let client = await Client.findOne({ where: { id: client_id } });
+
     if (client) {
+      const owner = await User.findOne({ where: { id: client.owner } });
+
+      const ownerUserName = owner
+        ? `${owner.first_name} ${owner.last_name}`
+        : `Unknown`;
+
+      const owner_details = owner
+        ? {
+            ownerID: owner.id,
+            ownerUserName,
+            firstName: owner.first_name,
+            lastName: owner.last_name,
+          }
+        : null;
+
+      const creator = await User.findOne({ where: { id: client.creator } });
+
+      const creatorUserName = creator
+        ? `${creator.first_name} ${creator.last_name}`
+        : `Unknown`;
+
+      const creator_details = creator
+        ? {
+            creatorID: creator.id,
+            creatorUserName,
+            firstName: creator.first_name,
+            lastName: creator.last_name,
+          }
+        : null;
+
+      client = {
+        ...client.toJSON(),
+        owner_details,
+        creator_details,
+      };
+
       return res.status(200).json({
         status: "success",
         message: "Got client data successfully",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,7 +12,9 @@ import {
   MenuItem,
   FormHelperText,
   FormControl,
+  Box,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import UserType from "../../../prop-types/UserType";
 import EmployerType from "../../../prop-types/EmployerType";
@@ -21,25 +23,57 @@ import {
   getUserByIdHelper,
 } from "../../../utils/users";
 import {
+  getAllUsers,
   modifyClient,
   modifyEmployerInfo,
   modifyJobLead,
 } from "../../../utils/api";
+import ErrorComponent from "../error-screen-component";
 
 function ChangeOwnerDialog({
   type,
   entity,
   currOwner,
-  users,
   open,
   onCancel,
   onConfirm,
   setSnackBarMessage,
-  setError,
 }) {
   const navigate = useNavigate();
   const [owner, setOwner] = React.useState(currOwner?.userID);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [users, setUsers] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [errorOb, setError] = React.useState(null);
+
+  useEffect(() => {
+    const fetchManagedUsers = async () => {
+      try {
+        const response = await getAllUsers();
+        if (response.ok) {
+          const usersData = await response.json();
+
+          const formattedUsers = usersData.data.rows.map((user) => ({
+            userID: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            isAdmin: user.is_admin,
+          }));
+          setUsers(formattedUsers);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Fetch failed.");
+        }
+      } catch (error) {
+        setError("An error occurred: ", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchManagedUsers();
+  }, []);
   const getDisplayUserName = (userID) => {
     const user = getUserByIdHelper(users, userID);
     const { fullName } = getInitialsAndDisplayName(user);
@@ -116,28 +150,46 @@ function ChangeOwnerDialog({
     >
       <DialogTitle>Change Owner</DialogTitle>
       <DialogContent>
-        <FormControl fullWidth sx={{ m: 1, width: "300px" }}>
-          <InputLabel id={`nameLabel-${currOwner?.userID}`}>
-            Owner Name
-          </InputLabel>
-          <Select
-            sx={{ textAlign: "left" }}
-            labelId={`nameLabel-${currOwner?.id}`}
-            id={`owner-${currOwner?.id}`}
-            value={owner}
-            label="Owner Name"
-            onChange={handleInputChange}
-            MenuProps={{ PaperProps: { style: { maxHeight: "33%" } } }}
-            required
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 300,
+            }}
           >
-            {users.map((user) => (
-              <MenuItem key={user.userID} value={user.userID}>
-                {getDisplayUserName(user.userID)}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>*Required</FormHelperText>
-        </FormControl>
+            <CircularProgress />
+          </Box>
+        ) : errorOb ? (
+          <Box sx={{ textAlign: "center" }}>
+            <ErrorComponent />
+          </Box>
+        ) : (
+          <FormControl fullWidth sx={{ m: 1, width: "300px" }}>
+            <InputLabel id={`nameLabel-${currOwner?.userID}`}>
+              Owner Name
+            </InputLabel>
+            <Select
+              sx={{ textAlign: "left" }}
+              labelId={`nameLabel-${currOwner?.id}`}
+              id={`owner-${currOwner?.id}`}
+              value={owner}
+              label="Owner Name"
+              onChange={handleInputChange}
+              MenuProps={{ PaperProps: { style: { maxHeight: "33%" } } }}
+              required
+            >
+              {users.map((user) => (
+                <MenuItem key={user.userID} value={user.userID}>
+                  {getDisplayUserName(user.userID)}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>*Required</FormHelperText>
+          </FormControl>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
@@ -153,12 +205,10 @@ ChangeOwnerDialog.propTypes = {
   type: ("job-lead" || "client" || "employer").isRequired,
   entity: (JobLeadType || EmployerType).isRequired, // add ClientType when it's implemented
   currOwner: UserType.isRequired, // any entity that has EmployerID
-  users: PropTypes.arrayOf(UserType).isRequired,
   open: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

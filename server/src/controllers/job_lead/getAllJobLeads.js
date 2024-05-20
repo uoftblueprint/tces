@@ -168,8 +168,6 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
             ? `${owner.first_name} ${owner.last_name}`
             : `Unknown`;
 
-          const contact = await EmployerContact
-
           const owner_details = owner
             ? {
                 ownerID: owner.id,

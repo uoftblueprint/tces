@@ -53,6 +53,8 @@ function EditJobLead({
           employmentType: jobLead.employment_type,
           numOfPostions: jobLead.num_of_positions,
           clientCount: jobLead.client_count,
+          ownerDetails: jobLead.owner_details,
+          creatorDetails: jobLead.creator_details,
         };
 
         setJobLeadToEdit(jobLeadBody);

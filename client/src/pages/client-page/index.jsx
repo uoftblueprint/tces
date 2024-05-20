@@ -65,7 +65,9 @@ function ClientPage({
               clientData.data.client.status_at_12_months,
             ),
             owner: clientData.data.client.owner,
+            ownerDetails: clientData.data.client.owner_details,
             creator: clientData.data.client.creator,
+            creatorDetails: clientData.data.client.creator_details,
           };
           setClientObject(initialClientInfo);
         } else {
