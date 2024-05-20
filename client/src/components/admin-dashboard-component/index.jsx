@@ -177,7 +177,7 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
       setUserToDelete(null);
     }
     setConfirmDeleteDialog(false);
-    handleApplyFilter(null);
+    applyFilters(false);
   };
 
   const handleCancelDelete = () => {
