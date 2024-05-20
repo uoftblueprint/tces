@@ -75,6 +75,8 @@ function EmployerDashboardFilter({
         pageSize: 10,
         page: 0,
       };
+    } else {
+      setIgnorePaginationChange(false);
     }
     setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter

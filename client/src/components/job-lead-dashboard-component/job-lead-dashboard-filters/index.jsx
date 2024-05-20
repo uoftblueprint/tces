@@ -182,6 +182,8 @@ function JobLeadDashboardFiltersComponent({
         pageSize: 10,
         page: 0,
       };
+    } else {
+      setIgnorePaginationChange(false);
     }
     setParentFilterParams(filterParams);
     // we want to reset pagination model when we apply a filter
@@ -495,7 +497,7 @@ function JobLeadDashboardFiltersComponent({
             onClick={onApplyFilterClick}
             sx={{ width: "100%" }}
           >
-            APPLY FLILTER
+            APPLY FILTER
           </Button>
           <Button
             onClick={onFilterReset}
