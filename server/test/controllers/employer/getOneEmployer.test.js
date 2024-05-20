@@ -1,5 +1,6 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getOneEmployerRequestHandler from "../../../src/controllers/employer/getOneEmployer";
+import mockGetOneClientInvalid from "../../mocks/mockGetOneObjectInvalid";
 const Employer = await require("../../../src/models/employer.model");
 const mock = require("mock-require");
 const mockGetOneEmployer = require("../../mocks/mockGetOneEmployer");
@@ -35,6 +36,7 @@ describe("getOneEmployer test suite", () => {
   describe("Valid requests", () => {
     beforeEach(() => {
       mock("../../../src/models/employer.model", mockGetOneEmployer);
+      mock("../../src/models/user.model", mockGetOneClientInvalid);
       getOneEmployerRequestHandler = mock.reRequire(
         "../../../src/controllers/employer/getOneEmployer",
       );
