@@ -50,11 +50,11 @@ describe("getOneClient test suite", () => {
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
-  it("Calls findAndCountAll", async () => {
-    const spy = vi.spyOn(mockGetManyClients, "findAndCountAll");
+  it("Calls findAll", async () => {
+    const spy = vi.spyOn(mockGetManyClients, "findAll");
 
     await getAllClientsRequestHandler(mockReq, mockRes);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it("Returns 200 on success", async () => {
