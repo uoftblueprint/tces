@@ -197,13 +197,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EmployerDashboard
-                      employers={employers}
-                      setEmployers={setEmployers}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <EmployerDashboard
+                    employers={employers}
+                    setEmployers={setEmployers}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />

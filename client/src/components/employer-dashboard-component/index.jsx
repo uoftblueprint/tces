@@ -90,6 +90,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
           name: employer.name,
           creatorID: employer.creator,
           ownerID: employer.owner,
+          ownerDetails: employer.owner_details,
           address: employer.address,
           city: employer.city,
           postalCode: employer.postal_code,
