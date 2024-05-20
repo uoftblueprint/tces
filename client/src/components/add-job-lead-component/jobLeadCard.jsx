@@ -32,6 +32,7 @@ function JobLeadContent({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [paginationModel] = React.useState({
     pageSize: 10,
@@ -80,11 +81,14 @@ function JobLeadContent({
 
   const fetchEmployers = async (inputValue) => {
     try {
+      setLoading(true);
       setOptions([]);
       const { pageSize, page } = paginationModel;
       await handleSearch(inputValue, pageSize, page);
     } catch (err) {
       setError("Failed to fetch employers.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -142,6 +146,8 @@ function JobLeadContent({
                 }}
                 options={options}
                 getOptionLabel={(option) => option.name}
+                loading={loading}
+                loadingText="Loading..."
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line

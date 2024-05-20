@@ -41,9 +41,11 @@ function PlacedEntryComponent({
 
   const [jobLeadOptions, setJobLeadOptions] = useState([]);
   const [jobLeadOptionsOpen, setJobLeadOptionsOpen] = useState(false);
+  const [jobLeadOptionsLoading, setJobLeadsOptionsLoading] = useState(false);
 
   const [clientOptions, setClientOptions] = useState([]);
   const [clientOptionsOpen, setClientOptionsOpen] = useState(false);
+  const [clientOptionsLoading, setClientOptionsLoading] = useState(false);
 
   const [paginationModel] = React.useState({
     pageSize: 10,
@@ -106,11 +108,14 @@ function PlacedEntryComponent({
 
   const fetchJobLeads = async (inputValue) => {
     try {
+      setJobLeadsOptionsLoading(true);
       setJobLeadOptions([]);
       const { pageSize, page } = paginationModel;
       await handleJobLeadOptionSearch(inputValue, pageSize, page);
     } catch (err) {
       setError("Failed to fetch job leads.");
+    } finally {
+      setJobLeadsOptionsLoading(false);
     }
   };
 
@@ -157,11 +162,14 @@ function PlacedEntryComponent({
 
   const fetchClients = async (inputValue) => {
     try {
+      setClientOptionsLoading(true);
       setClientOptions([]);
       const { pageSize, page } = paginationModel;
       await handleClientOptionSearch(inputValue, pageSize, page);
     } catch (err) {
       setError("Failed to fetch clients.");
+    } finally {
+      setClientOptionsLoading(false);
     }
   };
 
@@ -288,6 +296,8 @@ function PlacedEntryComponent({
               event.preventDefault();
               debouncedFetchClients(newInputValue);
             }}
+            loading={clientOptionsLoading}
+            loadingText="Loading..."
             options={clientOptions}
             getOptionLabel={(option) => {
               return option.name;
@@ -350,6 +360,8 @@ function PlacedEntryComponent({
                     event.preventDefault();
                     debouncedFetchJobLeads(newInputValue);
                   }}
+                  loading={jobLeadOptionsLoading}
+                  loadingText="Loading..."
                   options={jobLeadOptions}
                   getOptionLabel={(option) => option.jobTitle}
                   renderInput={(params) => (
