@@ -51,5 +51,8 @@
     "pino-pretty": "^10.2.3",
     "prettier": "3.0.3",
     "vitest": "^0.34.6"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
