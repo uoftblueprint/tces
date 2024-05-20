@@ -12,6 +12,7 @@
   "author": "Blueprint",
   "license": "MIT",
   "dependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.17.2",
     "compression": "^1.7.4",
     "connect-sqlite3": "^0.9.13",
     "cors": "^2.8.5",
