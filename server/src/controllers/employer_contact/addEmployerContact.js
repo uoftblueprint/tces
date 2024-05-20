@@ -4,6 +4,25 @@ const Employer = require("../../models/employer.model");
 
 const addEmployerContactRequestHandler = async (req, res) => {
   try {
+    if (req.body.employer_contact instanceof Array) {
+      req.body.employer_contact.forEach((employer_contact) => {
+        // validate each employer contact, and add values
+        addDefaultDates(employer_contact);
+        setOwnerAndCreator(employer_contact, req.user.id);
+      });
+
+      // bulk create employer contacts
+      const employer_contacts = await EmployerContact.bulkCreate(
+        req.body.employer_contact,
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "created employer contacts",
+        data: { employer_contacts },
+      });
+    }
+
     const { name, email, job_type, phone_number, alt_phone_number, employer } =
       req.body;
     const errors = [];
