@@ -196,6 +196,8 @@ function JobLeadDashboardFiltersComponent({
     setEndDateCreated(null);
     setStartDateExpired(null);
     setEndDateExpired(null);
+    setCompensationRange([minCompensation, maxCompensation]);
+    setHoursPerWeekRange([minHoursPerWeek, maxHoursPerWeek]);
     setOwnerId(-1);
     setSearchNOCQuery("");
     setJobTypeSelect(initialJobTypeSelect);

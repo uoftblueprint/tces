@@ -71,8 +71,17 @@ const createJobLead = async (jobLeadData, userId) => {
       num_of_positions: jobLeadData.num_of_positions || 0,
       compensation_max: jobLeadData.compensation_max || 0,
       compensation_min: jobLeadData.compensation_min || 0,
-      hours_per_week: jobLeadData.hours_per_week || null,
-      national_occupation_code: jobLeadData.national_occupation_code || null,
+      hours_per_week:
+        jobLeadData.hours_per_week !== undefined &&
+        !Number.isNaN(jobLeadData.hours_per_week) &&
+        jobLeadData.hours_per_week !== null
+          ? jobLeadData.hours_per_week
+          : null,
+      national_occupation_code:
+        jobLeadData.national_occupation_code !== undefined &&
+        jobLeadData.hours_per_week !== null
+          ? jobLeadData.national_occupation_code
+          : null,
       job_description: jobLeadData.job_description || "",
       creation_date: creationDate,
       expiration_date: expirationDate,
