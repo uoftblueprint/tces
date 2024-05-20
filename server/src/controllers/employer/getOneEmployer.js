@@ -9,7 +9,6 @@ const getOneEmployerRequestHandler = async (req, res) => {
     let employer = await Employer.findOne({ where: { id: employer_id } });
     if (employer) {
       const owner = await User.findOne({ where: { id: employer.owner } });
-
       const ownerUserName = owner
         ? `${owner.first_name} ${owner.last_name}`
         : `Unknown`;
@@ -38,11 +37,13 @@ const getOneEmployerRequestHandler = async (req, res) => {
           }
         : null;
 
-      employer = {
-        ...employer.toJSON(),
-        creator_details,
-        owner_details,
-      };
+      if (creator_details || owner_details) {
+        employer = {
+          ...employer.toJSON(),
+          creator_details,
+          owner_details,
+        };
+      }
 
       return res.status(200).json({
         status: "success",

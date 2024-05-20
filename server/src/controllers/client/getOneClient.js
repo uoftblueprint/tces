@@ -39,11 +39,13 @@ const getOneClientRequestHandler = async (req, res) => {
           }
         : null;
 
-      client = {
-        ...client.toJSON(),
-        owner_details,
-        creator_details,
-      };
+      if (creator_details || owner_details) {
+        client = {
+          ...client.toJSON(),
+          owner_details,
+          creator_details,
+        };
+      }
 
       return res.status(200).json({
         status: "success",

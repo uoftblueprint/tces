@@ -1,6 +1,9 @@
 module.exports = {
   findOne: () => {
-    return {};
+    return {
+      creator: 1,
+      owner: 1,
+    };
   },
   findAll: () => {
     return {};
