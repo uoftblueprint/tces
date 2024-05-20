@@ -35,6 +35,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       jobTypes,
       employer,
       searchEmployerNameQuery,
+      availablePlacement,
     } = req.query;
 
     const query = {};
@@ -170,6 +171,8 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
                 userName: owner
                   ? `${owner.first_name} ${owner.last_name}`
                   : `User ${owner.id}`,
+                firstName: owner.first_name,
+                lastName: owner.last_name,
               }
             : null;
           return {

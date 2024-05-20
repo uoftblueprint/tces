@@ -12,18 +12,12 @@ import ClientType from "../../../prop-types/ClientType";
 import ContactedEntryComponent from "../../timeline-create-entry-components/contacted-entry-component";
 import EmployerType from "../../../prop-types/EmployerType";
 import EmployerTimelineViewComponent from "../../timeline-window-component/empWindow";
-import ManagedJobLeadsLoader from "../../wrappers/data-loaders-wrappers/ManagedJobLeadsLoader";
-import ClientsLoader from "../../wrappers/data-loaders-wrappers/ClientsLoader";
-import EmployersLoader from "../../wrappers/data-loaders-wrappers/EmployersLoader";
 
 function EmployerTimelineComponent({
   employer,
   managedJobLeads,
   managedClients,
   managedEmployers,
-  setManagedClients,
-  setManagedEmployers,
-  setManagedJobLeads,
 }) {
   const [componentType, setComponentType] = useState("default"); // "add-note" , "add-placement", "add-contact"
   const [postEntryLoading, setPostEntryLoading] = useState(true);
@@ -65,10 +59,6 @@ function EmployerTimelineComponent({
   const onAddEntry = (entryObject) => {
     addEntry(entryObject);
   };
-
-  const filterJobLeadsByEmployer = new URLSearchParams({
-    employer: employer.id,
-  });
 
   return (
     <Box
@@ -136,32 +126,23 @@ function EmployerTimelineComponent({
           />
         )}
         {componentType === "add-placement" && (
-          <ManagedJobLeadsLoader
-            customQueryParams={filterJobLeadsByEmployer.toString()}
-            setManagedJobLeads={setManagedJobLeads}
-          >
-            <ClientsLoader setClients={setManagedClients}>
-              <PlacedEntryComponent
-                employer={employer}
-                isLoading={postEntryLoading}
-                setComponentType={setComponentType}
-                managedJobLeads={managedJobLeads}
-                managedClients={managedClients}
-                onAddEntry={onAddEntry}
-              />
-            </ClientsLoader>
-          </ManagedJobLeadsLoader>
+          <PlacedEntryComponent
+            employer={employer}
+            isLoading={postEntryLoading}
+            setComponentType={setComponentType}
+            managedJobLeads={managedJobLeads}
+            managedClients={managedClients}
+            onAddEntry={onAddEntry}
+          />
         )}
         {componentType === "add-contact" && (
-          <EmployersLoader setEmployers={setManagedEmployers}>
-            <ContactedEntryComponent
-              object={employer}
-              contactType="Employer"
-              managedObjects={managedEmployers}
-              setComponentType={setComponentType}
-              onAddEntry={onAddEntry}
-            />
-          </EmployersLoader>
+          <ContactedEntryComponent
+            object={employer}
+            contactType="Employer"
+            managedObjects={managedEmployers}
+            setComponentType={setComponentType}
+            onAddEntry={onAddEntry}
+          />
         )}
       </Grid>
     </Box>
@@ -173,9 +154,6 @@ EmployerTimelineComponent.propTypes = {
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   managedEmployers: PropTypes.arrayOf(EmployerType).isRequired,
-  setManagedClients: PropTypes.func.isRequired,
-  setManagedJobLeads: PropTypes.func.isRequired,
-  setManagedEmployers: PropTypes.func.isRequired,
 };
 
 export default EmployerTimelineComponent;
