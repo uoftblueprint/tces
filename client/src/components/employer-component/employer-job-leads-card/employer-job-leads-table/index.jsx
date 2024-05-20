@@ -1,15 +1,13 @@
-// eslint-disable-next-line no-unused-vars
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import UserType from "../../../prop-types/UserType";
-import UserChipComponent from "../../shared/user-chip-component";
 
-function JobLeadDashboardTableComponent({
+import UserType from "../../../../prop-types/UserType";
+import EmployerNoJobLeadOverlay from "./no-employer-job-leads-overlay";
+
+function EmployerJobLeadTableComponent({
   managedJobLeads,
-  getUserById,
   isLoading,
   paginationModel,
   setPaginationModel,
@@ -24,7 +22,7 @@ function JobLeadDashboardTableComponent({
     {
       field: "jobTitle",
       headerName: "Title",
-      width: 150,
+      width: 200,
       editable: false,
       sortable: false,
       filterable: false,
@@ -45,9 +43,17 @@ function JobLeadDashboardTableComponent({
       ),
     },
     {
+      field: "expirationDate",
+      headerName: "Expiry Date",
+      width: 200,
+      editable: false,
+      sortable: false,
+      filterable: false,
+    },
+    {
       field: "compensation",
       headerName: "Compensation",
-      width: 150,
+      width: 200,
       editable: false,
       sortable: false,
       filterable: false,
@@ -70,63 +76,26 @@ function JobLeadDashboardTableComponent({
       },
     },
     {
-      field: "hoursPerWeek",
-      headerName: "Hours/week",
-      width: 150,
-      editable: false,
-      sortable: false,
-      filterable: false,
-    },
-    {
       field: "employmentType",
-      headerName: "Type",
-      width: 150,
-      editable: false,
-      sortable: false,
-      filterable: false,
-    },
-    {
-      field: "creationDate",
-      headerName: "Date Created",
-      width: 150,
-      editable: false,
-      sortable: false,
-      filterable: false,
-    },
-    {
-      field: "expirationDate",
-      headerName: "Expiry Date",
-      width: 150,
-      editable: false,
-      sortable: false,
-      filterable: false,
-    },
-    {
-      field: "ownerID",
-      headerName: "Owner",
-      width: 150,
-      editable: false,
-      sortable: false,
-      filterable: false,
-      renderCell: (params) => {
-        const user = getUserById(params.row.ownerID);
-        return <UserChipComponent user={user} />;
-      },
-    },
-    {
-      field: "noc",
-      headerName: "NOC Code",
-      width: 150,
+      headerName: "Job Type",
+      width: 200,
       editable: false,
       sortable: false,
       filterable: false,
     },
   ];
 
+  if (managedJobLeads.length < 1 && !isLoading)
+    return <EmployerNoJobLeadOverlay />;
+
   return (
     <DataGrid
       sx={{
+        border: "none",
         minHeight: "500px",
+        "& .MuiDataGrid-virtualScroller": {
+          overflowX: "auto",
+        },
         "& .actionButton": {
           display: "none",
         },
@@ -136,9 +105,9 @@ function JobLeadDashboardTableComponent({
           },
         },
       }}
+      rowCount={totalRowCount}
       rows={managedJobLeads}
       columns={columns}
-      rowCount={totalRowCount}
       loading={isLoading}
       pageSizeOptions={[10]}
       paginationModel={paginationModel}
@@ -150,16 +119,13 @@ function JobLeadDashboardTableComponent({
   );
 }
 
-JobLeadDashboardTableComponent.propTypes = {
+EmployerJobLeadTableComponent.propTypes = {
   managedJobLeads: PropTypes.arrayOf(UserType).isRequired,
-  getUserById: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   paginationModel: PropTypes.object.isRequired,
   setPaginationModel: PropTypes.func.isRequired,
   totalRowCount: PropTypes.number.isRequired,
-
-  // eslint-disable-next-line
 };
 
-export default JobLeadDashboardTableComponent;
+export default EmployerJobLeadTableComponent;

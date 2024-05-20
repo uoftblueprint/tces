@@ -45,7 +45,7 @@ const getAllEmployersRequestHandler = async (req, res) => {
         const employerPhoneNumber = await Employer.findAll({
           where: {
             phoneNumber: Sequelize.literal(
-              `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+              `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
             ),
           },
         });
@@ -56,12 +56,12 @@ const getAllEmployersRequestHandler = async (req, res) => {
             [Op.or]: [
               {
                 phone_number: Sequelize.literal(
-                  `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                  `REGEXP_REPLACE(phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
                 ),
               },
               {
                 alt_phone_number: Sequelize.literal(
-                  `REGEXP_REPLACE(alt_phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`
+                  `REGEXP_REPLACE(alt_phone_number, '[^0-9]', '') REGEXP '${phoneNumber}'`,
                 ),
               },
             ],
@@ -69,8 +69,8 @@ const getAllEmployersRequestHandler = async (req, res) => {
         });
 
         // Extract employer ids from the matching phone numbers
-        const employerIds = employerPhoneNumber.map(result => result.id);
-        const contactIds = phoneNumberContacts.map(result => result.employer);
+        const employerIds = employerPhoneNumber.map((result) => result.id);
+        const contactIds = phoneNumberContacts.map((result) => result.employer);
 
         // Combine ids from both tables
         idsFromPhoneNumber = [...employerIds, ...contactIds];
@@ -81,7 +81,9 @@ const getAllEmployersRequestHandler = async (req, res) => {
     }
 
     // Handle the various combinations of search criteria via ids
-    const commonIds = idsFromName.filter((id) => idsFromPhoneNumber.includes(id));
+    const commonIds = idsFromName.filter((id) =>
+      idsFromPhoneNumber.includes(id),
+    );
     if (phoneNumber && contactName) {
       query.id = { [Op.in]: commonIds };
     }

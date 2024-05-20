@@ -47,23 +47,40 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [jobTitle, setJobTitle] = React.useState(jobLead.jobTitle || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.compensationMin || NaN,
+    jobLead.compensationMin !== undefined &&
+      jobLead.compensationMin !== null &&
+      !Number.isNaN(jobLead.compensationMin)
+      ? jobLead.compensationMin
+      : NaN,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.compensationMax || NaN,
+    jobLead.compensationMax !== undefined &&
+      jobLead.compensationMax !== null &&
+      !Number.isNaN(jobLead.compensationMax)
+      ? jobLead.compensationMax
+      : NaN,
   );
+
   const [employmentType, setEmploymentType] = React.useState(
     jobLead.employmentType || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hoursPerWeek || NaN,
+    jobLead.hoursPerWeek !== undefined && jobLead.hoursPerWeek !== null
+      ? jobLead.hoursPerWeek
+      : NaN,
   );
-  const [noc, setNoc] = React.useState(jobLead.noc || "");
+  const [noc, setNoc] = React.useState(
+    jobLead.noc !== undefined &&
+      jobLead.noc !== null &&
+      jobLead.noc.toString().length > 0
+      ? jobLead.noc.toString()
+      : "",
+  );
   const [expirationDate, setExpirationDate] = React.useState(
     dayjs(jobLead.expirationDate) || null,
   );
   const [numberOfPositions, setNumberOfPositions] = React.useState(
-    jobLead.numOfPostions || "",
+    jobLead.numOfPostions !== undefined ? jobLead.numOfPostions : 0,
   );
   const [jobDescription, setJobDescription] = React.useState(
     jobLead.jobDescription || "",
@@ -75,25 +92,17 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
 
   const handleMinCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMinCompensation(newValue);
-    } else {
-      setMinCompensation(NaN);
+      setMinCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
   const handleMaxCompensationChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
-      let newValue = Number(event.target.value);
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      setMaxCompensation(newValue);
-    } else {
-      setMaxCompensation(NaN);
+      setMaxCompensation(
+        event.target.value ? Number(event.target.value) : null,
+      );
     }
   };
 
@@ -113,8 +122,14 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
     );
   };
 
-  const renderViewValue = (typeValue, value, prefix = "", postfix = "") => {
-    if (value) {
+  const renderViewValue = (
+    typeValue,
+    value,
+    prefix = "",
+    postfix = "",
+    forceError = false,
+  ) => {
+    if (value !== undefined && value !== null && !forceError) {
       return (
         <Typography variant="body1" gutterBottom>
           {prefix}
@@ -293,7 +308,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Minimum"
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
-                        error={!minCompensation}
+                        error={Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -318,7 +333,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                         label="Compensation Maximum"
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
-                        error={!maxCompensation}
+                        error={Number.isNaN(minCompensation)}
                         required
                       />
                     </FormControl>
@@ -327,7 +342,8 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
               ) : (
                 // eslint-disable-next-line react/jsx-no-useless-fragment
                 <>
-                  {minCompensation && maxCompensation ? (
+                  {minCompensation !== undefined &&
+                  maxCompensation !== undefined ? (
                     <>
                       <Grid item xs={8} md={7}>
                         <Typography>
@@ -428,7 +444,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                     value={noc}
                     disabled={!isEditMode}
                     onChange={(event) => setNoc(event.target.value)}
-                    error={!noc}
+                    error={jobLead.noc.toString().length === 0}
                     required
                   />
                 ) : (
@@ -481,12 +497,21 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
               <Grid item xs={9}>
                 {isEditMode ? (
                   <TextField
+                    inputProps={{ type: "number" }}
                     variant="outlined"
                     fullWidth
                     value={numberOfPositions}
                     onChange={(e) => setNumberOfPositions(e.target.value)}
                     disabled={!isEditMode}
-                    error={!numberOfPositions}
+                    error={
+                      !numberOfPositions ||
+                      numberOfPositions < jobLead.clientCount
+                    }
+                    helperText={
+                      numberOfPositions < jobLead.clientCount
+                        ? "Current client count for this job lead must not exceed the number of positions."
+                        : ""
+                    }
                     required
                   />
                 ) : (
@@ -537,7 +562,7 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       variant="text"
                       color="primary"
                       size="small"
-                      disabled={isLoading}
+                      disabled={isLoading || numberOfPositions < jobLead.clientCount}
                     >
                       {isLoading ? "Saving..." : "Save Changes"}
                     </Button>

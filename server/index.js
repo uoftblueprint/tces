@@ -97,6 +97,10 @@ app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 app.use("/upload", uploadRouter);
 
+const beginScheduler =
+  require("./src/middlewares/email/emailSender").beginScheduler;
+beginScheduler();
+
 if (process.env.DEPLOY) {
   let privateKey = fs.readFileSync("privatekey.pem");
   let certificate = fs.readFileSync("certificate.pem");

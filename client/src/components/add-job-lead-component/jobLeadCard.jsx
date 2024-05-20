@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
 import { getFilteredEmployers } from "../../utils/api";
+import ErrorScreenComponent from "../shared/error-screen-component";
 
 function JobLeadContent({
   jobLeadData,
@@ -65,11 +66,12 @@ function JobLeadContent({
           setError(errorData.message || "Fetch failed.");
         }
       } catch (err) {
-        console.log(error);
         setError(err);
       }
     }
   };
+
+  if (error) return <ErrorScreenComponent message={error} />;
 
   return (
     <>
@@ -155,7 +157,7 @@ function JobLeadContent({
               value={lead.minCompensation}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value >= 0 && /^\d*\.?\d*$/.test(value))
+                if (/^\d*\.?\d*$/.test(value))
                   handleInputChange(value, lead.id, "minCompensation");
               }}
               required={!isAddEmployer}
@@ -178,7 +180,7 @@ function JobLeadContent({
               value={lead.maxCompensation}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value >= 0 && /^\d*\.?\d*$/.test(value))
+                if (/^\d*\.?\d*$/.test(value))
                   handleInputChange(value, lead.id, "maxCompensation");
               }}
               required={!isAddEmployer}
@@ -196,7 +198,7 @@ function JobLeadContent({
             value={lead.hoursPerWeek}
             onChange={(e) => {
               const { value } = e.target;
-              if (value >= 0 && /^\d*\.?\d*$/.test(value))
+              if (/^\d*\.?\d*$/.test(value))
                 handleInputChange(value, lead.id, "hoursPerWeek");
             }}
             required={!isAddEmployer}

@@ -31,7 +31,7 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
       ];
     }
 
-    const totalCount = await JobLeadTimelineEntry.count({
+    const totalCount = await EmployerTimelineEntry.count({
       where: query,
     });
 

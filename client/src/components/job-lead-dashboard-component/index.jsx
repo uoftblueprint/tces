@@ -89,16 +89,16 @@ function JobLeadDashboardComponent({
       );
     if (
       filterParams.compensationRange &&
-      filterParams.compensationRange[0] &&
-      filterParams.compensationRange[1]
+      !Number.isNaN(filterParams.compensationRange[0]) &&
+      !Number.isNaN(filterParams.compensationRange[1])
     ) {
       queryParams.append("minCompensation", filterParams.compensationRange[0]);
       queryParams.append("maxCompensation", filterParams.compensationRange[1]);
     }
     if (
       filterParams.hoursPerWeekRange &&
-      filterParams.hoursPerWeekRange[0] &&
-      filterParams.hoursPerWeekRange[1]
+      !Number.isNaN(filterParams.hoursPerWeekRange[0]) &&
+      !Number.isNaN(filterParams.hoursPerWeekRange[1])
     ) {
       queryParams.append("minHoursPerWeek", filterParams.hoursPerWeekRange[0]);
       queryParams.append("maxHoursPerWeek", filterParams.hoursPerWeekRange[1]);

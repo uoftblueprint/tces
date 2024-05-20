@@ -88,6 +88,8 @@ function FilterCard({
         pageSize: 10,
         page: 0,
       };
+    } else {
+      setIgnorePaginationChange(false);
     }
     const filterParams = {
       ...values,

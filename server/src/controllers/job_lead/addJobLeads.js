@@ -12,19 +12,6 @@ const addJobLeadsRequestHandler = async (req, res) => {
       for (const jobLeadData of req.body.job_lead) {
         const jobLead = await createJobLead(jobLeadData, req.user.id);
 
-        const title = `${req.user.first_name} added Job Lead`;
-        const body = jobLead ? `${jobLead.job_title}` : "";
-
-        await EmployerTimelineEntry.create({
-          date_added: new Date(),
-          type: "job_lead_add",
-          title,
-          body,
-          employer: jobLead ? jobLead.employer : -1,
-          job_lead: jobLead ? jobLead.id : -1,
-          user: req.user.id,
-        });
-
         jobLeads.push(jobLead);
       }
 
@@ -84,8 +71,17 @@ const createJobLead = async (jobLeadData, userId) => {
       num_of_positions: jobLeadData.num_of_positions || 0,
       compensation_max: jobLeadData.compensation_max || 0,
       compensation_min: jobLeadData.compensation_min || 0,
-      hours_per_week: jobLeadData.hours_per_week || null,
-      national_occupation_code: jobLeadData.national_occupation_code || null,
+      hours_per_week:
+        jobLeadData.hours_per_week !== undefined &&
+        !Number.isNaN(jobLeadData.hours_per_week) &&
+        jobLeadData.hours_per_week !== null
+          ? jobLeadData.hours_per_week
+          : null,
+      national_occupation_code:
+        jobLeadData.national_occupation_code !== undefined &&
+        jobLeadData.hours_per_week !== null
+          ? jobLeadData.national_occupation_code
+          : null,
       job_description: jobLeadData.job_description || "",
       creation_date: creationDate,
       expiration_date: expirationDate,

@@ -168,13 +168,11 @@ function App() {
                     isPermitted={currUser.isAdmin}
                     redirect={dashboardRedirect}
                   >
-                    <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                      <AdminDashboard
-                        currUser={currUser}
-                        managedUsers={managedUsers}
-                        setManagedUsers={setManagedUsers}
-                      />
-                    </ManagedUsersLoader>
+                    <AdminDashboard
+                      currUser={currUser}
+                      managedUsers={managedUsers}
+                      setManagedUsers={setManagedUsers}
+                    />
                   </RouteGuard>
                 </AuthGuard>
               }
