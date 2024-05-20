@@ -334,7 +334,7 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
             width: "100%",
           }}
         >
-          <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4 }}>
+          <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4, height: "fit-content" }}>
             <CardContent>
               <Typography
                 sx={{ fontSize: 14 }}
