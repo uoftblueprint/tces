@@ -28,7 +28,6 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
-import EmployersLoader from "./components/wrappers/data-loaders-wrappers/EmployersLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -302,9 +301,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <AddEmployerPage currUser={currUser} />
-                  </EmployersLoader>
+                  <AddEmployerPage currUser={currUser} />
                 </AuthGuard>
               }
             />
