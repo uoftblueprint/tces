@@ -36,7 +36,6 @@ describe("getOneJobLead test suite", () => {
       mock("../../src/models/job_lead.model", mockGetOneClient);
       mock("../../src/models/employer.model", mockGetOneClient);
       mock("../../src/models/client.model", mockGetOneClientInvalid);
-      mock("../../src/models/user.model", mockGetOneClientInvalid);
       getOneJobLeadRequestHandler = mock.reRequire(
         "../../src/controllers/job_lead/getOneJobLead",
       );

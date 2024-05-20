@@ -36,7 +36,6 @@ describe("getOneEmployer test suite", () => {
   describe("Valid requests", () => {
     beforeEach(() => {
       mock("../../../src/models/employer.model", mockGetOneEmployer);
-      mock("../../src/models/user.model", mockGetOneClientInvalid);
       getOneEmployerRequestHandler = mock.reRequire(
         "../../../src/controllers/employer/getOneEmployer",
       );

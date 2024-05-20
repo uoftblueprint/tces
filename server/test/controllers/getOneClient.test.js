@@ -34,7 +34,6 @@ describe("getOneClient test suite", () => {
   describe("Valid requests", () => {
     beforeEach(() => {
       mock("../../src/models/client.model", mockGetOneClient);
-      mock("../../src/models/user.model", mockGetOneClientInvalid);
       getOneClientRequestHandler = mock.reRequire(
         "../../src/controllers/client/getOneClient",
       );

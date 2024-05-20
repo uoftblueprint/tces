@@ -29,7 +29,7 @@ const getOneJobLeadRequestHandler = async (req, res) => {
       : job_lead;
 
     if (job_lead) {
-      const owner = await User.findOne({ where: { id: job_lead.owner } });
+      const owner = job_lead.owner ? await User.findOne({ where: { id: job_lead.owner } }) : null;
 
       const ownerUserName = owner
         ? `${owner.first_name} ${owner.last_name}`
@@ -44,7 +44,7 @@ const getOneJobLeadRequestHandler = async (req, res) => {
           }
         : null;
 
-      const creator = await User.findOne({ where: { id: job_lead.creator } });
+      const creator = job_lead.creator ? await User.findOne({ where: { id: job_lead.creator } }) : owner;
 
       const creatorUserName = creator
         ? `${creator.first_name} ${creator.last_name}`

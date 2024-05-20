@@ -4,11 +4,15 @@ const User = require("../../models/user.model");
 
 const getOneEmployerRequestHandler = async (req, res) => {
   try {
+
     const { employer_id } = req.params;
 
     let employer = await Employer.findOne({ where: { id: employer_id } });
     if (employer) {
-      const owner = await User.findOne({ where: { id: employer.owner } });
+
+      const owner = employer.owner
+        ? await User.findOne({ where: { id: employer.owner } })
+        : null;
       const ownerUserName = owner
         ? `${owner.first_name} ${owner.last_name}`
         : `Unknown`;
@@ -22,7 +26,9 @@ const getOneEmployerRequestHandler = async (req, res) => {
           }
         : null;
 
-      const creator = await User.findOne({ where: { id: employer.creator } });
+      const creator = employer.creator
+        ? await User.findOne({ where: { id: employer.creator } })
+        : null;
 
       const creatorUserName = creator
         ? `${creator.first_name} ${creator.last_name}`
