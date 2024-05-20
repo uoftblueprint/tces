@@ -102,6 +102,7 @@ function EmployerDashboardComponent({ employers, setEmployers, getUserById }) {
           dateAdded: employer.date_added,
           email: employer.email,
           fax: employer.fax,
+          primaryContact: employer.primary_contact,
           legalName: employer.legal_name,
           naicsCode: employer.naics_code,
           phoneNumber: employer.phone_number,

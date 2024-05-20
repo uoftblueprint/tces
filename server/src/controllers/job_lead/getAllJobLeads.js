@@ -164,30 +164,29 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
           });
 
           const owner = await User.findOne({ where: { id: jobLead.owner } });
+          const userName = owner
+            ? `${owner.first_name} ${owner.last_name}`
+            : `Unknown`;
+
+          const contact = await EmployerContact
 
           const owner_details = owner
             ? {
                 ownerID: owner.id,
-                userName: owner
-                  ? `${owner.first_name} ${owner.last_name}`
-                  : `User ${owner.id}`,
+                userName,
                 firstName: owner.first_name,
                 lastName: owner.last_name,
               }
             : null;
           return {
             ...jobLead.toJSON(),
+            ownerName: userName,
             // eslint-disable-next-line camelcase
             client_count,
             owner_details,
           };
         }),
       );
-    }
-
-    for (jl of jobLeads) {
-      const owner = await User.findOne({ where: { id: jl.owner } });
-      owner ? (jl.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
     }
 
     const maxCompensationSoFar = await JobLead.max("compensation_max");

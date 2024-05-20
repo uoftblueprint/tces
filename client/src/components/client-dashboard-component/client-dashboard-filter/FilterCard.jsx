@@ -23,10 +23,8 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { STATUS_TYPES } from "../../../utils/contants";
 import ClientType from "../../../prop-types/ClientType";
-import { getOwnerIds } from "../../../utils/jobLeads";
 
 function FilterCard({
-  getUserById,
   managedClients,
   paginationModel,
   owners,
@@ -146,7 +144,7 @@ function FilterCard({
   // triggers whenever the job leads list changes (e.g page change, filter change etc)
   React.useEffect(() => {
     if (initialLoad && managedClients?.length > 0) {
-      setOwnerOptions(getOwnerIds(owners, getUserById));
+      setOwnerOptions(owners);
       setInitialLoad(false);
     }
   }, [managedClients]);

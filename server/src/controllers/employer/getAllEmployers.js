@@ -130,21 +130,26 @@ const getAllEmployersRequestHandler = async (req, res) => {
 
     let employers = await Employer.findAll(searchConfig);
 
-    // employers = employers.map((employer) => {
-    //   return employer.get({ plain: true });
-    // });
-
     if (Array.isArray(employers)) {
       employers = await Promise.all(
         employers.map(async (employer) => {
           const owner = await User.findOne({ where: { id: employer.owner } });
+          const userName = owner
+            ? `${owner.first_name} ${owner.last_name}`
+            : `Unknown`;
+
+          const primaryContact = await EmployerContact.findOne({
+            where: { employer: employer.id },
+          });
+
+          const primaryContactName = primaryContact
+            ? primaryContact.name
+            : `Unknown`;
 
           const owner_details = owner
             ? {
                 ownerID: owner.id,
-                userName: owner
-                  ? `${owner.first_name} ${owner.last_name}`
-                  : `User ${owner.id}`,
+                userName,
                 firstName: owner.first_name,
                 lastName: owner.last_name,
               }
@@ -152,16 +157,13 @@ const getAllEmployersRequestHandler = async (req, res) => {
 
           return {
             ...employer.toJSON(),
+            ownerName: userName,
+            primary_contact: primaryContactName,
             // eslint-disable-next-line camelcase
             owner_details,
           };
         }),
       );
-    }
-
-    for (emp of employers) {
-      const owner = await User.findOne({ where: { id: emp.owner } });
-      owner ? (emp.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
     }
 
     const totalEmployers = await Employer.count({ where: query });
