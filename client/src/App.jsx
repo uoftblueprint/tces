@@ -212,13 +212,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <ClientDashboard
-                      managedClients={managedClients}
-                      setManagedClients={setManagedClients}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <ClientDashboard
+                    managedClients={managedClients}
+                    setManagedClients={setManagedClients}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />
