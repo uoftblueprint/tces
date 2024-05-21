@@ -22,6 +22,7 @@
 
 const logger = require("pino")();
 const addEmployersRequestHandler = require("../employer/addEmployers");
+const multer = require("multer");
 
 const addEmployersFromUploadHandler = async (req, res) => {
   try {
@@ -71,6 +72,10 @@ const addEmployersFromUploadHandler = async (req, res) => {
     return return_type;
 
   } catch (err) {
+    if (err instanceof multer.MulterError) {
+      logger.error(`Multer error thrown: ${err}`);
+      return res.status(400).json({ status: "error", message: "Invalid file uploaded" });
+    }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }

@@ -1,7 +1,7 @@
 // this route will be responsible for handling the csv file upload
 const express = require("express");
 const multer = require("multer");
-const {isAdmin} = require("../middlewares/auth/isAdmin");
+const isAdmin = require("../middlewares/auth/isAdmin");
 const addEmployersFromUploadHandler = require("../controllers/upload/addEmployersFromUpload");
 const addClientsAndContactsFromUploadHandler = require("../controllers/upload/addClientsAndContactsFromUpload");
 
@@ -13,14 +13,14 @@ const upload = multer({ storage: storage });
 
 /**
  * Expected body parameters:
- * @type file {body}
+ * @type csv file {body}
  */
-router.post("/employers", isAdmin, upload.single('csvFile'), addEmployersFromUploadHandler);
+router.post("/employers", upload.single("file"), isAdmin, addEmployersFromUploadHandler);
 
 /**
  * Expected body parameters:
- * @type file {body}
+ * @type csv file {body}
  */
-router.post("/clients-contacts", isAdmin, upload.single('csvFile'), addClientsAndContactsFromUploadHandler);
+router.post("/clients-contacts", upload.single("file"), isAdmin, addClientsAndContactsFromUploadHandler);
 
 module.exports = router;

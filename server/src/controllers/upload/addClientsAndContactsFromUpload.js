@@ -9,7 +9,8 @@
 // alt_phone_number <- Mobile Phone (For employer contact only)
 
 const logger = require("pino")();
-const EmployerContact = require("../../models/employer_contact.model");
+const Employer = require("../../models/employer.model");
+const multer = require("multer");
 
 const addClientsRequestHandler = require("../client/addClients");
 const addEmployerContactRequestHandler = require("../employer_contact/addEmployerContact");
@@ -35,24 +36,25 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
     // if column 3 is not empty, we will create an employer contact
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(",");
-      if(row[3] === "") {
+      if(row[1] === "") {
         const client = {
           owner: req.user.id,
           creator: req.user.id,
           name: row[0],
           email: row[3],
           phone_number: row[5],
+          status: "active",
         };
         clients.push(client);
       } else {
         // Since it is an employer contact, we need to find the id of the employer with the name that exactly matches the employer name
         // All employers will be imported before employer contacts
         // Should be very little chance of this causing an issue
-        const employer = await EmployerContact.findOne({ where: { name: row[1] } });
-        if(!employer) {
+        const employer = await Employer.findOne({ where: { name: row[1] } });
+        if (!employer) {
           return res.status(400).json({
             status: "fail",
-            message: "Employer not found",
+            message: "Employer not found, upload stopped",
           });
         }
         const employerContact = {
@@ -71,21 +73,27 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
 
     logger.info(`Parsed ${clients.length} clients and ${employerContacts.length} employer contacts from csv`);
 
-    // Send the parsed data to the addClientsRequestHandler
+    // Send the parsed data to the respective handlers
     req.body.client = clients;
-    req.body.employer_contact = employerContacts;
     const return_type_clients = await addClientsRequestHandler(req, res);
+
+    req.body.employer_contact = employerContacts;
     const return_type_employer_contacts = await addEmployerContactRequestHandler(req, res);
+
     if (return_type_clients.status === "success" && return_type_employer_contacts.status === "success") {
       return res.status(200).json({
         status: "success",
         message: "created clients and employer contacts",
-        data: { clients: return_type_clients.data.clients, employer_contacts: return_type_employer_contacts.data.employer_contacts },
+        data: { clients: return_type_clients.data, employer_contacts: return_type_employer_contacts.data },
       });
     }
 
 
   } catch (err) {
+    if (err instanceof multer.MulterError) {
+      logger.error(`Multer error thrown: ${err}`);
+      return res.status(400).json({ status: "error", message: "Invalid file uploaded" });
+    }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
