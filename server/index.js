@@ -43,7 +43,6 @@ app.use(express.json());
 
 // So that we can send and receive csv files through express
 
-
 if (process.env.DEPLOY) {
   app.use((req, res, next) => {
     if (req.protocol === "http") {

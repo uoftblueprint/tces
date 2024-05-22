@@ -644,20 +644,23 @@ const uploadEmployers = async (file) => {
     body: formData,
   });
   return response;
-}
+};
 
 const uploadClientsAndContacts = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
   // eslint-disable-next-line no-useless-catch
-  const response = await fetch(`${REACT_APP_API_BASE_URL}/upload/clients-contacts`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/upload/clients-contacts`,
+    {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    },
+  );
   return response;
-}
+};
 
 export {
   login,

@@ -9,18 +9,30 @@ const router = express.Router();
 
 // Multer configuration
 const storage = multer.memoryStorage(); // Store file in memory
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage,
+});
 
 /**
  * Expected body parameters:
  * @type csv file {body}
  */
-router.post("/employers", upload.single("file"), isAdmin, addEmployersFromUploadHandler);
+router.post(
+  "/employers",
+  upload.single("file"),
+  isAdmin,
+  addEmployersFromUploadHandler,
+);
 
 /**
  * Expected body parameters:
  * @type csv file {body}
  */
-router.post("/clients-contacts", upload.single("file"), isAdmin, addClientsAndContactsFromUploadHandler);
+router.post(
+  "/clients-contacts",
+  upload.single("file"),
+  isAdmin,
+  addClientsAndContactsFromUploadHandler,
+);
 
 module.exports = router;

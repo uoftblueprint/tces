@@ -20,14 +20,32 @@ const logger = require("pino")();
 const addEmployersRequestHandler = require("../employer/addEmployers");
 const multer = require("multer");
 
-const EXPECTED_HEADERS = ["Trade Name", "Registered Name", "Main Phone", "Fax", "Email (Primary Contact) (Clients/Contacts)", "Website", "NASICS Code", "Address 1: Street 1", "Address 1: City", "Address 1: State/Province", "Address 1: ZIP/Postal Code"];
+const EXPECTED_HEADERS = [
+  "Trade Name",
+  "Registered Name",
+  "Main Phone",
+  "Fax",
+  "Email (Primary Contact) (Clients/Contacts)",
+  "Website",
+  "NASICS Code",
+  "Address 1: Street 1",
+  "Address 1: City",
+  "Address 1: State/Province",
+  "Address 1: ZIP/Postal Code",
+];
 
 function validateHeaders(headers) {
-  const trimmedHeaders = headers.map(header => header.trim());
-  const trimmedExpectedHeaders = EXPECTED_HEADERS.map(header => header.trim());
+  const trimmedHeaders = headers.map((header) => header.trim());
+  const trimmedExpectedHeaders = EXPECTED_HEADERS.map((header) =>
+    header.trim(),
+  );
 
-  if (trimmedHeaders.length !== trimmedExpectedHeaders.length ||
-    !trimmedHeaders.every((header, index) => header === trimmedExpectedHeaders[index])) {
+  if (
+    trimmedHeaders.length !== trimmedExpectedHeaders.length ||
+    !trimmedHeaders.every(
+      (header, index) => header === trimmedExpectedHeaders[index],
+    )
+  ) {
     throw new Error("Invalid file structure");
   }
 }
@@ -88,11 +106,12 @@ const addEmployersFromUploadHandler = async (req, res) => {
     req.body.employer = employers;
     const return_type = await addEmployersRequestHandler(req, res);
     return return_type;
-
   } catch (err) {
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
-      return res.status(400).json({ status: "error", message: "File uploading error" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "File uploading error" });
     }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });

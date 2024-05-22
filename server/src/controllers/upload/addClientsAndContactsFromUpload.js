@@ -15,14 +15,27 @@ const multer = require("multer");
 const addClientsRequestHandler = require("../client/addClients");
 const addEmployerContactRequestHandler = require("../employer_contact/addEmployerContact");
 
-const EXPECTED_HEADERS = ["Full Name", "Company Name", "Job Title", "Email", "Business Phone", "Mobile Phone"];
+const EXPECTED_HEADERS = [
+  "Full Name",
+  "Company Name",
+  "Job Title",
+  "Email",
+  "Business Phone",
+  "Mobile Phone",
+];
 
 function validateHeaders(headers) {
-  const trimmedHeaders = headers.map(header => header.trim());
-  const trimmedExpectedHeaders = EXPECTED_HEADERS.map(header => header.trim());
+  const trimmedHeaders = headers.map((header) => header.trim());
+  const trimmedExpectedHeaders = EXPECTED_HEADERS.map((header) =>
+    header.trim(),
+  );
 
-  if (trimmedHeaders.length !== trimmedExpectedHeaders.length ||
-    !trimmedHeaders.every((header, index) => header === trimmedExpectedHeaders[index])) {
+  if (
+    trimmedHeaders.length !== trimmedExpectedHeaders.length ||
+    !trimmedHeaders.every(
+      (header, index) => header === trimmedExpectedHeaders[index],
+    )
+  ) {
     throw new Error("Invalid file structure");
   }
 }
@@ -93,32 +106,41 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
       }
     }
 
-    logger.info(`Parsed ${clients.length} clients and ${employerContacts.length} employer contacts from csv`);
+    logger.info(
+      `Parsed ${clients.length} clients and ${employerContacts.length} employer contacts from csv`,
+    );
 
     // Send the parsed data to the respective handlers
     req.body.client = clients;
     const return_type_clients = await addClientsRequestHandler(req, res);
 
     req.body.employer_contact = employerContacts;
-    const return_type_employer_contacts = await addEmployerContactRequestHandler(req, res);
+    const return_type_employer_contacts =
+      await addEmployerContactRequestHandler(req, res);
 
-    if (return_type_clients.status === "success" && return_type_employer_contacts.status === "success") {
+    if (
+      return_type_clients.status === "success" &&
+      return_type_employer_contacts.status === "success"
+    ) {
       return res.status(200).json({
         status: "success",
         message: "created clients and employer contacts",
-        data: { clients: return_type_clients.data, employer_contacts: return_type_employer_contacts.data },
+        data: {
+          clients: return_type_clients.data,
+          employer_contacts: return_type_employer_contacts.data,
+        },
       });
     }
-
-
   } catch (err) {
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
-      return res.status(400).json({ status: "error", message: "File uploading error" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "File uploading error" });
     }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
-}
+};
 
 module.exports = addClientsAndContactsFromUploadHandler;

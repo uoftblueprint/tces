@@ -334,7 +334,14 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
             width: "100%",
           }}
         >
-          <Card sx={{ width: 250, marginLeft: 4, marginBottom: 4, height: "fit-content" }}>
+          <Card
+            sx={{
+              width: 250,
+              marginLeft: 4,
+              marginBottom: 4,
+              height: "fit-content",
+            }}
+          >
             <CardContent>
               <Typography
                 sx={{ fontSize: 14 }}
@@ -370,7 +377,7 @@ function AdminDashboardComponent({ managedUsers, removeUser }) {
                 variant="contained"
                 onClick={() => {
                   setNoFilterMode(false);
-                  applyFilters(false)
+                  applyFilters(false);
                 }}
                 sx={{ width: "100%" }}
               >
