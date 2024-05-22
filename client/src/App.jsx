@@ -188,7 +188,9 @@ function App() {
                     isPermitted={currUser.isAdmin}
                     redirect={dashboardRedirect}
                   >
-                    <UploadPage />
+                    <UploadPage 
+                      setSnackBarMessage={setSnackBarMessage}
+                    />
                   </RouteGuard>
                 </AuthGuard>
               }

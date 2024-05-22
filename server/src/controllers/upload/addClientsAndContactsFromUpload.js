@@ -15,9 +15,21 @@ const multer = require("multer");
 const addClientsRequestHandler = require("../client/addClients");
 const addEmployerContactRequestHandler = require("../employer_contact/addEmployerContact");
 
+const EXPECTED_HEADERS = ["Full Name", "Company Name", "Job Title", "Email", "Business Phone", "Mobile Phone"];
+
+function validateHeaders(headers) {
+  const trimmedHeaders = headers.map(header => header.trim());
+  const trimmedExpectedHeaders = EXPECTED_HEADERS.map(header => header.trim());
+
+  if (trimmedHeaders.length !== trimmedExpectedHeaders.length ||
+    !trimmedHeaders.every((header, index) => header === trimmedExpectedHeaders[index])) {
+    throw new Error("Invalid file structure");
+  }
+}
+
 const addClientsAndContactsFromUploadHandler = async (req, res) => {
   try {
-    if(!req.file) {
+    if (!req.file) {
       return res.status(400).json({
         status: "fail",
         message: "No file uploaded",
@@ -30,13 +42,23 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
     const csv = req.file.buffer.toString("utf8");
     const rows = csv.split("\n");
     const headers = rows[0].split(",");
+
+    try {
+      validateHeaders(headers);
+    } catch (err) {
+      return res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+
     const clients = [];
     const employerContacts = [];
     // column 3 is the employer name
     // if column 3 is not empty, we will create an employer contact
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(",");
-      if(row[1] === "") {
+      if (row[1] === "") {
         const client = {
           owner: req.user.id,
           creator: req.user.id,
@@ -92,7 +114,7 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
   } catch (err) {
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
-      return res.status(400).json({ status: "error", message: "Invalid file uploaded" });
+      return res.status(400).json({ status: "error", message: "File uploading error" });
     }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });

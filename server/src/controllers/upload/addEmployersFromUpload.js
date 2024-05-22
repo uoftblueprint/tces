@@ -16,19 +16,27 @@
 // - secondary_province <- null
 // - secondary_postal_code <- null
 
-// This controller is going to be taking in a csv and needs to parse it to create a bulk of employers that need to be created
-// The csv file data will not exactly match the model, so we need to map the csv data to the model data manually
-// Above is the necessary information to map the csv data to the model data. If the field is not present in the csv, it should be set to null
-
 const logger = require("pino")();
 const addEmployersRequestHandler = require("../employer/addEmployers");
 const multer = require("multer");
+
+const EXPECTED_HEADERS = ["Trade Name", "Registered Name", "Main Phone", "Fax", "Email (Primary Contact) (Clients/Contacts)", "Website", "NASICS Code", "Address 1: Street 1", "Address 1: City", "Address 1: State/Province", "Address 1: ZIP/Postal Code"];
+
+function validateHeaders(headers) {
+  const trimmedHeaders = headers.map(header => header.trim());
+  const trimmedExpectedHeaders = EXPECTED_HEADERS.map(header => header.trim());
+
+  if (trimmedHeaders.length !== trimmedExpectedHeaders.length ||
+    !trimmedHeaders.every((header, index) => header === trimmedExpectedHeaders[index])) {
+    throw new Error("Invalid file structure");
+  }
+}
 
 const addEmployersFromUploadHandler = async (req, res) => {
   try {
     // We will be using addEmployersRequestHandler to actually create the employers
     if (!req.file) {
-      return res.status(400).json({
+      return res.status(469).json({
         status: "fail",
         message: "No file uploaded",
       });
@@ -40,6 +48,16 @@ const addEmployersFromUploadHandler = async (req, res) => {
     const csv = req.file.buffer.toString("utf8");
     const rows = csv.split("\n");
     const headers = rows[0].split(",");
+
+    try {
+      validateHeaders(headers);
+    } catch (err) {
+      return res.status(400).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+
     const employers = [];
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(",");
@@ -74,7 +92,7 @@ const addEmployersFromUploadHandler = async (req, res) => {
   } catch (err) {
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
-      return res.status(400).json({ status: "error", message: "Invalid file uploaded" });
+      return res.status(400).json({ status: "error", message: "File uploading error" });
     }
     logger.error(`Unexpected error thrown: ${err}`);
     res.status(500).json({ status: "error", message: "Internal server error" });
