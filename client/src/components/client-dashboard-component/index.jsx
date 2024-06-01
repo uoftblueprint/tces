@@ -124,6 +124,7 @@ function ClientDashboardComponent({
           name: client.name,
           phone: client.phone_number,
           email: client.email,
+          ownerDetails: client.owner_details,
           dateUpdated: formatDateStr(client.date_updated),
           dateAdded: formatDateStr(client.date_added),
           dateClosed: formatDateStr(client.closure_date),

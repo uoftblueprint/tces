@@ -2,6 +2,7 @@ const logger = require("pino")();
 const JobLead = require("../../models/job_lead.model");
 const Employer = require("../../models/employer.model");
 const Client = require("../../models/client.model");
+const User = require("../../models/user.model");
 
 const getOneJobLeadRequestHandler = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ const getOneJobLeadRequestHandler = async (req, res) => {
         })
       : 0;
 
-    const processedJobLead = employerDetails
+    let processedJobLead = employerDetails
       ? {
           ...job_lead.toJSON(),
           employer_details: employerDetails ? employerDetails.toJSON() : null,
@@ -28,6 +29,44 @@ const getOneJobLeadRequestHandler = async (req, res) => {
       : job_lead;
 
     if (job_lead) {
+      const owner = job_lead.owner ? await User.findOne({ where: { id: job_lead.owner } }) : null;
+
+      const ownerUserName = owner
+        ? `${owner.first_name} ${owner.last_name}`
+        : `Unknown`;
+
+      const owner_details = owner
+        ? {
+            ownerID: owner.id,
+            ownerUserName,
+            firstName: owner.first_name,
+            lastName: owner.last_name,
+          }
+        : null;
+
+      const creator = job_lead.creator ? await User.findOne({ where: { id: job_lead.creator } }) : owner;
+
+      const creatorUserName = creator
+        ? `${creator.first_name} ${creator.last_name}`
+        : `Unknown`;
+
+      const creator_details = creator
+        ? {
+            creatorID: creator.id,
+            creatorUserName,
+            firstName: creator.first_name,
+            lastName: creator.last_name,
+          }
+        : null;
+
+      if (creator_details || owner_details) {
+        processedJobLead = {
+          ...processedJobLead,
+          owner_details,
+          creator_details,
+        };
+      }
+
       return res.status(200).json({
         status: "success",
         message: "Got Job lead data successfully",

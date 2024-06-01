@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   FormControl,
   IconButton,
@@ -16,10 +16,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import DeleteIcon from "@mui/icons-material/Delete";
+import * as React from "react";
 import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
 import { getFilteredEmployers } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
+import debouncer from "../../utils/debouncer";
 
 function JobLeadContent({
   jobLeadData,
@@ -30,46 +32,75 @@ function JobLeadContent({
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (searchTerm) => {
-    if (searchTerm.length >= 2) {
-      const queryParams = new URLSearchParams();
-      queryParams.append("employerName", searchTerm);
-      try {
-        const response = await getFilteredEmployers(queryParams.toString());
-        if (response.ok) {
-          const employersData = await response.json();
-          const formattedEmployers = employersData.data.map((employer) => ({
-            employerID: employer.id,
-            name: employer.name,
-            creatorID: employer.creator,
-            ownerID: employer.owner,
-            address: employer.address,
-            city: employer.city,
-            postalCode: employer.postal_code,
-            province: employer.province,
-            secondaryAddress: employer.secondary_address,
-            secondaryCity: employer.secondary_city,
-            secondaryPostalCode: employer.secondary_postal_code,
-            secondaryProvince: employer.secondary_province,
-            dateAdded: employer.date_added,
-            email: employer.email,
-            fax: employer.fax,
-            legalName: employer.legal_name,
-            naicsCode: employer.naics_code,
-            phoneNumber: employer.phone_number,
-            website: employer.website,
-          }));
-          setOptions(formattedEmployers);
-        } else {
-          const errorData = await response.json();
-          setError(errorData.message || "Fetch failed.");
-        }
-      } catch (err) {
-        setError(err);
+  const [paginationModel] = React.useState({
+    pageSize: 10,
+    page: 0,
+  });
+
+  const handleSearch = async (searchQuery, pageSize = 10, page = 0) => {
+    const queryParams = new URLSearchParams();
+    queryParams.append("employerName", searchQuery);
+    queryParams.append("page", page);
+    queryParams.append("pageSize", pageSize);
+    try {
+      const response = await getFilteredEmployers(queryParams.toString());
+      if (response.ok) {
+        const employersData = await response.json();
+        const formattedEmployers = employersData.data.map((employer) => ({
+          employerID: employer.id,
+          name: employer.name,
+          creatorID: employer.creator,
+          ownerID: employer.owner,
+          address: employer.address,
+          city: employer.city,
+          postalCode: employer.postal_code,
+          province: employer.province,
+          secondaryAddress: employer.secondary_address,
+          secondaryCity: employer.secondary_city,
+          secondaryPostalCode: employer.secondary_postal_code,
+          secondaryProvince: employer.secondary_province,
+          dateAdded: employer.date_added,
+          email: employer.email,
+          fax: employer.fax,
+          legalName: employer.legal_name,
+          naicsCode: employer.naics_code,
+          phoneNumber: employer.phone_number,
+          website: employer.website,
+        }));
+        setOptions(formattedEmployers);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Fetch failed.");
       }
+    } catch (err) {
+      setError(err);
     }
   };
+
+  const fetchEmployers = async (inputValue) => {
+    try {
+      setLoading(true);
+      setOptions([]);
+      const { pageSize, page } = paginationModel;
+      await handleSearch(inputValue, pageSize, page);
+    } catch (err) {
+      setError("Failed to fetch employers.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // debouncer to minimize api calls
+  const debouncedFetchEmployers = useCallback(
+    debouncer(fetchEmployers, 500),
+    [],
+  );
+
+  useEffect(() => {
+    debouncedFetchEmployers("");
+  }, []);
 
   if (error) return <ErrorScreenComponent message={error} />;
 
@@ -110,10 +141,13 @@ function JobLeadContent({
                   handleInputChange(newValue.employerID, lead.id, "employer");
                 }}
                 onInputChange={(event, newInputValue) => {
-                  handleSearch(newInputValue);
+                  event.preventDefault();
+                  debouncedFetchEmployers(newInputValue);
                 }}
                 options={options}
                 getOptionLabel={(option) => option.name}
+                loading={loading}
+                loadingText="Loading..."
                 renderInput={(params) => (
                   <TextField
                     // eslint-disable-next-line

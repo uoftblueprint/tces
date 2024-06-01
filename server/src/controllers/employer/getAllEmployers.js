@@ -130,13 +130,40 @@ const getAllEmployersRequestHandler = async (req, res) => {
 
     let employers = await Employer.findAll(searchConfig);
 
-    employers = employers.map((employer) => {
-      return employer.get({ plain: true });
-    });
+    if (Array.isArray(employers)) {
+      employers = await Promise.all(
+        employers.map(async (employer) => {
+          const owner = await User.findOne({ where: { id: employer.owner } });
+          const userName = owner
+            ? `${owner.first_name} ${owner.last_name}`
+            : `Unknown`;
 
-    for (emp of employers) {
-      const owner = await User.findOne({ where: { id: emp.owner } });
-      owner ? (emp.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+          const primaryContact = await EmployerContact.findOne({
+            where: { employer: employer.id },
+          });
+
+          const primaryContactName = primaryContact
+            ? primaryContact.name
+            : `Unknown`;
+
+          const owner_details = owner
+            ? {
+                ownerID: owner.id,
+                userName,
+                firstName: owner.first_name,
+                lastName: owner.last_name,
+              }
+            : null;
+
+          return {
+            ...employer.toJSON(),
+            ownerName: userName,
+            primary_contact: primaryContactName,
+            // eslint-disable-next-line camelcase
+            owner_details,
+          };
+        }),
+      );
     }
 
     const totalEmployers = await Employer.count({ where: query });
@@ -145,8 +172,19 @@ const getAllEmployersRequestHandler = async (req, res) => {
       attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("owner")), "owner"]],
       raw: true,
     });
+
     const uniqueOwnersList = Array.isArray(uniqueOwners)
-      ? uniqueOwners.map((owner) => owner.owner)
+      ? await Promise.all(
+          uniqueOwners.map(async (owner) => {
+            const user = await User.findOne({ where: { id: owner.owner } });
+            return {
+              ownerID: owner.owner,
+              userName: user
+                ? `${user.first_name} ${user.last_name}`
+                : `User ${owner.owner}`,
+            };
+          }),
+        )
       : [];
 
     return res.status(200).json({

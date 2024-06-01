@@ -27,8 +27,6 @@ import RouteGuard from "./components/wrappers/route-guard-component";
 import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
-import ManagedUsersLoader from "./components/wrappers/data-loaders-wrappers/ManagedUsersLoader";
-import EmployersLoader from "./components/wrappers/data-loaders-wrappers/EmployersLoader";
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -183,13 +181,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <JobLeadDashboard
-                      managedJobLeads={managedJobLeads}
-                      setManagedJobLeads={setManagedJobLeads}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <JobLeadDashboard
+                    managedJobLeads={managedJobLeads}
+                    setManagedJobLeads={setManagedJobLeads}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />
@@ -200,13 +196,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EmployerDashboard
-                      employers={employers}
-                      setEmployers={setEmployers}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <EmployerDashboard
+                    employers={employers}
+                    setEmployers={setEmployers}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />
@@ -217,13 +211,11 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <ClientDashboard
-                      managedClients={managedClients}
-                      setManagedClients={setManagedClients}
-                      getUserById={getUserById}
-                    />
-                  </ManagedUsersLoader>
+                  <ClientDashboard
+                    managedClients={managedClients}
+                    setManagedClients={setManagedClients}
+                    getUserById={getUserById}
+                  />
                 </AuthGuard>
               }
             />
@@ -245,18 +237,16 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EditJobLead
-                      managedUsers={managedUsers}
-                      managedJobLeads={managedJobLeads}
-                      managedClients={managedClients}
-                      getUserById={getUserById}
-                      setLocalExitRoute={setLocalExitRoute}
-                      setSnackBarMessage={setSnackBarMessage}
-                      setManagedJobLeads={setManagedJobLeads}
-                      setManagedClients={setManagedClients}
-                    />
-                  </ManagedUsersLoader>
+                  <EditJobLead
+                    managedUsers={managedUsers}
+                    managedJobLeads={managedJobLeads}
+                    managedClients={managedClients}
+                    getUserById={getUserById}
+                    setLocalExitRoute={setLocalExitRoute}
+                    setSnackBarMessage={setSnackBarMessage}
+                    setManagedJobLeads={setManagedJobLeads}
+                    setManagedClients={setManagedClients}
+                  />
                 </AuthGuard>
               }
             />
@@ -281,19 +271,17 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <EmployerPage
-                      getUserById={getUserById}
-                      managedUsers={managedUsers}
-                      managedEmployers={employers}
-                      managedClients={managedClients}
-                      managedJobLeads={managedJobLeads}
-                      setSnackBarMessage={setSnackBarMessage}
-                      setManagedEmployers={setEmployers}
-                      setManagedClients={setManagedClients}
-                      setManagedJobLeads={setManagedJobLeads}
-                    />
-                  </ManagedUsersLoader>
+                  <EmployerPage
+                    getUserById={getUserById}
+                    managedUsers={managedUsers}
+                    managedEmployers={employers}
+                    managedClients={managedClients}
+                    managedJobLeads={managedJobLeads}
+                    setSnackBarMessage={setSnackBarMessage}
+                    setManagedEmployers={setEmployers}
+                    setManagedClients={setManagedClients}
+                    setManagedJobLeads={setManagedJobLeads}
+                  />
                 </AuthGuard>
               }
             />
@@ -304,9 +292,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <EmployersLoader setEmployers={setEmployers}>
-                    <AddEmployerPage currUser={currUser} />
-                  </EmployersLoader>
+                  <AddEmployerPage currUser={currUser} />
                 </AuthGuard>
               }
             />
@@ -317,15 +303,13 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <ManagedUsersLoader setManagedUsers={setManagedUsers}>
-                    <ClientPage
-                      managedClients={managedClients}
-                      managedUsers={managedUsers}
-                      getUserById={getUserById}
-                      setSnackBarMessage={setSnackBarMessage}
-                      setManagedClients={setManagedClients}
-                    />
-                  </ManagedUsersLoader>
+                  <ClientPage
+                    managedClients={managedClients}
+                    managedUsers={managedUsers}
+                    getUserById={getUserById}
+                    setSnackBarMessage={setSnackBarMessage}
+                    setManagedClients={setManagedClients}
+                  />
                 </AuthGuard>
               }
             />

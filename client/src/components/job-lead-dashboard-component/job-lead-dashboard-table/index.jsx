@@ -9,7 +9,6 @@ import UserChipComponent from "../../shared/user-chip-component";
 
 function JobLeadDashboardTableComponent({
   managedJobLeads,
-  getUserById,
   isLoading,
   paginationModel,
   setPaginationModel,
@@ -109,7 +108,7 @@ function JobLeadDashboardTableComponent({
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        const user = getUserById(params.row.ownerID);
+        const user = params.row.ownerDetails
         return <UserChipComponent user={user} />;
       },
     },
@@ -152,7 +151,6 @@ function JobLeadDashboardTableComponent({
 
 JobLeadDashboardTableComponent.propTypes = {
   managedJobLeads: PropTypes.arrayOf(UserType).isRequired,
-  getUserById: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   paginationModel: PropTypes.object.isRequired,

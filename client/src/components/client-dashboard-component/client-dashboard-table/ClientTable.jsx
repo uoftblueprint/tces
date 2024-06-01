@@ -8,7 +8,6 @@ function ClientTable({
   paginationModel,
   setPaginationModel,
   totalRowCount,
-  getUserById,
   isLoading,
 }) {
   const columns = [
@@ -75,7 +74,7 @@ function ClientTable({
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        const user = getUserById(params.row.ownerID);
+        const user = params.row.ownerDetails;
         return <UserChipComponent user={user} />;
       },
     },
@@ -115,7 +114,6 @@ ClientTable.propTypes = {
   paginationModel: PropTypes.object.isRequired,
   setPaginationModel: PropTypes.func.isRequired,
   totalRowCount: PropTypes.number.isRequired,
-  getUserById: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 

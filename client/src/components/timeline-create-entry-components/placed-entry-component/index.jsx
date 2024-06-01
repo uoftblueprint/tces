@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -8,7 +8,6 @@ import {
   Typography,
   Divider,
   Select,
-  MenuItem,
   DialogTitle,
   Dialog,
   DialogContentText,
@@ -16,24 +15,163 @@ import {
   DialogContent,
   TextField,
   Tooltip,
+  Autocomplete,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import * as React from "react";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import ClientType from "../../../prop-types/ClientType";
 import EmployerType from "../../../prop-types/EmployerType";
+import { getFilteredClients, getFilteredJobLeads } from "../../../utils/api";
+import { formatDateStr } from "../../../utils/date";
+import ErrorScreenComponent from "../../shared/error-screen-component";
+import debouncer from "../../../utils/debouncer";
+import { cleanStatusString } from "../../../utils/users";
 
 function PlacedEntryComponent({
   employer,
   jobLead,
   onAddEntry,
   setComponentType,
-  managedJobLeads,
-  managedClients,
 }) {
   const [clientValue, setClientValue] = useState(null);
   const [jobLeadValue, setjobLeadValue] = useState(null);
   const [openDialog, setOpenDialog] = useState(null);
   const [submitEnabled, setSubmitEnabled] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [jobLeadOptions, setJobLeadOptions] = useState([]);
+  const [jobLeadOptionsOpen, setJobLeadOptionsOpen] = useState(false);
+  const [jobLeadOptionsLoading, setJobLeadsOptionsLoading] = useState(false);
+
+  const [clientOptions, setClientOptions] = useState([]);
+  const [clientOptionsOpen, setClientOptionsOpen] = useState(false);
+  const [clientOptionsLoading, setClientOptionsLoading] = useState(false);
+
+  const [paginationModel] = React.useState({
+    pageSize: 10,
+    page: 0,
+  });
+
+  const handleJobLeadOptionSearch = async (
+    searchQuery,
+    pageSize = 10,
+    page = 0,
+  ) => {
+    const queryParams = new URLSearchParams({});
+    queryParams.append("searchTitleQuery", searchQuery);
+    queryParams.append("page", page);
+    queryParams.append("pageSize", pageSize);
+    if (employer) {
+      queryParams.append("employer", employer.id);
+    }
+    try {
+      const response = await getFilteredJobLeads(queryParams.toString());
+      if (response.ok) {
+        const jobLeadsData = await response.json();
+        const formattedJobLeads = jobLeadsData.data
+          .map((jobLeadResponse) => ({
+            id: jobLeadResponse.id,
+            jobLeadID: jobLeadResponse.id,
+            ownerID: jobLeadResponse.owner,
+            ownerDetails: jobLeadResponse.owner_details,
+            creatorID: jobLeadResponse.creator,
+            employerID: jobLeadResponse.employer,
+            jobTitle: jobLeadResponse.job_title,
+            jobDescription: jobLeadResponse.job_description,
+            compensationMax: jobLeadResponse.compensation_max,
+            compensationMin: jobLeadResponse.compensation_min,
+            hoursPerWeek: jobLeadResponse.hours_per_week,
+            noc: jobLeadResponse.national_occupation_code,
+            creationDate: formatDateStr(jobLeadResponse.creation_date),
+            expirationDate: formatDateStr(jobLeadResponse.expiration_date),
+            employmentType: jobLeadResponse.employment_type,
+            numOfPostions: jobLeadResponse.num_of_positions,
+            clientCount: jobLeadResponse.client_count,
+          }))
+          .filter(
+            (jobLeadOb) =>
+              !employer ||
+              (jobLeadOb.employerID && jobLeadOb.employerID === employer.id),
+          )
+          .filter(
+            (jobLeadOb) => jobLeadOb.numOfPostions > jobLeadOb.clientCount,
+          );
+        setJobLeadOptions(formattedJobLeads);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Fetch failed.");
+      }
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const fetchJobLeads = async (inputValue) => {
+    try {
+      setJobLeadsOptionsLoading(true);
+      setJobLeadOptions([]);
+      const { pageSize, page } = paginationModel;
+      await handleJobLeadOptionSearch(inputValue, pageSize, page);
+    } catch (err) {
+      setError("Failed to fetch job leads.");
+    } finally {
+      setJobLeadsOptionsLoading(false);
+    }
+  };
+
+  const handleClientOptionSearch = async (
+    searchQuery,
+    pageSize = 10,
+    page = 0,
+  ) => {
+    const queryParams = new URLSearchParams({});
+    queryParams.append("name", searchQuery);
+    queryParams.append("page", page);
+    queryParams.append("pageSize", pageSize);
+    try {
+      const response = await getFilteredClients(queryParams.toString());
+      if (response.ok) {
+        const clientsData = await response.json();
+        const formattedClients = clientsData.data.rows.map((client) => ({
+          id: client.id,
+          ownerID: client.owner,
+          creatorID: client.creator,
+          name: client.name,
+          phone: client.phone_number,
+          email: client.email,
+          dateUpdated: formatDateStr(client.date_updated),
+          dateAdded: formatDateStr(client.date_added),
+          dateClosed: formatDateStr(client.closure_date),
+          status: cleanStatusString(client.status),
+          statusAt3Months: cleanStatusString(client.status_at_3_months),
+          statusAt6Months: cleanStatusString(client.status_at_6_months),
+          statusAt9Months: cleanStatusString(client.status_at_9_months),
+          statusAt12Months: cleanStatusString(client.status_at_12_months),
+          statusAtExit: cleanStatusString(client.status_at_exit),
+          jobLeadPlacement: client.job_lead_placement,
+        }));
+        setClientOptions(formattedClients);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Fetch failed.");
+      }
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const fetchClients = async (inputValue) => {
+    try {
+      setClientOptionsLoading(true);
+      setClientOptions([]);
+      const { pageSize, page } = paginationModel;
+      await handleClientOptionSearch(inputValue, pageSize, page);
+    } catch (err) {
+      setError("Failed to fetch clients.");
+    } finally {
+      setClientOptionsLoading(false);
+    }
+  };
 
   const handleSubmitDirect = () => {
     if (jobLeadValue && clientValue) {
@@ -58,9 +196,9 @@ function PlacedEntryComponent({
     setOpenDialog(null);
   };
 
-  const handleClientChange = (e) => {
-    const selectedClient = e.target.value;
-    if (selectedClient.jobLeadPlacement !== -1) {
+  const handleClientChange = (e, newValue) => {
+    const selectedClient = newValue;
+    if (newValue && newValue.jobLeadPlacement !== -1) {
       setOpenDialog(selectedClient); // Open dialog if jobLeadPlacement is defined
     } else {
       setClientValue(selectedClient);
@@ -70,8 +208,12 @@ function PlacedEntryComponent({
   // to be injected as a prop when it connects to route (to be done in future ticket)
   const isJobLeadPage = false;
 
-  const handleJobLeadChange = (e) => {
-    setjobLeadValue(e.target.value);
+  const handleJobLeadChange = (e, newValue) => {
+    if (newValue) {
+      setjobLeadValue(newValue.id);
+    } else {
+      setjobLeadValue(null);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -90,8 +232,19 @@ function PlacedEntryComponent({
     }
   }, [jobLead]);
 
+  // debouncer to minimize api calls
+  const debouncedFetchJobLeads = useCallback(debouncer(fetchJobLeads, 500), []);
+  const debouncedFetchClients = useCallback(debouncer(fetchClients, 500), []);
+
+  useEffect(() => {
+    debouncedFetchClients("");
+    debouncedFetchJobLeads("");
+  }, []);
+
   const jobLeadsFilledMessage =
     "Position Capacity Has Been Filled For This Job Lead";
+
+  if (error) return <ErrorScreenComponent message={error} />;
 
   return (
     <>
@@ -126,22 +279,39 @@ function PlacedEntryComponent({
           <Typography sx={{ color: "rgba(117, 117, 117, 1)" }}>
             Select the Client
           </Typography>
-          <Select
-            fullWidth
-            value={clientValue}
-            onChange={handleClientChange}
-            sx={{ borderRadius: "10px" }}
+          <Autocomplete
             required
-          >
-            <MenuItem value={null} disabled>
-              Select a Client
-            </MenuItem>
-            {managedClients.map((client) => (
-              <MenuItem key={client.id} value={client}>
-                {client.name}
-              </MenuItem>
-            ))}
-          </Select>
+            id="client-Options"
+            open={clientOptionsOpen}
+            onOpen={() => {
+              setClientOptionsOpen(true);
+            }}
+            onClose={() => {
+              setClientOptionsOpen(false);
+            }}
+            onChange={(event, newValue) => {
+              handleClientChange(event, newValue);
+            }}
+            onInputChange={(event, newInputValue) => {
+              event.preventDefault();
+              debouncedFetchClients(newInputValue);
+            }}
+            loading={clientOptionsLoading}
+            loadingText="Loading..."
+            options={clientOptions}
+            getOptionLabel={(option) => {
+              return option.name;
+            }}
+            renderInput={(params) => (
+              <TextField
+                // eslint-disable-next-line
+                      {...params}
+                variant="outlined"
+                sx={{ borderRadius: "10px" }}
+                required
+              />
+            )}
+          />
           {jobLead && (
             <>
               <Typography
@@ -172,34 +342,48 @@ function PlacedEntryComponent({
               >
                 Select the Job Lead
               </Typography>
-              <Select
-                fullWidth
-                value={jobLeadValue}
-                onChange={handleJobLeadChange}
-                sx={{ borderRadius: "10px" }}
-                disabled={isJobLeadPage}
-                required
-              >
-                <MenuItem value={null} disabled>
-                  Select a Job Lead
-                </MenuItem>
-                {managedJobLeads
-                  .filter(
-                    (jobLeadOb) =>
-                      !employer ||
-                      (jobLeadOb.employerID &&
-                        jobLeadOb.employerID === employer.id),
-                  )
-                  .filter(
-                    (jobLeadOb) =>
-                      jobLeadOb.numOfPostions > jobLeadOb.clientCount,
-                  )
-                  .map((jobLeadOb) => (
-                    <MenuItem key={jobLeadOb.id} value={jobLeadOb}>
-                      {jobLeadOb.jobTitle}
-                    </MenuItem>
-                  ))}
-              </Select>
+              {!isJobLeadPage ? (
+                <Autocomplete
+                  required
+                  id="jobLead-Options"
+                  open={jobLeadOptionsOpen}
+                  onOpen={() => {
+                    setJobLeadOptionsOpen(true);
+                  }}
+                  onClose={() => {
+                    setJobLeadOptionsOpen(false);
+                  }}
+                  onChange={(event, newValue) => {
+                    handleJobLeadChange(event, newValue);
+                  }}
+                  onInputChange={(event, newInputValue) => {
+                    event.preventDefault();
+                    debouncedFetchJobLeads(newInputValue);
+                  }}
+                  loading={jobLeadOptionsLoading}
+                  loadingText="Loading..."
+                  options={jobLeadOptions}
+                  getOptionLabel={(option) => option.jobTitle}
+                  renderInput={(params) => (
+                    <TextField
+                      // eslint-disable-next-line
+                              {...params}
+                      variant="outlined"
+                      sx={{ borderRadius: "10px" }}
+                      required
+                    />
+                  )}
+                />
+              ) : (
+                <Select
+                  fullWidth
+                  value={jobLeadValue}
+                  onChange={handleJobLeadChange}
+                  sx={{ borderRadius: "10px", marginTop: "0px" }}
+                  disabled={isJobLeadPage}
+                  required
+                />
+              )}
             </>
           )}
           <Box
@@ -261,8 +445,6 @@ PlacedEntryComponent.propTypes = {
   jobLead: JobLeadType,
   setComponentType: PropTypes.func.isRequired,
   onAddEntry: PropTypes.func.isRequired,
-  managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
-  managedClients: PropTypes.arrayOf(ClientType).isRequired,
 };
 
 export default PlacedEntryComponent;

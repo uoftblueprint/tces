@@ -1,5 +1,6 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 import getOneEmployerRequestHandler from "../../../src/controllers/employer/getOneEmployer";
+import mockGetOneClientInvalid from "../../mocks/mockGetOneObjectInvalid";
 const Employer = await require("../../../src/models/employer.model");
 const mock = require("mock-require");
 const mockGetOneEmployer = require("../../mocks/mockGetOneEmployer");

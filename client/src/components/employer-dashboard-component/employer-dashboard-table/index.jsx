@@ -10,7 +10,6 @@ function EmployerDashboardTable({
   paginationModel,
   rowsPerPage,
   setPaginationModel,
-  getUserById,
   isLoading,
   totalRowCount,
 }) {
@@ -63,7 +62,7 @@ function EmployerDashboardTable({
       headerName: "Owner",
       flex: 1,
       renderCell: (params) => {
-        const owner = getUserById(params.row.owner);
+        const owner = params.row.ownerDetails;
         return <UserChipComponent user={owner} />;
       },
     },
@@ -74,6 +73,7 @@ function EmployerDashboardTable({
     employerID: item.employerID,
     employerName: item.name,
     date: item.dateAdded,
+    ownerDetails: item.ownerDetails,
     phoneNumber: item.phoneNumber,
     email: item.email,
     primaryContact: item.primaryContact ?? "Unknown",
@@ -115,7 +115,6 @@ EmployerDashboardTable.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   paginationModel: PropTypes.object.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  getUserById: PropTypes.func.isRequired,
   setPaginationModel: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   totalRowCount: PropTypes.number.isRequired,

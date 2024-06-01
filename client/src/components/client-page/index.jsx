@@ -54,7 +54,6 @@ TextMaskCustom.propTypes = {
 export default function ClientPage({
   clientInfo,
   monthsSinceClosure,
-  getUserById,
   managedUsers,
   managedClients,
   setSnackBarMessage,
@@ -70,8 +69,8 @@ export default function ClientPage({
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
     useState(false);
 
-  const owner = getUserById(clientInfo.owner);
-  const creator = getUserById(clientInfo.creator);
+  const owner = clientInfo.ownerDetails;
+  const creator = clientInfo.creatorDetails;
 
   const onEditOwnerClick = () => {
     setOwnerChangeDialog(true);
@@ -303,11 +302,11 @@ export default function ClientPage({
           </Box>
         </Box>
         {/* !!!IMPORTANT MAKE NECESSARY CHANGES WHEN ROUTING :} !!! */}
-        {managedUsers.length > 0 && (
+        {ownerChangeDialog && (
           <ChangeOwnerDialog
             type="client"
             entity={clientInfo}
-            currOwner={owner || managedUsers[0]}
+            currOwner={owner}
             onCancel={onChangeOwnerCancel}
             onConfirm={onOwnerChangeConfirm}
             open={ownerChangeDialog}
@@ -1189,11 +1188,12 @@ ClientPage.propTypes = {
     status_at_12: PropTypes.string,
     owner: PropTypes.number,
     creator: PropTypes.number,
+    creatorDetails: PropTypes.string,
+    ownerDetails: PropTypes.string,
   }).isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
   monthsSinceClosure: PropTypes.number.isRequired,
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
-  getUserById: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   setManagedClients: PropTypes.func.isRequired,
   // managedUsers: PropTypes.arrayOf(UserType).isRequired,

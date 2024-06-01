@@ -16,14 +16,12 @@ import * as React from "react";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { getOwnerIds } from "../../../utils/jobLeads";
 import JobLeadType from "../../../prop-types/JobLeadType";
 
 function EmployerDashboardFilter({
   paginationModel,
   handleApplyFilter,
   owners,
-  getUserById,
   setParentFilterParams,
 }) {
   // setting and persisting initial state
@@ -32,7 +30,7 @@ function EmployerDashboardFilter({
     React.useState(false);
 
   // local filter states
-  const ownerOptions = getOwnerIds(owners, getUserById);
+  const ownerOptions = owners;
   const [employerName, setEmployerName] = useState("");
   const [contactName, setContactName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");

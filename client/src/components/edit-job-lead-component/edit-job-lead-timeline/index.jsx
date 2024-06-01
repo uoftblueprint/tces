@@ -10,13 +10,11 @@ import NoteEntryComponent from "../../timeline-create-entry-components/note-entr
 import PlacedEntryComponent from "../../timeline-create-entry-components/placed-entry-component";
 import { addJobLeadTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
-import ClientsLoader from "../../wrappers/data-loaders-wrappers/ClientsLoader";
 
 function EditJobLeadTimelineComponent({
   jobLead,
   managedJobLeads,
   managedClients,
-  setManagedClients,
 }) {
   const [componentType, setComponentType] = useState("default"); // "add-note" , "add-placement"
   const [postEntryLoading, setPostEntryLoading] = useState(false);
@@ -129,16 +127,14 @@ function EditJobLeadTimelineComponent({
           />
         )}
         {componentType === "add-placement" && (
-          <ClientsLoader setClients={setManagedClients}>
-            <PlacedEntryComponent
-              jobLead={jobLead}
-              isLoading={postEntryLoading}
-              setComponentType={setComponentType}
-              managedJobLeads={managedJobLeads}
-              managedClients={managedClients}
-              onAddEntry={onAddEntry}
-            />
-          </ClientsLoader>
+          <PlacedEntryComponent
+            jobLead={jobLead}
+            isLoading={postEntryLoading}
+            setComponentType={setComponentType}
+            managedJobLeads={managedJobLeads}
+            managedClients={managedClients}
+            onAddEntry={onAddEntry}
+          />
         )}
       </Grid>
     </Box>
@@ -149,7 +145,6 @@ EditJobLeadTimelineComponent.propTypes = {
   jobLead: JobLeadType.isRequired,
   managedJobLeads: PropTypes.arrayOf(JobLeadType).isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
-  setManagedClients: PropTypes.func.isRequired,
 };
 
 export default EditJobLeadTimelineComponent;

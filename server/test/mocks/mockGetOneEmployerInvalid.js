@@ -1,7 +1,5 @@
 module.exports = {
-  findOne: () => {
-    return null;
-  },
+  findOne: () => null,
   findAll: () => {
     return {};
   },

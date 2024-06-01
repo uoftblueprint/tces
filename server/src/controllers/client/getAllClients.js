@@ -2,6 +2,7 @@ const logger = require("pino")();
 const Sequelize = require("sequelize");
 const Client = require("../../models/client.model");
 const User = require("../../models/user.model");
+const JobLead = require("../../models/job_lead.model");
 
 const { Op } = Sequelize;
 
@@ -119,15 +120,35 @@ const getAllClientsRequestHandler = async (req, res) => {
       };
     }
 
-    let clients = await Client.findAndCountAll(query_options);
+    const clientsCount = await Client.count(query_options);
 
-    clients.rows = clients.rows.map((client) => {
-      return client.get({ plain: true });
-    });
+    let clientsData = await Client.findAll(query_options);
 
-    for (clt of clients.rows) {
-      const owner = await User.findOne({ where: { id: clt.owner } });
-      owner ? (clt.ownerName = `${owner.first_name} ${owner.last_name}`) : "";
+    if (Array.isArray(clientsData)) {
+      clientsData = await Promise.all(
+        clientsData.map(async (client) => {
+          const owner = await User.findOne({ where: { id: client.owner } });
+          const userName = owner
+            ? `${owner.first_name} ${owner.last_name}`
+            : `Unknown`;
+
+          const owner_details = owner
+            ? {
+                ownerID: owner.id,
+                userName,
+                firstName: owner.first_name,
+                lastName: owner.last_name,
+              }
+            : null;
+
+          return {
+            ...client.toJSON(),
+            ownerName: userName,
+            // eslint-disable-next-line camelcase
+            owner_details,
+          };
+        }),
+      );
     }
 
     const uniqueOwners = await Client.findAll({
@@ -135,13 +156,26 @@ const getAllClientsRequestHandler = async (req, res) => {
       raw: true,
     });
     const uniqueOwnersList = Array.isArray(uniqueOwners)
-      ? uniqueOwners.map((owner) => owner.owner)
+      ? await Promise.all(
+          uniqueOwners.map(async (owner) => {
+            const user = await User.findOne({ where: { id: owner.owner } });
+            return {
+              ownerID: owner.owner,
+              userName: user
+                ? `${user.first_name} ${user.last_name}`
+                : `User ${owner.owner}`,
+            };
+          }),
+        )
       : [];
 
     return res.status(200).json({
       status: "success",
       message: "All clients found successfully",
-      data: clients,
+      data: {
+        rows: clientsData,
+        count: clientsCount,
+      },
       uniqueOwners: uniqueOwnersList,
     });
   } catch (err) {

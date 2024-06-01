@@ -15,6 +15,8 @@ const ClientType = PropTypes.shape({
   statusAt9Months: PropTypes.string.isRequired,
   statusAt12Months: PropTypes.string.isRequired,
   statusAtExit: PropTypes.string.isRequired,
+  creatorDetails: PropTypes.string.isRequired,
+  ownerDetails: PropTypes.string.isRequired,
 });
 
 export default ClientType;

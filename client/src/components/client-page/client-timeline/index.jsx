@@ -9,13 +9,8 @@ import { addClientTimelineEntry } from "../../../utils/api";
 import ClientType from "../../../prop-types/ClientType";
 import ContactedEntryComponent from "../../timeline-create-entry-components/contacted-entry-component";
 import ClientTimelineViewComponent from "../../timeline-window-component/clientWindow";
-import ClientsLoader from "../../wrappers/data-loaders-wrappers/ClientsLoader";
 
-function ClientTimelineComponent({
-  client,
-  managedClients,
-  setManagedClients,
-}) {
+function ClientTimelineComponent({ client, managedClients }) {
   const [componentType, setComponentType] = useState("default"); // "add-contact" , "add-note"
   const [postEntryLoading, setPostEntryLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
@@ -124,15 +119,13 @@ function ClientTimelineComponent({
           />
         )}
         {componentType === "add-contact" && (
-          <ClientsLoader setClients={setManagedClients}>
-            <ContactedEntryComponent
-              object={client}
-              contactType="Client"
-              managedObjects={managedClients}
-              setComponentType={setComponentType}
-              onAddEntry={onAddEntry}
-            />
-          </ClientsLoader>
+          <ContactedEntryComponent
+            object={client}
+            contactType="Client"
+            managedObjects={managedClients}
+            setComponentType={setComponentType}
+            onAddEntry={onAddEntry}
+          />
         )}
       </Grid>
     </Box>
@@ -142,7 +135,6 @@ function ClientTimelineComponent({
 ClientTimelineComponent.propTypes = {
   client: ClientType.isRequired,
   managedClients: PropTypes.arrayOf(ClientType).isRequired,
-  setManagedClients: PropTypes.func.isRequired,
 };
 
 export default ClientTimelineComponent;

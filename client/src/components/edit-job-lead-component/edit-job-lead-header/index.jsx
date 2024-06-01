@@ -17,14 +17,13 @@ import ErrorScreenComponent from "../../shared/error-screen-component";
 function EditJobLeadHeaderComponent({
   managedUsers,
   jobLead,
-  getUserById,
   setLocalExitRoute,
   setSnackBarMessage,
 }) {
   const [ownerChangeDialog, setOwnerChangeDialog] = React.useState(false);
   const [error, setError] = React.useState(null);
-  const owner = getUserById(jobLead.ownerID);
-  const creator = getUserById(jobLead.creatorID);
+  const owner = jobLead.ownerDetails;
+  const creator = jobLead.creatorDetails;
   const handleBackClick = () => {
     setLocalExitRoute("/job-leads/");
   };
@@ -111,17 +110,19 @@ function EditJobLeadHeaderComponent({
           <UserChipComponent user={creator} />
         </Box>
       </Box>
-      <ChangeOwnerDialog
-        type="job-lead"
-        entity={jobLead}
-        currOwner={owner}
-        onCancel={onChangeOwnerCancel}
-        onConfirm={onOwnerChangeConfirm}
-        open={ownerChangeDialog}
-        users={managedUsers}
-        setSnackBarMessage={setSnackBarMessage}
-        setError={setError}
-      />
+      {ownerChangeDialog && (
+        <ChangeOwnerDialog
+          type="job-lead"
+          entity={jobLead}
+          currOwner={owner}
+          onCancel={onChangeOwnerCancel}
+          onConfirm={onOwnerChangeConfirm}
+          open={ownerChangeDialog}
+          users={managedUsers}
+          setSnackBarMessage={setSnackBarMessage}
+          setError={setError}
+        />
+      )}
     </HeaderContainer>
   );
 }
@@ -129,7 +130,6 @@ function EditJobLeadHeaderComponent({
 EditJobLeadHeaderComponent.propTypes = {
   managedUsers: PropTypes.arrayOf(UserType).isRequired,
   jobLead: JobLeadType.isRequired,
-  getUserById: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
