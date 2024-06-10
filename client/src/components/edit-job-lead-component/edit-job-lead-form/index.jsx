@@ -562,7 +562,9 @@ function EditJobLeadFormComponent({ jobLead, setSnackBarMessage }) {
                       variant="text"
                       color="primary"
                       size="small"
-                      disabled={isLoading || numberOfPositions < jobLead.clientCount}
+                      disabled={
+                        isLoading || numberOfPositions < jobLead.clientCount
+                      }
                     >
                       {isLoading ? "Saving..." : "Save Changes"}
                     </Button>
