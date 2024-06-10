@@ -21,6 +21,9 @@ const addEmployersRequestHandler = require("../employer/addEmployers");
 const multer = require("multer");
 
 const EXPECTED_HEADERS = [
+  "(Do Not Modify) Account",
+  "(Do Not Modify) Row Checksum",
+  "(Do Not Modify) Modified On",
   "Trade Name",
   "Registered Name",
   "Main Phone",
@@ -82,17 +85,17 @@ const addEmployersFromUploadHandler = async (req, res) => {
       const employer = {
         owner: req.user.id,
         creator: req.user.id,
-        name: row[0],
-        legal_name: row[1] || null,
-        phone_number: row[2] || null,
-        fax: row[3] || null,
-        email: row[4] || null,
-        website: row[5] || null,
-        naics_code: row[6] || null,
-        address: row[7] || null,
-        city: row[8] || null,
-        province: row[9] || null,
-        postal_code: row[10] || null,
+        name: row[3],
+        legal_name: row[4] || null,
+        phone_number: row[5] || null,
+        fax: row[6] || null,
+        email: row[7] || null,
+        website: row[8] || null,
+        naics_code: row[9] || null,
+        address: row[10] || null,
+        city: row[11] || null,
+        province: row[12] || null,
+        postal_code: row[13] || null,
         secondary_address: null,
         secondary_city: null,
         secondary_province: null,
@@ -105,8 +108,10 @@ const addEmployersFromUploadHandler = async (req, res) => {
     // Send the parsed data to the addEmployersRequestHandler
     req.body.employer = employers;
     const return_type = await addEmployersRequestHandler(req, res);
+    req.file.buffer = null; // Clear the buffer
     return return_type;
   } catch (err) {
+    req.file.buffer = null; // Clear the buffer
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
       return res

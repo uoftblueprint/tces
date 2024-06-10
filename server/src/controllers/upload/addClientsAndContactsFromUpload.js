@@ -16,6 +16,9 @@ const addClientsRequestHandler = require("../client/addClients");
 const addEmployerContactRequestHandler = require("../employer_contact/addEmployerContact");
 
 const EXPECTED_HEADERS = [
+  "(Do Not Modify) Account",
+  "(Do Not Modify) Row Checksum",
+  "(Do Not Modify) Modified On",
   "Full Name",
   "Company Name",
   "Job Title",
@@ -75,9 +78,9 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
         const client = {
           owner: req.user.id,
           creator: req.user.id,
-          name: row[0],
-          email: row[3],
-          phone_number: row[5],
+          name: row[3],
+          email: row[6],
+          phone_number: row[8],
           status: "active",
         };
         clients.push(client);
@@ -95,12 +98,12 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
         const employerContact = {
           owner: req.user.id,
           creator: req.user.id,
-          name: row[0],
+          name: row[3],
           employer: employer.id,
-          job_title: row[2],
-          email: row[3],
-          phone_number: row[4],
-          alt_phone_number: row[5],
+          job_title: row[5],
+          email: row[6],
+          phone_number: row[7],
+          alt_phone_number: row[8],
         };
         employerContacts.push(employerContact);
       }
@@ -122,6 +125,7 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
       return_type_clients.status === "success" &&
       return_type_employer_contacts.status === "success"
     ) {
+    req.file.buffer = null; // Clear the buffer
       return res.status(200).json({
         status: "success",
         message: "created clients and employer contacts",
@@ -132,6 +136,7 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
       });
     }
   } catch (err) {
+    req.file.buffer = null; // Clear the buffer
     if (err instanceof multer.MulterError) {
       logger.error(`Multer error thrown: ${err}`);
       return res
