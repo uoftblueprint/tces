@@ -64,9 +64,9 @@ app.use(
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
     cookie: {
-      sameSite: process.env.DEPLOY ? "none" : "Lax",
+      sameSite: "Lax",
       httpOnly: true,
-      secure: process.env.DEPLOY ? true : false,
+      secure: false,
     },
   }),
 );
