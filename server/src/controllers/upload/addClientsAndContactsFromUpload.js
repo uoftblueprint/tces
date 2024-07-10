@@ -125,7 +125,7 @@ const addClientsAndContactsFromUploadHandler = async (req, res) => {
       return_type_clients.status === "success" &&
       return_type_employer_contacts.status === "success"
     ) {
-    req.file.buffer = null; // Clear the buffer
+      req.file.buffer = null; // Clear the buffer
       return res.status(200).json({
         status: "success",
         message: "created clients and employer contacts",

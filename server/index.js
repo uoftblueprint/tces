@@ -41,17 +41,6 @@ app.use(limiter);
 // So that we can send and receive JSON through express
 app.use(express.json());
 
-// So that we can send and receive csv files through express
-
-if (process.env.DEPLOY) {
-  app.use((req, res, next) => {
-    if (req.protocol === "http") {
-      res.redirect(301, `https://${req.headers.host}${req.url}`);
-    }
-    next();
-  });
-}
-
 // Import router for all authentication API endpoints
 const authRouter = require("./src/routes/auth");
 const employerRouter = require("./src/routes/employer");
@@ -77,9 +66,9 @@ app.use(
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
     cookie: {
-      sameSite: process.env.DEPLOY ? "none" : "Lax",
+      sameSite: "Lax",
       httpOnly: true,
-      secure: process.env.DEPLOY ? true : false,
+      secure: false,
     },
   }),
 );
@@ -100,23 +89,6 @@ const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;
 beginScheduler();
 
-if (process.env.DEPLOY) {
-  let privateKey = fs.readFileSync("privatekey.pem");
-  let certificate = fs.readFileSync("certificate.pem");
-  let ca = fs.readFileSync("ca.pem");
-
-  https
-    .createServer(
-      {
-        key: privateKey,
-        ca: ca,
-        cert: certificate,
-      },
-      app,
-    )
-    .listen(port);
-} else {
-  app.listen(port, () => {
-    console.log(`TCES Backend listening on port ${port}`);
-  });
-}
+app.listen(port, () => {
+  console.log(`TCES Backend listening on port ${port}`);
+});
