@@ -33,3 +33,5 @@
 certificate.pem
 privatekey.pem
 ca.pem
+
+**/.vite
