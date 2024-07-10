@@ -14,9 +14,7 @@ import {
 import DashboardNavigationComponent from "./nav-dashboard-component";
 import UpdatesCollection from "./update-collection-component";
 import UserType from "../../prop-types/UserType";
-import {
-  getFilteredEmployerTimelineEntries,
-} from "../../utils/api";
+import { getFilteredEmployerTimelineEntries } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
 
 function DashboardComponent({ currUser }) {

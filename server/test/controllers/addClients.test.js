@@ -108,8 +108,8 @@ describe("addClients test suite", () => {
     });
 
     it("Returns 200 on success", async () => {
-      await addClientsRequestHandler(mockReq, mockRes);
-      expect(mockRes.statusCode).toBe(200);
+      const return_type = await addClientsRequestHandler(mockReq, mockRes);
+      expect(return_type.status).toBe("success");
     });
   });
 });

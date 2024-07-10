@@ -17,11 +17,7 @@ const addClientsRequestHandler = async (req, res) => {
       // bulk create clients
       const clients = await Client.bulkCreate(req.body.client);
 
-      return res.status(200).json({
-        status: "success",
-        message: "created clients",
-        data: { clients },
-      });
+      return { status: "success", data: { clients } };
     }
 
     var closure_date = null;

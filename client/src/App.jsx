@@ -18,6 +18,7 @@ import LogoutPage from "./pages/logout";
 import ClientDashboard from "./pages/client-dashboard";
 import CreateClient from "./pages/create-client";
 import EmployerPage from "./pages/employer";
+import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -170,6 +171,22 @@ function App() {
                       managedUsers={managedUsers}
                       setManagedUsers={setManagedUsers}
                     />
+                  </RouteGuard>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/admin/upload"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <RouteGuard
+                    isPermitted={currUser.isAdmin}
+                    redirect={dashboardRedirect}
+                  >
+                    <UploadPage setSnackBarMessage={setSnackBarMessage} />
                   </RouteGuard>
                 </AuthGuard>
               }

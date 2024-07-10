@@ -2,8 +2,28 @@ const logger = require("pino")();
 const EmployerContact = require("../../models/employer_contact.model");
 const Employer = require("../../models/employer.model");
 
+const {
+  addDefaultDates,
+  setOwnerAndCreator,
+} = require("../../utils/creation_util");
+
 const addEmployerContactRequestHandler = async (req, res) => {
   try {
+    if (req.body.employer_contact instanceof Array) {
+      req.body.employer_contact.forEach((employer_contact) => {
+        // validate each employer contact, and add values
+        addDefaultDates(employer_contact);
+        setOwnerAndCreator(employer_contact, req.user.id);
+      });
+
+      // bulk create employer contacts
+      const employer_contacts = await EmployerContact.bulkCreate(
+        req.body.employer_contact,
+      );
+
+      return { status: "success", data: { employer_contacts } };
+    }
+
     const { name, email, job_type, phone_number, alt_phone_number, employer } =
       req.body;
     const errors = [];

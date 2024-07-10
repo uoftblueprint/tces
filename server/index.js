@@ -53,6 +53,8 @@ const JobLeadTimelineRouter = require("./src/routes/job_lead_timeline_entries");
 const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries");
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
 
+const uploadRouter = require("./src/routes/upload");
+
 // Set up cors for local dev connection with frontend
 app.use(cors(corsOption));
 
@@ -81,6 +83,7 @@ app.use("/employer_contacts", employerContactRouter);
 app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
+app.use("/upload", uploadRouter);
 
 const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;

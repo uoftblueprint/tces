@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { filesize } from "filesize";
-import Papa from "papaparse";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   Typography,
   Stack,
@@ -18,14 +19,20 @@ import {
   IconButton,
   LinearProgress,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Section, Header, Upload, UploadIcon, Cancel } from "./index.styles";
+import { uploadEmployers, uploadClientsAndContacts } from "../../utils/api";
+import ErrorScreenComponent from "../shared/error-screen-component";
 
-function importComponent() {
+function ImportComponent({ setSnackBarMessage }) {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState("");
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [errorObj, setErrorObj] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -49,78 +56,55 @@ function importComponent() {
   };
 
   const handleFileChange = (event) => {
-    const uploadedFiles = event.target.files;
-    setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+    const uploadedFile = event.target.files[0];
+    setFile(uploadedFile);
   };
 
-  const handleDelete = (filename) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== filename));
+  const handleDelete = () => {
+    setFile(null);
   };
 
-  const readFileAsText = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => resolve(event.target.result);
-      reader.onerror = (err) => reject(err);
-      reader.readAsText(file);
-    });
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    if (menu === "clients_and_contacts") {
+      try {
+        const response = await uploadClientsAndContacts(file);
 
-  const parseCSVToObjects = (csvContent) => {
-    return new Promise((resolve, reject) => {
-      Papa.parse(csvContent, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (result) => {
-          resolve(result.data);
-        },
-        error: (err) => {
-          reject(err);
-        },
-      });
-    });
-  };
+        if (response.ok) {
+          navigate(-1);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await uploadEmployers(file);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    let parsedDataArray = [];
-    try {
-      parsedDataArray = await Promise.all(
-        files.map(async (file) => {
-          const data = await readFileAsText(file);
-          return parseCSVToObjects(data);
-        }),
-      );
-    } catch (err) {
-      // Handle error in backend
+        if (response.ok) {
+          navigate(-1);
+        } else {
+          setSnackBarMessage("Error uploading file");
+        }
+      } catch (error) {
+        setErrorObj(error);
+      }
     }
-
-    // Replace url with target route
-    fetch("http://localhost:8000/import", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: parsedDataArray,
-    });
-    // .then((response) => {
-    //     if (response.ok) {
-    //         // Handle success response (e.g., redirect or show a success message)
-    //         console.log('Login successful');
-    //     } else {
-    //         // Handle error response (e.g., show an error message)
-    //         console.error('Login failed');
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error('Error:', error);
-    // });
+    setLoading(false);
   };
+
+  if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
 
   return (
     <Section>
-      <form onSubmit={handleSubmit} style={{ margin: "5rem 0" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ margin: "5rem 0" }}
+        encType="multipart/form-data"
+        method="post"
+      >
         <Stack maxWidth="md" gap={4}>
           <Header>
             <Typography variant="h4">CSV File Import</Typography>
@@ -142,7 +126,9 @@ function importComponent() {
                   onChange={(e) => setMenu(e.target.value)}
                   required
                 >
-                  <MenuItem value="clients">Clients</MenuItem>
+                  <MenuItem value="clients_and_contacts">
+                    Clients and Contacts
+                  </MenuItem>
                   <MenuItem value="employers">Employers</MenuItem>
                 </Select>
                 <FormHelperText>Required*</FormHelperText>
@@ -152,38 +138,39 @@ function importComponent() {
                 style={{ cursor: "pointer", marginTop: "2rem" }}
                 onClick={handleSectionClick}
               >
-                <Upload gap={1}>
-                  <input
-                    type="file"
-                    accept=".csv"
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                    multiple
-                    required
-                  />
-                  <UploadIcon variant="rounded" color="primary" />
-                  <Typography variant="subtitle1">
+                {!file && (
+                  <Upload gap={1}>
+                    <input
+                      type="file"
+                      accept=".csv"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                      required
+                    />
+                    <UploadIcon variant="rounded" color="primary" />
+                    <Typography variant="subtitle1">
+                      <Typography
+                        component="span"
+                        color="primary"
+                        variant="body1"
+                        style={{ textDecoration: "underline" }}
+                      >
+                        Click to upload
+                      </Typography>{" "}
+                      a file
+                    </Typography>
                     <Typography
-                      component="span"
-                      color="primary"
-                      variant="body1"
-                      style={{ textDecoration: "underline" }}
+                      variant="body2"
+                      style={{ color: "rgba(0, 0, 0, 0.60)" }}
                     >
-                      Click to upload
-                    </Typography>{" "}
-                    a file
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    style={{ color: "rgba(0, 0, 0, 0.60)" }}
-                  >
-                    CSV file only
-                  </Typography>
-                </Upload>
+                      CSV file only
+                    </Typography>
+                  </Upload>
+                )}
               </Paper>
               <Stack gap={1} mx={1} mt={2}>
-                {files.map((file) => (
+                {file && (
                   <Grid container spacing={2} alignItems="center" mt={1}>
                     <Grid item>
                       <UploadIcon variant="rounded" color="primary" />
@@ -212,24 +199,32 @@ function importComponent() {
                       </Stack>
                     </Grid>
                     <Grid item>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDelete(file.name)}
-                      >
+                      <IconButton aria-label="delete" onClick={handleDelete}>
                         <CloseIcon />
                       </IconButton>
                     </Grid>
                   </Grid>
-                ))}
+                )}
               </Stack>
             </CardContent>
           </Card>
           <Stack direction="row">
-            <Cancel variant="outlined" size="large">
+            <Cancel
+              variant="outlined"
+              size="large"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
               Cancel
             </Cancel>
-            <Button type="submit" variant="contained" size="large">
-              Submit
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Submit"}
             </Button>
           </Stack>
         </Stack>
@@ -238,4 +233,8 @@ function importComponent() {
   );
 }
 
-export default importComponent;
+ImportComponent.propTypes = {
+  setSnackBarMessage: PropTypes.func.isRequired,
+};
+
+export default ImportComponent;
