@@ -9,7 +9,9 @@ const getOneClientRequestHandler = async (req, res) => {
     let client = await Client.findOne({ where: { id: client_id } });
 
     if (client) {
-      const owner = client.creator ? await User.findOne({ where: { id: client.owner } }) : null;
+      const owner = client.creator
+        ? await User.findOne({ where: { id: client.owner } })
+        : null;
 
       const ownerUserName = owner
         ? `${owner.first_name} ${owner.last_name}`
@@ -24,7 +26,9 @@ const getOneClientRequestHandler = async (req, res) => {
           }
         : null;
 
-      const creator = client.creator ? await User.findOne({ where: { id: client.creator } }) : null;
+      const creator = client.creator
+        ? await User.findOne({ where: { id: client.creator } })
+        : null;
 
       const creatorUserName = creator
         ? `${creator.first_name} ${creator.last_name}`

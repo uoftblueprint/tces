@@ -4,12 +4,10 @@ const User = require("../../models/user.model");
 
 const getOneEmployerRequestHandler = async (req, res) => {
   try {
-
     const { employer_id } = req.params;
 
     let employer = await Employer.findOne({ where: { id: employer_id } });
     if (employer) {
-
       const owner = employer.owner
         ? await User.findOne({ where: { id: employer.owner } })
         : null;
