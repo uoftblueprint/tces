@@ -55,7 +55,7 @@ docker compose build
 7. Removing the container: `docker compose down -v`
 8. Removing the images: `docker rmi -f tces-react-app tces-express-app`
 
-## Contributors
+## Contributors (2023-24)
 - Daniel Dervishi
 - Jordan Janakievski
 - Emily Zhou
@@ -65,6 +65,9 @@ docker compose build
 - Selin Tasman
 - Grant Hamblin
 - Tanmay Shah
+
+## Contributors (2024-25)
+- Kashish Mittal
 
 ## License
 
