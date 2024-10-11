@@ -80,6 +80,7 @@ docker compose build
 
 - Kashish Mittal
 - William Lam
+- Michelle Huang
 
 ## License
 
