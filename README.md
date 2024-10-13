@@ -79,6 +79,7 @@ docker compose build
 ## Contributors (2024-25)
 
 - Kashish Mittal
+- Harshith Latchupatula
 - William Lam
 
 ## License
