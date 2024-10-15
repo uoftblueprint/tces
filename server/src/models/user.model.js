@@ -22,11 +22,11 @@ const User = sequelize.define("users-dev", {
     unique: true,
   },
   password: {
-    type: DataTypes.BLOB("tiny"),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   salt: {
-    type: DataTypes.BLOB("tiny"),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   is_admin: {

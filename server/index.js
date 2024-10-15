@@ -56,6 +56,7 @@ const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries")
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
 
 const uploadRouter = require("./src/routes/upload");
+const { exit } = require("process");
 
 // Set up cors for local dev connection with frontend
 app.use(cors(corsOption));

@@ -66,13 +66,13 @@ const EmployerTimelineEntry = sequelize.define(
         key: "id",
       },
       defaultValue: -1,
-      validate: {
-        isInJobLead(value) {
-          if (!JobLead.findByPk(value)) {
-            throw new Error("Job Lead does not exist");
-          }
-        },
-      },
+      // validate: {
+      //   isInJobLead(value) {
+      //     if (!JobLead.findByPk(value)) {
+      //       throw new Error("Job Lead does not exist");
+      //     }
+      //   },
+      // },
     },
     user: {
       type: DataTypes.INTEGER,
@@ -81,12 +81,28 @@ const EmployerTimelineEntry = sequelize.define(
         key: "id",
       },
       allowNull: false,
-      validate: {
-        isInUser(value) {
-          if (!User.findByPk(value)) {
-            throw new Error("User does not exist");
-          }
-        },
+      // validate: {
+      //   isInUser(value) {
+      //     if (!User.findByPk(value)) {
+      //       throw new Error("User does not exist");
+      //     }
+      //   },
+      // },
+    },
+  },
+  {
+    hooks: {
+      async beforeValidate(instance) {
+        // Check if employer contact exists
+        const jobLeadExists = await JobLead.findByPk(instance.job_lead);
+        if (!jobLeadExists) {
+          throw new Error("Job lead does not exist");
+        }
+
+        const userExists = await User.findByPk(instance.user);
+        if (!userExists) {
+          throw new Error("User does not exist");
+        }
       },
     },
   },

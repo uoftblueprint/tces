@@ -15,6 +15,7 @@ const sequelize = new Sequelize(process.env.SUPABASE_DATABASE_URI, {
     timestamps: false,
     freezeTableName: true,
   },
+  logging: console.log, // Enable query logging
 });
 
 // Authenticate the connection

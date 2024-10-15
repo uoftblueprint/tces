@@ -6,7 +6,7 @@ const mockAddClients = require("../mocks/mockAddObject");
 beforeEach(() => {
   mock("../../src/models/client.model", mockAddClients);
   addClientsRequestHandler = mock.reRequire(
-    "../../src/controllers/client/addClients",
+    "../../src/controllers/client/addClients"
   );
 });
 
