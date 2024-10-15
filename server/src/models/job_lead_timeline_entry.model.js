@@ -67,7 +67,7 @@ const JobLeadTimelineEntry = sequelize.define(
   {
     timestamps: false,
     tableName: "job_lead_timeline_entries",
-  },
+  }
 );
 
 module.exports = JobLeadTimelineEntry;

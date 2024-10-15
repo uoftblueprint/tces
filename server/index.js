@@ -20,6 +20,8 @@ const passport = require("passport");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
+const { sequelize } = require("./src/configs/sequelize");
+
 // Import passport configuration
 require("./src/configs/passport");
 
@@ -70,7 +72,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
-  }),
+  })
 );
 app.use(passport.authenticate("session"));
 
