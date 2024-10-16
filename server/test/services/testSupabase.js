@@ -1,19 +1,19 @@
-// testSupabase.js
+const { client } = require("../../src/configs/supabaseS3Client"); // Import your S3 client
+const { ListObjectsCommand } = require("@aws-sdk/client-s3");
 
-const { supabase } = require("../../src/configs/supabaseClient");
+// Function to test S3-compatible connection and fetch data (list objects) from a bucket
+async function testS3Connection() {
+  const command = new ListObjectsCommand({
+    Bucket: "resume-uploads", // Replace with your actual bucket name
+  });
 
-// Function to test Supabase connection and fetch data from a table
-async function testSupabaseConnection() {
-  const { data, error } = await supabase
-    .from("resume-uploads") // Replace with the actual table name
-    .select("*");
-
-  if (error) {
-    console.error("Error fetching data from Supabase:", error);
-  } else {
-    console.log("Data fetched from Supabase:", data);
+  try {
+    const data = await client.send(command); // Send the command to list objects in the bucket
+    console.log("Data fetched from S3-compatible bucket:", data.Contents);
+  } catch (error) {
+    console.error("Error fetching data from S3-compatible storage:", error);
   }
 }
 
 // Call the test function
-testSupabaseConnection();
+testS3Connection();

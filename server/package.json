@@ -12,6 +12,7 @@
   "author": "Blueprint",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.670.0",
     "@supabase/supabase-js": "^2.45.4",
     "compression": "^1.7.4",
     "connect-sqlite3": "^0.9.13",
