@@ -53,14 +53,14 @@ const EmployerToEmployerContact = sequelize.define(
         }
 
         const employerContactExists = await EmployerContact.findByPk(
-          instance.employer_contact
+          instance.employer_contact,
         );
         if (!employerContactExists) {
           throw new Error("Employer contact does not exist");
         }
       },
     },
-  }
+  },
 );
 
 module.exports = EmployerToEmployerContact;

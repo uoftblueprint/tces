@@ -59,7 +59,7 @@ const ClientTimelineEntry = sequelize.define(
   {
     timestamps: false,
     tableName: "client_timeline_entries",
-  }
+  },
 );
 
 module.exports = ClientTimelineEntry;

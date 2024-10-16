@@ -57,7 +57,7 @@ const EmployerContact = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = EmployerContact;

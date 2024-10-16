@@ -109,7 +109,7 @@ const EmployerTimelineEntry = sequelize.define(
   {
     timestamps: false,
     tableName: "employer_timeline_entries",
-  }
+  },
 );
 
 module.exports = EmployerTimelineEntry;

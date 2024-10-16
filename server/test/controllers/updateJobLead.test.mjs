@@ -41,7 +41,7 @@ describe("updateJobLead test suite", () => {
       };
 
       updateJobLeadRequestHandler = mock.reRequire(
-        "../../src/controllers/job_lead/updateJobLead"
+        "../../src/controllers/job_lead/updateJobLead",
       );
       await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(404);
@@ -65,7 +65,7 @@ describe("updateJobLead test suite", () => {
       };
 
       updateJobLeadRequestHandler = mock.reRequire(
-        "../../src/controllers/job_lead/updateJobLead"
+        "../../src/controllers/job_lead/updateJobLead",
       );
       await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(401);
@@ -96,7 +96,7 @@ describe("updateJobLead test suite", () => {
       };
 
       updateJobLeadRequestHandler = mock.reRequire(
-        "../../src/controllers/job_lead/updateJobLead"
+        "../../src/controllers/job_lead/updateJobLead",
       );
       await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(400);
@@ -128,7 +128,7 @@ describe("updateJobLead test suite", () => {
       };
 
       updateJobLeadRequestHandler = mock.reRequire(
-        "../../src/controllers/job_lead/updateJobLead"
+        "../../src/controllers/job_lead/updateJobLead",
       );
       await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(403);
@@ -160,7 +160,7 @@ describe("updateJobLead test suite", () => {
       });
 
       updateJobLeadRequestHandler = mock.reRequire(
-        "../../src/controllers/job_lead/updateJobLead"
+        "../../src/controllers/job_lead/updateJobLead",
       );
       await updateJobLeadRequestHandler(mockReq, mockRes);
       expect(mockRes.statusCode).toBe(200);

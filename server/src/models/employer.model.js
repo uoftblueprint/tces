@@ -122,7 +122,7 @@ const Employer = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = Employer;

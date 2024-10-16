@@ -121,7 +121,7 @@ const JobLead = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = JobLead;

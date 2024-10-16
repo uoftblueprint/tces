@@ -50,7 +50,7 @@ describe("getAllJobLeads test suite", () => {
       count: vi.fn().mockResolvedValue(10),
     });
     getAllJobLeadsRequestHandler = mock.reRequire(
-      "../../src/controllers/job_lead/getAllJobLeads"
+      "../../src/controllers/job_lead/getAllJobLeads",
     );
 
     const spy = vi.spyOn(mockGetManyClients, "findOne");
@@ -62,7 +62,7 @@ describe("getAllJobLeads test suite", () => {
   it("Calls findAll", async () => {
     mock("../../src/models/job_lead.model", mockGetManyClients);
     getAllJobLeadsRequestHandler = mock.reRequire(
-      "../../src/controllers/job_lead/getAllJobLeads"
+      "../../src/controllers/job_lead/getAllJobLeads",
     );
     mock("../../src/models/client.model", {
       ...mockGetManyClients,

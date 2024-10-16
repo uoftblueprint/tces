@@ -58,7 +58,7 @@ const EmployerToJobLead = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = EmployerToJobLead;

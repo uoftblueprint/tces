@@ -112,14 +112,14 @@ const Client = sequelize.define(
       async beforeValidate(instance) {
         // Check if employer contact exists
         const jobLeadExists = await JobLead.findByPk(
-          instance.job_lead_placement
+          instance.job_lead_placement,
         );
         if (!jobLeadExists && instance.job_lead_placement !== -1) {
           throw new Error("Job lead placement does not exist");
         }
       },
     },
-  }
+  },
 );
 
 module.exports = Client;
