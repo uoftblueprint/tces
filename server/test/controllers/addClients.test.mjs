@@ -1,5 +1,5 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
-import addClientsRequestHandler from "../../src/controllers/client/addClients";
+import addClientsRequestHandler from "../../src/controllers/client/addClients.js";
 const mock = require("mock-require");
 const mockAddClients = require("../mocks/mockAddObject");
 
