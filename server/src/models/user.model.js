@@ -2,7 +2,7 @@ require("dotenv").config();
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/sequelize");
 
-const User = sequelize.define(process.env.USERS_TABLE, {
+const User = sequelize.define("users-dev", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -22,17 +22,17 @@ const User = sequelize.define(process.env.USERS_TABLE, {
     unique: true,
   },
   password: {
-    type: DataTypes.BLOB("tiny"),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   salt: {
-    type: DataTypes.BLOB("tiny"),
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   is_admin: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: false,
   },
 });
 

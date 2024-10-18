@@ -8,7 +8,7 @@ const https = require("https");
 const fs = require("node:fs");
 
 const app = express();
-const port = 8000;
+const port = 8001;
 
 const corsOption = {
   origin: process.env.FRONTEND_URL,
@@ -19,6 +19,8 @@ const corsOption = {
 const passport = require("passport");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
+
+const { sequelize } = require("./src/configs/sequelize");
 
 // Import passport configuration
 require("./src/configs/passport");
@@ -54,6 +56,7 @@ const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries")
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
 
 const uploadRouter = require("./src/routes/upload");
+const { exit } = require("process");
 
 // Set up cors for local dev connection with frontend
 app.use(cors(corsOption));
