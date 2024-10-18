@@ -83,6 +83,7 @@ docker compose build
 - William Lam
 - Michelle Huang
 - Lana Wehbeh
+- Shahmeer Khan
 
 ## License
 
