@@ -82,6 +82,8 @@ docker compose build
 - Harshith Latchupatula
 - William Lam
 - Michelle Huang
+- Lana Wehbeh
+- Shahmeer Khan
 - Dhairya Thakkar
 
 ## License
