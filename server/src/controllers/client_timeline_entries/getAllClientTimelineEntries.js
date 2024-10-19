@@ -14,14 +14,18 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
     const { type, client, search_query } = req.query;
 
     const query = {};
+
+    // Use `Op.eq` for `type` since it's an ENUM field
     if (type) {
-      query.type = { [Op.like]: `%${type}%` };
+      query.type = { [Op.eq]: type };
     }
 
+    // Use `Op.eq` for `client` since it's an integer field
     if (client) {
-      query.client = client;
+      query.client = { [Op.eq]: client };
     }
 
+    // Use `LIKE` for string fields like `title` and `body` for search queries
     if (search_query) {
       query[Op.or] = [
         { title: { [Op.like]: `%${search_query}%` } },
@@ -59,7 +63,7 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
           job_lead_details: jobLeadDetails ? jobLeadDetails.toJSON() : null,
           client_details: clientDetails ? clientDetails.toJSON() : null,
         };
-      }),
+      })
     );
 
     return res.status(200).json({
@@ -72,7 +76,7 @@ const getAllClientTimelineEntriesRequestHandler = async (req, res) => {
     logger.error(`Unexpected server error: ${err}`);
     return res.status(500).json({
       status: "error",
-      message: "An unexpected server error occured.",
+      message: "An unexpected server error occurred.",
     });
   }
 };

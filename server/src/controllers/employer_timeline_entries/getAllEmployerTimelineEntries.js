@@ -1,7 +1,6 @@
 const logger = require("pino")();
 const { Op } = require("sequelize");
 const EmployerTimelineEntry = require("../../models/employer_timeline_entry.model");
-const JobLeadTimelineEntry = require("../../models/job_lead_timeline_entry.model");
 const JobLead = require("../../models/job_lead.model");
 const Employer = require("../../models/employer.model");
 const Client = require("../../models/client.model");
@@ -16,14 +15,26 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
     const { type, employer, search_query } = req.query;
 
     const query = {};
+
+    // Use `Op.eq` for `type` since it's an ENUM
     if (type) {
-      query.type = { [Op.like]: `%${type}%` };
+      query.type = { [Op.eq]: type };
     }
 
+    // Use `Op.eq` for `employer` since it's an integer
     if (employer) {
-      query.employer = { [Op.like]: `%${employer}%` };
+      const employerId = parseInt(employer, 10);
+      if (!isNaN(employerId)) {
+        query.employer = { [Op.eq]: employerId };
+      } else {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid employer ID",
+        });
+      }
     }
 
+    // Use `LIKE` for string fields like `title` and `body`
     if (search_query) {
       query[Op.or] = [
         { title: { [Op.like]: `%${search_query}%` } },
@@ -66,7 +77,7 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
           client_details: clientDetails ? clientDetails.toJSON() : null,
           employer_details: employerDetails ? employerDetails.toJSON() : null,
         };
-      }),
+      })
     );
 
     return res.status(200).json({
@@ -79,7 +90,7 @@ const getAllEmployerTimelineEntriesRequestHandler = async (req, res) => {
     logger.error(`Unexpected server error: ${err}`);
     return res.status(500).json({
       status: "error",
-      message: "An unexpected server error occured.",
+      message: "An unexpected server error occurred.",
     });
   }
 };

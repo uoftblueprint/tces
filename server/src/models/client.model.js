@@ -63,7 +63,7 @@ const Client = sequelize.define(
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM(["active", "r_and_i", "closed"]),
+      type: DataTypes.ENUM(["Active", "r_and_i", "closed"]),
       allowNull: true,
     },
     closure_date: {
@@ -93,7 +93,7 @@ const Client = sequelize.define(
     },
     job_lead_placement: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: JobLead,
         key: "id",
@@ -110,16 +110,18 @@ const Client = sequelize.define(
   {
     hooks: {
       async beforeValidate(instance) {
-        // Check if employer contact exists
-        const jobLeadExists = await JobLead.findByPk(
-          instance.job_lead_placement,
-        );
-        if (!jobLeadExists && instance.job_lead_placement !== -1) {
-          throw new Error("Job lead placement does not exist");
+        if (instance.job_lead_placement !== null) {
+          // Check if employer contact exists
+          const jobLeadExists = await JobLead.findByPk(
+            instance.job_lead_placement
+          );
+          if (!jobLeadExists && instance.job_lead_placement !== null) {
+            throw new Error("Job lead placement does not exist");
+          }
         }
       },
     },
-  },
+  }
 );
 
 module.exports = Client;

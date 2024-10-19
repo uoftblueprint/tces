@@ -20,7 +20,7 @@ const JobLeadTimelineEntry = sequelize.define(
       defaultValue: DataTypes.NOW,
     },
     type: {
-      type: DataTypes.ENUM("placement", "note"),
+      type: DataTypes.ENUM("placement", "note", "job"),
       allowNull: false,
     },
     title: {
@@ -37,7 +37,7 @@ const JobLeadTimelineEntry = sequelize.define(
         model: Client,
         key: "id",
       },
-      defaultValue: -1,
+      // defaultValue: -1,
     },
     job_lead: {
       type: DataTypes.INTEGER,
@@ -45,7 +45,7 @@ const JobLeadTimelineEntry = sequelize.define(
         model: JobLead,
         key: "id",
       },
-      defaultValue: -1,
+      // defaultValue: -1,
     },
     employer: {
       type: DataTypes.INTEGER,
@@ -53,7 +53,7 @@ const JobLeadTimelineEntry = sequelize.define(
         model: Employer,
         key: "id",
       },
-      defaultValue: -1,
+      // defaultValue: -1,
     },
     user: {
       type: DataTypes.INTEGER,
@@ -61,13 +61,13 @@ const JobLeadTimelineEntry = sequelize.define(
         model: User,
         key: "id",
       },
-      defaultValue: -1,
+      // defaultValue: -1,
     },
   },
   {
     timestamps: false,
     tableName: "job_lead_timeline_entries",
-  },
+  }
 );
 
 module.exports = JobLeadTimelineEntry;

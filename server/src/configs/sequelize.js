@@ -18,7 +18,9 @@ const sequelize = new Sequelize(process.env.SUPABASE_DATABASE_URI, {
 });
 
 // Authenticate the connection
-sequelize.authenticate().then(() => {});
+sequelize.authenticate().then(() => {
+  // return sequelize.sync({ force: true }); // Use { force: true } if you want to recreate the tables
+});
 
 module.exports = {
   sequelize,

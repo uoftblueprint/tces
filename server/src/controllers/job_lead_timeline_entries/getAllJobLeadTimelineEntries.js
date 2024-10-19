@@ -14,18 +14,22 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
     const { type, job_lead, search_query } = req.query;
 
     const query = {};
+
+    // Use `Op.eq` for `type` since it's an ENUM
     if (type) {
-      query.type = { [Op.like]: `%${type}%` };
+      query.type = { [Op.eq]: type };
     }
 
+    // Use `Op.eq` for `job_lead` since it's an integer
     if (job_lead) {
-      query.job_lead = job_lead;
+      query.job_lead = { [Op.eq]: job_lead };
     }
 
+    // Use `LIKE` for string fields like `title` and `body` for search queries
     if (search_query) {
       query[Op.or] = [
-        { title: { [Op.like]: `%${search_query}%` } },
-        { body: { [Op.like]: `%${search_query}%` } },
+        { title: { [Op.like]: `%${search_query}%` } }, // Assuming title is a string
+        { body: { [Op.like]: `%${search_query}%` } }, // Assuming body is a string
       ];
     }
 
@@ -59,7 +63,7 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
           job_lead_details: jobLeadDetails ? jobLeadDetails.toJSON() : null,
           client_details: clientDetails ? clientDetails.toJSON() : null,
         };
-      }),
+      })
     );
 
     return res.status(200).json({
@@ -72,7 +76,7 @@ const getAllJobLeadTimelineEntriesRequestHandler = async (req, res) => {
     logger.error(`Unexpected server error: ${err}`);
     return res.status(500).json({
       status: "error",
-      message: "An unexpected server error occured.",
+      message: "An unexpected server error occurred.",
     });
   }
 };

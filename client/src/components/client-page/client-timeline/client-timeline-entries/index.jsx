@@ -45,7 +45,7 @@ function ClientTimelineEntriesComponent({
     try {
       setLoading(true);
       const response = await getFilteredClientTimelineEntries(
-        queryParams.toString(),
+        queryParams.toString()
       );
       if (response.ok) {
         const clientTimelineEntries = await response.json();

@@ -33,30 +33,30 @@ const EmployerTimelineEntry = sequelize.define(
     },
     contact: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
-        model: User, // to be replaced when Contact api is done
+        model: User, // to be replaced when Contact API is done
         key: "id",
       },
-      defaultValue: -1,
+      defaultValue: null,
     },
     employer: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: Employer,
         key: "id",
       },
-      defaultValue: -1,
+      defaultValue: null,
     },
     client: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: Client,
         key: "id",
       },
-      defaultValue: -1,
+      defaultValue: null,
     },
     job_lead: {
       type: DataTypes.INTEGER,
@@ -65,14 +65,7 @@ const EmployerTimelineEntry = sequelize.define(
         model: JobLead,
         key: "id",
       },
-      defaultValue: -1,
-      // validate: {
-      //   isInJobLead(value) {
-      //     if (!JobLead.findByPk(value)) {
-      //       throw new Error("Job Lead does not exist");
-      //     }
-      //   },
-      // },
+      defaultValue: null,
     },
     user: {
       type: DataTypes.INTEGER,
@@ -80,36 +73,32 @@ const EmployerTimelineEntry = sequelize.define(
         model: User,
         key: "id",
       },
-      allowNull: false,
-      // validate: {
-      //   isInUser(value) {
-      //     if (!User.findByPk(value)) {
-      //       throw new Error("User does not exist");
-      //     }
-      //   },
-      // },
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {
     hooks: {
       async beforeValidate(instance) {
-        // Check if employer contact exists
-        const jobLeadExists = await JobLead.findByPk(instance.job_lead);
-        if (!jobLeadExists) {
-          throw new Error("Job lead does not exist");
+        // Only check if job_lead is not null
+        if (instance.job_lead !== null) {
+          const jobLeadExists = await JobLead.findByPk(instance.job_lead);
+          if (!jobLeadExists) {
+            throw new Error("Job lead does not exist");
+          }
         }
 
-        const userExists = await User.findByPk(instance.user);
-        if (!userExists) {
-          throw new Error("User does not exist");
+        if (instance.user !== null) {
+          const userExists = await User.findByPk(instance.user);
+          if (!userExists) {
+            throw new Error("User does not exist");
+          }
         }
       },
     },
-  },
-  {
     timestamps: false,
     tableName: "employer_timeline_entries",
-  },
+  }
 );
 
 module.exports = EmployerTimelineEntry;

@@ -45,7 +45,7 @@ const ClientTimelineEntry = sequelize.define(
         model: JobLead,
         key: "id",
       },
-      defaultValue: -1,
+      defaultValue: null,
     },
     user: {
       type: DataTypes.INTEGER,
@@ -53,13 +53,13 @@ const ClientTimelineEntry = sequelize.define(
         model: User,
         key: "id",
       },
-      defaultValue: -1,
+      // defaultValue: -1,
     },
   },
   {
     timestamps: false,
     tableName: "client_timeline_entries",
-  },
+  }
 );
 
 module.exports = ClientTimelineEntry;
