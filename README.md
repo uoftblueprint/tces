@@ -85,6 +85,8 @@ docker compose build
 - Lana Wehbeh
 - Shahmeer Khan
 - Dhairya Thakkar
+- Mieko Yao
+- Olya Jaworsky
 
 ## License
 
