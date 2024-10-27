@@ -7,6 +7,8 @@ const {
   DeleteObjectCommand,
 } = require("@aws-sdk/client-s3");
 
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -51,8 +53,6 @@ const uploadFileToS3 = async (file, fileName) => {
  * @throws {Error} - Throws an error if the URL generation fails.
  */
 const getResumePresignedUrl = async (fileKey) => {
-  const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Key: fileKey,
@@ -85,7 +85,7 @@ const deleteFileFromS3 = async (fileKey) => {
     const command = new DeleteObjectCommand(params);
     await s3Client.send(command);
     logger.info(
-      `Successfully deleted ${fileKey} from ${process.env.S3_BUCKET_NAME}`
+      `Successfully deleted ${fileKey} from ${process.env.S3_BUCKET_NAME}`,
     );
   } catch (error) {
     logger.error({ error }, "Error deleting the file");
