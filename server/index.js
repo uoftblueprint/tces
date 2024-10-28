@@ -70,7 +70,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
-  }),
+  })
 );
 app.use(passport.authenticate("session"));
 

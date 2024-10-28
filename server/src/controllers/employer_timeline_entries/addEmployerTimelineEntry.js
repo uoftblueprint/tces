@@ -64,7 +64,7 @@ const addEmployerTimelineEntryRequestHandler = async (req, res) => {
           user: user.id,
           employer: jobLeadObject.employer,
         },
-        "employer",
+        "employer"
       );
     } else {
       let bodyTitle = title;
