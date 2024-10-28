@@ -1,4 +1,4 @@
-const addJobApplication = async (req, res) => {
+const addJobApplicationRequestHandler = async (req, res) => {
   // TODO JobApplication Model Summary:
   // TODO Represents a job application record in the database, linking to a job posting by job_posting_id.
   // TODO Fields:
@@ -71,4 +71,4 @@ const addJobApplication = async (req, res) => {
   // ! and that the string is just the link to the URL of the pdf file in the S3 bucket.
 };
 
-module.exports = addJobApplication;
+module.exports = addJobApplicationRequestHandler;
