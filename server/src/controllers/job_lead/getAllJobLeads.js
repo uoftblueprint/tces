@@ -124,8 +124,8 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
       if (isValidNOCQuery(searchNOCQuery)) {
         query[Op.and].push(
           literal(
-            `CAST(national_occupation_code AS CHAR) LIKE '%${sanitizedNOCQuery}%'`,
-          ),
+            `CAST(national_occupation_code AS CHAR) LIKE '%${sanitizedNOCQuery}%'`
+          )
         );
       }
     }
@@ -183,7 +183,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
             client_count,
             owner_details,
           };
-        }),
+        })
       );
     }
 
@@ -208,7 +208,7 @@ const getAllJobLeadsRequestHandler = async (req, res) => {
                 ? `${user.first_name} ${user.last_name}`
                 : `User ${owner.owner}`,
             };
-          }),
+          })
         )
       : [];
 
