@@ -47,8 +47,8 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
     };
 
     if (page !== null && pageSize !== null) {
-      searchConfig.limit = pageSize;
-      searchConfig.offset = pageSize * page;
+      searchConfig.limit = parseInt(pageSize, 10);
+      searchConfig.offset = parseInt(pageSize, 10) * parseInt(page, 10);
     }
 
     const jobApplications = await JobApplications.findAll(searchConfig);

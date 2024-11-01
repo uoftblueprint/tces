@@ -52,6 +52,7 @@ const employerContactRouter = require("./src/routes/employer_contact");
 const JobLeadTimelineRouter = require("./src/routes/job_lead_timeline_entries");
 const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries");
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
+const jobApplicationsRouter = require("./src/routes/job_applications");
 
 const uploadRouter = require("./src/routes/upload");
 
@@ -70,7 +71,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
-  }),
+  })
 );
 app.use(passport.authenticate("session"));
 
@@ -84,6 +85,7 @@ app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 app.use("/upload", uploadRouter);
+app.use("/job_applications", jobApplicationsRouter);
 
 const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;
