@@ -33,6 +33,12 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
+    const { job_posting_id: jobPostingId } = req.query;
+
+    if (jobPostingId) {
+      query.job_posting_id = jobPostingId;
+    }
+
     // ! This is an example of how the pagination logic is used with the Job Lead model.
 
     const searchConfig = {
