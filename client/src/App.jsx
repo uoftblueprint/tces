@@ -352,6 +352,20 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/job-post/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <AddJobLeadPage
+                    currUser={currUser}
+                    setLocalExitRoute={setLocalExitRoute}
+                  />
+                </AuthGuard>
+              }
+            />
           </Route>
           <Route
             path="/admin/create-user"
