@@ -49,6 +49,15 @@ function Navbar({ isAdmin, setLocalExitRoute }) {
               keyword="employers"
               setLocalExitRoute={setLocalExitRoute}
             />
+            {/* New buttons for job postings and job applications */}
+            <NavbarButton
+              keyword="job-postings"
+              setLocalExitRoute={setLocalExitRoute}
+            />
+            <NavbarButton
+              keyword="job-applications"
+              setLocalExitRoute={setLocalExitRoute}
+            />
           </div>
         </div>
         <div className="right-content">
