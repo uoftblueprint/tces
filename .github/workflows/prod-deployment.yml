@@ -41,7 +41,7 @@ jobs:
       # logging into ecr using the credentials in the last step (set as environment variables)
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v3
+        uses: aws-actions/amazon-ecr-login@v2
       
       # Building and pushing image to backend ECR repo
       - name: Build, tag, and push backend image to Amazon ECR
@@ -58,7 +58,7 @@ jobs:
 
       # Use the task definition in 
       - name: Deploy Amazon ECS task definition produced in task-def-backend-scraper to host the containers
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v3
         with:
           task-definition: aws/prod-task-definition.json
           service: blueprint-prod
