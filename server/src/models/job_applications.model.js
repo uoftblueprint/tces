@@ -58,6 +58,10 @@ const JobApplication = sequelize.define(
       ),
       allowNull: false,
     },
+    status_other: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     application_status: {
       type: DataTypes.ENUM(
         "Contacted",
