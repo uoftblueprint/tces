@@ -85,7 +85,11 @@ const JobPosting = sequelize.define(
     timestamps: true,
     hooks: {
       beforeUpdate: (job) => {
-        if (job.state === "Active" && job.close_date && job.close_date < new Date()) {
+        if (
+          job.state === "Active" &&
+          job.close_date &&
+          job.close_date < new Date()
+        ) {
           job.setDataValue("state", "Inactive");
         }
       },
