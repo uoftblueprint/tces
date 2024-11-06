@@ -17,26 +17,26 @@ const JobPosting = sequelize.define(
     },
     employer: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     location: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     hours_per_week: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       validate: {
         min: 1,
       },
     },
     rate_of_pay_min: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
+      allowNull: true,
     },
     rate_of_pay_max: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
+      allowNull: true,
     },
     rate_of_pay_frequency: {
       type: DataTypes.ENUM(
@@ -46,21 +46,21 @@ const JobPosting = sequelize.define(
         "commission",
         "base & commission",
       ),
-      allowNull: false,
+      allowNull: true,
     },
     job_type: {
       type: DataTypes.ARRAY(
         DataTypes.ENUM("Part-time", "Full-time", "Contract", "Permanent"),
       ),
-      allowNull: false,
+      allowNull: true,
     },
     close_date: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     job_description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     custom_questions: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -85,8 +85,8 @@ const JobPosting = sequelize.define(
     timestamps: true,
     hooks: {
       beforeUpdate: (job) => {
-        if (job.state === "Active" && job.close_date < new Date()) {
-          job.state = "Inactive";
+        if (job.state === "Active" && job.close_date && job.close_date < new Date()) {
+          job.setDataValue("state", "Inactive");
         }
       },
     },
