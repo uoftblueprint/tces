@@ -40,11 +40,11 @@ const JobPosting = sequelize.define(
     },
     rate_of_pay_frequency: {
       type: DataTypes.ENUM(
-        "hourly",
-        "weekly",
-        "annually",
-        "commission",
-        "base & commission",
+        "Hourly",
+        "Weekly",
+        "Annually",
+        "Commission",
+        "Base & Commission",
       ),
       allowNull: true,
     },
