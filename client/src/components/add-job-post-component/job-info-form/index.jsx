@@ -14,8 +14,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { JobLeadContainer, H3 } from "./index.styles";
-import { JOB_TYPES, COMPENSATION_RATES } from "../../utils/contants";
+import { JobLeadContainer, H3 } from "../index.styles";
+import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
 
 function JobLeadContent({

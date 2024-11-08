@@ -11,14 +11,17 @@ import {
   Box,
   Stack,
   Typography,
+  Pagination,
 } from "@mui/material";
 // import dayjs from "dayjs";
-import JobLeadContent from "./jobLeadCard";
+import JobLeadContent from "./job-info-form";
 import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
 import ConfirmDialog from "../shared/confirm-dialog-component";
+
+// TODO: add selection functionality for pagination
 
 function AddJobLead({
   jobLeadData,
@@ -139,6 +142,27 @@ function AddJobLead({
               jobLeadData={jobLeadData}
               handleInputChange={handleInputChange}
               handleDeleteJobLead={handleDeleteJobLead}
+            />
+
+            <Pagination
+              count={2}
+              shape="rounded"
+              hidePrevButton
+              hideNextButton
+              page={1}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                my: 2,
+                "& .MuiPaginationItem-root": {
+                  color: "#3568E5",
+                  pointerEvents: "none",
+                },
+                "& .MuiPaginationItem-page.Mui-selected": {
+                  backgroundColor: "#3568e5",
+                  color: "white",
+                },
+              }}
             />
             {/* Add this to next job posting page */}
             {/* <ButtonL
