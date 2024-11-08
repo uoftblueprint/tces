@@ -1,5 +1,4 @@
 const express = require("express");
-const JobApplication = require("../models/job_application");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
 const getOneJobApplicationRequestHandler = require("../controllers/job_applications/getOneJobApplication");
 

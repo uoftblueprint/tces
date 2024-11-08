@@ -74,7 +74,7 @@ const getOneJobApplicationsRequestHandler = async (req, res) => {
     });
 
     const uniqueApplicationsObject = uniqueApplicants.map(
-      (applicant) => applicant.name
+      (applicant) => applicant.name,
     );
 
     const totalJobApplicationsNumber = await JobApplications.count({
