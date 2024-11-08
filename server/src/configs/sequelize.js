@@ -23,14 +23,11 @@ const sequelize = new Sequelize(
       timestamps: false,
       freezeTableName: true,
     },
-  }
+  },
 );
 
 // Authenticate the connection
-sequelize
-  .authenticate()
-  .then(() => console.log("Database connected"))
-  .catch((error) => console.error("Database connection failed:", error));
+sequelize.authenticate();
 
 // // Function to reinitialize database
 // const reinitializeDatabase = async () => {
