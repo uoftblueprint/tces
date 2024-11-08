@@ -1,5 +1,5 @@
-const JobPosting = require("../../models/job_posting.model");
-const JobApplication = require("../../models/job_application.model");
+const JobPosting = require("../../models/job_posts.model");
+const JobApplication = require("../../models/job_applications.model");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   // TODO JobApplication Model Summary:

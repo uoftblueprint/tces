@@ -86,6 +86,62 @@ app.use("/clients_timeline", ClientTimelineRouter);
 app.use("/job_applications", jobApplicationsRouter);
 app.use("/upload", uploadRouter);
 
+// const User = require("./src/models/user.model"); // Assuming your user model is here
+// const JobPosting = require("./src/models/job_posts.model");
+
+// async function createFakeJobPosting() {
+//   try {
+//     // Check or create the user with ID 1 for the `creator` foreign key
+//     const [user, userCreated] = await User.findOrCreate({
+//       where: { id: 1 },
+//       defaults: {
+//         first_name: 'John',
+//         last_name: 'Doe',
+//         email: 'johndoe@example.com',
+//         password: Buffer.from('hashedpassword'), // Use an actual hashed password here
+//         salt: Buffer.from('saltvalue'), // Use the actual salt value
+//         is_admin: false, // or true if this user is an admin
+//       },
+//     });
+
+//     if (userCreated) {
+//       console.log("User created:", user.toJSON());
+//     } else {
+//       console.log("User already exists:", user.toJSON());
+//     }
+
+//     // Now create the JobPosting, referencing the existing user
+//     const [job, jobCreated] = await JobPosting.findOrCreate({
+//       where: { id: 1 },
+//       defaults: {
+//         title: 'Software Engineer',
+//         employer: 'Tech Solutions Inc.',
+//         location: 'Remote',
+//         hours_per_week: 40,
+//         rate_of_pay_min: 40.0,
+//         rate_of_pay_max: 60.0,
+//         rate_of_pay_frequency: 'Hourly',
+//         job_type: ['Full-time'],
+//         close_date: new Date(new Date().setMonth(new Date().getMonth() + 1)), // One month from now
+//         job_description: 'We are looking for a talented Software Engineer to join our dynamic team.',
+//         custom_questions: ['Why do you want to work here?', 'What are your career goals?'],
+//         creator: user.id, // Reference to the user we just ensured exists
+//         state: 'Draft',
+//       },
+//     });
+
+//     if (jobCreated) {
+//       console.log("Fake job posting created:", job.toJSON());
+//     } else {
+//       console.log("Job posting with ID 1 already exists:", job.toJSON());
+//     }
+//   } catch (error) {
+//     console.error("Error creating fake job posting:", error);
+//   }
+// }
+
+// createFakeJobPosting();
+
 const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;
 beginScheduler();

@@ -1,5 +1,5 @@
 const express = require("express");
-const JobApplication = require("../models/job_application");
+const JobApplication = require("../models/job_applications.model");
 const addJobApplicationRequestHandler = require("../controllers/job_applications/addJobApplication");
 
 const router = express.Router();
