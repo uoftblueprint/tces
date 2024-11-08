@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
-import AddJobLeadParent from "../../components/add-job-post-component/addJobLead";
+import AddJobPostParent from "../../components/add-job-post-component/addJobLead";
 import UserType from "../../prop-types/UserType";
 
-function AddJobLeadPage({ setLocalExitRoute, currUser }) {
+function AddJobPostPage({ setLocalExitRoute, currUser }) {
   return (
-    <AddJobLeadParent
+    <AddJobPostParent
       setLocalExitRoute={setLocalExitRoute}
       currUser={currUser}
     />
   );
 }
 
-AddJobLeadPage.propTypes = {
+AddJobPostPage.propTypes = {
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };
 
-export default AddJobLeadPage;
+export default AddJobPostPage;

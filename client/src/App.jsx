@@ -32,6 +32,7 @@ import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
 import EditJobLead from "./pages/edit-job-lead";
+import AddJobPostPage from "./pages/add-job-post";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
@@ -359,7 +360,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <AddJobLeadPage
+                  <AddJobPostPage
                     currUser={currUser}
                     setLocalExitRoute={setLocalExitRoute}
                   />

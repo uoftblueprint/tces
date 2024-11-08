@@ -123,7 +123,7 @@ function AddJobLead({
           }}
         >
           <Typography variant="h4" component="h1" textAlign="left">
-            Adding a Job Lead
+            Adding a New Job Posting
           </Typography>
           <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
             Input information about the job lead.
