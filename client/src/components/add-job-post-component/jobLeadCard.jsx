@@ -15,7 +15,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { JobLeadContainer, H3 } from "./index.styles";
-import { JOB_TYPES } from "../../utils/contants";
+import { JOB_TYPES, COMPENSATION_RATES } from "../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
 
 function JobLeadContent({
@@ -71,6 +71,11 @@ function JobLeadContent({
   // if (error) return <ErrorScreenComponent message={error} />;
 
   return (
+    // TODOs
+    // 1. get rid of required star beside label names
+    // 2. ask about employment type label, really hard to make it the same native transition :skull
+    // 3. add required bottom label to additional information and make it aligned w/the textarea
+    // 4. change all labels, ids and handleinputchange paramters to match new input types
     <>
       {jobLeadData.map((lead, index, array) => (
         <JobLeadContainer key={lead.id}>
@@ -190,13 +195,13 @@ function JobLeadContent({
               labelId={`employmentTypeLabel-${lead.id}`}
               id={`employmentType-${lead.id}`}
               value={lead.employmentType}
-              label="Employment Type"
+              label="Compensation rate"
               onChange={(e) =>
                 handleInputChange(e.target.value, lead.id, "employmentType")
               }
               required={!isAddEmployer}
             >
-              {JOB_TYPES.map((jobType) => (
+              {COMPENSATION_RATES.map((jobType) => (
                 <MenuItem key={jobType} value={jobType}>
                   {jobType}
                 </MenuItem>
@@ -222,36 +227,28 @@ function JobLeadContent({
             required={!isAddEmployer}
           />
 
-          {/* National Occupation Code Field */}
-          {/* <TextField
-            fullWidth
-            type="number"
-            inputProps={{ min: 0 }}
-            sx={{ m: 1, width: "47%" }}
-            id={`nationalOC-${lead.id}`}
-            label="National Occupation Code"
-            value={lead.nationalOC}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (value >= 0) handleInputChange(value, lead.id, "nationalOC");
-            }}
-            required={!isAddEmployer}
-          /> */}
-
-          {/* Job Description Field */}
-          <TextField
-            fullWidth
-            sx={{ m: 1, width: "96%" }}
-            id={`description-${lead.id}`}
-            label="Job Description"
-            multiline
-            rows={4}
-            value={lead.description}
-            onChange={(e) =>
-              handleInputChange(e.target.value, lead.id, "description")
-            }
-            required={!isAddEmployer}
-          />
+          {/* Employment Type Field */}
+          <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
+            <InputLabel>Employment Type</InputLabel>
+            <Select
+              sx={{ textAlign: "left" }}
+              labelId={`employmentTypeLabel-${lead.id}`}
+              id={`employmentType-${lead.id}`}
+              value={lead.employmentType}
+              label="Employment Type"
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employmentType")
+              }
+              required={!isAddEmployer}
+            >
+              {JOB_TYPES.map((jobType) => (
+                <MenuItem key={jobType} value={jobType}>
+                  {jobType}
+                </MenuItem>
+              ))}
+            </Select>
+            {!isAddEmployer && <FormHelperText>*Required</FormHelperText>}
+          </FormControl>
 
           {/* Creation Date Picker */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -293,45 +290,20 @@ function JobLeadContent({
             />
           </LocalizationProvider>
 
-          {/* Employment Type Field */}
-          <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-            <InputLabel id={`employmentTypeLabel-${lead.id}`}>
-              Employment Type
-            </InputLabel>
-            <Select
-              sx={{ textAlign: "left" }}
-              labelId={`employmentTypeLabel-${lead.id}`}
-              id={`employmentType-${lead.id}`}
-              value={lead.employmentType}
-              label="Employment Type"
-              onChange={(e) =>
-                handleInputChange(e.target.value, lead.id, "employmentType")
-              }
-              required={!isAddEmployer}
-            >
-              {JOB_TYPES.map((jobType) => (
-                <MenuItem key={jobType} value={jobType}>
-                  {jobType}
-                </MenuItem>
-              ))}
-            </Select>
-            {!isAddEmployer && <FormHelperText>*Required</FormHelperText>}
-          </FormControl>
-
-          {/* Number of Positions Field */}
+          {/* Additional Information Field */}
+          {/* TODO ADD REQUIRED LABEL */}
           <TextField
             fullWidth
             sx={{ m: 1, width: "96%" }}
-            id={`numPositions-${lead.id}`}
-            label="Number of Positions"
-            type="number"
-            inputProps={{ min: 0 }}
-            value={lead.numPositions}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (value >= 0) handleInputChange(value, lead.id, "numPositions");
-            }}
-            helperText={isAddEmployer ? "" : "*Required"}
+            id={`description-${lead.id}`}
+            label="Additional Information"
+            multiline
+            rows={4}
+            value={lead.description}
+            InputLabelProps={{ shrink: true }}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "description")
+            }
             required={!isAddEmployer}
           />
         </JobLeadContainer>
