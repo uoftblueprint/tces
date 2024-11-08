@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useState } from "react";
 import {
   FormControl,
   IconButton,
@@ -10,18 +9,14 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
-  Autocomplete,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import DeleteIcon from "@mui/icons-material/Delete";
-import * as React from "react";
 import { JobLeadContainer, H3 } from "./index.styles";
 import { JOB_TYPES } from "../../utils/contants";
-import { getFilteredEmployers } from "../../utils/api";
-import ErrorScreenComponent from "../shared/error-screen-component";
-import debouncer from "../../utils/debouncer";
+// import ErrorScreenComponent from "../shared/error-screen-component";
 
 function JobLeadContent({
   jobLeadData,
@@ -29,80 +24,51 @@ function JobLeadContent({
   handleDeleteJobLead,
   isAddEmployer,
 }) {
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [paginationModel] = React.useState({
+  //   pageSize: 10,
+  //   page: 0,
+  // });
 
-  const [paginationModel] = React.useState({
-    pageSize: 10,
-    page: 0,
-  });
+  // const handleSearch = async (searchQuery, pageSize = 10, page = 0) => {
+  //   const queryParams = new URLSearchParams();
+  //   queryParams.append("employerName", searchQuery);
+  //   queryParams.append("page", page);
+  //   queryParams.append("pageSize", pageSize);
+  //   try {
+  //     const response = await getFilteredEmployers(queryParams.toString());
+  //     if (response.ok) {
+  //       const employersData = await response.json();
+  //       const formattedEmployers = employersData.data.map((employer) => ({
+  //         employerID: employer.id,
+  //         name: employer.name,
+  //         creatorID: employer.creator,
+  //         ownerID: employer.owner,
+  //         address: employer.address,
+  //         city: employer.city,
+  //         postalCode: employer.postal_code,
+  //         province: employer.province,
+  //         secondaryAddress: employer.secondary_address,
+  //         secondaryCity: employer.secondary_city,
+  //         secondaryPostalCode: employer.secondary_postal_code,
+  //         secondaryProvince: employer.secondary_province,
+  //         dateAdded: employer.date_added,
+  //         email: employer.email,
+  //         fax: employer.fax,
+  //         legalName: employer.legal_name,
+  //         naicsCode: employer.naics_code,
+  //         phoneNumber: employer.phone_number,
+  //         website: employer.website,
+  //       }));
+  //     } else {
+  //       const errorData = await response.json();
+  //       setError(errorData.message || "Fetch failed.");
+  //     }
+  //   } catch (err) {
+  //     setError(err);
+  //   }
+  // };
 
-  const handleSearch = async (searchQuery, pageSize = 10, page = 0) => {
-    const queryParams = new URLSearchParams();
-    queryParams.append("employerName", searchQuery);
-    queryParams.append("page", page);
-    queryParams.append("pageSize", pageSize);
-    try {
-      const response = await getFilteredEmployers(queryParams.toString());
-      if (response.ok) {
-        const employersData = await response.json();
-        const formattedEmployers = employersData.data.map((employer) => ({
-          employerID: employer.id,
-          name: employer.name,
-          creatorID: employer.creator,
-          ownerID: employer.owner,
-          address: employer.address,
-          city: employer.city,
-          postalCode: employer.postal_code,
-          province: employer.province,
-          secondaryAddress: employer.secondary_address,
-          secondaryCity: employer.secondary_city,
-          secondaryPostalCode: employer.secondary_postal_code,
-          secondaryProvince: employer.secondary_province,
-          dateAdded: employer.date_added,
-          email: employer.email,
-          fax: employer.fax,
-          legalName: employer.legal_name,
-          naicsCode: employer.naics_code,
-          phoneNumber: employer.phone_number,
-          website: employer.website,
-        }));
-        setOptions(formattedEmployers);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Fetch failed.");
-      }
-    } catch (err) {
-      setError(err);
-    }
-  };
-
-  const fetchEmployers = async (inputValue) => {
-    try {
-      setLoading(true);
-      setOptions([]);
-      const { pageSize, page } = paginationModel;
-      await handleSearch(inputValue, pageSize, page);
-    } catch (err) {
-      setError("Failed to fetch employers.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // debouncer to minimize api calls
-  const debouncedFetchEmployers = useCallback(
-    debouncer(fetchEmployers, 500),
-    [],
-  );
-
-  useEffect(() => {
-    debouncedFetchEmployers("");
-  }, []);
-
-  if (error) return <ErrorScreenComponent message={error} />;
+  // if (error) return <ErrorScreenComponent message={error} />;
 
   return (
     <>
@@ -115,7 +81,7 @@ function JobLeadContent({
               alignItems: "center",
             }}
           >
-            <H3>Job Lead {lead.id + 1}</H3>
+            <H3>Job Information</H3>
             {array.length > 1 && (
               <IconButton
                 onClick={() => handleDeleteJobLead(lead.id)}
@@ -125,41 +91,6 @@ function JobLeadContent({
               </IconButton>
             )}
           </div>
-          {/* Employer Name Field */}
-          {!isAddEmployer && (
-            <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-              <Autocomplete
-                id={`employer-${lead.id}`}
-                open={open}
-                onOpen={() => {
-                  setOpen(true);
-                }}
-                onClose={() => {
-                  setOpen(false);
-                }}
-                onChange={(event, newValue) => {
-                  handleInputChange(newValue.employerID, lead.id, "employer");
-                }}
-                onInputChange={(event, newInputValue) => {
-                  event.preventDefault();
-                  debouncedFetchEmployers(newInputValue);
-                }}
-                options={options}
-                getOptionLabel={(option) => option.name}
-                loading={loading}
-                loadingText="Loading..."
-                renderInput={(params) => (
-                  <TextField
-                    // eslint-disable-next-line
-                    {...params}
-                    label="Employer Name"
-                    variant="outlined"
-                  />
-                )}
-              />
-              <FormHelperText>*Required</FormHelperText>
-            </FormControl>
-          )}
 
           {/* Job Title Field */}
           <TextField
@@ -175,10 +106,38 @@ function JobLeadContent({
             required={!isAddEmployer}
           />
 
-          {/* Compensation Minimum Field */}
+          {/* Employer Name Field */}
+          <TextField
+            fullWidth
+            sx={{ m: 1, width: "96%" }}
+            id={`employer-${lead.id}`}
+            label="Employer Name"
+            value={lead.employer}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "employer")
+            }
+            helperText={isAddEmployer ? "" : "*Required"}
+            required={!isAddEmployer}
+          />
+
+          {/* Location Field */}
+          <TextField
+            fullWidth
+            sx={{ m: 1, width: "96%" }}
+            id={`location-${lead.id}`}
+            label="Location"
+            value={lead.location}
+            onChange={(e) =>
+              handleInputChange(e.target.value, lead.id, "location")
+            }
+            helperText={isAddEmployer ? "" : "*Required"}
+            required={!isAddEmployer}
+          />
+
+          {/* Minimum Compensation Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`minCompensationLabel-${lead.id}`}>
-              Compensation Minimum*
+              Minimum Compensation
             </InputLabel>
             <OutlinedInput
               id={`minCompensation-${lead.id}`}
@@ -186,7 +145,7 @@ function JobLeadContent({
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Minimum*"
+              label="Minimum Compensation"
               inputProps={{ min: 0 }}
               value={lead.minCompensation}
               onChange={(e) => {
@@ -198,10 +157,10 @@ function JobLeadContent({
             />
           </FormControl>
 
-          {/* Compensation Maximum Field */}
+          {/* Maximum Compensation Field */}
           <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
             <InputLabel id={`maxCompensationLabel-${lead.id}`}>
-              Compensation Maximum*
+              Maximum Compensation
             </InputLabel>
             <OutlinedInput
               id={`maxCompensation-${lead.id}`}
@@ -210,7 +169,7 @@ function JobLeadContent({
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
-              label="Compensation Maximum*"
+              label="Maximum Compensation"
               value={lead.maxCompensation}
               onChange={(e) => {
                 const { value } = e.target;
@@ -219,6 +178,31 @@ function JobLeadContent({
               }}
               required={!isAddEmployer}
             />
+          </FormControl>
+
+          {/* Compensation Rate Field */}
+          <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
+            <InputLabel id={`employmentTypeLabel-${lead.id}`}>
+              Compensation rate
+            </InputLabel>
+            <Select
+              sx={{ textAlign: "left" }}
+              labelId={`employmentTypeLabel-${lead.id}`}
+              id={`employmentType-${lead.id}`}
+              value={lead.employmentType}
+              label="Employment Type"
+              onChange={(e) =>
+                handleInputChange(e.target.value, lead.id, "employmentType")
+              }
+              required={!isAddEmployer}
+            >
+              {JOB_TYPES.map((jobType) => (
+                <MenuItem key={jobType} value={jobType}>
+                  {jobType}
+                </MenuItem>
+              ))}
+            </Select>
+            {!isAddEmployer && <FormHelperText>*Required</FormHelperText>}
           </FormControl>
 
           {/* Hours Per Week Field */}
@@ -239,7 +223,7 @@ function JobLeadContent({
           />
 
           {/* National Occupation Code Field */}
-          <TextField
+          {/* <TextField
             fullWidth
             type="number"
             inputProps={{ min: 0 }}
@@ -252,7 +236,7 @@ function JobLeadContent({
               if (value >= 0) handleInputChange(value, lead.id, "nationalOC");
             }}
             required={!isAddEmployer}
-          />
+          /> */}
 
           {/* Job Description Field */}
           <TextField

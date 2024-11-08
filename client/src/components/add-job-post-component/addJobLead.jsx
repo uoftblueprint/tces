@@ -9,8 +9,9 @@ function AddJobLeadParent({ setLocalExitRoute, currUser }) {
     jobLeads: [
       {
         id: 0,
-        employer: NaN,
         title: "",
+        employer: "",
+        location: "",
         minCompensation: null,
         maxCompensation: null,
         hoursPerWeek: null,

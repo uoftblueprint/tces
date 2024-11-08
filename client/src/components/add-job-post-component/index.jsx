@@ -12,9 +12,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import JobLeadContent from "./jobLeadCard";
-import { Container, ButtonContainer, ButtonL } from "./index.styles";
+import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
@@ -44,26 +44,26 @@ function AddJobLead({
     setLocalExitRoute("/job-leads/");
   };
 
-  const handleAddJobLead = () => {
-    const newId = jobLeadData.length;
-    setJobLeadData([
-      ...jobLeadData,
-      {
-        id: newId,
-        employer: NaN,
-        title: "",
-        minCompensation: null,
-        maxCompensation: null,
-        hoursPerWeek: null,
-        nationalOC: NaN,
-        description: "",
-        creationDate: dayjs(),
-        expirationDate: dayjs().add(1, "month"),
-        employmentType: NaN,
-        numPositions: null,
-      },
-    ]);
-  };
+  // const handleAddJobLead = () => {
+  //   const newId = jobLeadData.length;
+  //   setJobLeadData([
+  //     ...jobLeadData,
+  //     {
+  //       id: newId,
+  //       employer: NaN,
+  //       title: "",
+  //       minCompensation: null,
+  //       maxCompensation: null,
+  //       hoursPerWeek: null,
+  //       nationalOC: NaN,
+  //       description: "",
+  //       creationDate: dayjs(),
+  //       expirationDate: dayjs().add(1, "month"),
+  //       employmentType: NaN,
+  //       numPositions: null,
+  //     },
+  //   ]);
+  // };
 
   const handleDeleteJobLead = (id) => {
     const filteredData = jobLeadData.filter((lead) => lead.id !== id);
@@ -126,7 +126,7 @@ function AddJobLead({
             Adding a New Job Posting
           </Typography>
           <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
-            Input information about the job lead.
+            Input information about the job posting you are adding.
           </Typography>
         </Box>
         <Box
@@ -140,15 +140,15 @@ function AddJobLead({
               handleInputChange={handleInputChange}
               handleDeleteJobLead={handleDeleteJobLead}
             />
-
-            <ButtonL
+            {/* Add this to next job posting page */}
+            {/* <ButtonL
               onClick={(e) => {
                 e.preventDefault();
                 handleAddJobLead();
               }}
             >
               + Add Another Job Lead
-            </ButtonL>
+            </ButtonL> */}
             <ButtonContainer>
               <Button
                 sx={{ justifySelf: "flex-end" }}
