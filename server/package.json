@@ -12,6 +12,8 @@
   "author": "Blueprint",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.679.0",
+    "@aws-sdk/s3-request-presigner": "^3.679.0",
     "compression": "^1.7.4",
     "connect-sqlite3": "^0.9.13",
     "cors": "^2.8.5",
