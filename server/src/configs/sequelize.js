@@ -1,6 +1,9 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+// const JobPosting = require("../models/job_posts.model");
+// const JobApplication = require("../models/job_applications.model");
 
+// Initialize Sequelize connection
 const sequelize = new Sequelize(
   process.env.DATABASE_NAME,
   process.env.DATABASE_USERNAME,
@@ -20,11 +23,37 @@ const sequelize = new Sequelize(
       timestamps: false,
       freezeTableName: true,
     },
-  },
+  }
 );
 
-sequelize.authenticate();
+// Authenticate the connection
+sequelize
+  .authenticate()
+  .then(() => console.log("Database connected"))
+  .catch((error) => console.error("Database connection failed:", error));
 
-module.exports = {
-  sequelize,
-};
+// // Function to reinitialize database
+// const reinitializeDatabase = async () => {
+//   try {
+//     // Disable foreign key checks temporarily
+//     await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+
+//     // Drop all tables
+//     await sequelize.drop();
+
+//     // Re-enable foreign key checks
+//     await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+
+//     // Synchronize all models (force: true will recreate all tables)
+//     await sequelize.sync({ force: true });
+
+//     console.log("Database reinitialized successfully");
+//   } catch (error) {
+//     console.error("Error reinitializing the database:", error);
+//   }
+// };
+
+// // Call this function to reinitialize the database
+// reinitializeDatabase();
+
+module.exports = { sequelize };
