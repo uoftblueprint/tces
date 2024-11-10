@@ -9,7 +9,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { JobLeadContainer, H3 } from "../index.styles";
+import { ButtonL, JobLeadContainer, H3 } from "../index.styles";
 import { COMPENSATION_RATES } from "../../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
 
@@ -194,8 +194,19 @@ function AddApplicationFields({
             }
             required={!isAddEmployer}
           />
+
+          {/* Add this to next job posting page */}
         </JobLeadContainer>
       ))}
+
+      {/* Add specific behaviour when design P2 completed */}
+      <ButtonL
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+      >
+        + Add job-specific fields
+      </ButtonL>
     </>
   );
 }

@@ -31,7 +31,7 @@ function AddJobLead({
   currUser,
 }) {
   const navigate = useNavigate();
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
@@ -46,7 +46,15 @@ function AddJobLead({
   };
 
   const handleBackButtonClick = () => {
-    setLocalExitRoute("/job-leads/");
+    setPage(page - 1);
+
+    if (false) {
+      setLocalExitRoute("/job-post/add");
+    }
+  };
+
+  const handleNextButtonClick = () => {
+    setPage(page + 1);
   };
 
   // const handleAddJobLead = () => {
@@ -179,23 +187,34 @@ function AddJobLead({
                 },
               }}
             />
-            {/* Add this to next job posting page */}
-            {/* <ButtonL
-              onClick={(e) => {
-                e.preventDefault();
-                handleAddJobLead();
-              }}
-            >
-              + Add Another Job Lead
-            </ButtonL> */}
             <ButtonContainer>
-              <Button
-                sx={{ justifySelf: "flex-end" }}
-                variant="outlined"
-                onClick={handleClickOpen}
-              >
-                DISCARD
-              </Button>
+              <div>
+                {page === 2 && (
+                  <Button
+                    sx={{
+                      background:
+                        "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
+                      color: "black",
+                      ":hover": {
+                        background:
+                          "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.379))",
+                      },
+                    }}
+                    variant="contained"
+                    onClick={handleBackButtonClick}
+                  >
+                    BACK
+                  </Button>
+                )}
+
+                <Button
+                  sx={{ justifySelf: "flex-end" }}
+                  variant="outlined"
+                  onClick={handleClickOpen}
+                >
+                  DISCARD
+                </Button>
+              </div>
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>ARE YOU SURE?</DialogTitle>
                 <DialogContent>
@@ -217,24 +236,25 @@ function AddJobLead({
                 </DialogActions>
               </Dialog>
               <div style={{ display: "flex", gap: "16px" }}>
-                <Button
-                  sx={{
-                    background:
-                      "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.12))",
-                    color: "black",
-                    ":hover": {
-                      background:
-                        "var(--light-action-focus-12-p, rgba(0, 0, 0, 0.379))",
-                    },
-                  }}
-                  variant="contained"
-                  onClick={handleBackButtonClick}
-                >
-                  BACK
-                </Button>
-                <Button type="submit" variant="contained" disabled={isLoading}>
-                  {isLoading ? "SUBMITTING..." : "SUBMIT"}
-                </Button>
+                {page === 1 && (
+                  <Button
+                    onClick={handleNextButtonClick}
+                    variant="contained"
+                    disabled={isLoading}
+                  >
+                    NEXT
+                  </Button>
+                )}
+
+                {page === 2 && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isLoading}
+                  >
+                    PUBLISH
+                  </Button>
+                )}
               </div>
             </ButtonContainer>
           </form>
