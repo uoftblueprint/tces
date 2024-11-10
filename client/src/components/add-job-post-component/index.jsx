@@ -14,7 +14,8 @@ import {
   Pagination,
 } from "@mui/material";
 // import dayjs from "dayjs";
-import JobLeadContent from "./job-info-form";
+import AddJobDetails from "./job-info-form";
+import AddApplicationFields from "./application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
@@ -30,6 +31,7 @@ function AddJobLead({
   currUser,
 }) {
   const navigate = useNavigate();
+  const [page, setPage] = useState(2);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
@@ -86,23 +88,26 @@ function AddJobLead({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await createJobLeads(
-        jobLeadData,
-        currUser.userID,
-        currUser.userID,
-      );
+    setPage(2);
+    if (false) {
+      setIsLoading(true);
+      try {
+        const response = await createJobLeads(
+          jobLeadData,
+          currUser.userID,
+          currUser.userID,
+        );
 
-      if (response.ok) {
-        navigate(-1);
-      } else {
-        setErrorObj(response);
+        if (response.ok) {
+          navigate(-1);
+        } else {
+          setErrorObj(response);
+        }
+      } catch (error) {
+        setErrorObj(error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      setErrorObj(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -138,18 +143,28 @@ function AddJobLead({
           }}
         >
           <form onSubmit={confirmSubmit}>
-            <JobLeadContent
-              jobLeadData={jobLeadData}
-              handleInputChange={handleInputChange}
-              handleDeleteJobLead={handleDeleteJobLead}
-            />
+            {page === 1 && (
+              <AddJobDetails
+                jobLeadData={jobLeadData}
+                handleInputChange={handleInputChange}
+                handleDeleteJobLead={handleDeleteJobLead}
+              />
+            )}
+
+            {page === 2 && (
+              <AddApplicationFields
+                jobLeadData={jobLeadData}
+                handleInputChange={handleInputChange}
+                handleDeleteJobLead={handleDeleteJobLead}
+              />
+            )}
 
             <Pagination
               count={2}
               shape="rounded"
               hidePrevButton
               hideNextButton
-              page={1}
+              page={page}
               sx={{
                 display: "flex",
                 justifyContent: "center",

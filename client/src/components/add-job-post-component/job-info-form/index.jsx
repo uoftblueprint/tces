@@ -18,7 +18,7 @@ import { JobLeadContainer, H3 } from "../index.styles";
 import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
 
-function JobLeadContent({
+function AddJobDetails({
   jobLeadData,
   handleInputChange,
   handleDeleteJobLead,
@@ -312,7 +312,7 @@ function JobLeadContent({
   );
 }
 
-JobLeadContent.propTypes = {
+AddJobDetails.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobLeadData: PropTypes.array.isRequired,
   handleInputChange: PropTypes.func.isRequired,
@@ -320,8 +320,8 @@ JobLeadContent.propTypes = {
   isAddEmployer: PropTypes.bool,
 };
 
-JobLeadContent.defaultProps = {
+AddJobDetails.defaultProps = {
   isAddEmployer: false, // or whatever your default value should be
 };
 
-export default JobLeadContent;
+export default AddJobDetails;
