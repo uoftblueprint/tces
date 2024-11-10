@@ -13,7 +13,6 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
-// import dayjs from "dayjs";
 import AddJobDetails from "./job-info-form";
 import AddApplicationFields from "./application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
@@ -25,7 +24,7 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 // TODO: add selection functionality for pagination
 
 function AddJobLead({
-  jobLeadData,
+  jobPostData,
   setJobLeadData,
   setLocalExitRoute,
   currUser,
@@ -57,38 +56,8 @@ function AddJobLead({
     setPage(page + 1);
   };
 
-  // const handleAddJobLead = () => {
-  //   const newId = jobLeadData.length;
-  //   setJobLeadData([
-  //     ...jobLeadData,
-  //     {
-  //       id: newId,
-  //       employer: NaN,
-  //       title: "",
-  //       minCompensation: null,
-  //       maxCompensation: null,
-  //       hoursPerWeek: null,
-  //       nationalOC: NaN,
-  //       description: "",
-  //       creationDate: dayjs(),
-  //       expirationDate: dayjs().add(1, "month"),
-  //       employmentType: NaN,
-  //       numPositions: null,
-  //     },
-  //   ]);
-  // };
-
-  const handleDeleteJobLead = (id) => {
-    const filteredData = jobLeadData.filter((lead) => lead.id !== id);
-    const updatedData = filteredData.map((lead, index) => ({
-      ...lead,
-      id: index,
-    }));
-    setJobLeadData(updatedData);
-  };
-
   const handleInputChange = (input, id, field) => {
-    const updatedJobLeads = jobLeadData.map((lead) =>
+    const updatedJobLeads = jobPostData.map((lead) =>
       lead.id === id ? { ...lead, [field]: input } : lead,
     );
     setJobLeadData(updatedJobLeads);
@@ -101,7 +70,7 @@ function AddJobLead({
       setIsLoading(true);
       try {
         const response = await createJobLeads(
-          jobLeadData,
+          jobPostData,
           currUser.userID,
           currUser.userID,
         );
@@ -153,17 +122,15 @@ function AddJobLead({
           <form onSubmit={confirmSubmit}>
             {page === 1 && (
               <AddJobDetails
-                jobLeadData={jobLeadData}
+                jobPostData={jobPostData.jobInfo}
                 handleInputChange={handleInputChange}
-                handleDeleteJobLead={handleDeleteJobLead}
               />
             )}
 
             {page === 2 && (
               <AddApplicationFields
-                jobLeadData={jobLeadData}
+                jobPostData={jobPostData.applicationFields}
                 handleInputChange={handleInputChange}
-                handleDeleteJobLead={handleDeleteJobLead}
               />
             )}
 
@@ -188,7 +155,7 @@ function AddJobLead({
               }}
             />
             <ButtonContainer>
-              <div>
+              <Box sx={{display: "flex", gap:"10px"}}>
                 {page === 2 && (
                   <Button
                     sx={{
@@ -214,7 +181,7 @@ function AddJobLead({
                 >
                   DISCARD
                 </Button>
-              </div>
+              </Box>
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>ARE YOU SURE?</DialogTitle>
                 <DialogContent>
@@ -247,13 +214,23 @@ function AddJobLead({
                 )}
 
                 {page === 2 && (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={isLoading}
-                  >
-                    PUBLISH
-                  </Button>
+                  <>
+                    <Button
+                      type="submit"
+                      variant="outlined"
+                      disabled={isLoading}
+                      style={{background: "var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12))"}}
+                    >
+                      SAVE AS DRAFT
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={isLoading}
+                    >
+                      PUBLISH
+                    </Button>
+                  </>
                 )}
               </div>
             </ButtonContainer>
@@ -273,7 +250,7 @@ function AddJobLead({
 
 AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  jobLeadData: PropTypes.array.isRequired,
+  jobPostData: PropTypes.array.isRequired,
   setJobLeadData: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,

@@ -6,25 +6,24 @@ import UserType from "../../prop-types/UserType";
 
 function AddJobLeadParent({ setLocalExitRoute, currUser }) {
   const initialState = {
-    jobLeads: [
-      {
-        id: 0,
-        title: "",
-        employer: "",
-        location: "",
-        minCompensation: null,
-        maxCompensation: null,
-        hoursPerWeek: null,
-        nationalOC: NaN,
-        description: "",
-        creationDate: dayjs(),
-        expirationDate: dayjs().add(1, "month"),
-        employmentType: NaN,
-        numPositions: null,
-      },
-    ],
+    jobInfo: {
+      id: 0,
+      title: "",
+      employer: "",
+      location: "",
+      minCompensation: null,
+      maxCompensation: null,
+      hoursPerWeek: null,
+      creationDate: dayjs(),
+      expirationDate: dayjs().add(1, "month"),
+      employmentType: NaN,
+      additionalInfo: "",
+    },
+    applicationFields: {
+      custom_questions: [],
+    },
   };
-  const [jobLeadData, setJobLeadData] = useState(initialState);
+  const [jobPostData, setJobLeadData] = useState(initialState);
 
   const updateJobLeadData = (data) => {
     setJobLeadData((prevData) => ({
@@ -36,7 +35,7 @@ function AddJobLeadParent({ setLocalExitRoute, currUser }) {
   return (
     <div>
       <AddJobLead
-        jobLeadData={jobLeadData.jobLeads}
+        jobPostData={jobPostData}
         setJobLeadData={updateJobLeadData}
         setLocalExitRoute={setLocalExitRoute}
         currUser={currUser}
