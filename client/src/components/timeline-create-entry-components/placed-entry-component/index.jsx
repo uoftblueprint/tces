@@ -305,7 +305,7 @@ function PlacedEntryComponent({
             renderInput={(params) => (
               <TextField
                 // eslint-disable-next-line
-                      {...params}
+                {...params}
                 variant="outlined"
                 sx={{ borderRadius: "10px" }}
                 required
@@ -367,7 +367,7 @@ function PlacedEntryComponent({
                   renderInput={(params) => (
                     <TextField
                       // eslint-disable-next-line
-                              {...params}
+                      {...params}
                       variant="outlined"
                       sx={{ borderRadius: "10px" }}
                       required
