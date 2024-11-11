@@ -226,11 +226,9 @@ function AddJobDetails({ jobPostData, setJobPostData, isAddEmployer }) {
         label="Additional Information"
         multiline
         rows={4}
-        value={jobPostData.description}
+        value={jobPostData.additionalInfo}
         InputLabelProps={{ shrink: true }}
-        onChange={(e) =>
-          handleInputChange(e.target.value, jobPostData.id, "description")
-        }
+        onChange={(e) => handleInputChange(e.target.value, "additionalInfo")}
         required={!isAddEmployer}
       />
     </JobLeadContainer>

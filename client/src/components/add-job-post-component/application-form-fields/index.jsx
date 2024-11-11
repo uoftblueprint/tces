@@ -15,7 +15,7 @@ import { COMPENSATION_RATES } from "../../../utils/contants";
 
 function AddApplicationFields({
   jobPostData,
-  handleInputChange,
+  setJobPostData,
   handleDeleteJobLead,
   isAddEmployer,
 }) {
@@ -24,7 +24,7 @@ function AddApplicationFields({
     // 1. get rid of required star beside label names
     // 2. ask about employment type label, really hard to make it the same native transition :skull
     // 3. add required bottom label to additional information and make it aligned w/the textarea
-    // 4. change all labels, ids and handleinputchange paramters to match new input types
+    // 4. change all labels, ids and setJobPostData paramters to match new input types
     <>
       <JobLeadContainer key={jobPostData.id}>
         <div
@@ -128,7 +128,7 @@ function AddApplicationFields({
           value={jobPostData.description}
           InputLabelProps={{ shrink: true }}
           onChange={(e) =>
-            handleInputChange(e.target.value, jobPostData.id, "description")
+            setJobPostData(e.target.value, jobPostData.id, "description")
           }
           required={!isAddEmployer}
         />
@@ -151,7 +151,7 @@ function AddApplicationFields({
 AddApplicationFields.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.array.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
+  setJobPostData: PropTypes.func.isRequired,
   handleDeleteJobLead: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
 };

@@ -25,7 +25,7 @@ import ConfirmDialog from "../shared/confirm-dialog-component";
 
 function AddJobLead({
   jobPostData,
-  setJobLeadData,
+  updateJobPostData,
   setLocalExitRoute,
   currUser,
 }) {
@@ -46,45 +46,35 @@ function AddJobLead({
 
   const handleBackButtonClick = () => {
     setPage(page - 1);
-
     if (false) {
       setLocalExitRoute("/job-post/add");
     }
   };
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = (e) => {
+    e.preventDefault();
     setPage(page + 1);
-  };
-
-  const handleInputChange = (input, id, field) => {
-    const updatedJobLeads = jobPostData.map((lead) =>
-      lead.id === id ? { ...lead, [field]: input } : lead,
-    );
-    setJobLeadData(updatedJobLeads);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setPage(2);
-    if (false) {
-      setIsLoading(true);
-      try {
-        const response = await createJobLeads(
-          jobPostData,
-          currUser.userID,
-          currUser.userID,
-        );
+    setIsLoading(true);
+    try {
+      const response = await createJobLeads(
+        jobPostData,
+        currUser.userID,
+        currUser.userID,
+      );
 
-        if (response.ok) {
-          navigate(-1);
-        } else {
-          setErrorObj(response);
-        }
-      } catch (error) {
-        setErrorObj(error);
-      } finally {
-        setIsLoading(false);
+      if (response.ok) {
+        navigate(-1);
+      } else {
+        setErrorObj(response);
       }
+    } catch (error) {
+      setErrorObj(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -98,7 +88,6 @@ function AddJobLead({
   };
 
   if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
-
   return (
     <Container>
       <Stack direction="column" alignItems="center" spacing={4}>
@@ -119,18 +108,21 @@ function AddJobLead({
             width: "63%",
           }}
         >
-          <form onSubmit={confirmSubmit}>
+          {/* TODO: MOVE THIS UP INTO OWN FUNCTION INSTEAD OF CONDITIONAL LOGIC HERE */}
+          <form onSubmit={page === 1 ? handleNextButtonClick : confirmSubmit}>
             {page === 1 && (
               <AddJobDetails
                 jobPostData={jobPostData.jobInfo}
-                handleInputChange={handleInputChange}
+                setJobPostData={(data) => updateJobPostData("jobInfo", data)}
               />
             )}
 
             {page === 2 && (
               <AddApplicationFields
                 jobPostData={jobPostData.applicationFields}
-                handleInputChange={handleInputChange}
+                setJobPostData={(data) =>
+                  updateJobPostData("applicationFields", data)
+                }
               />
             )}
 
@@ -205,7 +197,7 @@ function AddJobLead({
               <div style={{ display: "flex", gap: "16px" }}>
                 {page === 1 && (
                   <Button
-                    onClick={handleNextButtonClick}
+                    type="submit"
                     variant="contained"
                     disabled={isLoading}
                   >
@@ -246,12 +238,12 @@ function AddJobLead({
       />
     </Container>
   );
-}
+};
 
 AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.array.isRequired,
-  setJobLeadData: PropTypes.func.isRequired,
+  updateJobPostData: PropTypes.func.isRequired,
   setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };
