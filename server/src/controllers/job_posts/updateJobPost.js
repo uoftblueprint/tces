@@ -10,33 +10,33 @@ need to do a check that all fields are filled (since draft posts can be half-fil
  */
 
 const getJobPostsRequestHandler = async (req, res) => {
-    // check method is GET
+    // check method is PUT
     if (req.method !== 'PUT') {
         return res.status(405).json({ message: 'Method not allowed, only PUT methods allowed.' });
     }
 
     try{
-        // ------ Get Job Id
+        // Get Job Id
         const jobPostId = req?.query?.id ? parseInt(req.query.id, 10) : null;
 
         // Get one Job Posts
         const jobPost = await JobPosting.findOne({where: {id: jobPostId}});
         if (!jobPost) {
-            return res.status(404).json({
-              status: "fail",
-              message: "Job posting not found",
-              data: null,
-            });
-          }
-          if (req.body.id) {
-            return res.status(403).json({
-              status: "fail",
-              message: "You cannot change the id of a job posting.",
-              data: null,
-            });
-          }
+          return res.status(404).json({
+            status: "fail",
+            message: "Job posting not found",
+            data: null,
+          });
+        }
+        if (req.body.id) {
+          return res.status(403).json({
+            status: "fail",
+            message: "You cannot change the id of a job posting.",
+            data: null,
+          });
+        }
 
-          // TODO: check that if state is being changed to "Active" and was previously "Draft", that all other fields are complete
+          // Check that if state is being changed to "Active" and was previously "Draft", that all other fields are complete
           if (req.body.state === "Active" && jobPost.state === "Draft"){
             const requiredFields = ['title', 'employer', 'location', 'hours_per_week', 'rate_of_pay_min', 'rate_of_pay_max', 'rate_of_pay_frequency', 'job_type', 'close_date', 'job_description', 'custom_questions', 'creator', 'state'];
             for (const field of requiredFields) {
