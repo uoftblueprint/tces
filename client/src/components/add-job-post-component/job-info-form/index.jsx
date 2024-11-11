@@ -16,17 +16,17 @@ import { JobLeadContainer, H3 } from "../index.styles";
 import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
 
-function AddJobDetails({
-  jobPostData,
-  handleInputChange,
-  isAddEmployer,
-}) {
+function AddJobDetails({ jobPostData, setJobPostData, isAddEmployer }) {
+  const handleInputChange = (input, field) => {
+    const updatedApplicationFields = { ...jobPostData, [field]: input };
+    setJobPostData(updatedApplicationFields);
+  };
   return (
     // TODOs
     // 1. get rid of required star beside label names
     // 2. ask about employment type label, really hard to make it the same native transition :skull
     // 3. add required bottom label to additional information and make it aligned w/the textarea
-    // 4. change all labels, ids and handleinputchange paramters to match new input types
+    // 4. change all labels, ids and setJobPostData paramters to match new input types
     <JobLeadContainer key={jobPostData.id}>
       <div
         style={{
@@ -45,9 +45,7 @@ function AddJobDetails({
         id={`title-${jobPostData.id}`}
         label="Job Title"
         value={jobPostData.title}
-        onChange={(e) =>
-          handleInputChange(e.target.value, jobPostData.id, "title")
-        }
+        onChange={(e) => handleInputChange(e.target.value, "title")}
         helperText={isAddEmployer ? "" : "*Required"}
         required={!isAddEmployer}
       />
@@ -59,9 +57,7 @@ function AddJobDetails({
         id={`employer-${jobPostData.id}`}
         label="Employer Name"
         value={jobPostData.employer}
-        onChange={(e) =>
-          handleInputChange(e.target.value, jobPostData.id, "employer")
-        }
+        onChange={(e) => handleInputChange(e.target.value, "employer")}
         helperText={isAddEmployer ? "" : "*Required"}
         required={!isAddEmployer}
       />
@@ -73,9 +69,7 @@ function AddJobDetails({
         id={`location-${jobPostData.id}`}
         label="Location"
         value={jobPostData.location}
-        onChange={(e) =>
-          handleInputChange(e.target.value, jobPostData.id, "location")
-        }
+        onChange={(e) => handleInputChange(e.target.value, "location")}
         helperText={isAddEmployer ? "" : "*Required"}
         required={!isAddEmployer}
       />
@@ -88,16 +82,14 @@ function AddJobDetails({
         <OutlinedInput
           id={`minCompensation-${jobPostData.id}`}
           type="text"
-          startAdornment={
-            <InputAdornment position="start">$</InputAdornment>
-          }
+          startAdornment={<InputAdornment position="start">$</InputAdornment>}
           label="Minimum Compensation"
           inputProps={{ min: 0 }}
           value={jobPostData.minCompensation}
           onChange={(e) => {
             const { value } = e.target;
             if (/^\d*\.?\d*$/.test(value))
-              handleInputChange(value, jobPostData.id, "minCompensation");
+              handleInputChange(value, "minCompensation");
           }}
           required={!isAddEmployer}
         />
@@ -112,15 +104,13 @@ function AddJobDetails({
           id={`maxCompensation-${jobPostData.id}`}
           type="text"
           inputProps={{ min: 0 }}
-          startAdornment={
-            <InputAdornment position="start">$</InputAdornment>
-          }
+          startAdornment={<InputAdornment position="start">$</InputAdornment>}
           label="Maximum Compensation"
           value={jobPostData.maxCompensation}
           onChange={(e) => {
             const { value } = e.target;
             if (/^\d*\.?\d*$/.test(value))
-              handleInputChange(value, jobPostData.id, "maxCompensation");
+              handleInputChange(value, "maxCompensation");
           }}
           required={!isAddEmployer}
         />
@@ -137,9 +127,7 @@ function AddJobDetails({
           id={`employmentType-${jobPostData.id}`}
           value={jobPostData.employmentType}
           label="Compensation rate"
-          onChange={(e) =>
-            handleInputChange(e.target.value, jobPostData.id, "employmentType")
-          }
+          onChange={(e) => handleInputChange(e.target.value, "employmentType")}
           required={!isAddEmployer}
         >
           {COMPENSATION_RATES.map((jobType) => (
@@ -163,7 +151,7 @@ function AddJobDetails({
         onChange={(e) => {
           const { value } = e.target;
           if (/^\d*\.?\d*$/.test(value))
-            handleInputChange(value, jobPostData.id, "hoursPerWeek");
+            handleInputChange(value, "hoursPerWeek");
         }}
         required={!isAddEmployer}
       />
@@ -177,9 +165,7 @@ function AddJobDetails({
           id={`employmentType-${jobPostData.id}`}
           value={jobPostData.employmentType}
           label="Employment Type"
-          onChange={(e) =>
-            handleInputChange(e.target.value, jobPostData.id, "employmentType")
-          }
+          onChange={(e) => handleInputChange(e.target.value, "employmentType")}
           required={!isAddEmployer}
         >
           {JOB_TYPES.map((jobType) => (
@@ -254,7 +240,7 @@ function AddJobDetails({
 AddJobDetails.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.array.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
+  setJobPostData: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
 };
 
