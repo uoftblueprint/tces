@@ -1,14 +1,12 @@
 import PropTypes from "prop-types";
 import {
   FormControl,
-  IconButton,
   InputLabel,
   Select,
   MenuItem,
   TextField,
   FormHelperText,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { ButtonL, JobLeadContainer, H3 } from "../index.styles";
 import { COMPENSATION_RATES } from "../../../utils/contants";
 // import ErrorScreenComponent from "../shared/error-screen-component";
@@ -16,7 +14,6 @@ import { COMPENSATION_RATES } from "../../../utils/contants";
 function AddApplicationFields({
   jobPostData,
   setJobPostData,
-  handleDeleteJobLead,
   isAddEmployer,
 }) {
   return (
@@ -35,14 +32,6 @@ function AddApplicationFields({
           }}
         >
           <H3>Application form fields</H3>
-          {[].length > 1 && (
-            <IconButton
-              onClick={() => handleDeleteJobLead(jobPostData.id)}
-              aria-label="delete"
-            >
-              <DeleteIcon />
-            </IconButton>
-          )}
         </div>
 
         {/* Name Field */}
@@ -152,7 +141,6 @@ AddApplicationFields.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.array.isRequired,
   setJobPostData: PropTypes.func.isRequired,
-  handleDeleteJobLead: PropTypes.func.isRequired,
   isAddEmployer: PropTypes.bool,
 };
 

@@ -147,7 +147,12 @@ function AddJobLead({
               }}
             />
             <ButtonContainer>
-              <Box sx={{display: "flex", gap:"10px"}}>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "10px",
+                }}
+              >
                 {page === 2 && (
                   <Button
                     sx={{
@@ -161,6 +166,7 @@ function AddJobLead({
                     }}
                     variant="contained"
                     onClick={handleBackButtonClick}
+                    disableElevation
                   >
                     BACK
                   </Button>
@@ -174,12 +180,11 @@ function AddJobLead({
                   DISCARD
                 </Button>
               </Box>
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>ARE YOU SURE?</DialogTitle>
+              <Dialog open={open} onClose={handleClose} maxWidth="xs">
+                <DialogTitle>Are you sure you want to discard?</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>
-                    You will lose all your progress and return to the and return
-                    to the job leads page.
+                  <DialogContentText sx={{color: "black"}}>
+                    You will lose all your progress and return to the dashboard
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -200,6 +205,7 @@ function AddJobLead({
                     type="submit"
                     variant="contained"
                     disabled={isLoading}
+                    disableElevation
                   >
                     NEXT
                   </Button>
@@ -211,7 +217,10 @@ function AddJobLead({
                       type="submit"
                       variant="outlined"
                       disabled={isLoading}
-                      style={{background: "var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12))"}}
+                      style={{
+                        background:
+                          "var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12))",
+                      }}
                     >
                       SAVE AS DRAFT
                     </Button>
@@ -219,6 +228,7 @@ function AddJobLead({
                       type="submit"
                       variant="contained"
                       disabled={isLoading}
+                      disableElevation
                     >
                       PUBLISH
                     </Button>
@@ -238,7 +248,7 @@ function AddJobLead({
       />
     </Container>
   );
-};
+}
 
 AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
