@@ -81,7 +81,7 @@ function AddJobDetails({ jobPostData, setJobPostData, isAddEmployer }) {
         </InputLabel>
         <OutlinedInput
           id={`minCompensation-${jobPostData.id}`}
-          type="text"
+          type="number"
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
           label="Minimum Compensation"
           inputProps={{ min: 0 }}
@@ -102,7 +102,7 @@ function AddJobDetails({ jobPostData, setJobPostData, isAddEmployer }) {
         </InputLabel>
         <OutlinedInput
           id={`maxCompensation-${jobPostData.id}`}
-          type="text"
+          type="number"
           inputProps={{ min: 0 }}
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
           label="Maximum Compensation"
@@ -144,7 +144,7 @@ function AddJobDetails({ jobPostData, setJobPostData, isAddEmployer }) {
         fullWidth
         sx={{ m: 1, width: "47%" }}
         id={`hoursPerWeek-${jobPostData.id}`}
-        type="text"
+        type="number"
         label="Hours per week"
         inputProps={{ min: 0 }}
         value={jobPostData.hoursPerWeek}
