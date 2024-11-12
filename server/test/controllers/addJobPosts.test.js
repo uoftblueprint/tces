@@ -1,77 +1,126 @@
-require("dotenv").config();
-const { sequelize } = require("../../src/configs/sequelize");
-const JobPosting = require("../../src/models/job_posts.model");
+import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
+import addJobPostingRequestHandler from "../../src/controllers/job_posting/addJobPosts";
 
-async function testJobPosting() {
-  try {
-    // Sync database for testing purposes (optional, be careful if connected to a real database)
-    await sequelize.sync({ force: false });
+const mock = require("mock-require");
+const mockJobPosting = require("../mocks/mockAddObject");
+const mockUser = require("../mocks/mockGetAllObjects");
 
-    console.log("Testing valid ENUM values...");
+beforeEach(() => {
+  mock("../../src/models/job_posting.model", mockJobPosting);
+  mock("../../src/models/user.model", mockUser);
+  // eslint-disable-next-line no-import-assign
+  addJobPostingRequestHandler = mock.reRequire(
+    "../../src/controllers/job_posting/addJobPosts"
+  );
+});
 
-    // Test with valid ENUM values
-    const validJob = await JobPosting.create({
-      title: "Software Developer",
-      employer: "Tech Solutions",
-      location: "Remote",
-      hours_per_week: 40,
-      rate_of_pay_min: 60000,
-      rate_of_pay_max: 80000,
-      rate_of_pay_frequency: "Annually", // Valid ENUM value
-      job_type: ["Full-time", "Permanent"], // Valid JSON array
-      close_date: new Date("2024-12-31"),
-      job_description: "Develop and maintain software applications.",
-      custom_questions: [
-        {
-          question: "Describe your experience in software development.",
-          type: "text",
+afterEach(() => {
+  // Reset mocks after every test
+  mock.stop("../../src/models/job_posting.model");
+});
+
+describe("addJobPosts test suite", () => {
+  const mockRes = {
+    status: (code) => {
+      mockRes.statusCode = code;
+      return {
+        json: (message) => {},
+      };
+    },
+    statusCode: 0,
+  };
+
+  afterEach(() => {
+    // Reset status code after each test
+    mockRes.statusCode = 0;
+  });
+
+  describe("Add single job post", () => {
+    const mockReq = {
+      body: {
+        job_posting: {
+          title: "Software Developer",
+          employer: "Tech Solutions",
+          location: "Remote",
+          hours_per_week: 40,
+          rate_of_pay_min: 60000,
+          rate_of_pay_max: 80000,
+          rate_of_pay_frequency: "Annually",
+          job_type: ["Full-time", "Permanent"],
+          close_date: "2024-12-31",
+          job_description: "Develop and maintain software applications.",
         },
-      ],
-      creator: 1, // Assuming creator ID 1 exists in the User table
-      state: "Draft", // Default state
+      },
+      user: {
+        id: 1,
+      },
+    };
+
+    it("Calls create", async () => {
+      const spy = vi.spyOn(mockJobPosting, "create");
+
+      await addJobPostingRequestHandler(mockReq, mockRes);
+      expect(spy).toHaveBeenCalledTimes(1); // one time to create the job posting
     });
-    console.log("Valid job posting created successfully:", validJob.toJSON());
 
-    // Test with an invalid ENUM value for rate_of_pay_frequency
-    console.log("Testing invalid ENUM value...");
-    try {
-      await JobPosting.create({
-        title: "QA Engineer",
-        employer: "Testing Corp",
-        location: "On-site",
-        rate_of_pay_frequency: "Daily", // Invalid ENUM value
-        creator: 1,
-        state: "Draft",
-      });
-    } catch (err) {
-      console.error(
-        "Failed to create job posting with invalid ENUM value:",
-        err.message,
-      );
-    }
+    it("Does not call bulkCreate", async () => {
+      const spy = vi.spyOn(mockJobPosting, "bulkCreate");
 
-    // Test with an invalid job_type array element
-    console.log("Testing invalid job_type value...");
-    try {
-      await JobPosting.create({
-        title: "Data Analyst",
-        employer: "Analytics Inc.",
-        location: "Remote",
-        job_type: ["Freelance"], // Invalid value
-        creator: 1,
-        state: "Draft",
-      });
-    } catch (err) {
-      console.error(
-        "Failed to create job posting with invalid job_type value:",
-        err.message,
-      );
-    }
-  } catch (error) {
-    console.error("Unexpected error during testing:", error);
-  } finally {
-    await sequelize.close();
-  }
-}
+      await addJobPostingRequestHandler(mockReq, mockRes);
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
 
-testJobPosting();
+    it("Returns 200 on success", async () => {
+      await addJobPostingRequestHandler(mockReq, mockRes);
+      expect(mockRes.statusCode).toBe(200);
+    });
+  });
+
+  describe("Add multiple job posts", () => {
+    const mockReq = {
+      body: {
+        job_posting: [
+          {
+            title: "Software Developer",
+            employer: "Tech Solutions",
+            location: "Remote",
+            hours_per_week: 40,
+            rate_of_pay_min: 60000,
+            rate_of_pay_max: 80000,
+            rate_of_pay_frequency: "Annually",
+            job_type: ["Full-time", "Permanent"],
+            close_date: "2024-12-31",
+            job_description: "Develop and maintain software applications.",
+          },
+          {
+            title: "Business Analyst",
+            employer: "Business Corp",
+            location: "On-site",
+            hours_per_week: 40,
+            rate_of_pay_min: 50000,
+            rate_of_pay_max: 70000,
+            rate_of_pay_frequency: "Annually",
+            job_type: ["Full-time"],
+            close_date: "2024-12-31",
+            job_description: "Analyze business data for insights.",
+          },
+        ],
+      },
+      user: {
+        id: 1,
+      },
+    };
+
+    it("Calls create multiple times for each job post", async () => {
+      const spy = vi.spyOn(mockJobPosting, "create");
+
+      await addJobPostingRequestHandler(mockReq, mockRes);
+      expect(spy).toHaveBeenCalledTimes(2); // one time for each job posting creation
+    });
+
+    it("Returns 200 on success", async () => {
+      await addJobPostingRequestHandler(mockReq, mockRes);
+      expect(mockRes.statusCode).toBe(200);
+    });
+  });
+});
