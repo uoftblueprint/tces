@@ -22,7 +22,10 @@ async function testJobPosting() {
       close_date: new Date("2024-12-31"),
       job_description: "Develop and maintain software applications.",
       custom_questions: [
-        { question: "Describe your experience in software development.", type: "text" },
+        {
+          question: "Describe your experience in software development.",
+          type: "text",
+        },
       ],
       creator: 1, // Assuming creator ID 1 exists in the User table
       state: "Draft", // Default state
@@ -41,7 +44,10 @@ async function testJobPosting() {
         state: "Draft",
       });
     } catch (err) {
-      console.error("Failed to create job posting with invalid ENUM value:", err.message);
+      console.error(
+        "Failed to create job posting with invalid ENUM value:",
+        err.message,
+      );
     }
 
     // Test with an invalid job_type array element
@@ -56,7 +62,10 @@ async function testJobPosting() {
         state: "Draft",
       });
     } catch (err) {
-      console.error("Failed to create job posting with invalid job_type value:", err.message);
+      console.error(
+        "Failed to create job posting with invalid job_type value:",
+        err.message,
+      );
     }
   } catch (error) {
     console.error("Unexpected error during testing:", error);
