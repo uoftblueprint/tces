@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import AddJobPostParent from "../../components/add-job-post-component/addJobLead";
+import AddJobPostParent from "../../components/add-job-post-component/addJobPosting";
 import UserType from "../../prop-types/UserType";
 
 function AddJobPostPage({ setLocalExitRoute, currUser }) {

@@ -20,7 +20,7 @@ import UserType from "../../prop-types/UserType";
 import { createJobLeads } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
 import ConfirmDialog from "../shared/confirm-dialog-component";
-
+import PostingResultDialog from "./posting-result-dialog";
 // TODO: add selection functionality for pagination
 
 function AddJobLead({
@@ -31,17 +31,18 @@ function AddJobLead({
 }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [open, setOpen] = useState(false);
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const [resultOpen, setResultOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [errorObj, setErrorObj] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setDiscardOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setDiscardOpen(false);
   };
 
   const handleBackButtonClick = () => {
@@ -53,6 +54,7 @@ function AddJobLead({
 
   const handleNextButtonClick = (e) => {
     e.preventDefault();
+    console.log(e)
     setPage(page + 1);
   };
 
@@ -180,7 +182,7 @@ function AddJobLead({
                   DISCARD
                 </Button>
               </Box>
-              <Dialog open={open} onClose={handleClose} maxWidth="xs">
+              <Dialog discardOpen={discardOpen} onClose={handleClose} maxWidth="xs">
                 <DialogTitle>Are you sure you want to discard?</DialogTitle>
                 <DialogContent>
                   <DialogContentText sx={{color: "black"}}>
@@ -240,11 +242,18 @@ function AddJobLead({
         </Box>
       </Stack>
       <ConfirmDialog
-        open={confirmDialog}
+        discardOpen={confirmDialog}
         title="Confirm Submit"
         message="Are you sure you want to submit these changes?"
         onConfirm={handleSubmit}
         onCancel={cancelSubmit}
+      />
+      <PostingResultDialog
+        isOpen={resultOpen}
+        isSuccess
+        handleClose={() => setResultOpen(false)}
+        message="Your posting was saved"
+        buttonMessage="CLOSE"
       />
     </Container>
   );

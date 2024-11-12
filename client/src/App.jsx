@@ -356,15 +356,15 @@ function App() {
             <Route
               path="/job-post/add"
               element={
-                <AuthGuard
-                  isAuthenticated={isAuthenticated}
-                  loginUser={loginUser}
-                >
-                  <AddJobPostPage
-                    currUser={currUser}
-                    setLocalExitRoute={setLocalExitRoute}
-                  />
-                </AuthGuard>
+                // <AuthGuard
+                //   isAuthenticated={isAuthenticated}
+                //   loginUser={loginUser}
+                // >
+                <AddJobPostPage
+                  currUser={currUser}
+                  setLocalExitRoute={setLocalExitRoute}
+                />
+                // </AuthGuard>
               }
             />
           </Route>
