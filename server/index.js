@@ -20,9 +20,6 @@ const passport = require("passport");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
-// const JobPostings = require("./src/models/job_posts.model");
-// const JobApplications = require("./src/models/job_applications.model");
-
 // Import passport configuration
 require("./src/configs/passport");
 

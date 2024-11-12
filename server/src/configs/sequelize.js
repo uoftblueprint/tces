@@ -1,7 +1,5 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
-// const JobPosting = require("../models/job_posts.model");
-// const JobApplication = require("../models/job_applications.model");
 
 // Initialize Sequelize connection
 const sequelize = new Sequelize(
