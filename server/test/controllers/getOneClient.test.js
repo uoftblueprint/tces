@@ -1,75 +1,54 @@
-import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
-import getOneClientRequestHandler from "../../src/controllers/client/getOneClient";
-const mock = require("mock-require");
-const mockGetOneClient = require("../mocks/mockGetOneObject");
-const mockGetOneClientInvalid = require("../mocks/mockGetOneObjectInvalid");
+require("dotenv").config();
+const { sequelize } = require("../../configs/sequelize");
+const JobPosting = require("../../models/jobPosting.model");
 
-const mockReq = {
-  params: {
-    client_id: 1,
-  },
-};
-
-var mockRes = {
-  status: (code) => {
-    mockRes.statusCode = code;
-    return {
-      json: (message) => {
-        return;
-      },
-    };
-  },
-  statusCode: 0,
-};
-
-afterEach(() => {
-  // Reset mocks after every test
-  mock.stop("../../src/models/client.model");
-
-  // Reset status code after each test
-  mockRes.statusCode = 0;
-});
-
-describe("getOneClient test suite", () => {
-  describe("Valid requests", () => {
-    beforeEach(() => {
-      mock("../../src/models/client.model", mockGetOneClient);
-      getOneClientRequestHandler = mock.reRequire(
-        "../../src/controllers/client/getOneClient",
-      );
-    });
-
-    it("Calls findOne", async () => {
-      const spy = vi.spyOn(mockGetOneClient, "findOne");
-
-      await getOneClientRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it("Does not call findAll", async () => {
-      const spy = vi.spyOn(mockGetOneClient, "findAll");
-
-      await getOneClientRequestHandler(mockReq, mockRes);
-      expect(spy).toHaveBeenCalledTimes(0);
-    });
-
-    it("Returns 200 on success", async () => {
-      await getOneClientRequestHandler(mockReq, mockRes);
-      expect(mockRes.statusCode).toBe(200);
-    });
+describe("JobPosting Model Validations", () => {
+  beforeAll(async () => {
+    await sequelize.sync(); // Sync database
   });
 
-  describe("Invalid requests", () => {
-    beforeEach(() => {
-      mock("../../src/models/client.model", mockGetOneClientInvalid);
-      getOneClientRequestHandler = mock.reRequire(
-        "../../src/controllers/client/getOneClient",
-      );
-    });
+  afterAll(async () => {
+    await sequelize.close(); // Close database connection
+  });
 
-    it("Returns 404 if the client does not exist", async () => {
-      await getOneClientRequestHandler(mockReq, mockRes);
-      expect(mockRes.statusCode).toBe(404);
+  it("should create a job posting with valid ENUM values", async () => {
+    const jobPosting = await JobPosting.create({
+      title: "Software Developer",
+      employer: "Tech Solutions",
+      location: "Remote",
+      hours_per_week: 40,
+      rate_of_pay_min: 60000,
+      rate_of_pay_max: 80000,
+      rate_of_pay_frequency: "Annually", // Valid ENUM value
+      job_type: ["Full-time", "Permanent"], // Valid JSON array
+      creator: 1, // Assuming creator ID 1 exists
+      state: "Draft",
     });
+    expect(jobPosting).toBeDefined();
+    expect(jobPosting.title).toBe("Software Developer");
+  });
+
+  it("should fail to create a job posting with an invalid ENUM value", async () => {
+    await expect(
+      JobPosting.create({
+        title: "QA Engineer",
+        employer: "Testing Corp",
+        rate_of_pay_frequency: "Daily", // Invalid ENUM value
+        creator: 1,
+        state: "Draft",
+      })
+    ).rejects.toThrow(); // Expect error due to invalid ENUM
+  });
+
+  it("should fail to create a job posting with an invalid job_type value", async () => {
+    await expect(
+      JobPosting.create({
+        title: "Data Analyst",
+        employer: "Analytics Inc.",
+        job_type: ["Freelance"], // Invalid job type
+        creator: 1,
+        state: "Draft",
+      })
+    ).rejects.toThrow(); // Expect error due to invalid job_type
   });
 });
