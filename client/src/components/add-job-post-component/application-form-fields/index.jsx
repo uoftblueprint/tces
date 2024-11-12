@@ -1,21 +1,22 @@
 import PropTypes from "prop-types";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
+  Box,
+  Container,
   FormControl,
+  IconButton,
   InputLabel,
   Select,
   MenuItem,
   TextField,
   FormHelperText,
+  Typography,
 } from "@mui/material";
 import { ButtonL, JobLeadContainer, H3 } from "../index.styles";
 import { COMPENSATION_RATES } from "../../../utils/contants";
-// import ErrorScreenComponent from "../shared/error-screen-component";
+import styles from "./index.module.css";
 
-function AddApplicationFields({
-  jobPostData,
-  setJobPostData,
-  isAddEmployer,
-}) {
+function AddApplicationFields({ jobPostData, setJobPostData, isAddEmployer }) {
   return (
     // TODOs
     // 1. get rid of required star beside label names
@@ -38,48 +39,57 @@ function AddApplicationFields({
         <TextField
           disabled
           fullWidth
+          className={styles.dotted}
           sx={{ m: 1, width: "47%" }}
-          id={`title-${jobPostData.id}`}
           label="Name"
           value={jobPostData.title}
           helperText={isAddEmployer ? "" : "*Required"}
           required={!isAddEmployer}
+          InputLabelProps={{
+            required: false,
+          }}
         />
 
         {/* Email Field */}
         <TextField
           disabled
           fullWidth
+          className={styles.dotted}
           sx={{ m: 1, width: "47%" }}
-          id={`employer-${jobPostData.id}`}
           label="Email Address"
           value={jobPostData.employer}
           helperText={isAddEmployer ? "" : "*Required"}
           required={!isAddEmployer}
         />
 
-        {/* Location Field */}
+        {/* Phone Field */}
         <TextField
           disabled
           fullWidth
+          className={styles.dotted}
           sx={{ m: 1, width: "47%" }}
-          id={`location-${jobPostData.id}`}
-          label="Location"
+          label="Phone"
           value={jobPostData.location}
           helperText={isAddEmployer ? "" : "*Required"}
           required={!isAddEmployer}
+          InputLabelProps={{
+            required: false,
+          }}
         />
 
         {/* Postal Code Field */}
         <TextField
           disabled
           fullWidth
+          className={styles.dotted}
           sx={{ m: 1, width: "47%" }}
-          id={`location-${jobPostData.id}`}
           label="Postal Code"
           value={jobPostData.location}
           helperText={isAddEmployer ? "" : "*Required"}
           required={!isAddEmployer}
+          InputLabelProps={{
+            required: false,
+          }}
         />
 
         {/* Status In Canada Field */}
@@ -88,9 +98,9 @@ function AddApplicationFields({
             Status In Canada
           </InputLabel>
           <Select
+            className={styles.dotted}
             sx={{ textAlign: "left" }}
             labelId={`employmentTypeLabel-${jobPostData.id}`}
-            id={`employmentType-${jobPostData.id}`}
             value={jobPostData.employmentType}
             label="Compensation rate"
             required={!isAddEmployer}
@@ -109,13 +119,13 @@ function AddApplicationFields({
         <TextField
           disabled
           fullWidth
+          className={styles.dotted}
           sx={{ m: 1, width: "96%" }}
-          id={`description-${jobPostData.id}`}
           label="Cover Letter"
           multiline
           rows={4}
           value={jobPostData.description}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ shrink: true, required: false }}
           onChange={(e) =>
             setJobPostData(e.target.value, jobPostData.id, "description")
           }
@@ -123,6 +133,35 @@ function AddApplicationFields({
         />
 
         {/* Add this to next job posting page */}
+        <Box sx={{ boxSizing: "border-box", margin: "8px" }}>
+          <Typography color="#9E9E9E" pb="13px">*Upload Resume</Typography>
+          <Container
+            sx={{
+              border: "1px dashed #E0E0E0",
+              borderRadius: "15px",
+              color: "#AAAFBA",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              padding: "30px 0",
+            }}
+          >
+            <Container sx={{ width: "auto" }}>
+              <IconButton
+                aria-label="Example"
+                sx={{ backgroundColor: "#E6ECFB" }}
+              >
+                <UploadFileIcon />
+              </IconButton>
+            </Container>
+            <Typography variant="body1" pb="10px" pt="10px">
+              <span className={styles.underline}>Click to upload</span> or drag and drop
+            </Typography>
+            <Typography variant="body2">SVG, PNG, JPG or GIF (max. 3MB)</Typography>
+
+          </Container>
+        </Box>
       </JobLeadContainer>
 
       {/* Add specific behaviour when design P2 completed */}
