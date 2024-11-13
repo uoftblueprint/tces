@@ -250,7 +250,7 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
           <Button onClick={handleClose}>CANCEL</Button>
           <Button
             onClick={() => {
-              navigate(-1);
+              navigate("/dashboard");
             }}
             autoFocus
           >
