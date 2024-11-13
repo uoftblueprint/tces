@@ -54,10 +54,13 @@ const JobPosting = sequelize.define(
       validate: {
         isValidJobType(value) {
           const allowedTypes = [
-            "Part-time",
-            "Full-time",
             "Contract",
+            "Freelance",
+            "Full-time",
+            "Internship",
+            "Part-time",
             "Permanent",
+            "Seasonal"
           ];
           if (!Array.isArray(value)) {
             throw new Error("Job type must be an array");
