@@ -60,7 +60,7 @@ const JobPosting = sequelize.define(
             "Internship",
             "Part-time",
             "Permanent",
-            "Seasonal"
+            "Seasonal",
           ];
           if (!Array.isArray(value)) {
             throw new Error("Job type must be an array");
