@@ -44,7 +44,7 @@ const JobPosting = sequelize.define(
         "Weekly",
         "Annually",
         "Commission",
-        "Base Commission", // Changed for MySQL compatibility
+        "Base Commission",
       ),
       allowNull: true,
     },
