@@ -36,11 +36,14 @@ function PostingResultDialog({
           borderTop: `10px solid ${themeColor}`,
           padding: "15px 50px 30px",
           gap: "20px",
-          maxWidth: "200px",
+          maxWidth: "225px",
         }}
       >
         {isSuccess ? (
-          <CheckCircleOutlineIcon sx={{ color:themeColor }}/> ) : (<ErrorOutlineIcon sx={{ color:themeColor}}/>)}
+          <CheckCircleOutlineIcon sx={{ color: themeColor }} />
+        ) : (
+          <ErrorOutlineIcon sx={{ color: themeColor }} />
+        )}
         <DialogContentText sx={{ color: "black" }}>
           <Typography>{message}</Typography>
           {subMessage && <Typography>{subMessage}</Typography>}
