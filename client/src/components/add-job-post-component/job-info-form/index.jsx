@@ -21,8 +21,6 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
     setJobPostData(updatedApplicationFields);
   };
   return (
-    // TODOs
-    // 2. ask about employment type label, really hard to make it the same native transition :skull
     <JobLeadContainer>
       <div
         style={{
@@ -115,14 +113,14 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
 
       {/* Compensation Rate Field */}
       <FormControl fullWidth sx={{ m: 1, width: "47%" }}>
-        <InputLabel id="employmentTypeLabel">Compensation rate</InputLabel>
+        <InputLabel id="compensationRateLabel">Compensation rate</InputLabel>
         <Select
           sx={{ textAlign: "left" }}
-          labelId="employmentTypeLabel"
-          id="employmentTypeLabel"
-          value={jobPostData.employmentType}
+          labelId="compensationRateLabel"
+          id="compensationRateLabel"
+          value={jobPostData.compensationRate}
           label="Compensation rate"
-          onChange={(e) => handleInputChange(e.target.value, "employmentType")}
+          onChange={(e) => handleInputChange(e.target.value, "compensationRate")}
           required
           InputLabelProps={{ required: false }}
         >
