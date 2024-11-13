@@ -1,8 +1,9 @@
 const logger = require("pino")();
+const fs = require("fs");
+const path = require("path");
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
 const { uploadFileToS3 } = require("../../utils/s3");
-const multer = require("multer");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -159,6 +160,21 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Save the job application with the updated resume field
 
     await jobApplication.save();
+
+    // ! Delete temporarily saved resume file that was uploaded.
+
+    const uploadsDir = path.join(__dirname, "..", "..", "uploads");
+
+    fs.readdir(uploadsDir, (err, files) => {
+      files.forEach((file) => {
+        const filePath = path.join(uploadsDir, file);
+        if (file !== ".gitkeep") {
+          fs.unlink(filePath, () => {});
+        }
+      });
+    });
+
+    // ! Send successful response status.
 
     return res.status(201).json({
       message: "Job application created successfully.",
