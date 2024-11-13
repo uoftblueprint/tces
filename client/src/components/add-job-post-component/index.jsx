@@ -121,7 +121,8 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
 
           {page === 2 && (
             <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
-              Confirm and add any additional information that applicants will need to submit in their application.
+              Confirm and add any additional information that applicants will
+              need to submit in their application.
             </Typography>
           )}
         </Box>
