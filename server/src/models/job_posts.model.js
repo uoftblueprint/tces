@@ -44,7 +44,7 @@ const JobPosting = sequelize.define(
         "Weekly",
         "Annually",
         "Commission",
-        "Base Commission",
+        "Base and Commission",
       ),
       allowNull: true,
     },
