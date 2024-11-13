@@ -66,7 +66,7 @@ const JobApplication = sequelize.define(
       type: DataTypes.ENUM(
         "Contacted",
         "Rejected",
-        "R & I",
+        "R and I",
         "Approved",
         "In Progress",
         "New",
