@@ -120,7 +120,9 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           id="compensationRateLabel"
           value={jobPostData.compensationRate}
           label="Compensation rate"
-          onChange={(e) => handleInputChange(e.target.value, "compensationRate")}
+          onChange={(e) =>
+            handleInputChange(e.target.value, "compensationRate")
+          }
           required
           InputLabelProps={{ required: false }}
         >
