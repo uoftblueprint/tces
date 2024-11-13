@@ -20,12 +20,7 @@ import UserType from "../../prop-types/UserType";
 import createJobPost from "./mockResponse";
 import PostingResultDialog from "./posting-result-dialog";
 
-function AddJobLead({
-  jobPostData,
-  updateJobPostData,
-  setLocalExitRoute,
-  currUser,
-}) {
+function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
   const navigate = useNavigate();
   const formRef = useRef(null);
   const [page, setPage] = useState(1);
@@ -69,12 +64,8 @@ function AddJobLead({
     setDiscardOpen(false);
   };
 
-  // TODO: ask what setLocalExitRoute does
   const handleBackButtonClick = () => {
     setPage(page - 1);
-    if (false) {
-      setLocalExitRoute("/job-post/add");
-    }
   };
 
   const handleNextButtonClick = () => {
@@ -207,7 +198,6 @@ function AddJobLead({
               <Box style={{ display: "flex", gap: "16px" }}>
                 {page === 1 && (
                   <Button
-                    // type="submit"
                     variant="contained"
                     disabled={isLoading}
                     disableElevation
@@ -220,7 +210,6 @@ function AddJobLead({
                 {page === 2 && (
                   <>
                     <Button
-                      // type="button"
                       variant="outlined"
                       disabled={isLoading}
                       style={{
@@ -250,7 +239,7 @@ function AddJobLead({
       <Dialog open={discardOpen} onClose={handleClose} maxWidth="xs">
         <DialogTitle>Are you sure you want to discard?</DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{color: "black"}}>
+          <DialogContentText sx={{ color: "black" }}>
             You will lose all your progress and return to the dashboard
           </DialogContentText>
         </DialogContent>
@@ -282,7 +271,6 @@ AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.array.isRequired,
   updateJobPostData: PropTypes.func.isRequired,
-  setLocalExitRoute: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };
 
