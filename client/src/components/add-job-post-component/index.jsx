@@ -274,7 +274,7 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
 
 AddJobLead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  jobPostData: PropTypes.array.isRequired,
+  jobPostData: PropTypes.object.isRequired,
   updateJobPostData: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };
