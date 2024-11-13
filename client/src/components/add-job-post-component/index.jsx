@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -17,11 +17,8 @@ import AddJobDetails from "./job-info-form";
 import AddApplicationFields from "./application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
-import { createJobLeads } from "../../utils/api";
-import ErrorScreenComponent from "../shared/error-screen-component";
-import ConfirmDialog from "../shared/confirm-dialog-component";
+import createJobPost from "./mockResponse";
 import PostingResultDialog from "./posting-result-dialog";
-// TODO: add selection functionality for pagination
 
 function AddJobLead({
   jobPostData,
@@ -30,12 +27,39 @@ function AddJobLead({
   currUser,
 }) {
   const navigate = useNavigate();
+  const formRef = useRef(null);
   const [page, setPage] = useState(1);
   const [discardOpen, setDiscardOpen] = useState(false);
-  const [resultOpen, setResultOpen] = useState(true);
+  const [resultOpen, setResultOpen] = useState(false);
+  const [resultModalValues, setResultModalValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [errorObj, setErrorObj] = useState(false);
-  const [confirmDialog, setConfirmDialog] = useState(false);
+
+  // ---- Different states for submission result modal
+  const SUCCESS_DRAFT = {
+    isSuccess: true,
+    message: "Your job posting was saved",
+    handleClose: () => navigate("/dashboard"),
+    buttonMessage: "CLOSE",
+  };
+  const ERROR_DRAFT = {
+    isSuccess: false,
+    message: "There was an error saving your draft",
+    handleClose: () => setResultOpen(false),
+    buttonMessage: "TRY AGAIN",
+  };
+  const SUCCESS_PUBLISH = {
+    isSuccess: true,
+    message: "Your job posting was published",
+    handleClose: () => navigate("/dashboard"),
+    buttonMessage: "CLOSE",
+  };
+  const ERROR_PUBLISH = {
+    isSuccess: false,
+    message: "There was an error publishing your job posting",
+    handleClose: () => setResultOpen(false),
+    buttonMessage: "TRY AGAIN",
+  };
+  // ----
 
   const handleClickOpen = () => {
     setDiscardOpen(true);
@@ -45,6 +69,7 @@ function AddJobLead({
     setDiscardOpen(false);
   };
 
+  // TODO: ask what setLocalExitRoute does
   const handleBackButtonClick = () => {
     setPage(page - 1);
     if (false) {
@@ -52,46 +77,42 @@ function AddJobLead({
     }
   };
 
-  const handleNextButtonClick = (e) => {
-    e.preventDefault();
-    console.log(e)
-    setPage(page + 1);
+  const handleNextButtonClick = () => {
+    if (formRef.current.reportValidity()) {
+      setPage(page + 1);
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e, postState) => {
+    const DRAFT = "Draft";
+    const updatedJobPost = { ...jobPostData, state: postState };
+
     setIsLoading(true);
+    updateJobPostData("state", postState);
     try {
-      const response = await createJobLeads(
-        jobPostData,
+      const response = await createJobPost(
+        updatedJobPost,
         currUser.userID,
         currUser.userID,
       );
 
       if (response.ok) {
-        navigate(-1);
+        setResultModalValues(
+          postState === DRAFT ? SUCCESS_DRAFT : SUCCESS_PUBLISH,
+        );
       } else {
-        setErrorObj(response);
+        setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
       }
     } catch (error) {
-      setErrorObj(error);
+      setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
     } finally {
+      setResultOpen(true);
       setIsLoading(false);
     }
   };
 
-  const confirmSubmit = (e) => {
-    e.preventDefault();
-    setConfirmDialog(true);
-  };
-
-  const cancelSubmit = () => {
-    setConfirmDialog(false);
-  };
-
-  if (errorObj) return <ErrorScreenComponent message={errorObj.message} />;
   return (
-    <Container>
+    <Container justifyContent="center" alignItems="center">
       <Stack direction="column" alignItems="center" spacing={4}>
         <Box
           sx={{
@@ -101,17 +122,24 @@ function AddJobLead({
           <Typography variant="h4" component="h1" textAlign="left">
             Adding a New Job Posting
           </Typography>
-          <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
-            Input information about the job posting you are adding.
-          </Typography>
+          {page === 1 && (
+            <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
+              Input information about the job posting you are adding.
+            </Typography>
+          )}
+
+          {page === 2 && (
+            <Typography variant="body1" textAlign="left" sx={{ mt: 2 }}>
+              Confirm and add any additional information that applicants will need to submit in their application.
+            </Typography>
+          )}
         </Box>
         <Box
           sx={{
             width: "63%",
           }}
         >
-          {/* TODO: MOVE THIS UP INTO OWN FUNCTION INSTEAD OF CONDITIONAL LOGIC HERE */}
-          <form onSubmit={page === 1 ? handleNextButtonClick : confirmSubmit}>
+          <form ref={formRef}>
             {page === 1 && (
               <AddJobDetails
                 jobPostData={jobPostData.jobInfo}
@@ -119,14 +147,7 @@ function AddJobLead({
               />
             )}
 
-            {page === 2 && (
-              <AddApplicationFields
-                jobPostData={jobPostData.applicationFields}
-                setJobPostData={(data) =>
-                  updateJobPostData("applicationFields", data)
-                }
-              />
-            )}
+            {page === 2 && <AddApplicationFields />}
 
             <Pagination
               count={2}
@@ -148,6 +169,7 @@ function AddJobLead({
                 },
               }}
             />
+
             <ButtonContainer>
               <Box
                 sx={{
@@ -155,7 +177,7 @@ function AddJobLead({
                   gap: "10px",
                 }}
               >
-                {page === 2 && (
+                {page > 1 && (
                   <Button
                     sx={{
                       background:
@@ -182,32 +204,14 @@ function AddJobLead({
                   DISCARD
                 </Button>
               </Box>
-              <Dialog discardOpen={discardOpen} onClose={handleClose} maxWidth="xs">
-                <DialogTitle>Are you sure you want to discard?</DialogTitle>
-                <DialogContent>
-                  <DialogContentText sx={{color: "black"}}>
-                    You will lose all your progress and return to the dashboard
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>CANCEL</Button>
-                  <Button
-                    onClick={() => {
-                      navigate(-1);
-                    }}
-                    autoFocus
-                  >
-                    YES, I&apos;M SURE
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <div style={{ display: "flex", gap: "16px" }}>
+              <Box style={{ display: "flex", gap: "16px" }}>
                 {page === 1 && (
                   <Button
-                    type="submit"
+                    // type="submit"
                     variant="contained"
                     disabled={isLoading}
                     disableElevation
+                    onClick={handleNextButtonClick}
                   >
                     NEXT
                   </Button>
@@ -216,44 +220,59 @@ function AddJobLead({
                 {page === 2 && (
                   <>
                     <Button
-                      type="submit"
+                      // type="button"
                       variant="outlined"
                       disabled={isLoading}
                       style={{
                         background:
                           "var(--light-primary-shades-12-p, rgba(53, 104, 229, 0.12))",
                       }}
+                      onClick={() => handleSubmit(null, "Draft")}
                     >
                       SAVE AS DRAFT
                     </Button>
                     <Button
-                      type="submit"
+                      type="button"
                       variant="contained"
                       disabled={isLoading}
                       disableElevation
+                      onClick={() => handleSubmit(null, "Publish")}
                     >
                       PUBLISH
                     </Button>
                   </>
                 )}
-              </div>
+              </Box>
             </ButtonContainer>
           </form>
         </Box>
       </Stack>
-      <ConfirmDialog
-        discardOpen={confirmDialog}
-        title="Confirm Submit"
-        message="Are you sure you want to submit these changes?"
-        onConfirm={handleSubmit}
-        onCancel={cancelSubmit}
-      />
+      <Dialog open={discardOpen} onClose={handleClose} maxWidth="xs">
+        <DialogTitle>Are you sure you want to discard?</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{color: "black"}}>
+            You will lose all your progress and return to the dashboard
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>CANCEL</Button>
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+            autoFocus
+          >
+            YES, I&apos;M SURE
+          </Button>
+        </DialogActions>
+      </Dialog>
       <PostingResultDialog
         isOpen={resultOpen}
-        isSuccess
-        handleClose={() => setResultOpen(false)}
-        message="Your posting was saved"
-        buttonMessage="CLOSE"
+        isSuccess={resultModalValues.isSuccess}
+        handleClose={resultModalValues.handleClose}
+        message={resultModalValues.message}
+        subMessage={resultModalValues.subMessage}
+        buttonMessage={resultModalValues.buttonMessage}
       />
     </Container>
   );
