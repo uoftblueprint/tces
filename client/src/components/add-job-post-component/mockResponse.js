@@ -5,15 +5,15 @@ function mockFetch(jobPostData, currUserId) {
   console.log(jobPostData, currUserId);
   return new Promise((resolve, reject) => {
     console.log(reject);
-    // Simulate error
-    setTimeout(() => {
-      reject(new Error("Failure"));
-    }, timeout);
-
-    // // Simulate success
+    // // Simulate error
     // setTimeout(() => {
-    //   resolve({ ok: 200, jobPostData, currUserId });
+    //   reject(new Error("Failure"));
     // }, timeout);
+
+    // Simulate success
+    setTimeout(() => {
+      resolve({ ok: 200, jobPostData, currUserId });
+    }, timeout);
   });
 }
 
