@@ -2,6 +2,7 @@ const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
 const { uploadFileToS3 } = require("../../utils/s3");
+const multer = require("multer");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -11,11 +12,12 @@ const addJobApplicationRequestHandler = async (req, res) => {
       email,
       phone,
       postal_code: postalCode,
-      resume,
       status_in_canada: statusInCanada,
       application_status: applicationStatus = "New",
       custom_responses: customResponses = {},
     } = req.body;
+
+    const resume = req.file;
 
     // ! Confirm all required fields. If any are missing, return a 400 status code with an error message.
     // ! That is, check that all required fields are given.
@@ -44,7 +46,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Confirm that the job posting exists before creating the job application
     // ! Query through the database with jobPostingId to see if it exists.
 
-    const jobPosting = await JobPosting.findByPk(jobPostingId);
+    const jobPosting = await JobPosting.findByPk(parseInt(jobPostingId, 10));
 
     // Check if the job posting was found
     if (!jobPosting) {
@@ -131,7 +133,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
       email,
       phone,
       postal_code: postalCode,
-      resume,
+      resume: `temp`,
       status_in_canada: statusInCanada,
       application_status: applicationStatus,
       custom_responses: customResponses,
@@ -142,7 +144,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     const associatedJobPost = await JobPosting.findOne({
       where: {
-        id: jobPostingId,
+        id: parseInt(jobPostingId, 10),
       },
     });
 
@@ -157,10 +159,6 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Save the job application with the updated resume field
 
     await jobApplication.save();
-
-    // Return the created job application object
-
-    // ! Return a success message.
 
     return res.status(201).json({
       message: "Job application created successfully.",
