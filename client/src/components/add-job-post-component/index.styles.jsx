@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   padding-top: 10px;
