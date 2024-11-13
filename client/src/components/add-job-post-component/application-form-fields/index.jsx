@@ -95,6 +95,7 @@ function AddApplicationFields() {
           required
         />
 
+        {/* Dummy resume upload Field */}
         <Box sx={{ margin: "8px" }}>
           <Typography color="#9E9E9E" pb="13px">
             *Upload Resume

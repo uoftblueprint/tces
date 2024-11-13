@@ -17,8 +17,7 @@ import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/contants";
 
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
-    const updatedApplicationFields = { ...jobPostData, [field]: input };
-    setJobPostData(updatedApplicationFields);
+    setJobPostData({ ...jobPostData, [field]: input });
   };
   return (
     <JobLeadContainer>
@@ -218,7 +217,6 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
       </LocalizationProvider>
 
       {/* Additional Information Field */}
-      {/* TODO ADD REQUIRED LABEL */}
       <TextField
         fullWidth
         sx={{ m: 1, width: "96%" }}

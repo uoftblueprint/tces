@@ -77,9 +77,9 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
   const handleSubmit = async (e, postState) => {
     const DRAFT = "Draft";
     const updatedJobPost = { ...jobPostData, state: postState };
+    updateJobPostData("state", postState);
 
     setIsLoading(true);
-    updateJobPostData("state", postState);
     try {
       const response = await createJobPost(
         updatedJobPost,
@@ -237,6 +237,8 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
           </form>
         </Box>
       </Stack>
+
+      {/* Discard Job Post Dialog */}
       <Dialog open={discardOpen} onClose={handleClose} maxWidth="xs">
         <DialogTitle>Are you sure you want to discard?</DialogTitle>
         <DialogContent>
@@ -256,6 +258,8 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Displays success/failure of submitting the job post */}
       <PostingResultDialog
         isOpen={resultOpen}
         isSuccess={resultModalValues.isSuccess}
