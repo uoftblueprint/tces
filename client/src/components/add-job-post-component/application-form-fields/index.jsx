@@ -71,7 +71,7 @@ function AddApplicationFields() {
           sx={{ m: 1, width: "47%" }}
           label="Postal Code"
           helperText="*Required"
-          required
+          requiredf
           InputLabelProps={{ required: false }}
         />
 
@@ -118,7 +118,7 @@ function AddApplicationFields() {
             </Container>
             <Typography variant="body1" pb="10px" pt="10px">
               <span className={styles.underline}>Click to upload</span>
-              or drag and drop
+              &nbsp;or drag and drop
             </Typography>
             <Typography variant="body2">
               SVG, PNG, JPG or GIF (max. 3MB)
