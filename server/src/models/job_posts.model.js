@@ -15,6 +15,10 @@ const JobPosting = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     employer: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -44,7 +48,7 @@ const JobPosting = sequelize.define(
         "Weekly",
         "Annually",
         "Commission",
-        "Base_Commission", // Changed for MySQL compatibility
+        "Base and Commission",
       ),
       allowNull: true,
     },
@@ -54,10 +58,13 @@ const JobPosting = sequelize.define(
       validate: {
         isValidJobType(value) {
           const allowedTypes = [
-            "Part-time",
-            "Full-time",
             "Contract",
+            "Freelance",
+            "Full-time",
+            "Internship",
+            "Part-time",
             "Permanent",
+            "Seasonal",
           ];
           if (!Array.isArray(value)) {
             throw new Error("Job type must be an array");
