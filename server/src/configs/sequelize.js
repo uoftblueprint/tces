@@ -23,6 +23,8 @@ const sequelize = new Sequelize(
   },
 );
 
+sequelize.authenticate();
+
 module.exports = {
   sequelize,
 };
