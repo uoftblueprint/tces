@@ -15,6 +15,10 @@ const JobPosting = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     employer: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -44,15 +48,34 @@ const JobPosting = sequelize.define(
         "Weekly",
         "Annually",
         "Commission",
-        "Base & Commission",
+        "Base and Commission",
       ),
       allowNull: true,
     },
     job_type: {
-      type: DataTypes.ARRAY(
-        DataTypes.ENUM("Part-time", "Full-time", "Contract", "Permanent"),
-      ),
+      type: DataTypes.JSON, // Using JSON to store multiple job types
       allowNull: true,
+      validate: {
+        isValidJobType(value) {
+          const allowedTypes = [
+            "Contract",
+            "Freelance",
+            "Full-time",
+            "Internship",
+            "Part-time",
+            "Permanent",
+            "Seasonal",
+          ];
+          if (!Array.isArray(value)) {
+            throw new Error("Job type must be an array");
+          }
+          value.forEach((type) => {
+            if (!allowedTypes.includes(type)) {
+              throw new Error(`Invalid job type: ${type}`);
+            }
+          });
+        },
+      },
     },
     close_date: {
       type: DataTypes.DATE,
@@ -63,7 +86,7 @@ const JobPosting = sequelize.define(
       allowNull: true,
     },
     custom_questions: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSON,
       allowNull: true,
     },
     creator: {
