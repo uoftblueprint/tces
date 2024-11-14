@@ -15,6 +15,10 @@ const JobPosting = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     employer: {
       type: DataTypes.STRING,
       allowNull: true,
