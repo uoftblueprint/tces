@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route to get job applications by name
-router.get("/:name/applications", async (req, res) => {
+router.get("/:name", async (req, res) => {
   return getOneJobApplicationRequestHandler(req, res);
 });
 
