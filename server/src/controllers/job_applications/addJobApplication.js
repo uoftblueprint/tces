@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
-const { uploadFileToS3 } = require("../../utils/s3");
+const { uploadFileToS3, getResumePresignedUrl } = require("../../utils/s3");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -149,17 +149,12 @@ const addJobApplicationRequestHandler = async (req, res) => {
       },
     });
 
-    // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
-
-    jobApplication.resume = `${jobApplication.id}_${name}_${associatedJobPost.title}`;
-
     // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on Supabase
 
-    uploadFileToS3(resume, jobApplication.resume);
-
-    // ! Save the job application with the updated resume field
-
-    await jobApplication.save();
+    uploadFileToS3(
+      resume,
+      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+    );
 
     // ! Delete temporarily saved resume file that was uploaded.
 
@@ -173,6 +168,20 @@ const addJobApplicationRequestHandler = async (req, res) => {
         }
       });
     });
+
+    // ! Get the presigned URL key for the Job Application.
+
+    const resumePresignedURL = await getResumePresignedUrl(
+      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+    );
+
+    // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
+
+    jobApplication.resume = resumePresignedURL;
+
+    // ! Save the job application with the updated resume field
+
+    await jobApplication.save();
 
     // ! Send successful response status.
 
