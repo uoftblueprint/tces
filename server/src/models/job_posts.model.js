@@ -48,7 +48,7 @@ const JobPosting = sequelize.define(
         "Weekly",
         "Annually",
         "Commission",
-        "Base and Commission"
+        "Base and Commission",
       ),
       allowNull: true,
     },
@@ -117,7 +117,7 @@ const JobPosting = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = JobPosting;
