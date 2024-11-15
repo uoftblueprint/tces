@@ -74,4 +74,6 @@ const addJobPostRequestHandler = async (req, res) => {
   // TODO: Seems like GET requests won't update the 'state' attribute automatically, but there can be
   // TODO automatic background tasks (like a cron job) that can periodically check
   // TODO: I should ask about this to double check.
+  // TODO: Looking into it, apparently it doesn't do the automatic status check when the object is first created too.
+  // TODO: The beforeUpdate hook is used, and only corresponds for PUT and PATCH requests.
 };
