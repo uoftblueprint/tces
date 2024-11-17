@@ -217,7 +217,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
         />
       </LocalizationProvider>
 
-      {/* Additional Information Field */}
+      {/* Description Field */}
       <TextField
         fullWidth
         sx={{ m: 1, width: "96%" }}
@@ -225,10 +225,10 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
         label="Description"
         multiline
         rows={4}
-        value={jobPostData.additionalInfo}
+        value={jobPostData.description}
         InputLabelProps={{ shrink: true, required: false }}
         helperText="*Required"
-        onChange={(e) => handleInputChange(e.target.value, "additionalInfo")}
+        onChange={(e) => handleInputChange(e.target.value, "description")}
         required
       />
     </JobLeadContainer>

@@ -17,7 +17,7 @@ function AddJobPostParent({ currUser }) {
       creationDate: dayjs(),
       expirationDate: dayjs().add(1, "month"),
       employmentType: [],
-      additionalInfo: "",
+      description: "",
     },
     applicationFields: {
       custom_questions: [],
