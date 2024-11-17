@@ -169,15 +169,11 @@ const addJobApplicationRequestHandler = async (req, res) => {
       });
     });
 
-    // ! Get the presigned URL key for the Job Application.
-
-    const resumePresignedURL = await getResumePresignedUrl(
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`
-    );
-
     // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
 
-    jobApplication.resume = resumePresignedURL;
+    const nameWithNoSpaces = name.replace(/\s+/g, "_");
+
+    jobApplication.resume = `${jobApplication.id}_${nameWithNoSpaces}_${associatedJobPost.title}`;
 
     // ! Save the job application with the updated resume field
 
