@@ -218,7 +218,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
         fullWidth
         sx={{ m: 1, width: "96%" }}
         id="description"
-        label="Additional Information"
+        label="Description"
         multiline
         rows={4}
         value={jobPostData.additionalInfo}
