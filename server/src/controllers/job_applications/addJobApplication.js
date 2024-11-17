@@ -14,6 +14,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
       phone,
       postal_code: postalCode,
       status_in_canada: statusInCanada,
+      status_other: statusOther,
       application_status: applicationStatus = "New",
       custom_responses: customResponses = {},
     } = req.body;
@@ -128,6 +129,12 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     // ! Create the job application in the database
 
+    // Validate statusOther if statusInCanada is "other"
+    if (statusInCanada === "Other" && statusOther === undefined) {
+      return res.status(400).json({ error: "statusOther attribute needed" });
+    }
+
+    // Create the job application
     const jobApplication = await JobApplication.create({
       job_posting_id: jobPostingId,
       name,
@@ -138,6 +145,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
       status_in_canada: statusInCanada,
       application_status: applicationStatus,
       custom_responses: customResponses,
+      status_other: statusInCanada === "other" ? statusOther : null, // Include statusOther only if required
     });
 
     // ! Find the associated job post with this Job Application to find the title
