@@ -82,19 +82,6 @@ function AddApplicationFields() {
           <FormHelperText>*Required</FormHelperText>
         </FormControl>
 
-        {/* Cover Letter Field */}
-        <TextField
-          disabled
-          fullWidth
-          className={styles.dotted}
-          sx={{ m: 1, width: "96%" }}
-          label="Cover Letter"
-          multiline
-          rows={4}
-          InputLabelProps={{ shrink: true, required: false }}
-          required
-        />
-
         {/* Dummy resume upload Field */}
         <Box sx={{ margin: "8px" }}>
           <Typography color="#9E9E9E" pb="13px">
