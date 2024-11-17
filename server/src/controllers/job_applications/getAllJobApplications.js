@@ -7,7 +7,6 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
     // ! Return all applications sorted in descending order by application date (newest first)
     // ! There is probably a sequelize function that can do this for me.
     const query = {};
-    const order = [["createdAt", "DESC"]];
 
     // ! Paginate the data (take a look at the existing API endpoints in the codebase for an example)
     // ! This pagination logic is from the existing code base. Maybe I should use this.
@@ -27,8 +26,22 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
 
     const searchConfig = {
       where: query || {},
-      order,
-      attributes: { exclude: [] }, // Explicitly include all fields
+      order: [["createdAt", "DESC"]],
+      attributes: [
+        "id",
+        "job_posting_id",
+        "name",
+        "email",
+        "phone",
+        "postal_code",
+        "resume",
+        "status_in_canada",
+        "status_other",
+        "application_status",
+        "custom_responses",
+        "createdAt", // Include createdAt explicitly
+        "updatedAt", // Include updatedAt explicitly
+      ],
     };
 
     if (page !== null && pageSize !== null) {
@@ -50,6 +63,8 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
     const totalJobApplicationsNumber = await JobApplications.count({
       where: query,
     });
+
+    console.log(jobApplications);
 
     return res.status(200).json({
       status: "success",
