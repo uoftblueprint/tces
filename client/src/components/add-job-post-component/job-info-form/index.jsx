@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
+  Autocomplete,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
@@ -19,6 +20,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
     setJobPostData({ ...jobPostData, [field]: input });
   };
+  console.log(jobPostData);
   return (
     <JobLeadContainer>
       <div
@@ -153,24 +155,26 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
       />
 
       {/* Employment Type Field */}
-      <FormControl fullWidth sx={{ m: 1, width: "96%" }}>
-        <InputLabel>Employment Type</InputLabel>
-        <Select
-          sx={{ textAlign: "left" }}
-          labelId="employmentTypeLabel"
-          id="employmentTypeLabel"
-          value={jobPostData.employmentType}
-          label="Employment Type"
-          onChange={(e) => handleInputChange(e.target.value, "employmentType")}
+      <FormControl sx={{ m: 1, width: "96%" }}>
+        <Autocomplete
+          multiple
+          id="tags-outlined"
+          options={JOB_TYPES}
+          getOptionLabel={(option) => option}
+          defaultValue={jobPostData.employmentType}
+          filterSelectedOptions
+          onChange={(e, value) => handleInputChange(value, "employmentType")}
           required
-          InputLabelProps={{ required: false }}
-        >
-          {JOB_TYPES.map((jobType) => (
-            <MenuItem key={jobType} value={jobType}>
-              {jobType}
-            </MenuItem>
-          ))}
-        </Select>
+          renderInput={(params) => (
+            <TextField
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...params}
+              label="Employment Type"
+              labelId="employmentTypeLabel"
+              id="employmentTypeLabel"
+            />
+          )}
+        />
         <FormHelperText>*Required</FormHelperText>
       </FormControl>
 

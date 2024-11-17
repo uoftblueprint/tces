@@ -16,7 +16,7 @@ function AddJobPostParent({ currUser }) {
       hoursPerWeek: null,
       creationDate: dayjs(),
       expirationDate: dayjs().add(1, "month"),
-      employmentType: "",
+      employmentType: [],
       additionalInfo: "",
     },
     applicationFields: {
