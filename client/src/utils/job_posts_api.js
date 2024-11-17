@@ -1,6 +1,6 @@
 const { REACT_APP_API_BASE_URL } = process.env;
 
-const modifyJobLead = async (modifiedJobPost) => {
+const modifyJobPost = async (modifiedJobPost) => {
     const modifyJobPostBody = {
       values: {
         title: modifiedJobPost.owner,
@@ -33,4 +33,4 @@ const modifyJobLead = async (modifiedJobPost) => {
     return response;
   };
 
-export { modifyJobLead };
+export { modifyJobPost };
