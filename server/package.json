@@ -30,7 +30,7 @@
     "mysql2": "^3.6.2",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.10",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.7",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pino": "^8.16.0",
