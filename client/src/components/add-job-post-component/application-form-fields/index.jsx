@@ -121,9 +121,7 @@ function AddApplicationFields() {
               <span className={styles.underline}>Click to upload</span>
               &nbsp;or drag and drop
             </Typography>
-            <Typography variant="body2">
-              SVG, PNG, JPG or GIF (max. 3MB)
-            </Typography>
+            <Typography variant="body2">PDF (max. 3MB)</Typography>
           </Container>
         </Box>
       </JobLeadContainer>
