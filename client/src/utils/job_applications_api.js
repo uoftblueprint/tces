@@ -76,8 +76,6 @@ const uploadJobApplication = async (file) => {
   return response;
 };
 
-export default uploadJobApplication;
-
 export {
   fetchAllJobApplications,
   fetchJobApplicationsByApplicantName,
