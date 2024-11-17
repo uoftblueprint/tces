@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
-const { uploadFileToS3, getResumePresignedUrl } = require("../../utils/s3");
+const { uploadFileToS3 } = require("../../utils/s3");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -153,7 +153,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     uploadFileToS3(
       resume,
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`
+      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
     );
 
     // ! Delete temporarily saved resume file that was uploaded.
