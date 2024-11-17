@@ -13,7 +13,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { JobLeadContainer, H3 } from "../index.styles";
-import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/contants";
+import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/constants";
 
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
