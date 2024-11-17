@@ -19,7 +19,7 @@ const createJobPost = async (jobPostData) => {
   return result;
 };
 
-const modifyJobLead = async (modifiedJobPost) => {
+const modifyJobPost = async (modifiedJobPost) => {
   const modifyJobPostBody = {
     values: {
       title: modifiedJobPost.owner,
@@ -80,4 +80,4 @@ async function deleteJobPosting(jobPostingId) {
   }
 }
 
-module.exports = { createJobPost, modifyJobLead ,deleteJobPosting };
+module.exports = { createJobPost, modifyJobPost ,deleteJobPosting };
