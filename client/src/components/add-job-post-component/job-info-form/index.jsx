@@ -182,10 +182,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           fullWidth
           sx={{ m: 1, width: "47%" }}
           value={jobPostData.creationDate}
-          onChange={(newValue) =>
-            handleInputChange(newValue, jobPostData, "creationDate")
-          }
-          minDate={dayjs()}
+          disabled
           renderInput={(params) => (
             // eslint-disable-next-line
             <TextField {...params} error={false} helperText="" required />
