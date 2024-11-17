@@ -20,7 +20,7 @@ import UserType from "../../prop-types/UserType";
 import createJobPost from "./mockResponse";
 import PostingResultDialog from "./posting-result-dialog";
 
-function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
+function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const navigate = useNavigate();
   const formRef = useRef(null);
   const [page, setPage] = useState(1);
@@ -272,11 +272,11 @@ function AddJobLead({ jobPostData, updateJobPostData, currUser }) {
   );
 }
 
-AddJobLead.propTypes = {
+AddJobPost.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   jobPostData: PropTypes.object.isRequired,
   updateJobPostData: PropTypes.func.isRequired,
   currUser: UserType.isRequired,
 };
 
-export default AddJobLead;
+export default AddJobPost;

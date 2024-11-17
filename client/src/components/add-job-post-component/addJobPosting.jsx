@@ -1,9 +1,9 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-import AddJobLead from "./index";
+import AddJobPost from "./index";
 import UserType from "../../prop-types/UserType";
 
-function AddJobLeadParent({ currUser }) {
+function AddJobPostParent({ currUser }) {
   const initialState = {
     jobInfo: {
       id: 0,
@@ -34,7 +34,7 @@ function AddJobLeadParent({ currUser }) {
     }));
   };
   return (
-    <AddJobLead
+    <AddJobPost
       jobPostData={jobPostData}
       updateJobPostData={updateJobPostData}
       currUser={currUser}
@@ -42,8 +42,8 @@ function AddJobLeadParent({ currUser }) {
   );
 }
 
-AddJobLeadParent.propTypes = {
+AddJobPostParent.propTypes = {
   currUser: UserType.isRequired,
 };
 
-export default AddJobLeadParent;
+export default AddJobPostParent;
