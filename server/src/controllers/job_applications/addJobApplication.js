@@ -60,7 +60,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     const validApplicationStatuses = [
       "Contacted",
       "Rejected",
-      "R & I",
+      "R and I",
       "Approved",
       "In Progress",
       "New",
@@ -153,7 +153,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     uploadFileToS3(
       resume,
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+      `${jobApplication.id}_${name}_${associatedJobPost.title}`
     );
 
     // ! Delete temporarily saved resume file that was uploaded.
@@ -172,7 +172,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Get the presigned URL key for the Job Application.
 
     const resumePresignedURL = await getResumePresignedUrl(
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+      `${jobApplication.id}_${name}_${associatedJobPost.title}`
     );
 
     // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
