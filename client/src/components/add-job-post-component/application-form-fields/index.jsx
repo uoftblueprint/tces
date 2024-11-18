@@ -82,7 +82,7 @@ function AddApplicationFields() {
             sx={{ m: 1, width: "47%" }}
             label="Postal Code"
             helperText="*Required"
-            requiredf
+            required
             InputLabelProps={{ required: false }}
           />
 

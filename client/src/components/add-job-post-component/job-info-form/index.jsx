@@ -86,11 +86,11 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Minimum Compensation"
             inputProps={{ min: 0 }}
-            value={jobPostData.minCompensation}
+            value={jobPostData.rate_of_pay_min}
             onChange={(e) => {
               const { value } = e.target;
               if (/^\d*\.?\d*$/.test(value))
-                handleInputChange(value, "minCompensation");
+                handleInputChange(value, "rate_of_pay_min");
             }}
             required
             InputLabelProps={{ required: false }}
@@ -108,11 +108,11 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             inputProps={{ min: 0 }}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Maximum Compensation"
-            value={jobPostData.maxCompensation}
+            value={jobPostData.rate_of_pay_max}
             onChange={(e) => {
               const { value } = e.target;
               if (/^\d*\.?\d*$/.test(value))
-                handleInputChange(value, "maxCompensation");
+                handleInputChange(value, "rate_of_pay_max");
             }}
             required
             InputLabelProps={{ required: false }}
@@ -126,10 +126,10 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             sx={{ textAlign: "left" }}
             labelId="compensationRateLabel"
             id="compensationRateLabel"
-            value={jobPostData.compensationRate}
+            value={jobPostData.rate_of_pay_frequency}
             label="Compensation rate"
             onChange={(e) =>
-              handleInputChange(e.target.value, "compensationRate")
+              handleInputChange(e.target.value, "rate_of_pay_frequency")
             }
             required
             InputLabelProps={{ required: false }}
@@ -151,11 +151,11 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           type="number"
           label="Hours per week"
           inputProps={{ min: 0 }}
-          value={jobPostData.hoursPerWeek}
+          value={jobPostData.hours_per_week}
           onChange={(e) => {
             const { value } = e.target;
             if (/^\d*\.?\d*$/.test(value))
-              handleInputChange(value, "hoursPerWeek");
+              handleInputChange(value, "hours_per_week");
           }}
           required
           InputLabelProps={{ required: false }}
@@ -168,9 +168,9 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             id="tags-outlined"
             options={JOB_TYPES}
             getOptionLabel={(option) => option}
-            defaultValue={jobPostData.employmentType}
+            defaultValue={jobPostData.job_type}
             filterSelectedOptions
-            onChange={(e, value) => handleInputChange(value, "employmentType")}
+            onChange={(e, value) => handleInputChange(value, "job_type")}
             required
             renderInput={(params) => (
               <TextField
@@ -188,11 +188,11 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
         {/* Creation Date Picker */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            id="expirationDate"
+            id="creation"
             label="Creation Date"
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            value={jobPostData.creationDate}
+            value={jobPostData.creation_date}
             disabled
             renderInput={(params) => (
               // eslint-disable-next-line
@@ -210,10 +210,10 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             label="Expiration Date"
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            value={jobPostData.expirationDate}
+            value={jobPostData.close_date}
             minDate={dayjs()}
             onChange={(newValue) =>
-              handleInputChange(newValue, jobPostData, "expirationDate")
+              handleInputChange(newValue, jobPostData, "close_date")
             }
             renderInput={(params) => (
               // eslint-disable-next-line
