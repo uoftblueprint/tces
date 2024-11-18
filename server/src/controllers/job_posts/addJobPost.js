@@ -135,8 +135,19 @@ const addJobPostRequestHandler = async (req, res) => {
       job_description: jobDescription,
       custom_questions: customQuestions,
       creator: req.user.id,
-      state: "Active",
+      state: state === "Draft" ? "Draft" : "Active",
     });
+
+    // TODO: Since the model file for Job Posts automatically checks if the current date is beyond the closing date
+    // TODO I don't think I need to do anything then. I think it's mainly for GET requests where the state
+    // TODO will be updated when the client gets the Job Posts.
+    // TODO: Seems like GET requests won't update the 'state' attribute automatically, but there can be
+    // TODO automatic background tasks (like a cron job) that can periodically check
+    // TODO: I should ask about this to double check.
+    // TODO: Looking into it, apparently it doesn't do the automatic status check when the object is first created too.
+    // TODO: The beforeUpdate hook is used, and only corresponds for PUT and PATCH requests.
+
+    // TODO: How does it get set to Inactive? Will this be automatically done?
 
     // ! Return a response stating that the object is successfully created.
 
@@ -179,14 +190,6 @@ const addJobPostRequestHandler = async (req, res) => {
      * close_date
      * job_description
      */
-    // TODO: Since the model file for Job Posts automatically checks if the current date is beyond the closing date
-    // TODO I don't think I need to do anything then. I think it's mainly for GET requests where the state
-    // TODO will be updated when the client gets the Job Posts.
-    // TODO: Seems like GET requests won't update the 'state' attribute automatically, but there can be
-    // TODO automatic background tasks (like a cron job) that can periodically check
-    // TODO: I should ask about this to double check.
-    // TODO: Looking into it, apparently it doesn't do the automatic status check when the object is first created too.
-    // TODO: The beforeUpdate hook is used, and only corresponds for PUT and PATCH requests.
   } catch (error) {
     return res.status(500).json({ error: "Failed to create job posting." });
   }
