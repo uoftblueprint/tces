@@ -107,13 +107,6 @@ const addJobPostRequestHandler = async (req, res) => {
           .json({ error: "Close date must be in the future." });
       }
 
-      // Validation: Custom questions must be an array
-      if (customQuestions && !Array.isArray(customQuestions)) {
-        return res
-          .status(400)
-          .json({ error: "Custom questions must be an array." });
-      }
-
       // ! Check if the employee exists in the database. This is only done when the job posting
       // ! is ont a draft.
 
@@ -142,7 +135,7 @@ const addJobPostRequestHandler = async (req, res) => {
       job_description: jobDescription,
       custom_questions: customQuestions,
       creator: req.user.id,
-      state,
+      state: "Active",
     });
 
     // ! Return a response stating that the object is successfully created.
