@@ -77,3 +77,5 @@ const addJobPostRequestHandler = async (req, res) => {
   // TODO: Looking into it, apparently it doesn't do the automatic status check when the object is first created too.
   // TODO: The beforeUpdate hook is used, and only corresponds for PUT and PATCH requests.
 };
+
+module.exports = addJobPostRequestHandler;
