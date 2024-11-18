@@ -104,7 +104,12 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
 
   return (
     <Container justifyContent="center" alignItems="center">
-      <Stack direction="column" alignItems="center" spacing={4}>
+      <Stack
+        direction="column"
+        alignItems="center"
+        spacing={4}
+        sx={{ width: "100%" }}
+      >
         <Box
           sx={{
             width: "63%",
@@ -128,7 +133,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
         </Box>
         <Box
           sx={{
-            width: "63%",
+            width: "64%",
           }}
         >
           <form ref={formRef}>

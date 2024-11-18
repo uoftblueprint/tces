@@ -21,6 +21,7 @@ const ButtonContainer = styled.div`
 
 const JobLeadContainer = styled.div`
   display: flex-wrap;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   height: auto;
