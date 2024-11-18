@@ -88,6 +88,32 @@ const addJobPostRequestHandler = async (req, res) => {
         });
       }
 
+      // Validation: Minimum rate of pay should be less than or equal to the maximum
+      if (
+        rateOfPayMin !== undefined &&
+        rateOfPayMax !== undefined &&
+        parseFloat(rateOfPayMin) > parseFloat(rateOfPayMax)
+      ) {
+        return res.status(400).json({
+          error:
+            "Minimum rate of pay must be less than or equal to maximum rate of pay.",
+        });
+      }
+
+      // Validation: Close date must be in the future
+      if (closeDate && new Date(closeDate) < new Date()) {
+        return res
+          .status(400)
+          .json({ error: "Close date must be in the future." });
+      }
+
+      // Validation: Custom questions must be an array
+      if (customQuestions && !Array.isArray(customQuestions)) {
+        return res
+          .status(400)
+          .json({ error: "Custom questions must be an array." });
+      }
+
       // ! Check if the employee exists in the database. This is only done when the job posting
       // ! is ont a draft.
 
@@ -169,7 +195,7 @@ const addJobPostRequestHandler = async (req, res) => {
     // TODO: Looking into it, apparently it doesn't do the automatic status check when the object is first created too.
     // TODO: The beforeUpdate hook is used, and only corresponds for PUT and PATCH requests.
   } catch (error) {
-    res.status(500).json({ error: "Failed to create job posting." });
+    return res.status(500).json({ error: "Failed to create job posting." });
   }
 };
 
