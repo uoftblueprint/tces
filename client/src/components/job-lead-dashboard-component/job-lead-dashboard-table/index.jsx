@@ -108,7 +108,7 @@ function JobLeadDashboardTableComponent({
       sortable: false,
       filterable: false,
       renderCell: (params) => {
-        const user = params.row.ownerDetails
+        const user = params.row.ownerDetails;
         return <UserChipComponent user={user} />;
       },
     },
