@@ -98,7 +98,7 @@ const addJobPostRequestHandler = async (req, res) => {
       close_date: closeDate,
       job_description: jobDescription,
       custom_questions: customQuestions,
-      creator: 3,
+      creator: req.user.id,
       state: state === "Draft" ? "Draft" : "Active",
     });
 
