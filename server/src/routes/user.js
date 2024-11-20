@@ -25,7 +25,7 @@ const createUserRequestHandler = require("../controllers/user/createUser");
  * @type string {body.email}
  * @type string {body.password}
  */
-router.post("", isAdmin, createUserRequestHandler);
+router.post("", createUserRequestHandler);
 
 /**
  * Get a singular user
