@@ -90,7 +90,7 @@ app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 app.use("/upload", uploadRouter);
 app.use("/job_applications", jobApplicationsRouter);
-app.use("/job_posts", jobPostsRouter);
+app.use("/job_postings", jobPostsRouter);
 
 const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;
