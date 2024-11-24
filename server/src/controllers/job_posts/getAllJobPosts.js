@@ -20,7 +20,7 @@ const getAllJobPostsRequestHandler = async (req, res) => {
     }
 
     try{
-        // ------ Pagination Configs
+        // Pagination Configs
         const searchConfig = {
             where: query,
             attributes,
@@ -38,7 +38,6 @@ const getAllJobPostsRequestHandler = async (req, res) => {
             searchConfig.limit = pageSize;
             searchConfig.offset = page * pageSize;
         }
-        // --------
 
         // Return to include id, title, employer, application_close_date, state
         searchConfig.attributes = ['id', 'title', 'employer', 'close_date', 'state'];
@@ -50,9 +49,9 @@ const getAllJobPostsRequestHandler = async (req, res) => {
         query.state = 'Active';
         const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-        // c)
-        query.job_type = req?.query?.job_type
-        const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
+        // // c)
+        // query.job_type = req?.query?.job_type
+        // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
 
         // -------- Response:
         const response = {
