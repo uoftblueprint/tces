@@ -6,7 +6,7 @@ a) GET request (get a job post’s information, get all columns based on id) usi
 Return all info about that specific job post
  */
 
-const getJobPostsRequestHandler = async (req, res) => {
+const getJobPostRequestHandler = async (req, res) => {
     // check method is GET
     if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method not allowed, only GET methods allowed.' });
@@ -39,4 +39,4 @@ const getJobPostsRequestHandler = async (req, res) => {
     }
 }
 
-module.exports = getJobPostsRequestHandler;
+module.exports = getJobPostRequestHandler;
