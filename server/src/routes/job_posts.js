@@ -4,6 +4,10 @@ const router = express.Router();
 
 const addJobPostRequestHandler = require("../controllers/job_posts/addJobPost");
 
+const getJobPostRequestHandler = require("../controllers/job_posts/getOneJobPost");
+
+const getAllJobPostsRequestHandler = require("../controllers/job_posts/getAllJobPosts");
+
 const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
@@ -86,6 +90,23 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
  * - isLoggedIn: Ensures that the user is authenticated before allowing the creation of job postings.
  */
 router.post("/", isLoggedIn, addJobPostRequestHandler);
+
+/**
+ * Get a specific job post's info, with id job_post_id
+ *
+ * Expected parameters:
+ * @type integer (in url) {params.job_post_id}
+ */
+router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
+
+/**
+ * Get all job post's info
+ * 
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
