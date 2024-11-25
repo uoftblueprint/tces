@@ -21,3 +21,5 @@ router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
  * @type integer (in url) {params.pageSize}
  */
 router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
+
+module.exports = router;
