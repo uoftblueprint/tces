@@ -1,6 +1,7 @@
 const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 const { deleteFileFromS3 } = require("../../utils/s3");
+const { sequelize } = require("../../configs/sequelize");
 
 const deleteJobPostHandler = async (req, res) => {
   // ! Delete a Job Post and all of its information regardless of close date.
@@ -14,13 +15,16 @@ const deleteJobPostHandler = async (req, res) => {
     return res.status(400).json({ error: "Invalid or missing job_posting_id" });
   }
 
+  const transaction = await sequelize.transaction(); // Start transaction
+
   try {
-    const jobPosting = JobPosting.findByPk(jobPostId);
+    const jobPosting = await JobPosting.findByPk(jobPostId);
 
     // ! Search to see if the Job Post exists.
 
     // jobPosting will be null if there is no Job Posting found with the corresponding jobPosting Id.
     if (!jobPosting) {
+      await transaction.rollback();
       return res.status(404).json({ error: "Job Posting could not be found." });
     }
 
@@ -33,7 +37,9 @@ const deleteJobPostHandler = async (req, res) => {
 
     // ! Delete all associated resumes with deleted Job Applications
 
-    jobApplications.map((app) => deleteFileFromS3(app.resume));
+    await Promise.all(
+      jobApplications.map((app) => deleteFileFromS3(app.resume)),
+    );
 
     // ! Delete all associated Job Applications with Job Post
 
@@ -47,12 +53,15 @@ const deleteJobPostHandler = async (req, res) => {
       where: { id: jobPostId }, // Assuming `id` is the primary key for JobPosting
     });
 
+    await transaction.commit(); // Commit transaction
+
     return res.status(200).json({
       status: "success",
       message: `Job Posts and all associated Job Applications have been successfully deleted`,
       data: null,
     });
   } catch (error) {
+    await transaction.rollback();
     return res.status(400).json({ error: error.message });
   }
 };
