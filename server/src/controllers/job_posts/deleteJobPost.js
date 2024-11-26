@@ -1,7 +1,6 @@
 const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 const { deleteFileFromS3 } = require("../../utils/s3");
-const { sequelize } = require("../../configs/sequelize");
 
 const deleteJobPostHandler = async (req, res) => {
   // ! Delete a Job Post and all of its information regardless of close date.
