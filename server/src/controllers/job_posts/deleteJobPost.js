@@ -1,5 +1,6 @@
 const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
+const { deleteFileFromS3 } = require("../../utils/s3");
 
 const deleteJobPostHandler = async (req, res) => {
   // ! Delete a Job Post and all of its information regardless of close date.
@@ -23,7 +24,18 @@ const deleteJobPostHandler = async (req, res) => {
       return res.status(404).json({ error: "Job Posting could not be found." });
     }
 
-    // ! Delete all associated Job Applications.
+    // ! Find all associated Job Applications.
+
+    const jobApplications = await JobApplication.findAll({
+      where: { job_posting_id: jobPostId },
+      attributes: ["resume"],
+    });
+
+    // ! Delete all associated resumes with deleted Job Applications
+
+    jobApplications.map((app) => deleteFileFromS3(app.resume));
+
+    // ! Delete all associated Job Applications with Job Post
 
     await JobApplication.destroy({
       where: { job_posting_id: jobPostId },
