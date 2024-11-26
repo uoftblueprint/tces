@@ -1,5 +1,4 @@
 const JobPosting = require("../../models/job_posts.model");
-const Employee = require("../../models/employer.model");
 
 const addJobPostRequestHandler = async (req, res) => {
   try {
@@ -69,19 +68,6 @@ const addJobPostRequestHandler = async (req, res) => {
         return res
           .status(400)
           .json({ error: "Close date must be in the future." });
-      }
-
-      // ! Check if the employee exists in the database. This is only done when the job posting
-      // ! is ont a draft.
-
-      const potentialEmployee = await Employee.findOne({
-        where: { name: employer },
-      });
-
-      if (!potentialEmployee) {
-        return res.status(400).json({
-          error: "Employee mentioned in the job posting does not exist. ",
-        });
       }
     }
 
