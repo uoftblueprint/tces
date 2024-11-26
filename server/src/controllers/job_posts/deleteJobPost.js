@@ -15,8 +15,6 @@ const deleteJobPostHandler = async (req, res) => {
     return res.status(400).json({ error: "Invalid or missing job_posting_id" });
   }
 
-  const transaction = await sequelize.transaction(); // Start transaction
-
   try {
     const jobPosting = await JobPosting.findByPk(jobPostId);
 
@@ -24,7 +22,6 @@ const deleteJobPostHandler = async (req, res) => {
 
     // jobPosting will be null if there is no Job Posting found with the corresponding jobPosting Id.
     if (!jobPosting) {
-      await transaction.rollback();
       return res.status(404).json({ error: "Job Posting could not be found." });
     }
 
@@ -53,15 +50,12 @@ const deleteJobPostHandler = async (req, res) => {
       where: { id: jobPostId }, // Assuming `id` is the primary key for JobPosting
     });
 
-    await transaction.commit(); // Commit transaction
-
     return res.status(200).json({
       status: "success",
       message: `Job Posts and all associated Job Applications have been successfully deleted`,
       data: null,
     });
   } catch (error) {
-    await transaction.rollback();
     return res.status(400).json({ error: error.message });
   }
 };
