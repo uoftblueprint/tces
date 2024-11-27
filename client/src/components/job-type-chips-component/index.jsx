@@ -9,7 +9,7 @@ const chipColors = {
   Permanent: { bg: "#FFDAB9", text: "#000" }, // Peach
   Contract: { bg: "#DDA0DD", text: "#000" }, // Plum
   Seasonal: { bg: "#E0FFFF", text: "#000" }, // Light cyan
-  Freelance: { bg: "#FFC0CB", text: "#000" }, // Pink
+  Freelance: { bg: "#FF69B4", text: "#000" }, // Pink
   Internship: { bg: "#D3D3D3", text: "#000" }, // Light grey
 };
 
