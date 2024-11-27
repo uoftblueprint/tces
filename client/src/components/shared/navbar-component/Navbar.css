@@ -1,7 +1,7 @@
 .nav-container {
   display: flex;
   justify-content: space-between;
-  flex: 1;
+  align-items: center;
   padding: 8px 16px;
   border-bottom: 1px solid #0000008a;
   background: var(--light-primary-contrast, #fff);
@@ -14,23 +14,11 @@
 .left-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-.right-content {
-  display: flex;
-  align-items: center;
-}
-
-.right-content-image {
-  padding: 12px;
-  background: none;
-  border: none;
-}
 .left-content-buttons {
   display: flex;
-  justify-content: space-between;
-  width: 342px;
+  gap: 20px; /* Adjust spacing between buttons */
   margin-left: 50px;
 }
 
@@ -41,6 +29,11 @@
   font-size: 15px;
   font-weight: 500;
   line-height: 26px;
-  letter-spacing: 0.46000000834465027px;
-  text-align: left;
+  letter-spacing: 0.46px;
+  text-align: center;
+}
+
+.right-content {
+  display: flex;
+  align-items: center;
 }

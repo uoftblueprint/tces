@@ -10,12 +10,16 @@ function NavbarButton({ keyword, setLocalExitRoute }) {
     clients: "CLIENTS",
     "job-leads": "JOB LEADS",
     employers: "EMPLOYERS",
+    "job-postings": "JOB POSTINGS",
+    "job-applications": "JOB APPLICATIONS",
   };
 
   const routes = {
     clients: "/clients",
     "job-leads": "/job-leads",
     employers: "/employers",
+    "job-postings": "/job-postings",
+    "job-applications": "/job-applications",
   };
 
   const title = titles[keyword];
