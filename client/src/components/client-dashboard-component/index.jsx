@@ -15,7 +15,7 @@ import { cleanStatusString } from "../../utils/users";
 import ErrorComponent from "../shared/error-screen-component";
 import LoadingScreenComponent from "../shared/loading-screen-component";
 import ClientType from "../../prop-types/ClientType";
-import { STATUS_TYPES } from "../../utils/contants";
+import { STATUS_TYPES } from "../../utils/constants";
 
 function ClientDashboardComponent({
   managedClients,

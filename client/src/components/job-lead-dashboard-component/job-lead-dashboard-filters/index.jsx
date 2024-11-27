@@ -24,7 +24,7 @@ import Box from "@mui/material/Box";
 import JobLeadType from "../../../prop-types/JobLeadType";
 import { valuetext } from "../../../utils/jobLeads";
 
-import { JOB_TYPES } from "../../../utils/contants";
+import { JOB_TYPES } from "../../../utils/constants";
 
 function JobLeadDashboardFiltersComponent({
   managedJobLeads,

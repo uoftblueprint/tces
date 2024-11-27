@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
 import { JobLeadContainer, H3 } from "./index.styles";
-import { JOB_TYPES } from "../../utils/contants";
+import { JOB_TYPES } from "../../utils/constants";
 import { getFilteredEmployers } from "../../utils/api";
 import ErrorScreenComponent from "../shared/error-screen-component";
 import debouncer from "../../utils/debouncer";
