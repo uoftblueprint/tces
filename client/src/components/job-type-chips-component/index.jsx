@@ -37,11 +37,10 @@ function JobTypeChipsComponent({ jobTypes }) {
           <Box
             key={jobType}
             sx={{
-              padding: "6px 12px",
+              padding: "3px 12px",
               borderRadius: "16px",
               backgroundColor: bg,
               color: text,
-              fontWeight: "bold",
               fontSize: "14px",
               border: "1px solid #CCC",
               textAlign: "center",
