@@ -18,8 +18,9 @@ function JobTypeChipsComponent({ jobTypes }) {
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        gap: 1,
+        gap: 1, // Spacing between chips
         alignItems: "center",
+        fontFamily: "'Roboto', sans-serif",
       }}
     >
       {jobTypes.map((jobType) => {
@@ -27,7 +28,7 @@ function JobTypeChipsComponent({ jobTypes }) {
           border: "#CCC",
           bg: "#EEE",
           text: "#000",
-        };
+        }; // Default colors
         return (
           <Box
             key={jobType}
@@ -39,6 +40,7 @@ function JobTypeChipsComponent({ jobTypes }) {
               fontSize: "14px",
               border: `1px solid ${border}`,
               textAlign: "center",
+              fontFamily: "'Roboto', sans-serif",
             }}
           >
             {jobType}
