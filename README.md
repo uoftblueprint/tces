@@ -87,6 +87,7 @@ docker compose build
 - Dhairya Thakkar
 - Mieko Yao
 - Olya Jaworsky
+- Jamie Yi
 
 ## License
 
