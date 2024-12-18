@@ -10,7 +10,7 @@ import ErrorComponent from "../shared/error-screen-component";
 import { getFilteredJobLeads } from "../../utils/api";
 import { formatDateStr } from "../../utils/date";
 import LoadingScreenComponent from "../shared/loading-screen-component";
-import { JOB_TYPES } from "../../utils/contants";
+import { JOB_TYPES } from "../../utils/constants";
 
 function JobLeadDashboardComponent({
   managedJobLeads,
