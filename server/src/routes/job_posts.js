@@ -100,8 +100,7 @@ router.post("/", isLoggedIn, addJobPostRequestHandler);
 router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
 
 /**
- * Get all job post's info
- * 
+ * Get all job posts info
  * Expected parameters:
  * @type integer (in url) {params.page}
  * @type integer (in url) {params.pageSize}
