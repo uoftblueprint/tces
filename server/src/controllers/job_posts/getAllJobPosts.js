@@ -2,83 +2,81 @@
 // a) GET request to get all job posts [id, title, employer, application_close_date, state]
 // Return the id, title, employer, application_close_date, state values of ALL job posts
 
-// b) GET request to get all public job posts 
+// b) GET request to get all public job posts
 // Return the id, title, employer, location, application_close_date of job posts where state is "Active"
 
 // c) GET request by job type using job type parameter
 // Return all job posts with that job type and state = "Active"
 
-const { query } = require("express");
-const JobPosting = require("../../models/job_posting.model");
+// const { query } = require("express");
 const logger = require("pino")();
-
+const JobPosting = require("../../models/job_posts.model");
 
 const getAllJobPostsRequestHandler = async (req, res) => {
-    // check method is GET
-    if (req.method !== 'GET') {
-        return res.status(405).json({ message: 'Method not allowed, only GET methods allowed.' });
+  // check method is GET
+  if (req.method !== "GET") {
+    return res
+      .status(405)
+      .json({ message: "Method not allowed, only GET methods allowed." });
+  }
+
+  try {
+    const query = {};
+
+    // Pagination Configs
+    const searchConfig = {
+      where: query,
+      attributes: ["id", "title", "employer", "close_date", "state"],
+    };
+
+    // get pagination parameters:
+    const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
+    const pageSize = req?.query?.pageSize
+      ? parseInt(req.query.pageSize, 10)
+      : null;
+
+    if (page != null && pageSize != null) {
+      searchConfig.limit = pageSize;
+      searchConfig.offset = page * pageSize;
     }
 
-    try{
-        // Pagination Configs
-        const searchConfig = {
-            where: query,
-            attributes,
-            limit,
-            offset
-        };
+    // a) Get all Job Posts
+    const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-        // get pagination parameters:
-        const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
-        const pageSize = req?.query?.pageSize
-            ? parseInt(req.query.pageSize, 10)
-            : null;
+    // b) Get all Public Job Posts
+    query.state = "Active";
+    const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-        if (page != null && pageSize != null) {
-            searchConfig.limit = pageSize;
-            searchConfig.offset = page * pageSize;
-        }
+    // // c)
+    // query.job_type = req?.query?.job_type
+    // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
 
-        // Return to include id, title, employer, application_close_date, state
-        searchConfig.attributes = ['id', 'title', 'employer', 'close_date', 'state'];
+    // -------- Response:
+    const response = {
+      status: "success",
+      message: "All job posts found successfully",
+      allJobPosts: {
+        totalPosts: allJobPosts.count,
+        totalPages: Math.ceil(allJobPosts.count / searchConfig.limit),
+        currentPage: page,
+        data: allJobPosts.rows,
+      },
+      publicJobPosts: {
+        totalPosts: allActiveJobPosts.count,
+        totalPages: Math.ceil(allActiveJobPosts.count / searchConfig.limit),
+        currentPage: page,
+        data: allActiveJobPosts.rows,
+      },
+    };
 
-        // a) Get all Job Posts
-        const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
-        
-        // b) Get all Public Job Posts
-        query.state = 'Active';
-        const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
-
-        // // c)
-        // query.job_type = req?.query?.job_type
-        // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
-
-        // -------- Response:
-        const response = {
-            status: "success",
-            message: "All job posts found successfully",
-            allJobPosts: {
-                totalPosts: allJobPosts.count,
-                totalPages: Math.ceil(allJobPosts.count / limit),
-                currentPage: page,
-                data: allJobPosts.rows,
-            },
-            publicJobPosts: {
-                totalPosts: allActiveJobPosts.count,
-                totalPages: Math.ceil(allActiveJobPosts.count / limit),
-                currentPage: page,
-                data: allActiveJobPosts.rows,
-            },
-        };
-
-        return res.status(200).json(response);
-    } catch(err){
-        logger.error(`Unexpected server error: ${err}`);
-        return res.status(500).json({
-          status: "error",
-          message: "An unexpected server error occurred.",
-        });
-    }
-}
+    return res.status(200).json(response);
+  } catch (err) {
+    logger.error(`Unexpected server error: ${err}`);
+    return res.status(500).json({
+      status: "error",
+      message: "An unexpected server error occurred.",
+    });
+  }
+};
 
 module.exports = getAllJobPostsRequestHandler;
