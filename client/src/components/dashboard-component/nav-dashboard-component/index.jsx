@@ -69,7 +69,7 @@ function DashboardNavigationComponent() {
               whiteSpace: "nowrap",
             }}
           >
-            Job Postings
+            Job Posts
           </MainNavButton>
         </Grid>
         <Grid item xs={14} sm={2.25}>

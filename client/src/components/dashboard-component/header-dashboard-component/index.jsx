@@ -88,6 +88,12 @@ function DashboardHeaderComponent({ currUser }) {
               >
                 Add New Client
               </MenuItem>
+              <MenuItem
+                onClick={() => handleClose("/job-posts/add")}
+                sx={{ justifyContent: "center" }}
+              >
+                Add New Job Posting
+              </MenuItem>
             </Menu>
           </Grid>
         </Grid>
