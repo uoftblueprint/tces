@@ -66,7 +66,7 @@ const JobApplication = sequelize.define(
       type: DataTypes.ENUM(
         "Contacted",
         "Rejected",
-        "R & I",
+        "R and I",
         "Approved",
         "In Progress",
         "New",
@@ -78,11 +78,6 @@ const JobApplication = sequelize.define(
       type: DataTypes.JSON,
       allowNull: false,
       defaultValue: {},
-    },
-    applied_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
     },
   },
   {

@@ -20,6 +20,9 @@ const passport = require("passport");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
+// const JobPostings = require("./src/models/job_posts.model");
+// const JobApplications = require("./src/models/job_applications.model");
+
 // Import passport configuration
 require("./src/configs/passport");
 
@@ -52,6 +55,8 @@ const employerContactRouter = require("./src/routes/employer_contact");
 const JobLeadTimelineRouter = require("./src/routes/job_lead_timeline_entries");
 const EmployerTimelineRouter = require("./src/routes/employer_timeline_entries");
 const ClientTimelineRouter = require("./src/routes/client_timeline_entries");
+const jobApplicationsRouter = require("./src/routes/job_applications");
+const jobPostsRouter = require("./src/routes/job_posts");
 
 const uploadRouter = require("./src/routes/upload");
 
@@ -84,6 +89,8 @@ app.use("/job_leads_timeline", JobLeadTimelineRouter);
 app.use("/employers_timeline", EmployerTimelineRouter);
 app.use("/clients_timeline", ClientTimelineRouter);
 app.use("/upload", uploadRouter);
+app.use("/job_applications", jobApplicationsRouter);
+app.use("/job_postings", jobPostsRouter);
 
 const beginScheduler =
   require("./src/middlewares/email/emailSender").beginScheduler;
