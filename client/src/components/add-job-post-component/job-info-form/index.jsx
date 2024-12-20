@@ -14,6 +14,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { JobLeadContainer, H3 } from "../index.styles";
 import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/constants";
 
@@ -21,6 +22,14 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
     setJobPostData({ ...jobPostData, [field]: input });
   };
+  const [compensationBoundary, setCompensationBoundary] = useState(
+    jobPostData.rate_of_pay_max,
+  );
+
+  const handleCompensationChange = (value) => {
+    setCompensationBoundary(value);
+  };
+
   return (
     <JobLeadContainer>
       <H3 style={{ paddingLeft: "2%" }}>Job Information</H3>
@@ -85,12 +94,14 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             type="number"
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Minimum Compensation"
-            inputProps={{ min: 0 }}
+            inputProps={{ min: 0, max: compensationBoundary }}
             value={jobPostData.rate_of_pay_min}
+            min={1000}
             onChange={(e) => {
               const { value } = e.target;
               if (/^\d*\.?\d*$/.test(value))
                 handleInputChange(value, "rate_of_pay_min");
+              handleCompensationChange(value);
             }}
             required
             InputLabelProps={{ required: false }}
@@ -105,7 +116,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           <OutlinedInput
             id="maxCompensationLabel"
             type="number"
-            inputProps={{ min: 0 }}
+            inputProps={{ min: compensationBoundary }}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Maximum Compensation"
             value={jobPostData.rate_of_pay_max}
@@ -113,6 +124,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
               const { value } = e.target;
               if (/^\d*\.?\d*$/.test(value))
                 handleInputChange(value, "rate_of_pay_max");
+              handleCompensationChange(value);
             }}
             required
             InputLabelProps={{ required: false }}
