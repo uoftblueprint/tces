@@ -15,5 +15,5 @@ export const COMPENSATION_RATES = [
   "Weekly",
   "Annually",
   "Commision",
-  "Base & Commission",
+  "Base and Commission",
 ];
