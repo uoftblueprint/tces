@@ -26,7 +26,7 @@ const getAllJobPostsRequestHandler = async (req, res) => {
     // Pagination Configs
     const searchConfig = {
       where: query,
-      attributes: ["id", "title", "employer", "close_date", "state"],
+      attributes: ["id", "title", "employer", "location", "job_type, "close_date", "state"],
     };
 
     // get pagination parameters:
