@@ -16,7 +16,10 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { JobLeadContainer, H3 } from "../index.styles";
-import { JOB_TYPES, COMPENSATION_RATES } from "../../../utils/constants";
+import {
+  JOB_TYPES_FOR_JOB_POSTS,
+  COMPENSATION_RATES_FOR_JOB_POSTS,
+} from "../../../utils/constants";
 
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
@@ -146,7 +149,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             required
             InputLabelProps={{ required: false }}
           >
-            {COMPENSATION_RATES.map((jobType) => (
+            {COMPENSATION_RATES_FOR_JOB_POSTS.map((jobType) => (
               <MenuItem key={jobType} value={jobType}>
                 {jobType}
               </MenuItem>
@@ -178,7 +181,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           <Autocomplete
             multiple
             id="tags-outlined"
-            options={JOB_TYPES}
+            options={JOB_TYPES_FOR_JOB_POSTS}
             getOptionLabel={(option) => option}
             defaultValue={jobPostData.job_type}
             filterSelectedOptions
