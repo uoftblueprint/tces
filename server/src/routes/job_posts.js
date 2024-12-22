@@ -4,7 +4,7 @@ const router = express.Router();
 
 const addJobPostRequestHandler = require("../controllers/job_posts/addJobPost");
 
-const updateJobPostRequestHandler = require("../controllers/employer/updateEmployer");
+const updateJobPostRequestHandler = require("../controllers/job_posts/updateJobPost");
 
 const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
@@ -101,7 +101,7 @@ router.post("/", isLoggedIn, addJobPostRequestHandler);
  *      note: any value you do not pass in will be left unchanged
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
-router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
+router.put("/:job_post_id", updateJobPostRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
