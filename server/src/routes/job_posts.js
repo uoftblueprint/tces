@@ -99,13 +99,13 @@ router.post("/", isLoggedIn, addJobPostRequestHandler);
  * Expected parameters:
  * @type string {params.job_post_id}
  * Expected body parameters:
- * @type JobPost {params.body.values}
- *    <-- each key in .values is a part of the Job Post you wish to update
- *      for instance, if you wanted to update the location you would pass in params.body.values.location = ...
+ * @type JobPost {params.body}
+ *    <--
+ *      for instance, if you wanted to update the location you would pass in params.body.location = ...
  *      note: any value you do not pass in will be left unchanged
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
-router.put("/:job_post_id", updateJobPostRequestHandler);
+router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
 
 /*
  * Get a specific job post's info, with id job_post_id
