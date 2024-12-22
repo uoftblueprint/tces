@@ -6,6 +6,10 @@ const addJobPostRequestHandler = require("../controllers/job_posts/addJobPost");
 
 const updateJobPostRequestHandler = require("../controllers/job_posts/updateJobPost");
 
+const getJobPostRequestHandler = require("../controllers/job_posts/getOneJobPost");
+
+const getAllJobPostsRequestHandler = require("../controllers/job_posts/getAllJobPosts");
+
 const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
@@ -102,6 +106,22 @@ router.post("/", isLoggedIn, addJobPostRequestHandler);
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
 router.put("/:job_post_id", updateJobPostRequestHandler);
+
+/*
+ * Get a specific job post's info, with id job_post_id
+ *
+ * Expected parameters:
+ * @type integer (in url) {params.job_post_id}
+ */
+router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
+
+/**
+ * Get all job posts info
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications

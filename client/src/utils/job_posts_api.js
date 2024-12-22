@@ -80,4 +80,36 @@ async function deleteJobPosting(jobPostingId) {
   }
 }
 
-module.exports = { createJobPost, modifyJobPost ,deleteJobPosting };
+const getAllJobPost = async (queryParams) => {
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      }
+  },
+  );
+  return response;
+};
+
+const getOneJobPost = async (jobPostId) => {
+
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/${jobPostId}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      }
+  },
+  );
+  return response;
+};
+
+module.exports = {createJobPost, deleteJobPosting, getAllJobPost, getOneJobPost};
