@@ -91,7 +91,6 @@ const updateJobPostsRequestHandler = async (req, res) => {
     try {
       await jobPost.save();
     } catch (err) {
-      console.error("Unexpected server error:", err);
       return res.status(500).json({
         status: "error",
         message: "An unexpected server error occurred.",
