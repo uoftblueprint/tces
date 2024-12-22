@@ -4,6 +4,8 @@ const router = express.Router();
 
 const addJobPostRequestHandler = require("../controllers/job_posts/addJobPost");
 
+const updateJobPostRequestHandler = require("../controllers/job_posts/updateJobPost");
+
 const getJobPostRequestHandler = require("../controllers/job_posts/getOneJobPost");
 
 const getAllJobPostsRequestHandler = require("../controllers/job_posts/getAllJobPosts");
@@ -92,6 +94,20 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 router.post("/", isLoggedIn, addJobPostRequestHandler);
 
 /**
+ * Update a specific job post's info, with id job_post_id
+ *
+ * Expected parameters:
+ * @type string {params.job_post_id}
+ * Expected body parameters:
+ * @type JobPost {params.body}
+ *    <--
+ *      for instance, if you wanted to update the location you would pass in params.body.location = ...
+ *      note: any value you do not pass in will be left unchanged
+ *      For updating status from Draft to Active, all other fields must be filled in.
+ */
+router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
+
+/*
  * Get a specific job post's info, with id job_post_id
  *
  * Expected parameters:

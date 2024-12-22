@@ -19,6 +19,22 @@ const createJobPost = async (jobPostData) => {
   return result;
 };
 
+const modifyJobPost = async (modifiedJobPost) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/${modifiedJobPost.job_post_id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(modifyJobPost),
+    },
+  );
+  return response;
+};
+
 async function deleteJobPosting(jobPostingId) {
   try {
     const response = await fetch(
@@ -48,7 +64,6 @@ async function deleteJobPosting(jobPostingId) {
 }
 
 const getAllJobPost = async (queryParams) => {
-
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_posts/${queryParams}`,
@@ -57,14 +72,13 @@ const getAllJobPost = async (queryParams) => {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-      }
-  },
+      },
+    },
   );
   return response;
 };
 
 const getOneJobPost = async (jobPostId) => {
-
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_posts/${jobPostId}`,
@@ -73,10 +87,16 @@ const getOneJobPost = async (jobPostId) => {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-      }
-  },
+      },
+    },
   );
   return response;
 };
 
-module.exports = {createJobPost, deleteJobPosting, getAllJobPost, getOneJobPost};
+module.exports = {
+  createJobPost,
+  deleteJobPosting,
+  modifyJobPost,
+  getAllJobPost,
+  getOneJobPost,
+};
