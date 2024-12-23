@@ -21,7 +21,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 import PropTypes from "prop-types";
 import * as React from "react";
-import { STATUS_TYPES } from "../../../utils/contants";
+import { STATUS_TYPES } from "../../../utils/constants";
 import ClientType from "../../../prop-types/ClientType";
 
 function FilterCard({

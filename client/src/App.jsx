@@ -32,6 +32,7 @@ import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
 import EditJobLead from "./pages/edit-job-lead";
+import AddJobPostPage from "./pages/add-job-post";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
@@ -349,6 +350,20 @@ function App() {
                   loginUser={loginUser}
                 >
                   <UserProfile currUser={currUser} />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/job-posts/add"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <AddJobPostPage
+                    currUser={currUser}
+                    setLocalExitRoute={setLocalExitRoute}
+                  />
                 </AuthGuard>
               }
             />
