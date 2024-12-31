@@ -12,7 +12,7 @@
 const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 
-const getAllJobPostsRequestHandler = async (req, res) => {
+const getAllActiveJobPostsRequestHandler = async (req, res) => {
   // check method is GET
   if (req.method !== "GET") {
     return res
@@ -78,4 +78,4 @@ const getAllJobPostsRequestHandler = async (req, res) => {
   }
 };
 
-module.exports = getAllJobPostsRequestHandler;
+module.exports = getAllActiveJobPostsRequestHandler;
