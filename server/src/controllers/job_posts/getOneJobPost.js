@@ -16,7 +16,7 @@ const getJobPostRequestHandler = async (req, res) => {
 
   try {
     // ------ Get Job Id
-    const {job_post_id} = req.params;
+    const { job_post_id } = req.params;
 
     // Return to include id, title, employer, application_close_date, state
     const requiredFields = [

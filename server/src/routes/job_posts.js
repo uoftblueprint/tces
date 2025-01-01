@@ -10,6 +10,8 @@ const getJobPostRequestHandler = require("../controllers/job_posts/getOneJobPost
 
 const getAllJobPostsRequestHandler = require("../controllers/job_posts/getAllJobPosts");
 
+const getAllActiveJobPostsRequestHandler = require("../controllers/job_posts/getAllActiveJobPosts");
+
 const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
@@ -122,6 +124,14 @@ router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
  * @type integer (in url) {params.pageSize}
  */
 router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
+
+/**
+ * Get all active/public job posts info
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/active", getAllActiveJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
