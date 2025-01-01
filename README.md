@@ -89,6 +89,7 @@ docker compose build
 - Olya Jaworsky
 - Jamie Yi
 - Alex Lewis
+- Houman Ebrahimi
 
 ## License
 
