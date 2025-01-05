@@ -1,8 +1,15 @@
-# TCES (TORONTO COMMUNITY EMPLOYMENT SERVICES)
+<p align="center">
+  <img src="client/public/img/tcesLogo.png" alt="drawing" width="200"/>
+</p>
 
+# TCES (Toronto Community Employment Services)
 Toronto Community Employment Services (TCES) is a non-profit charitable organization offering no cost employment services, such as skill assessments, resume building, career counseling, workshops and more!
 
-This app will serve as an internal-use CRM (customer relationship management) application.
+The application serves two primary purposes:
+
+**Public Job Board:** A centralized, public-facing platform where job seekers can browse and filter job postings by various criteria, such as location, job type, and date. This helps applicants find opportunities that match their needs and interests. The platform also enables TCES to efficiently create, update, and delete job postings.
+
+**Internal CRM:** A customer relationship management (CRM) platform designed for internal use. This system empowers TCES to manage client relationships more effectively, improving their ability to provide tailored services and support.
 
 Find out more about TCES by visiting the following page: https://toronto-jobs.org/about-us/.
 
