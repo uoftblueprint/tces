@@ -65,13 +65,13 @@ const getAllJobPostsRequestHandler = async (req, res) => {
       message: "All job posts found successfully",
       allJobPosts: {
         totalPosts: allJobPosts.count,
-        totalPages: Math.ceil(allJobPosts.count / searchConfig.limit),
+        totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
         currentPage: page,
         data: allJobPosts.rows,
       },
       publicJobPosts: {
         totalPosts: allActiveJobPosts.count,
-        totalPages: Math.ceil(allActiveJobPosts.count / searchConfig.limit),
+        totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
         currentPage: page,
         data: allActiveJobPosts.rows,
       },

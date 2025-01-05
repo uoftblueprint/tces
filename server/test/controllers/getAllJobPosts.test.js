@@ -100,4 +100,38 @@ describe("getAllJobPostsRequestHandler test suite", () => {
       },
     });
   });
+
+  it("Handles all mock objects without pagination parameters", async () => {
+    // Simulate a request without pagination parameters
+    mockReq.query = {};
+
+    await getAllJobPostsRequestHandler(mockReq, mockRes);
+
+    expect(mockRes.statusCode).toBe(200);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      status: "success",
+      message: "All job posts found successfully",
+      allJobPosts: {
+        totalPosts: 4, // Total posts in the database
+        totalPages: 1, // No pagination, so all items fit in a single page
+        currentPage: null, // No page provided
+        data: [
+          { id: 1, title: "Software Engineer", state: "Active" },
+          { id: 2, title: "Data Scientist", state: "Active" },
+          { id: 3, title: "Web Developer", state: "Active" },
+          { id: 4, title: "DevOps Engineer", state: "Draft" },
+        ],
+      },
+      publicJobPosts: {
+        totalPosts: 3, // Only 3 posts with state: "Active"
+        totalPages: 1, // No pagination for active posts
+        currentPage: null, // No page provided
+        data: [
+          { id: 1, title: "Software Engineer", state: "Active" },
+          { id: 2, title: "Data Scientist", state: "Active" },
+          { id: 3, title: "Web Developer", state: "Active" },
+        ],
+      },
+    });
+  });
 });
