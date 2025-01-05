@@ -131,7 +131,7 @@ router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
  * @type integer (in url) {params.page}
  * @type integer (in url) {params.pageSize}
  */
-router.get("/", getAllJobPostsRequestHandler);
+router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
