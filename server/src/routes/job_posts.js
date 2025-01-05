@@ -96,6 +96,14 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 router.post("/", isLoggedIn, addJobPostRequestHandler);
 
 /**
+ * Get all active/public job posts info
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/active", getAllActiveJobPostsRequestHandler);
+
+/**
  * Update a specific job post's info, with id job_post_id
  *
  * Expected parameters:
@@ -123,15 +131,7 @@ router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
  * @type integer (in url) {params.page}
  * @type integer (in url) {params.pageSize}
  */
-router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
-
-/**
- * Get all active/public job posts info
- * Expected parameters:
- * @type integer (in url) {params.page}
- * @type integer (in url) {params.pageSize}
- */
-router.get("/active", getAllActiveJobPostsRequestHandler);
+router.get("/", getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
