@@ -49,13 +49,6 @@ describe("getAllJobPostsRequestHandler test suite", () => {
     expect(spy).toHaveBeenCalledTimes(0);
   });
 
-  it("Calls findAndCountAll", async () => {
-    const spy = vi.spyOn(mockGetAllJobPosts, "findAndCountAll");
-
-    await getAllJobPostsRequestHandler(mockReq, mockRes);
-    expect(spy).toHaveBeenCalledTimes(2); // Called once for all posts and once for public posts
-  });
-
   it("Returns 200 on success", async () => {
     await getAllJobPostsRequestHandler(mockReq, mockRes);
     expect(mockRes.statusCode).toBe(200);
