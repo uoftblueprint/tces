@@ -1,9 +1,9 @@
 .dotted fieldset {
-    border: 1px grey dotted;
+  border: 1px grey dotted;
 }
 
 .underline {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    text-decoration-color: #D8D8D8;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: #d8d8d8;
 }
