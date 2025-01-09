@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
 import { Box, Typography, LinearProgress, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { makeStyles } from "@mui/styles";
 
 // Define custom styles
@@ -21,8 +24,6 @@ const useStyles = makeStyles({
 });
 
 export default function FileUploadButton() {
-  // ! Later on, implement prop drilling once the main page is complete.
-
   const classes = useStyles();
   const [file, setFile] = useState(null); // State for the uploaded file
   const [uploadProgress, setUploadProgress] = useState(0); // Track upload progress
@@ -31,10 +32,7 @@ export default function FileUploadButton() {
 
   // Handle file selection
   const handleFileChange = (selectedFiles) => {
-    console.log("Files selected from DropzoneArea:", selectedFiles);
-
     if (!selectedFiles || selectedFiles.length === 0) {
-      console.error("No files selected.");
       return;
     }
 
@@ -42,20 +40,17 @@ export default function FileUploadButton() {
     const selectedFile = selectedFiles[0]; // Only take the first file
 
     if (selectedFile.size > maxSize) {
-      console.error("File too large:", selectedFile.name);
       setFileError(
         `The file "${selectedFile.name}" is too large. Maximum size is 5 MB.`,
       );
-      setFile(null); // Clear the file from state
+      setFile(selectedFile); // Keep the file for displaying error
       setUploadProgress(0);
       return;
     }
 
     setFileError(""); // Clear any existing error message
     setFile(selectedFile); // Store the single file
-
-    // Initialize upload progress for the new file
-    setUploadProgress(0);
+    setUploadProgress(0); // Reset upload progress
 
     // Simulate upload progress
     const interval = setInterval(() => {
@@ -69,17 +64,19 @@ export default function FileUploadButton() {
     }, 500);
   };
 
+  // Format file size
+  const formatFileSize = (size) => {
+    if (size < 1024) return `${size} B`;
+    if (size < 1048576) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / 1048576).toFixed(1)} MB`;
+  };
+
   // Remove the file
   const handleRemoveFile = () => {
-    console.log("Removing file:", file?.name);
-
-    // Clear the file and its progress
     setFile(null);
     setUploadProgress(0);
-    setFileError(""); // Clear any error message
-
-    // Reset DropzoneArea to clear its internal state
-    setDropzoneKey((prevKey) => prevKey + 1);
+    setFileError("");
+    setDropzoneKey((prevKey) => prevKey + 1); // Reset DropzoneArea
   };
 
   return (
@@ -99,13 +96,7 @@ export default function FileUploadButton() {
       <DropzoneArea
         key={dropzoneKey} // Add key to force re-render
         acceptedFiles={["application/pdf"]}
-        onChange={(selectedFiles) => {
-          console.log(
-            "DropzoneArea triggered onChange with files:",
-            selectedFiles,
-          );
-          handleFileChange(selectedFiles); // Pass files to handler
-        }}
+        onChange={handleFileChange}
         dropzoneText={
           <div style={{ marginBottom: 0 }}>
             <div
@@ -123,7 +114,7 @@ export default function FileUploadButton() {
               <img
                 src="upload-icon.png"
                 alt="upload icon"
-                style={{ width: 24, height: 24 }}
+                style={{ width: 48, height: 48 }}
               />
             </div>
             <span style={{ fontSize: "16px", fontWeight: 600 }}>
@@ -161,13 +152,6 @@ export default function FileUploadButton() {
         showAlerts={false}
       />
 
-      {/* Error Message */}
-      {fileError && (
-        <Typography variant="body2" color="red" sx={{ mt: 2 }}>
-          {fileError}
-        </Typography>
-      )}
-
       {/* Uploaded File */}
       {file && (
         <Box
@@ -175,23 +159,46 @@ export default function FileUploadButton() {
             display: "flex",
             alignItems: "center",
             mt: 2,
-            borderBottom: "1px solid #ccc",
-            pb: 1,
+            p: 1,
+            border: "1px solid #e0e0e0",
+            borderRadius: 1,
+            backgroundColor: fileError ? "#ffebee" : "#f5f5f5",
           }}
         >
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="body1">{file.name}</Typography>
-            <LinearProgress
-              variant="determinate"
-              value={uploadProgress || 0}
-              sx={{ mt: 1 }}
-            />
-            {uploadProgress === 100 && (
-              <Typography variant="body2" color="green" sx={{ mt: 1 }}>
-                Upload complete
-              </Typography>
+          {/* File Icon */}
+          <Box sx={{ mr: 2 }}>
+            {fileError ? (
+              <ErrorIcon color="error" />
+            ) : uploadProgress === 100 ? (
+              <CheckCircleIcon color="success" />
+            ) : (
+              <FileUploadIcon color="primary" />
             )}
           </Box>
+
+          {/* File Details */}
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+              {file.name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              {formatFileSize(file.size)} •{" "}
+              {fileError
+                ? "Failed"
+                : uploadProgress === 100
+                ? "Complete"
+                : "Uploading..."}
+            </Typography>
+            {!fileError && (
+              <LinearProgress
+                variant="determinate"
+                value={uploadProgress || 0}
+                sx={{ mt: 1 }}
+              />
+            )}
+          </Box>
+
+          {/* Delete Button */}
           <IconButton onClick={handleRemoveFile}>
             <DeleteIcon />
           </IconButton>
