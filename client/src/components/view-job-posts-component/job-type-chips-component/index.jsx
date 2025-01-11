@@ -10,6 +10,11 @@ const chipColors = {
   Seasonal: { border: "#00838F", bg: "#E0F7FA", text: "#000" }, // Teal
   "Part-time": { border: "#EC407A", bg: "#FCE4EC", text: "#000" }, // Pink
   Internship: { border: "#3F51B5", bg: "#E8EAF6", text: "#000" }, // Indigo
+  Inactive: { border: "#9E9E9E", bg: "#D3D3D3", text: "#000" }, // Gre
+  Draft: { border: "#1976D2", bg: "#E3F2FD", text: "#0D47A1" }, // Blue
+  Active: { border: "#388E3C", bg: "#E8F5E9", text: "#1B5E20" } // Green
+
+
 };
 
 function JobTypeChipsComponent({ jobTypes }) {
