@@ -17,7 +17,8 @@ import AddJobDetails from "./job-info-form";
 import AddApplicationFields from "./application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
-import createJobPost from "./mockResponse";
+import { createJobPost } from "../../utils/job_posts_api";
+// import createJobPost from "./mockResponse";
 import PostingResultDialog from "./posting-result-dialog";
 
 function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
@@ -33,7 +34,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_DRAFT = {
     isSuccess: true,
     message: "Your job posting was saved",
-    handleClose: () => navigate("/dashboard"),
+    handleClose: () => navigate("/job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_DRAFT = {
@@ -45,7 +46,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_PUBLISH = {
     isSuccess: true,
     message: "Your job posting was published",
-    handleClose: () => navigate("/dashboard"),
+    handleClose: () => navigate("/job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_PUBLISH = {
@@ -82,21 +83,25 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
     setIsLoading(true);
     try {
       const response = await createJobPost(
-        updatedJobPost,
+        updatedJobPost.jobInfo,
         currUser.userID,
         currUser.userID,
       );
-
-      if (response.ok) {
+      console.log(response)
+      if (response.status === "success") {
+        console.log(1)
         setResultModalValues(
           postState === DRAFT ? SUCCESS_DRAFT : SUCCESS_PUBLISH,
         );
       } else {
+        console.log(2)
         setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
       }
     } catch (error) {
+      console.log(3)
       setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
     } finally {
+      console.log(4)
       setResultOpen(true);
       setIsLoading(false);
     }
