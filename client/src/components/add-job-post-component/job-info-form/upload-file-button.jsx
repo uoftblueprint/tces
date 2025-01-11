@@ -40,9 +40,7 @@ export default function FileUploadButton() {
     const selectedFile = selectedFiles[0]; // Only take the first file
 
     if (selectedFile.size > maxSize) {
-      setFileError(
-        `The file "${selectedFile.name}" is too large. Maximum size is 5 MB.`,
-      );
+      setFileError(`upload failed: file too big`);
       setFile(selectedFile); // Keep the file for displaying error
       setUploadProgress(0);
       return;
@@ -142,7 +140,7 @@ export default function FileUploadButton() {
           </div>
         }
         filesLimit={1} // Allow only one file
-        maxFileSize={5000000} // 5 MB
+        maxFileSize={null} // No size limit temporarily
         showPreviews={false} // Remove default previews
         showPreviewsInDropzone={false} // Disable previews in dropzone
         classes={{
@@ -183,11 +181,8 @@ export default function FileUploadButton() {
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {formatFileSize(file.size)} •{" "}
-              {fileError
-                ? "Failed"
-                : uploadProgress === 100
-                ? "Complete"
-                : "Uploading..."}
+              {fileError ||
+                (uploadProgress === 100 ? "Complete" : "Uploading...")}
             </Typography>
             {!fileError && (
               <LinearProgress
