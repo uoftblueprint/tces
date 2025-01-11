@@ -56,10 +56,34 @@ export default function FileUploadButton() {
         const progress = prev + 10;
         if (progress >= 100) {
           clearInterval(interval); // Clear interval when progress reaches 100%
+          uploadFile(selectedFile); // Call the upload function once progress completes
         }
         return Math.min(progress, 100);
       });
     }, 500);
+  };
+
+  // Upload file to server
+  const uploadFile = async (fileToUpload) => {
+    const formData = new FormData();
+    formData.append("file", fileToUpload);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("File uploaded successfully");
+      } else {
+        console.error("File upload failed", response.statusText);
+        setFileError("upload failed: server error");
+      }
+    } catch (error) {
+      console.error("Error uploading file", error);
+      setFileError("upload failed: network error");
+    }
   };
 
   // Format file size
