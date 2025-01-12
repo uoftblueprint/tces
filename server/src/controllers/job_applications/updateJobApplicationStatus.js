@@ -18,14 +18,14 @@ const updateJobApplicationStatusRequestHandler = async (req, res) => {
 
     // Verify the new state is within the set of acceptable states
     if (!validStatuses.includes(newApplicationStatus)) {
-      return res.status(404).json({ error: "Invalid job status" });
+      return res.status(400).json({ error: "Invalid job status" });
     }
 
     const jobApplication = await JobApplications.findByPk(jobApplicationId);
 
     // Verify that the job application exists
     if (jobApplication === null) {
-      return res.status(404).json({ error: "Job application not found" });
+      return res.status(400).json({ error: "Job application not found" });
     }
 
     // Modify status and save changes

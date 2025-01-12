@@ -76,8 +76,31 @@ const uploadJobApplication = async (file) => {
   return response;
 };
 
+const updateJobApplicationStatus = async (
+  jobApplicationId,
+  newApplicationStatus,
+) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_applications`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        jobApplicationId,
+        newApplicationStatus,
+      },
+    },
+  );
+
+  return response;
+};
+
 export {
   fetchAllJobApplications,
   fetchJobApplicationsByApplicantName,
   uploadJobApplication,
+  updateJobApplicationStatus,
 };
