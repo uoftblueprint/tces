@@ -81,7 +81,7 @@ const updateJobApplicationStatus = async (
   newApplicationStatus,
 ) => {
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_applications`,
+    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
     {
       method: "PUT",
       credentials: "include",
@@ -89,8 +89,7 @@ const updateJobApplicationStatus = async (
         "Content-Type": "application/json",
       },
       body: {
-        jobApplicationId,
-        newApplicationStatus,
+        new_application_status: newApplicationStatus,
       },
     },
   );

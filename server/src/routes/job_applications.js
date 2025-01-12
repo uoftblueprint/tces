@@ -24,7 +24,7 @@ router.post("/", upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
 
-router.put("/", async (req, res) => {
+router.put("/:job_application_id", async (req, res) => {
   return updateJobApplicationStatusRequestHandler(req, res);
 });
 

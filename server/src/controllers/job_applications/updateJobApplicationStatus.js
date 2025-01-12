@@ -3,10 +3,9 @@ const JobApplications = require("../../models/job_applications.model");
 const updateJobApplicationStatusRequestHandler = async (req, res) => {
   try {
     // Check if job application id and new job application status exist on the request
-    const jobApplicationId = req.body.job_application_id;
+    const jobApplicationId = req.params.job_application_id;
     const newApplicationStatus = req.body.new_application_status;
 
-    // Look into pulling this out into constants.js
     const validStatuses = [
       "Contacted",
       "Rejected",
