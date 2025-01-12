@@ -24,7 +24,7 @@ const updateJobApplicationStatusRequestHandler = async (req, res) => {
 
     // Verify that the job application exists
     if (jobApplication === null) {
-      return res.status(400).json({ error: "Job application not found" });
+      return res.status(404).json({ error: "Job application not found" });
     }
 
     // Modify status and save changes
