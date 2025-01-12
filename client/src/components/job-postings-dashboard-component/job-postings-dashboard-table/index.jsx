@@ -68,9 +68,7 @@ const initialRows = [
   },
 ];
 
-
-
-export default function JosPostingsDashBoardTableComponent() {
+export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState({});
@@ -140,18 +138,28 @@ export default function JosPostingsDashBoardTableComponent() {
         />
       ),
     },
-    { field: "name", headerName: "Title", width: 400, editable: true },
+    {
+      field: "name",
+      headerName: "Title",
+      width: 400,
+      editable: true,
+      cellClassName: "wrap-text",
+      headerClassName: "header-class",
+    },
     {
       field: "age",
       headerName: "Employer",
       type: "string",
       width: 400,
+      cellClassName: "wrap-text",
+      headerClassName: "header-class",
     },
     {
       field: "joinDate",
-      headerName: "Closed Date",
+      headerName: "Close Date",
       type: "date",
       width: 400,
+      headerClassName: "header-class",
     },
     {
       field: "status",
@@ -161,6 +169,7 @@ export default function JosPostingsDashBoardTableComponent() {
       renderCell: (params) => (
         <JobTypeChipsComponent jobTypes={[params.value]} />
       ),
+      headerClassName: "header-class",
     },
     {
       field: "actions",
@@ -168,6 +177,7 @@ export default function JosPostingsDashBoardTableComponent() {
       width: 20,
       marginLeft: "20px",
       cellClassName: "actions",
+      headerClassName: "header-class",
       getActions: ({ id }) => {
         if (selectedRows.includes(id)) {
           return [
@@ -200,8 +210,12 @@ export default function JosPostingsDashBoardTableComponent() {
         "& .actions": {
           color: "text.secondary",
         },
-        "& .textPrimary": {
-          color: "text.primary",
+        "& .wrap-text": {
+          whiteSpace: "normal !important",
+          wordWrap: "break-word !important",
+        },
+        "& .header-class": {
+          fontWeight: "bold",
         },
       }}
     >
@@ -210,7 +224,6 @@ export default function JosPostingsDashBoardTableComponent() {
           display: "flex",
           justifyContent: "flex-end",
           marginBottom: "10px",
-          
         }}
       >
         <Button
@@ -234,7 +247,6 @@ export default function JosPostingsDashBoardTableComponent() {
         </Button>
       </Box>
       <DataGrid
-      
         rows={rows}
         columns={columns}
         editMode="row"
