@@ -174,7 +174,7 @@ export default function JobPostingsDashboardTableComponent() {
     {
       field: "actions",
       type: "actions",
-      width: 20,
+      width: 80,
       marginLeft: "20px",
       cellClassName: "actions",
       headerClassName: "header-class",
