@@ -12,7 +12,7 @@
 const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 
-const getAllJobPostsRequestHandler = async (req, res) => {
+const getAllActiveJobPostsRequestHandler = async (req, res) => {
   // check method is GET
   if (req.method !== "GET") {
     return res
@@ -48,18 +48,25 @@ const getAllJobPostsRequestHandler = async (req, res) => {
       searchConfig.offset = page * pageSize;
     }
 
-    // a) Get all Job Posts
-    const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
+    // a) Get all Public Job Posts
+    query.state = "Active";
+    const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
+
+    // // c)
+    // query.job_type = req?.query?.job_type
+    // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
 
     // -------- Response:
     const response = {
       status: "success",
-      message: "All job posts found successfully",
-      allJobPosts: {
-        totalPosts: allJobPosts.count,
-        totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
+      message: "All active job posts found successfully",
+      publicJobPosts: {
+        totalPosts: allActiveJobPosts.count,
+        totalPages: pageSize
+          ? Math.ceil(allActiveJobPosts.count / pageSize)
+          : 1,
         currentPage: page,
-        data: allJobPosts.rows,
+        data: allActiveJobPosts.rows,
       },
     };
 
@@ -73,4 +80,4 @@ const getAllJobPostsRequestHandler = async (req, res) => {
   }
 };
 
-module.exports = getAllJobPostsRequestHandler;
+module.exports = getAllActiveJobPostsRequestHandler;
