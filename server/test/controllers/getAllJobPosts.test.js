@@ -85,12 +85,6 @@ describe("getAllJobPostsRequestHandler test suite", () => {
           { id: 4, title: "DevOps Engineer", state: "Draft" },
         ],
       },
-      publicJobPosts: {
-        totalPosts: 3, // Only 3 posts with state: "Active"
-        totalPages: 2,
-        currentPage: 1, // Page 1 for active posts
-        data: [{ id: 3, title: "Web Developer", state: "Active" }],
-      },
     });
   });
 
@@ -113,16 +107,6 @@ describe("getAllJobPostsRequestHandler test suite", () => {
           { id: 2, title: "Data Scientist", state: "Active" },
           { id: 3, title: "Web Developer", state: "Active" },
           { id: 4, title: "DevOps Engineer", state: "Draft" },
-        ],
-      },
-      publicJobPosts: {
-        totalPosts: 3, // Only 3 posts with state: "Active"
-        totalPages: 1, // No pagination for active posts
-        currentPage: null, // No page provided
-        data: [
-          { id: 1, title: "Software Engineer", state: "Active" },
-          { id: 2, title: "Data Scientist", state: "Active" },
-          { id: 3, title: "Web Developer", state: "Active" },
         ],
       },
     });
