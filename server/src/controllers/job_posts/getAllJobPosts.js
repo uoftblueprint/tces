@@ -51,14 +51,6 @@ const getAllJobPostsRequestHandler = async (req, res) => {
     // a) Get all Job Posts
     const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-    // b) Get all Public Job Posts
-    query.state = "Active";
-    const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
-
-    // // c)
-    // query.job_type = req?.query?.job_type
-    // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
-
     // -------- Response:
     const response = {
       status: "success",
@@ -68,12 +60,6 @@ const getAllJobPostsRequestHandler = async (req, res) => {
         totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
         currentPage: page,
         data: allJobPosts.rows,
-      },
-      publicJobPosts: {
-        totalPosts: allActiveJobPosts.count,
-        totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
-        currentPage: page,
-        data: allActiveJobPosts.rows,
       },
     };
 
