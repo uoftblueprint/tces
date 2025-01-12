@@ -24,6 +24,13 @@ router.post("/", upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
 
+/**
+ * Modifies a job application's status
+ * Example Request Body:
+ * {
+ *   "new_application_status": "Approved"
+ * }
+ */
 router.put("/:job_application_id", async (req, res) => {
   return updateJobApplicationStatusRequestHandler(req, res);
 });

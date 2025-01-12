@@ -17,7 +17,7 @@ const updateJobApplicationStatusRequestHandler = async (req, res) => {
 
     // Verify the new state is within the set of acceptable states
     if (!validStatuses.includes(newApplicationStatus)) {
-      return res.status(400).json({ error: "Invalid job status" });
+      return res.status(400).json({ error: "Invalid new job status" });
     }
 
     const jobApplication = await JobApplications.findByPk(jobApplicationId);
