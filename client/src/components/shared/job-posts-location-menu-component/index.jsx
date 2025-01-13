@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Menu, MenuItem, Radio, ListItemIcon, ListItemText } from "@mui/material";
+import PropTypes from "prop-types";
 
-function LocationMenu() {
+function LocationMenu({ locations }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedValue, setSelectedValue] = useState("ascending");
   const open = Boolean(anchorEl);
@@ -44,42 +45,17 @@ return (
                 "aria-labelledby": "sort-button",
             }}
         >
-            <MenuItem onClick={(event) => handleSelect(event, "all")}>
-                <ListItemIcon>
+            {locations.map((location) => (
+                <MenuItem key={location.value} onClick={(event) => handleSelect(event, location.value)}>
+                    <ListItemIcon>
                     <Radio
-                        checked={selectedValue === "all"}
-                        value="all"
+                        checked={selectedValue === location.value}
+                        value={location.value}
                     />
-                </ListItemIcon>
-                <ListItemText primary="All job locations" />
-            </MenuItem>
-            <MenuItem onClick={(event) => handleSelect(event, "gta")}>
-                <ListItemIcon>
-                    <Radio
-                        checked={selectedValue === "gta"}
-                        value="gta"
-                    />
-                </ListItemIcon>
-                <ListItemText primary="Greater Toronto Area" />
-            </MenuItem>
-            <MenuItem onClick={(event) => handleSelect(event, "spadina-adelaide")}>
-                <ListItemIcon>
-                    <Radio
-                        checked={selectedValue === "spadina-adelaide"}
-                        value="spadina-adelaide"
-                    />
-                </ListItemIcon>
-                <ListItemText primary="Spadina & Adelaide" />
-            </MenuItem>
-            <MenuItem onClick={(event) => handleSelect(event, "spadina-lakeshore")}>
-                <ListItemIcon>
-                    <Radio
-                        checked={selectedValue === "spadina-lakeshore"}
-                        value="spadina-lakeshore"
-                    />
-                </ListItemIcon>
-                <ListItemText primary="Spadina & Lakeshore" />
-            </MenuItem>
+                    </ListItemIcon>
+                    <ListItemText primary={location.label} />
+                </MenuItem>
+            ))}
             <MenuItem style={{ justifyContent: "right"}}>
                 <Button onClick={handleApply} variant="contained" color="primary" style={{ width: "auto", borderRadius: "12px"}}>
                     Apply
@@ -89,5 +65,12 @@ return (
     </div>
 );
 }
+
+LocationMenu.propTypes = {
+    locations: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+    })).isRequired,
+};
 
 export default LocationMenu;
