@@ -7,17 +7,17 @@ let getAllJobPostsRequestHandler;
 
 beforeEach(() => {
   // Mock the JobPosting model
-  mock("../../src/models/job_posts.model", mockGetAllJobPosts);
+  mock("../../../src/models/job_posts.model", mockGetAllJobPosts);
 
   // Re-require the handler to apply the mock
   getAllJobPostsRequestHandler = mock.reRequire(
-    "../../src/controllers/job_posts/getAllJobPosts",
+    "../../../src/controllers/job_posts/getAllJobPosts",
   );
 });
 
 afterEach(() => {
   // Reset mocks after every test
-  mock.stop("../../src/models/job_posts.model");
+  mock.stop("../../../src/models/job_posts.model");
 });
 
 describe("getAllJobPostsRequestHandler test suite", () => {
