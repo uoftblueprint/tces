@@ -1,4 +1,5 @@
 module.exports = {
+  // Mock JobPosting model methods
   findByPk: async (id) => {
     if (id === 123) {
       return {
@@ -16,5 +17,21 @@ module.exports = {
 
     // Simulate successful deletion if ID is valid
     return 1; // Number of records deleted
+  },
+
+  // Mock JobApplication model methods
+  mockJobApplications: {
+    findAll: async (criteria) => {
+      if (criteria.where.job_posting_id === 123) {
+        return [{ resume: "resume1.pdf" }, { resume: "resume2.pdf" }];
+      }
+      return [];
+    },
+    destroy: async (criteria) => {
+      if (criteria.where.job_posting_id === 123) {
+        return 2; // Simulate 2 records deleted
+      }
+      return 0; // No records deleted
+    },
   },
 };
