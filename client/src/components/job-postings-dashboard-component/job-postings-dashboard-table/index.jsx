@@ -206,7 +206,7 @@ export default function JobPostingsDashboardTableComponent() {
         marginRight: "30px",
         marginLeft: "auto",
         marginBottom: "20px",
-        width: "92%",
+        width: "94%",
         "& .actions": {
           color: "text.secondary",
         },
