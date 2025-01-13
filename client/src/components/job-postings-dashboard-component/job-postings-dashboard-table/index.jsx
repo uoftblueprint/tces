@@ -201,7 +201,6 @@ export default function JobPostingsDashboardTableComponent() {
   return (
     <Box
       sx={{
-        height: 400,
         padding: "20px",
         marginRight: "30px",
         marginLeft: "auto",
@@ -255,9 +254,16 @@ export default function JobPostingsDashboardTableComponent() {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
-        autoHeight // Adjust height based on content
+        autoHeight // Dynamically adjusts height based on the number of rows
+        disableColumnMenu
         slotProps={{
           toolbar: { setRows, setRowModesModel },
+        }}
+        sx={{
+          // Prevent vertical scroll by hiding overflow
+          "& .MuiDataGrid-virtualScroller": {
+            overflowY: "hidden !important", // Explicitly disable vertical scrolling
+          },
         }}
       />
       <Dialog open={open} onClose={handleCloseDialog}>
