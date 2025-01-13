@@ -127,7 +127,7 @@ export default function JobPostingsDashboardTableComponent() {
 
   const columns = [
     {
-      width: 20,
+      width: 60,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
@@ -141,7 +141,7 @@ export default function JobPostingsDashboardTableComponent() {
     {
       field: "name",
       headerName: "Title",
-      width: 400,
+      flex: 1, // Use flex for responsive column resizing
       editable: true,
       cellClassName: "wrap-text",
       headerClassName: "header-class",
@@ -150,7 +150,7 @@ export default function JobPostingsDashboardTableComponent() {
       field: "age",
       headerName: "Employer",
       type: "string",
-      width: 400,
+      flex: 1, // Use flex here too
       cellClassName: "wrap-text",
       headerClassName: "header-class",
     },
@@ -158,13 +158,13 @@ export default function JobPostingsDashboardTableComponent() {
       field: "joinDate",
       headerName: "Close Date",
       type: "date",
-      width: 400,
+      width: 200, // Fixed width for date
       headerClassName: "header-class",
     },
     {
       field: "status",
       headerName: "Status",
-      width: 400,
+      width: 200, // Fixed width for status column
       type: "singleSelect",
       renderCell: (params) => (
         <JobTypeChipsComponent jobTypes={[params.value]} />
@@ -174,7 +174,7 @@ export default function JobPostingsDashboardTableComponent() {
     {
       field: "actions",
       type: "actions",
-      width: 80,
+      width: 120, // Adjusted width for actions
       marginLeft: "20px",
       cellClassName: "actions",
       headerClassName: "header-class",
@@ -206,7 +206,8 @@ export default function JobPostingsDashboardTableComponent() {
         marginRight: "30px",
         marginLeft: "auto",
         marginBottom: "20px",
-        width: "94%",
+        overflowX: "hidden", // Prevent horizontal scrolling
+        width: "100%", // Ensure container takes full width
         "& .actions": {
           color: "text.secondary",
         },
@@ -254,6 +255,7 @@ export default function JobPostingsDashboardTableComponent() {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
+        autoHeight // Adjust height based on content
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
