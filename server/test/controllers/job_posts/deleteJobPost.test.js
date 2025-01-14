@@ -2,16 +2,27 @@ import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
 const mock = require("mock-require");
 const mockJobApplications = {
-  findAll: async () => [{ resume: "resume1.pdf" }, { resume: "resume2.pdf" }],
-  destroy: async () => 1, // Simulate successful deletion of job applications
+  findAll: vi.fn(async () => [
+    { resume: "resume1.pdf" },
+    { resume: "resume2.pdf" },
+  ]),
+  destroy: vi.fn(async () => 1), // Simulate successful deletion of job applications
 };
+
 const mockDeleteJobPosts = require("../../mocks/mockDeleteJobPosts");
+const mockDeleteFileFromS3 = vi.fn(async (fileKey) => {
+  if (!fileKey) {
+    throw new Error("Invalid file key");
+  }
+  return `Deleted ${fileKey}`;
+});
 
 let deleteJobPostHandler;
 
 beforeEach(() => {
   mock("../../../src/models/job_posts.model", mockDeleteJobPosts);
   mock("../../../src/models/job_applications.model", mockJobApplications);
+  mock("../../../src/utils/s3", { deleteFileFromS3: mockDeleteFileFromS3 });
 
   // Re-require the handler to apply the mock
   deleteJobPostHandler = mock.reRequire(
@@ -23,6 +34,8 @@ afterEach(() => {
   // Reset mocks after every test
   mock.stop("../../../src/models/job_posts.model");
   mock.stop("../../../src/models/job_applications.model");
+  mock.stop("../../../src/utils/s3");
+  vi.clearAllMocks();
 });
 
 describe("deleteJobPostHandler test suite", () => {
@@ -43,13 +56,27 @@ describe("deleteJobPostHandler test suite", () => {
   });
 
   describe("Delete Job Post", () => {
-    it("Deletes job post and associated applications successfully", async () => {
+    it("Deletes job post, associated applications, and S3 files successfully", async () => {
       const mockReq = {
         params: { job_posting_id: 123 },
       };
 
       await deleteJobPostHandler(mockReq, mockRes);
 
+      // Verify associated applications were deleted
+      expect(mockJobApplications.findAll).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { job_posting_id: 123 } }),
+      );
+      expect(mockJobApplications.destroy).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { job_posting_id: 123 } }),
+      );
+
+      // Verify associated S3 files were deleted
+      expect(mockDeleteFileFromS3).toHaveBeenCalledTimes(2);
+      expect(mockDeleteFileFromS3).toHaveBeenCalledWith("resume1.pdf");
+      expect(mockDeleteFileFromS3).toHaveBeenCalledWith("resume2.pdf");
+
+      // Verify job post was deleted
       expect(mockRes.statusCode).toBe(200);
       expect(mockRes.json).toHaveBeenCalledWith({
         status: "success",
@@ -59,7 +86,7 @@ describe("deleteJobPostHandler test suite", () => {
       });
     });
 
-    it("Returns 400 if the job post does not exist", async () => {
+    it("Returns 404 if the job post does not exist", async () => {
       const mockReq = {
         params: { job_posting_id: 999 },
       };
