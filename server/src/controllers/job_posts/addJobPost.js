@@ -16,7 +16,7 @@ const addJobPostRequestHandler = async (req, res) => {
       close_date: closeDate,
       job_description: jobDescription,
       custom_questions: customQuestions,
-      state = "Draft",
+      state: state,
       // The creator field is excluded because the backend can retrieve the current user's ID from req.user.id.
     } = req.body;
 

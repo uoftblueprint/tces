@@ -89,19 +89,15 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
       );
       console.log(response)
       if (response.status === "success") {
-        console.log(1)
         setResultModalValues(
           postState === DRAFT ? SUCCESS_DRAFT : SUCCESS_PUBLISH,
         );
       } else {
-        console.log(2)
         setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
       }
     } catch (error) {
-      console.log(3)
       setResultModalValues(postState === DRAFT ? ERROR_DRAFT : ERROR_PUBLISH);
     } finally {
-      console.log(4)
       setResultOpen(true);
       setIsLoading(false);
     }
