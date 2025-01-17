@@ -20,6 +20,33 @@ module.exports = {
       },
     };
   },
+  findAll: async (searchConfig) => {
+    const mockData = [
+      {
+        id: 1,
+        job_posting_id: 123,
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone: "1234567890",
+        postal_code: "A1A 1A1",
+        resume: "resume.pdf",
+        status_in_canada: "Citizen",
+        application_status: "New",
+        custom_responses: {},
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+
+    if (searchConfig && searchConfig.where) {
+      return mockData.filter((item) =>
+        Object.entries(searchConfig.where).every(
+          ([key, value]) => item[key] === value,
+        ),
+      );
+    }
+    return mockData;
+  },
   uploadFileToS3: async (file, fileName) => {
     if (!file || !file.buffer || !file.mimetype || !fileName) {
       throw new Error("Invalid file or file name");

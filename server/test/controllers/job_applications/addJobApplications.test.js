@@ -5,6 +5,9 @@ const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
 const mockS3 = require("../../mocks/mockS3");
 
+import path from "path";
+import fs from "fs";
+
 let addJobApplicationRequestHandler;
 
 beforeEach(() => {
@@ -231,7 +234,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   describe("Successful Behavior", () => {
-    it("Returns 201 if the application is successfully created", async () => {
+    it("Returns 201 if the application is successfully created and generates a mock file", async () => {
       const mockReq = {
         body: {
           job_posting_id: 123,
@@ -246,6 +249,28 @@ describe("addJobApplicationRequestHandler test suite", () => {
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
 
+      // Define the mock directory and file path relative to the controller folder
+      // "../../../src/controllers/job_applications/addJobApplication",
+
+      const uploadsDir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "controllers",
+        "uploads",
+      );
+      const mockFilePath = path.join(uploadsDir, "mock-file.pdf");
+
+      // Ensure the uploads directory exists
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      // Create a mock file
+      fs.writeFileSync(mockFilePath, "Mock file content");
+
+      // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
       expect(mockRes.statusCode).toBe(201);
@@ -254,6 +279,12 @@ describe("addJobApplicationRequestHandler test suite", () => {
           message: "Job application created successfully.",
         }),
       );
+
+      // Check that the file was created
+      expect(fs.existsSync(mockFilePath)).toBe(true);
+
+      // Clean up: Remove the mock file after the test
+      fs.unlinkSync(mockFilePath);
     });
   });
 });
