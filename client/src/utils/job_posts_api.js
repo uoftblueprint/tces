@@ -108,6 +108,51 @@ const getOneJobPost = async (jobPostId) => {
   return response;
 };
 
+const getAllLocations = async () => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/locations`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response;
+};
+
+const getFilteredJobPosts = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/filter?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const getSortedJobPosts = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_posts/sort?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 module.exports = {
   createJobPost,
   deleteJobPost,
@@ -115,4 +160,7 @@ module.exports = {
   getAllJobPosts,
   getAllActiveJobPosts,
   getOneJobPost,
+  getAllLocations,
+  getFilteredJobPosts,
+  getSortedJobPosts,
 };

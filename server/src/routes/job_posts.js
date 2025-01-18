@@ -16,6 +16,12 @@ const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
+const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
+
+const getAllJobPostsSpecificLocationOrTypeRequestHandler = require("../controllers/job_posts/getAllJobPostsSpecificLocationOrType");
+
+const getAllJobPostsSortedByDateRequestHandler = require("../controllers/job_posts/getAllJobPostsSortedByDate");
+
 /**
  * Add a New Job Posting
  *
@@ -161,5 +167,25 @@ router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
  * - isLoggedIn: Ensures that the user is authenticated before allowing the deletion operation.
  */
 router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
+
+/**
+ * Get all possible locations across all jobs
+ */
+router.get("/locations", getAllLocationsRequestHandler);
+
+/**
+ * Get Job Posts for a specific location and/or specific job type
+ * Expected parameters:
+ * @type string (in query) {query.location}
+ * @type string (in query) {query.job_type}
+ */
+router.get("/filter", getAllJobPostsSpecificLocationOrTypeRequestHandler);
+
+/**
+ * Get Job Posts sorted by application_close_date
+ * Expected parameters:
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ */
+router.get("/sorted", getAllJobPostsSortedByDateRequestHandler);
 
 module.exports = router;
