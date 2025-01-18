@@ -26,6 +26,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
+import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component"; 
+import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 
 const statuses = ["Active", "Draft", "Inactive"];
 const randomStatus = () => randomArrayItem(statuses);
@@ -76,13 +78,24 @@ export default function JobPostingsDashboardTableComponent() {
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
 
-  const handleRowEditStop = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      const newEvent = { ...event };
-      newEvent.defaultMuiPrevented = true;
-    }
+  const handleSort = (sortOption) => {
+    const sortedRows = [...rows].sort((a, b) => {
+      if (sortOption === "ascending") {
+        return new Date(a.joinDate) - new Date(b.joinDate);
+      }
+      if (sortOption === "descending") {
+        return new Date(b.joinDate) - new Date(a.joinDate);
+      }
+      return 0;
+    });
+    setRows(sortedRows);
   };
 
+  const handleStatus = (sortOption) => {
+    const setStatus = rows.filter((row) => row.status.toLocaleLowerCase() === sortOption);
+    setRows(setStatus);
+  };
+  
   const handleCheckboxChange = (id) => {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
@@ -141,7 +154,7 @@ export default function JobPostingsDashboardTableComponent() {
     {
       field: "name",
       headerName: "Title",
-      flex: 1, // Use flex for responsive column resizing
+      flex: 1,
       editable: true,
       cellClassName: "wrap-text",
       headerClassName: "header-class",
@@ -150,7 +163,7 @@ export default function JobPostingsDashboardTableComponent() {
       field: "age",
       headerName: "Employer",
       type: "string",
-      flex: 1, // Use flex here too
+      flex: 1,
       cellClassName: "wrap-text",
       headerClassName: "header-class",
     },
@@ -158,13 +171,13 @@ export default function JobPostingsDashboardTableComponent() {
       field: "joinDate",
       headerName: "Close Date",
       type: "date",
-      width: 200, // Fixed width for date
+      width: 200,
       headerClassName: "header-class",
     },
     {
       field: "status",
       headerName: "Status",
-      width: 200, // Fixed width for status column
+      width: 200,
       type: "singleSelect",
       renderCell: (params) => (
         <JobTypeChipsComponent jobTypes={[params.value]} />
@@ -174,7 +187,7 @@ export default function JobPostingsDashboardTableComponent() {
     {
       field: "actions",
       type: "actions",
-      width: 120, // Adjusted width for actions
+      width: 120,
       marginLeft: "20px",
       cellClassName: "actions",
       headerClassName: "header-class",
@@ -205,8 +218,8 @@ export default function JobPostingsDashboardTableComponent() {
         marginRight: "30px",
         marginLeft: "auto",
         marginBottom: "20px",
-        overflowX: "hidden", // Prevent horizontal scrolling
-        width: "100%", // Ensure container takes full width
+        overflowX: "hidden",
+        width: "100%",
         "& .actions": {
           color: "text.secondary",
         },
@@ -226,6 +239,9 @@ export default function JobPostingsDashboardTableComponent() {
           marginBottom: "10px",
         }}
       >
+        <JobPostsSortMenuComponent applySort={handleSort} />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <JobPostsStatusMenuComponent applySort={handleStatus } />
         <Button
           sx={{
             marginLeft: "auto",
@@ -252,17 +268,20 @@ export default function JobPostingsDashboardTableComponent() {
         editMode="row"
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
+        onRowEditStop={(params, event) => {
+          if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+            event.preventDefault();
+          }
+        }}
         processRowUpdate={processRowUpdate}
-        autoHeight // Dynamically adjusts height based on the number of rows
+        autoHeight
         disableColumnMenu
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
         sx={{
-          // Prevent vertical scroll by hiding overflow
           "& .MuiDataGrid-virtualScroller": {
-            overflowY: "hidden !important", // Explicitly disable vertical scrolling
+            overflowY: "hidden !important",
           },
         }}
       />
