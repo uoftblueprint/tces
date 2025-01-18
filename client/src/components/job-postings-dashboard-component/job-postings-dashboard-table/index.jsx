@@ -26,7 +26,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
-import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component"; 
+import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 
 const statuses = ["Active", "Draft", "Inactive"];
@@ -36,35 +36,35 @@ const initialRows = [
   {
     id: randomId(),
     name: randomTraderName(),
-    age: 25,
+    age: "Company A",
     joinDate: randomCreatedDate(),
     status: randomStatus(),
   },
   {
     id: randomId(),
     name: randomTraderName(),
-    age: 36,
+    age: "Company B",
     joinDate: randomCreatedDate(),
     status: randomStatus(),
   },
   {
     id: randomId(),
     name: randomTraderName(),
-    age: 19,
+    age: "Company C",
     joinDate: randomCreatedDate(),
     status: randomStatus(),
   },
   {
     id: randomId(),
     name: randomTraderName(),
-    age: 28,
+    age: "Company D",
     joinDate: randomCreatedDate(),
     status: randomStatus(),
   },
   {
     id: randomId(),
     name: randomTraderName(),
-    age: 23,
+    age: "Company E",
     joinDate: randomCreatedDate(),
     status: randomStatus(),
   },
@@ -92,10 +92,12 @@ export default function JobPostingsDashboardTableComponent() {
   };
 
   const handleStatus = (sortOption) => {
-    const setStatus = rows.filter((row) => row.status.toLocaleLowerCase() === sortOption);
+    const setStatus = rows.filter(
+      (row) => row.status.toLocaleLowerCase() === sortOption
+    );
     setRows(setStatus);
   };
-  
+
   const handleCheckboxChange = (id) => {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
@@ -235,18 +237,27 @@ export default function JobPostingsDashboardTableComponent() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "10px",
+          justifyContent: "space-between",
+          marginBottom: "30px",
+          alignItems: "center",
         }}
       >
-        <JobPostsSortMenuComponent applySort={handleSort} />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <JobPostsStatusMenuComponent applySort={handleStatus } />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "-3px",
+            marginLeft: "40px",
+          }}
+        >
+          <JobPostsSortMenuComponent applySort={handleSort} />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <JobPostsStatusMenuComponent applySort={handleStatus} />
+        </Box>
         <Button
           sx={{
-            marginLeft: "auto",
+            marginLeft: "30px",
             marginBottom: "30px",
-            marginRight: "20px",
+            marginRight: "40px",
             marginTop: "20px",
             width: "100px",
             backgroundColor: "#3568E5",
@@ -262,29 +273,39 @@ export default function JobPostingsDashboardTableComponent() {
           NEW
         </Button>
       </Box>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={(params, event) => {
-          if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-            event.preventDefault();
-          }
-        }}
-        processRowUpdate={processRowUpdate}
-        autoHeight
-        disableColumnMenu
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
+      <Box
         sx={{
-          "& .MuiDataGrid-virtualScroller": {
-            overflowY: "hidden !important",
-          },
+          padding: "20px", 
+          marginTop: "20px", 
+          marginLeft: "20px", 
+          marginRight: "20px", 
+          borderRadius: "8px", 
         }}
-      />
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={(params, event) => {
+            if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+              event.preventDefault();
+            }
+          }}
+          processRowUpdate={processRowUpdate}
+          autoHeight
+          disableColumnMenu
+          slotProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
+          sx={{
+            "& .MuiDataGrid-virtualScroller": {
+              overflowY: "hidden !important",
+            },
+          }}
+        />
+      </Box>
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>ARE YOU SURE?</DialogTitle>
         <DialogContent>
