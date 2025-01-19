@@ -1,7 +1,8 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { Button, Menu, MenuItem, Radio, ListItemIcon, ListItemText } from "@mui/material";
 
-function StatusMenu() {
+function StatusMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedValue, setSelectedValue] = useState("ascending");
   const open = Boolean(anchorEl);
@@ -13,6 +14,7 @@ function StatusMenu() {
     setSelectedValue(event.target.value);
   };
   const handleApply = () => {
+    applySort(selectedValue);
     setAnchorEl(null);
   };
   const handleClose = () => {
@@ -79,5 +81,9 @@ function StatusMenu() {
     </div>
   );
 }
+
+StatusMenu.propTypes = {
+  applySort: PropTypes.func.isRequired,
+};
 
 export default StatusMenu;
