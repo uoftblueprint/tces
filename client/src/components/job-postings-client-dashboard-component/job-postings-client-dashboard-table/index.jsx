@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 // MUI
 import {
@@ -14,15 +14,15 @@ import {
   IconButton,
   Typography,
   Box,
-} from '@mui/material';
+} from "@mui/material";
 
 // Icons
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 // Imported Components
-import JobTypeChipsComponent from '../../components/view-job-posts-component/job-type-chips-component';
+import JobTypeChipsComponent from "../../components/view-job-posts-component/job-type-chips-component";
 
 const mockdata = [
   {
@@ -90,11 +90,11 @@ function JobPostingsClientDashboardTableComponent() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-            <TableCell sx={{ fontWeight: 'bold' }}>Employer</TableCell>
-            <TableCell sx={{ fontWeight: 'bold' }}>Location</TableCell>
-            <TableCell sx={{ fontWeight: 'bold' }}>Job Type</TableCell>
-            <TableCell sx={{ fontWeight: 'bold' }}>Close Date</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Employer</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Location</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Job Type</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Close Date</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -105,23 +105,27 @@ function JobPostingsClientDashboardTableComponent() {
                   href={row.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', color: '#1976d2', fontWeight: 'bold' }}
+                  style={{
+                    textDecoration: "none",
+                    color: "#1976d2",
+                    fontWeight: "bold",
+                  }}
                 >
                   {row.title}
                 </a>
               </TableCell>
               <TableCell>{row.employer}</TableCell>
               <TableCell>
-                <LocationOnIcon sx={{ color: 'gray', marginRight: 1 }} />
+                <LocationOnIcon sx={{ color: "gray", marginRight: 1 }} />
                 {row.location}
               </TableCell>
               <TableCell>
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '2px',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "2px",
+                    alignItems: "center",
                   }}
                 >
                   <JobTypeChipsComponent jobTypes={row.jobTypes} />
@@ -136,12 +140,12 @@ function JobPostingsClientDashboardTableComponent() {
       {/* Pagination Controls */}
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          gap: '16px',
-          padding: '16px',
-          borderTop: '1px solid #e0e0e0',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: "16px",
+          padding: "16px",
+          borderTop: "1px solid #e0e0e0",
         }}
       >
         <Typography variant="body2">Rows per page</Typography>
@@ -149,7 +153,7 @@ function JobPostingsClientDashboardTableComponent() {
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
           size="small"
-          sx={{ minWidth: '120px' }}
+          sx={{ minWidth: "120px" }}
         >
           {[10, 20, 30, 50].map((option) => (
             <MenuItem key={option} value={option}>
@@ -161,7 +165,10 @@ function JobPostingsClientDashboardTableComponent() {
         <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
           <ChevronLeftIcon />
         </IconButton>
-        <IconButton onClick={handleNextPage} disabled={currentPage === totalPages}>
+        <IconButton
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
           <ChevronRightIcon />
         </IconButton>
       </Box>
