@@ -90,34 +90,13 @@ function JobPostingPage() {
     setFile(selectedFile);
     setUploadProgress(0);
 
-    const uploadFile = async (fileToUpload) => {
-      const formData = new FormData();
-      formData.append("file", fileToUpload);
-
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Server error");
-        }
-
-        console.log("File uploaded successfully");
-      } catch (error) {
-        console.error("Error uploading file", error.message);
-        setFileError("Upload failed: network error");
-      }
-    };
-
     // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
         const progress = prev + 10;
         if (progress >= 100) {
           clearInterval(interval);
-          uploadFile(selectedFile);
+          console.log("Simulated upload complete for file:", selectedFile.name);
         }
         return Math.min(progress, 100);
       });
@@ -151,10 +130,40 @@ function JobPostingPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(application);
-    alert("Application submitted! Check the console for details.");
+
+    if (!file) {
+      alert("Please upload a resume.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("job_posting_id", "1"); // Assuming the job posting ID is static or passed dynamically
+      formData.append("name", application.name);
+      formData.append("email", application.emailAddress);
+      formData.append("phone", application.phone);
+      formData.append("postal_code", application.postalCode);
+      formData.append("resume", file); // Adding the resume file
+      formData.append("status_in_canada", application.statusInCanada);
+      formData.append("application_status", "New"); // Assuming "New" is a default application status
+      formData.append(
+        "custom_responses",
+        JSON.stringify({ question1: "Yes", question2: "No" }), // Customize as needed
+      );
+
+      const response = await uploadJobApplication(formData);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit application");
+      }
+
+      alert("Application submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting application:", error.message);
+      alert("An error occurred while submitting your application.");
+    }
   };
 
   const formatDate = (dateString) => {
@@ -170,8 +179,20 @@ function JobPostingPage() {
     return `$${min.toLocaleString()}/year - $${max.toLocaleString()}/year`;
   };
 
+  const uploadJobApplication = async (formData) => {
+    const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Ensure this is set in your environment variables
+
+    const response = await fetch(`${REACT_APP_API_BASE_URL}/job_applications`, {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    });
+    return response;
+  };
+
   return (
     <StyledContainer maxWidth="lg">
+      {/* Left Section */}
       <Grid container spacing={4}>
         <Grid item xs={12} md={5}>
           <StyledPaper elevation={2} sx={{ padding: 3 }}>
@@ -259,6 +280,8 @@ function JobPostingPage() {
             </Box>
           </StyledPaper>
         </Grid>
+
+        {/* Right Section */}
         <Grid item xs={12} md={7}>
           <StyledPaper elevation={2}>
             <Typography variant="h5" gutterBottom>
