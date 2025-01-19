@@ -244,31 +244,37 @@ function JobPostingPage() {
                 onChange={handleInputChange("emailAddress")}
                 margin="normal"
               />
-              <FormControl fullWidth margin="normal" required>
-                <InputLabel>Status in Canada</InputLabel>
-                <Select
-                  value={application.statusInCanada}
-                  onChange={handleStatusChange}
-                  label="Status in Canada"
-                >
-                  {statusOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>Required</FormHelperText>
-              </FormControl>
-              {application.statusInCanada === "other" && (
-                <TextField
-                  fullWidth
-                  required
-                  label="Please specify"
-                  value={application.otherStatus}
-                  onChange={handleInputChange("otherStatus")}
-                  margin="normal"
-                />
-              )}
+              <Grid container spacing={2}>
+                <Grid item xs={application.statusInCanada === "other" ? 6 : 12}>
+                  <FormControl fullWidth margin="normal" required>
+                    <InputLabel>Status in Canada</InputLabel>
+                    <Select
+                      value={application.statusInCanada}
+                      onChange={handleStatusChange}
+                      label="Status in Canada"
+                    >
+                      {statusOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>Required</FormHelperText>
+                  </FormControl>
+                </Grid>
+                {application.statusInCanada === "other" && (
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      required
+                      label="Other: Please specify"
+                      value={application.otherStatus}
+                      onChange={handleInputChange("otherStatus")}
+                      margin="normal"
+                    />
+                  </Grid>
+                )}
+              </Grid>
               <Box
                 sx={{
                   maxWidth: 500,
