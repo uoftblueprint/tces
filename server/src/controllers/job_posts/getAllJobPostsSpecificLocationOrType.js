@@ -2,7 +2,7 @@ const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 const { Op } = require("sequelize");
 
-const getJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
+const getAllJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
   // check method is GET
   if (req.method !== "GET") {
     return res
