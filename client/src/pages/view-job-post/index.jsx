@@ -45,7 +45,7 @@ function JobPostingPage() {
     hoursPerWeek: 40,
     closeDate: "2025-01-31",
     description:
-      "We are looking for a skilled Software Engineer to join our team.",
+      "We are looking for a skilled Software Engineer to join our team. The role requires expertise in developing robust web applications and collaborating with cross-functional teams to deliver high-quality software. Responsibilities include writing clean code, performing code reviews, and ensuring the scalability of our system. Additionally, the candidate should have experience with cloud services and DevOps tools. This is a fantastic opportunity to join a fast-growing company and make a real impact.",
   };
 
   const statusOptions = [
@@ -55,11 +55,7 @@ function JobPostingPage() {
     { value: "other", label: "Other" },
   ];
 
-  const onSubmit = (application) => {
-    console.log("Application submitted:", application);
-    alert("Application submitted! Check the console for details.");
-  };
-
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
     name: "",
     phone: "",
@@ -157,7 +153,17 @@ function JobPostingPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(application);
+    console.log(application);
+    alert("Application submitted! Check the console for details.");
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const formatSalaryRange = (min, max) => {
@@ -168,7 +174,7 @@ function JobPostingPage() {
     <StyledContainer maxWidth="lg">
       <Grid container spacing={4}>
         <Grid item xs={12} md={5}>
-          <StyledPaper elevation={2}>
+          <StyledPaper elevation={2} sx={{ padding: 3 }}>
             <Typography variant="h5" gutterBottom>
               Information
             </Typography>
@@ -185,17 +191,71 @@ function JobPostingPage() {
                   ),
                 },
                 { label: "Job Type", value: jobPosting.jobType },
-                { label: "Hours per Week", value: jobPosting.hoursPerWeek },
-                { label: "Close Date", value: jobPosting.closeDate },
-              ].map((item) => (
-                <Typography key={item.label} variant="subtitle1">
-                  <strong>{item.label}:</strong> {item.value}
-                </Typography>
+                {
+                  label: "Hours per Week",
+                  value: `${jobPosting.hoursPerWeek} hours`,
+                },
+                {
+                  label: "Close Date",
+                  value: formatDate(jobPosting.closeDate),
+                },
+              ].map((item, index) => (
+                <Box
+                  key={item.label}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottom:
+                      index < 6 ? "1px solid rgba(0, 0, 0, 0.12)" : "none",
+                    padding: "8px 0",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{ fontWeight: "bold", color: "rgba(0, 0, 0, 0.87)" }}
+                  >
+                    {item.label}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "rgba(0, 0, 0, 0.6)", textAlign: "right" }}
+                  >
+                    {item.value}
+                  </Typography>
+                </Box>
               ))}
-              <Typography variant="subtitle1" sx={{ mt: 2 }}>
-                <strong>Description:</strong>
-                <Box sx={{ mt: 1 }}>{jobPosting.description}</Box>
-              </Typography>
+              <Box sx={{ mt: 2 }}>
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", marginBottom: 1 }}
+                >
+                  Description:
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: isDescriptionExpanded ? "none" : 3,
+                    overflow: isDescriptionExpanded ? "visible" : "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {jobPosting.description}
+                </Typography>
+                <Button
+                  variant="text"
+                  size="small"
+                  sx={{ mt: 1 }}
+                  onClick={() =>
+                    setIsDescriptionExpanded(!isDescriptionExpanded)
+                  }
+                >
+                  {isDescriptionExpanded ? "Read Less" : "Read More"}
+                </Button>
+              </Box>
             </Box>
           </StyledPaper>
         </Grid>
