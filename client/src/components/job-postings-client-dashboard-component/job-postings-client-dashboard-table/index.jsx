@@ -16,7 +16,7 @@ import {
   Box,
 } from '@mui/material';
 
-// Icons 
+// Icons
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -31,6 +31,7 @@ const mockdata = [
     location: "Greater Toronto Area",
     jobTypes: ["Full-Time"],
     closeDate: "11/20/2024",
+    url: "https://example.com/job/sales-account-manager",
   },
   {
     title: "Senior Portfolio Administrator",
@@ -38,13 +39,15 @@ const mockdata = [
     location: "Spadina & Adelaide",
     jobTypes: ["Full-Time", "Contract"],
     closeDate: "11/15/2024",
+    url: "https://example.com/job/senior-portfolio-administrator",
   },
-  { 
+  {
     title: "Special Events Intern",
     employer: "National Ballet of Canada",
     location: "Spadina & Lakeshore",
     jobTypes: ["Full-Time", "Seasonal", "Internship"],
     closeDate: "11/20/2024",
+    url: "https://example.com/job/special-events-intern",
   },
   ...Array(100).fill({
     title: "Example Job Title",
@@ -52,11 +55,11 @@ const mockdata = [
     location: "Example Location",
     jobTypes: ["Full-Time"],
     closeDate: "12/01/2024",
+    url: "https://example.com/job/example-job-title",
   }),
 ];
 
-
-function JobPostingsClientDashboardTableComponent () {
+function JobPostingsClientDashboardTableComponent() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,7 +70,7 @@ function JobPostingsClientDashboardTableComponent () {
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const handleNextPage = () => {
@@ -98,24 +101,32 @@ function JobPostingsClientDashboardTableComponent () {
           {mockdata.slice(startRow - 1, endRow).map((row, index) => (
             <TableRow key={index}>
               <TableCell>
-                <a href="#">{row.title}</a>
+                <a
+                  href={row.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', color: '#1976d2', fontWeight: 'bold' }}
+                >
+                  {row.title}
+                </a>
               </TableCell>
               <TableCell>{row.employer}</TableCell>
-              <TableCell>    <LocationOnIcon sx={{ color: 'gray', marginRight: 1 }} />
-              {row.location}</TableCell>
+              <TableCell>
+                <LocationOnIcon sx={{ color: 'gray', marginRight: 1 }} />
+                {row.location}
+              </TableCell>
               <TableCell>
                 <Box
-                    sx={{
+                  sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: '2px',
                     alignItems: 'center',
-                    }}
+                  }}
                 >
-                    <JobTypeChipsComponent jobTypes={row.jobTypes} />
+                  <JobTypeChipsComponent jobTypes={row.jobTypes} />
                 </Box>
-                </TableCell>
-
+              </TableCell>
               <TableCell>{row.closeDate}</TableCell>
             </TableRow>
           ))}
@@ -133,10 +144,7 @@ function JobPostingsClientDashboardTableComponent () {
           borderTop: '1px solid #e0e0e0',
         }}
       >
-
-        <Typography variant="body2">
-          Rows per page
-        </Typography>
+        <Typography variant="body2">Rows per page</Typography>
         <Select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
@@ -149,22 +157,16 @@ function JobPostingsClientDashboardTableComponent () {
             </MenuItem>
           ))}
         </Select>
-
-        <Typography variant="body2">
-          {`${startRow} - ${endRow} of ${totalRows}`}
-        </Typography>
-
+        <Typography variant="body2">{`${startRow} - ${endRow} of ${totalRows}`}</Typography>
         <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
           <ChevronLeftIcon />
         </IconButton>
         <IconButton onClick={handleNextPage} disabled={currentPage === totalPages}>
           <ChevronRightIcon />
         </IconButton>
-
       </Box>
-
     </TableContainer>
   );
-};
+}
 
 export default JobPostingsClientDashboardTableComponent;
