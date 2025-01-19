@@ -335,6 +335,16 @@ function JobPostingPage() {
                   </Grid>
                 )}
               </Grid>
+              <TextField
+                fullWidth
+                multiline
+                required
+                rows={4}
+                label="Cover Letter"
+                value={application.coverLetter}
+                onChange={handleInputChange("coverLetter")}
+                margin="normal"
+              />
               <Box
                 sx={{
                   maxWidth: 500,
