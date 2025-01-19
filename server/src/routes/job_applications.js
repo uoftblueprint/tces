@@ -4,6 +4,8 @@ const path = require("path");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
 const getOneJobApplicationRequestHandler = require("../controllers/job_applications/getOneJobApplication");
 const addJobApplicationRequestHandler = require("../controllers/job_applications/addJobApplication");
+const updateJobApplicationStatusRequestHandler = require("../controllers/job_applications/updateJobApplicationStatus");
+const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const upload = multer({ dest: path.join(__dirname, "..", "uploads") });
 
@@ -22,5 +24,18 @@ router.get("/:name", async (req, res) => {
 router.post("/", upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
+
+/**
+ * Modifies a job application's status
+ * Example Request Body:
+ * {
+ *   "new_application_status": "Approved"
+ * }
+ */
+router.put(
+  "/:job_application_id",
+  isLoggedIn,
+  updateJobApplicationStatusRequestHandler,
+);
 
 module.exports = router;
