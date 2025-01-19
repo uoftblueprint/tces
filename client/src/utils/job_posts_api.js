@@ -29,7 +29,7 @@ const modifyJobPost = async (modifiedJobPost) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(modifyJobPost),
+      body: JSON.stringify(modifiedJobPost),
     },
   );
   return response;
