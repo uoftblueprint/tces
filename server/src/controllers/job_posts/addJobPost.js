@@ -85,7 +85,7 @@ const addJobPostRequestHandler = async (req, res) => {
       job_description: jobDescription,
       custom_questions: customQuestions,
       creator: req.user.id,
-      state: state === "Draft" ? "Draft" : "Active",
+      state: state
     });
 
     // ! Return a response stating that the object is successfully created.

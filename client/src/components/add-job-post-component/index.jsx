@@ -77,8 +77,8 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
 
   const handleSubmit = async (e, postState) => {
     const DRAFT = "Draft";
+    jobPostData.jobInfo.state = postState // eslint-disable-line no-param-reassign
     const updatedJobPost = { ...jobPostData, state: postState };
-    updateJobPostData("state", postState);
 
     setIsLoading(true);
     try {
@@ -232,7 +232,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
                       variant="contained"
                       disabled={isLoading}
                       disableElevation
-                      onClick={() => handleSubmit(null, "Publish")}
+                      onClick={() => handleSubmit(null, "Active")}
                     >
                       PUBLISH
                     </Button>

@@ -18,6 +18,7 @@ function AddJobPostParent({ currUser }) {
       close_date: dayjs().add(1, "month"),
       job_type: [],
       job_description: "",
+      state: ""
     },
     applicationFields: {
       custom_questions: [],
