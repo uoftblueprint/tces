@@ -87,7 +87,6 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
         currUser.userID,
         currUser.userID,
       );
-      console.log(response)
       if (response.status === "success") {
         setResultModalValues(
           postState === DRAFT ? SUCCESS_DRAFT : SUCCESS_PUBLISH,
