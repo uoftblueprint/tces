@@ -89,7 +89,7 @@ function DashboardHeaderComponent({ currUser }) {
                 Add New Client
               </MenuItem>
               <MenuItem
-                onClick={() => handleClose("/job-posts/add")}
+                onClick={() => handleClose("/job-postings/add")}
                 sx={{ justifyContent: "center" }}
               >
                 Add New Job Posting

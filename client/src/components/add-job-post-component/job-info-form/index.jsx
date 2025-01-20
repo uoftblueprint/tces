@@ -227,9 +227,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             sx={{ m: 1, width: "47%" }}
             value={jobPostData.close_date}
             minDate={dayjs()}
-            onChange={(newValue) =>
-              handleInputChange(newValue, jobPostData, "close_date")
-            }
+            onChange={(newValue) => handleInputChange(newValue, "close_date")}
             renderInput={(params) => (
               // eslint-disable-next-line
               <TextField {...params} error={false} helperText="" required />
@@ -243,14 +241,14 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
         <TextField
           fullWidth
           sx={{ m: 1, width: "96%" }}
-          id="description"
+          id="job_description"
           label="Description"
           multiline
           rows={4}
-          value={jobPostData.description}
+          value={jobPostData.job_description}
           InputLabelProps={{ shrink: true, required: false }}
           helperText="*Required"
-          onChange={(e) => handleInputChange(e.target.value, "description")}
+          onChange={(e) => handleInputChange(e.target.value, "job_description")}
           required
         />
       </Container>

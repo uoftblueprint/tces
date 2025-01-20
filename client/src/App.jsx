@@ -371,7 +371,7 @@ function App() {
               }
             />
             <Route
-              path="/job-posts/add"
+              path="/job-postings/add"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
