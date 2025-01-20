@@ -14,7 +14,7 @@ export const COMPENSATION_RATES_FOR_JOB_POSTS = [
   "Hourly",
   "Weekly",
   "Annually",
-  "Commision",
+  "Commission",
   "Base and Commission",
 ];
 
