@@ -180,7 +180,7 @@ router.get("/locations", getAllLocationsRequestHandler);
  * @type string (in query) {query.job_type}
  * @type string (in query) {query.order} - "ascending" or "descending"
  */
-router.get("/filter", getFilteredSortedRequestHandler);
+router.get("/filter", getFilteredSortedJobPostsRequestHandler);
 
 /**
  * Get Job Posts sorted by application_close_date and/or filter by status
