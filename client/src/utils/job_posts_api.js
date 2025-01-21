@@ -123,7 +123,7 @@ const getAllLocations = async () => {
   return response;
 };
 
-const getFilteredJobPosts = async (queryParams) => {
+const getFilteredSortedJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_posts/filter?${queryParams}`,
@@ -138,10 +138,10 @@ const getFilteredJobPosts = async (queryParams) => {
   return response;
 };
 
-const getSortedJobPosts = async (queryParams) => {
+const getFilteredSortedByStatusJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/sort?${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_posts/filterByStatus?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
@@ -161,6 +161,6 @@ module.exports = {
   getAllActiveJobPosts,
   getOneJobPost,
   getAllLocations,
-  getFilteredJobPosts,
-  getSortedJobPosts,
+  getFilteredSortedJobPosts,
+  getFilteredSortedByStatusJobPosts,
 };

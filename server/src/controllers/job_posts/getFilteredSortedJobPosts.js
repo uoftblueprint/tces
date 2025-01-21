@@ -1,7 +1,8 @@
 const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
+const { Op } = require("sequelize");
 
-const getAllJobPostsSortedByDateRequestHandler = async (req, res) => {
+const getFilteredSortedJobPostsRequestHandler = async (req, res) => {
     // check method is GET
     if (req.method !== "GET") {
       return res
@@ -10,13 +11,27 @@ const getAllJobPostsSortedByDateRequestHandler = async (req, res) => {
     }
   
     try {
-      const { order = "descending" } = req.query;
+      const { location, job_type, order = "descending" } = req.query;
 
-      const sortOrder = order === "ascending" ? "DESC" : "ASC";
+      const query = {};
 
-      // Pagination Configs
+      if (location) {
+        query.location = location;
+      }
+  
+      if (job_type) {
+        query.job_type = {
+          [Op.contains]: [job_type],
+        };
+      }
+
+      const sortOrder = order === "ascending" ? "ASC" : "DESC";
+
+      query.state = "Active";
+
       const searchConfig = {
         order: [["close_date", sortOrder]],
+        where: query,
         attributes: [
           "id",
           "title",
@@ -39,7 +54,6 @@ const getAllJobPostsSortedByDateRequestHandler = async (req, res) => {
         searchConfig.offset = page * pageSize;
       }
 
-      // Get all Job Posts
       const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
       // -------- Response:
@@ -64,4 +78,4 @@ const getAllJobPostsSortedByDateRequestHandler = async (req, res) => {
       }
     };
     
-    module.exports = getAllJobPostsSortedByDateRequestHandler;
+    module.exports = getFilteredSortedJobPostsRequestHandler;

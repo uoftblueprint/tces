@@ -18,9 +18,9 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
 
-const getAllJobPostsSpecificLocationOrTypeRequestHandler = require("../controllers/job_posts/getAllJobPostsSpecificLocationOrType");
+const getFilteredSortedJobPostsRequestHandler = require("../controllers/job_posts/getFilteredSortedJobPosts");
 
-const getAllJobPostsSortedByDateRequestHandler = require("../controllers/job_posts/getAllJobPostsSortedByDate");
+const getFilteredSortedByStatusJobPostsRequestHandler = require("../controllers/job_posts/getFilteredSortedByStatusJobPosts");
 
 /**
  * Add a New Job Posting
@@ -174,18 +174,20 @@ router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
 router.get("/locations", getAllLocationsRequestHandler);
 
 /**
- * Get Job Posts for a specific location and/or specific job type
+ * Get Job Posts for a specific location and/or specific job type, and sort by application_close_date
  * Expected parameters:
  * @type string (in query) {query.location}
  * @type string (in query) {query.job_type}
- */
-router.get("/filter", getAllJobPostsSpecificLocationOrTypeRequestHandler);
-
-/**
- * Get Job Posts sorted by application_close_date
- * Expected parameters:
  * @type string (in query) {query.order} - "ascending" or "descending"
  */
-router.get("/sorted", getAllJobPostsSortedByDateRequestHandler);
+router.get("/filter", getFilteredSortedRequestHandler);
+
+/**
+ * Get Job Posts sorted by application_close_date and/or filter by status
+ * Expected parameters:
+ * @type string (in query) {query.status}
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ */
+router.get("/filterByStatus", getFilteredSortedByStatusJobPostsRequestHandler);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 const { Op } = require("sequelize");
 
-const getAllJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
+const getFilteredSortedByStatusJobPostsRequestHandler = async (req, res) => {
   // check method is GET
   if (req.method !== "GET") {
     return res
@@ -11,30 +11,21 @@ const getAllJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
   }
 
   try {
-    const { location, job_type } = req.query;
-
-    // Ensure at least one of location or jobType is provided
-    if (!location && !job_type) {
-      return res
-        .status(400)
-        .json({ message: "At least one of location or job_type must be provided." });
-    }
+    const { status, order = "descending" } = req.query;
 
     const query = {};
 
-    if (location) {
-      query.location = location;
+    if (status) {
+      query.state = status;
     }
 
-    if (job_type) {
-      query.job_type = {
-        [Op.contains]: [job_type],
-      };
-    }
+    // Determine the sorting order
+    const sortOrder = order === "ascending" ? "ASC" : "DESC";
 
     // Pagination Configs
     const searchConfig = {
       where: query,
+      order: [["close_date", sortOrder]],
       attributes: [
         "id",
         "title",
@@ -49,18 +40,17 @@ const getAllJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
     // get pagination parameters:
     const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
     const pageSize = req?.query?.pageSize
-      ? parseInt(req.query.pageSize, 10)
-      : null;
+        ? parseInt(req.query.pageSize, 10)
+        : null;
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
       searchConfig.offset = page * pageSize;
     }
 
-    // Get all Job Posts
     const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-    // -------- Response:
+    // Response
     const response = {
       status: "success",
       message: "All job posts found successfully",
@@ -82,4 +72,4 @@ const getAllJobPostsSpecificLocationOrTypeRequestHandler = async (req, res) => {
   }
 };
 
-module.exports = getAllJobPostsSpecificLocationOrTypeRequestHandler;
+module.exports = getFilteredSortedByStatusJobPostsRequestHandler;

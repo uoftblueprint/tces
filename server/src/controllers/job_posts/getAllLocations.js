@@ -10,6 +10,7 @@ const getAllLocationsRequestHandler = async (req, res) => {
   }
 
   try {
+    query.state = "Active"; 
     const locations = await JobPosting.findAll({
         attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("location")), "location"]],
       });
