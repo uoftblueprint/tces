@@ -70,6 +70,7 @@ function JobPostingPage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileError, setFileError] = useState("");
   const [dropzoneKey, setDropzoneKey] = useState(0);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleFileChange = (selectedFiles) => {
     if (!selectedFiles || selectedFiles.length === 0) {
@@ -151,10 +152,14 @@ function JobPostingPage() {
   const removeCustomResponse = (index) => {
     setApplication((prev) => {
       const updatedResponses = prev.customResponses.filter(
-        (_, i) => i !== index,
+        (_, i) => i !== index
       );
       return { ...prev, customResponses: updatedResponses };
     });
+  };
+
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
   };
 
   const handleSubmit = async (event) => {
@@ -165,20 +170,26 @@ function JobPostingPage() {
       return;
     }
 
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA verification.");
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("job_posting_id", "1"); // Assuming the job posting ID is static or passed dynamically
+      formData.append("job_posting_id", "1");
       formData.append("name", application.name);
       formData.append("email", application.emailAddress);
       formData.append("phone", application.phone);
       formData.append("postal_code", application.postalCode);
-      formData.append("resume", file); // Adding the resume file
+      formData.append("resume", file);
       formData.append("status_in_canada", application.statusInCanada);
-      formData.append("application_status", "New"); // Assuming "New" is a default application status
+      formData.append("application_status", "New");
       formData.append(
         "custom_responses",
-        JSON.stringify(application.customResponses),
+        JSON.stringify(application.customResponses)
       );
+      formData.append("recaptchaToken", recaptchaToken);
 
       const response = await uploadJobApplication(formData);
 
@@ -235,7 +246,7 @@ function JobPostingPage() {
                   label: "Compensation",
                   value: formatSalaryRange(
                     jobPosting.compensation.min,
-                    jobPosting.compensation.max,
+                    jobPosting.compensation.max
                   ),
                 },
                 { label: "Job Type", value: jobPosting.jobType },
@@ -400,7 +411,7 @@ function JobPostingPage() {
                         handleCustomResponseChange(
                           index,
                           "question",
-                          e.target.value,
+                          e.target.value
                         )
                       }
                     />
@@ -413,7 +424,7 @@ function JobPostingPage() {
                         handleCustomResponseChange(
                           index,
                           "answer",
-                          e.target.value,
+                          e.target.value
                         )
                       }
                     />
@@ -449,6 +460,7 @@ function JobPostingPage() {
                   acceptedFiles={["application/pdf"]}
                   maxFileSize={5000000}
                   onChange={handleFileChange}
+                  showPreviewsInDropzone={false}
                   dropzoneText={
                     <Box textAlign="center">
                       <FileUploadIcon color="primary" fontSize="large" />
@@ -513,6 +525,20 @@ function JobPostingPage() {
                   </Box>
                 )}
               </Box>
+              <div
+                className="g-recaptcha"
+                data-sitekey="6LfHQL8qAAAAACsZAnyswsxEFlFlBVdBkqXUizJg"
+                data-callback={(token) => handleRecaptchaChange(token)} // Called when the user successfully completes the CAPTCHA
+                data-expired-callback={() => setRecaptchaToken("")} // Called when the CAPTCHA token expires
+                id="recaptcha-container"
+                style={{
+                  display: "block",
+                  margin: "auto",
+                  width: "304px",
+                  height: "78px",
+                }}
+              ></div>
+
               <Box sx={{ mt: 3, textAlign: "right" }}>
                 <Button
                   type="submit"
