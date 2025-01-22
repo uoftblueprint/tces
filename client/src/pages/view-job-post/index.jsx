@@ -542,12 +542,21 @@ function JobPostingPage() {
                 />
               </Box>
 
-              <Box sx={{ mt: 3, textAlign: "center" }}>
+              <Box
+                sx={{
+                  mt: 3,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   size="large"
+                  sx={{
+                    width: "365px",
+                  }}
                 >
                   Submit Application
                 </Button>
