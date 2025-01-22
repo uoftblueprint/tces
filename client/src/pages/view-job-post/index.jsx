@@ -63,7 +63,7 @@ function JobPostingPage() {
     emailAddress: "",
     statusInCanada: "",
     otherStatus: "",
-    coverLetter: "",
+    customResponses: [],
   });
 
   const [file, setFile] = useState(null);
@@ -130,6 +130,33 @@ function JobPostingPage() {
     }));
   };
 
+  const handleCustomResponseChange = (index, field, value) => {
+    setApplication((prev) => {
+      const updatedResponses = [...prev.customResponses];
+      updatedResponses[index] = {
+        ...updatedResponses[index],
+        [field]: value,
+      };
+      return { ...prev, customResponses: updatedResponses };
+    });
+  };
+
+  const addCustomResponse = () => {
+    setApplication((prev) => ({
+      ...prev,
+      customResponses: [...prev.customResponses, { question: "", answer: "" }],
+    }));
+  };
+
+  const removeCustomResponse = (index) => {
+    setApplication((prev) => {
+      const updatedResponses = prev.customResponses.filter(
+        (_, i) => i !== index,
+      );
+      return { ...prev, customResponses: updatedResponses };
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -150,7 +177,7 @@ function JobPostingPage() {
       formData.append("application_status", "New"); // Assuming "New" is a default application status
       formData.append(
         "custom_responses",
-        JSON.stringify({ question1: "Yes", question2: "No" }), // Customize as needed
+        JSON.stringify(application.customResponses),
       );
 
       const response = await uploadJobApplication(formData);
@@ -358,16 +385,54 @@ function JobPostingPage() {
                   </Grid>
                 )}
               </Grid>
-              <TextField
-                fullWidth
-                multiline
-                required
-                rows={4}
-                label="Cover Letter"
-                value={application.coverLetter}
-                onChange={handleInputChange("coverLetter")}
-                margin="normal"
-              />
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                  Custom Responses
+                </Typography>
+                {application.customResponses.map((response, index) => (
+                  <Box key={index} sx={{ display: "flex", gap: 2, mt: 2 }}>
+                    <TextField
+                      fullWidth
+                      required
+                      label="Question"
+                      value={response.question}
+                      onChange={(e) =>
+                        handleCustomResponseChange(
+                          index,
+                          "question",
+                          e.target.value,
+                        )
+                      }
+                    />
+                    <TextField
+                      fullWidth
+                      required
+                      label="Answer"
+                      value={response.answer}
+                      onChange={(e) =>
+                        handleCustomResponseChange(
+                          index,
+                          "answer",
+                          e.target.value,
+                        )
+                      }
+                    />
+                    <IconButton
+                      color="error"
+                      onClick={() => removeCustomResponse(index)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
+                <Button
+                  variant="contained"
+                  sx={{ mt: 2, width: "100%", textAlign: "center" }}
+                  onClick={addCustomResponse}
+                >
+                  Add Custom Response
+                </Button>
+              </Box>
               <Box
                 sx={{
                   maxWidth: 500,
