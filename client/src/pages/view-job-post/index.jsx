@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
   Container,
@@ -525,21 +526,23 @@ function JobPostingPage() {
                   </Box>
                 )}
               </Box>
-              <div
-                className="g-recaptcha"
-                data-sitekey="6LfHQL8qAAAAACsZAnyswsxEFlFlBVdBkqXUizJg"
-                data-callback={(token) => handleRecaptchaChange(token)} // Called when the user successfully completes the CAPTCHA
-                data-expired-callback={() => setRecaptchaToken("")} // Called when the CAPTCHA token expires
-                id="recaptcha-container"
-                style={{
-                  display: "block",
-                  margin: "auto",
-                  width: "304px",
-                  height: "78px",
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 3,
+                  transform: "scale(1.2)",
+                  transformOrigin: "center",
                 }}
-              ></div>
+              >
+                <ReCAPTCHA
+                  sitekey="6LfIPsAqAAAAAL7OYC0zIrYsnD0SNcyYJuPmgnSw"
+                  onChange={handleRecaptchaChange}
+                />
+              </Box>
 
-              <Box sx={{ mt: 3, textAlign: "right" }}>
+              <Box sx={{ mt: 3, textAlign: "center" }}>
                 <Button
                   type="submit"
                   variant="contained"
