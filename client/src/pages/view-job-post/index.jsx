@@ -480,6 +480,12 @@ function JobPostingPage() {
                   filesLimit={1}
                   showAlerts={false}
                 />
+                {fileError && (
+                  <Box sx={{ mt: 2, color: "error.main", textAlign: "center" }}>
+                    <Typography variant="body2">{fileError}</Typography>
+                  </Box>
+                )}
+
                 {file && (
                   <Box
                     sx={{
