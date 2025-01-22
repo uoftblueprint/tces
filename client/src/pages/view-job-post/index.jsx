@@ -153,7 +153,7 @@ function JobPostingPage() {
   const removeCustomResponse = (index) => {
     setApplication((prev) => {
       const updatedResponses = prev.customResponses.filter(
-        (_, i) => i !== index
+        (_, i) => i !== index,
       );
       return { ...prev, customResponses: updatedResponses };
     });
@@ -188,7 +188,7 @@ function JobPostingPage() {
       formData.append("application_status", "New");
       formData.append(
         "custom_responses",
-        JSON.stringify(application.customResponses)
+        JSON.stringify(application.customResponses),
       );
       formData.append("recaptchaToken", recaptchaToken);
 
@@ -247,7 +247,7 @@ function JobPostingPage() {
                   label: "Compensation",
                   value: formatSalaryRange(
                     jobPosting.compensation.min,
-                    jobPosting.compensation.max
+                    jobPosting.compensation.max,
                   ),
                 },
                 { label: "Job Type", value: jobPosting.jobType },
@@ -412,7 +412,7 @@ function JobPostingPage() {
                         handleCustomResponseChange(
                           index,
                           "question",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                     />
@@ -425,7 +425,7 @@ function JobPostingPage() {
                         handleCustomResponseChange(
                           index,
                           "answer",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                     />
