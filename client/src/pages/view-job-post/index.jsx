@@ -38,28 +38,8 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
 }));
 
-function JobPostingPage() {
-  const jobPosting = {
-    title: "Software Engineer",
-    employer: "Tech Corp",
-    location: "Toronto, ON",
-    compensation: { min: 70000, max: 120000, frequency: "yearly" },
-    jobType: "Full-time",
-    hoursPerWeek: 40,
-    closeDate: "2025-01-31",
-    description:
-      "We are looking for a skilled Software Engineer to join our team. The role requires expertise in developing robust web applications and collaborating with cross-functional teams to deliver high-quality software. Responsibilities include writing clean code, performing code reviews, and ensuring the scalability of our system. Additionally, the candidate should have experience with cloud services and DevOps tools. This is a fantastic opportunity to join a fast-growing company and make a real impact.",
-  };
-
-  const statusOptions = [
-    { value: "Citizen", label: "Citizen" },
-    { value: "PR", label: "Permanent Resident" },
-    { value: "Refugee", label: "Refugee" },
-    { value: "Student Visa", label: "Student Visa" },
-    { value: "Open Work", label: "Open Work" },
-    { value: "Other", label: "Other" },
-  ];
-
+// eslint-disable-next-line react/prop-types
+function JobPostingPage({ jobPosting, statusOptions, handleSubmit }) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
     name: "",
@@ -170,46 +150,46 @@ function JobPostingPage() {
     setRecaptchaToken(token);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    if (!file) {
-      alert("Please upload a resume.");
-      return;
-    }
+  //   if (!file) {
+  //     alert("Please upload a resume.");
+  //     return;
+  //   }
 
-    if (!recaptchaToken) {
-      alert("Please complete the reCAPTCHA verification.");
-      return;
-    }
+  //   if (!recaptchaToken) {
+  //     alert("Please complete the reCAPTCHA verification.");
+  //     return;
+  //   }
 
-    try {
-      const formData = new FormData();
-      formData.append("job_posting_id", "67");
-      formData.append("name", application.name);
-      formData.append("email", application.emailAddress);
-      formData.append("phone", application.phone);
-      formData.append("postal_code", application.postalCode);
-      formData.append("resume", file);
-      formData.append("status_in_canada", application.statusInCanada);
-      formData.append("application_status", "New");
-      formData.append(
-        "custom_responses",
-        JSON.stringify(application.customResponses),
-      );
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("job_posting_id", "67");
+  //     formData.append("name", application.name);
+  //     formData.append("email", application.emailAddress);
+  //     formData.append("phone", application.phone);
+  //     formData.append("postal_code", application.postalCode);
+  //     formData.append("resume", file);
+  //     formData.append("status_in_canada", application.statusInCanada);
+  //     formData.append("application_status", "New");
+  //     formData.append(
+  //       "custom_responses",
+  //       JSON.stringify(application.customResponses),
+  //     );
 
-      const response = await uploadJobApplication(formData, recaptchaToken);
+  //     const response = await uploadJobApplication(formData, recaptchaToken);
 
-      if (!response.ok) {
-        throw new Error("Failed to submit application");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to submit application");
+  //     }
 
-      alert("Application submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting application:", error.message);
-      alert("An error occurred while submitting your application.");
-    }
-  };
+  //     alert("Application submitted successfully!");
+  //   } catch (error) {
+  //     console.error("Error submitting application:", error.message);
+  //     alert("An error occurred while submitting your application.");
+  //   }
+  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
