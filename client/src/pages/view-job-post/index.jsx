@@ -462,6 +462,13 @@ function JobPostingPage() {
                   maxFileSize={5000000}
                   onChange={handleFileChange}
                   showPreviewsInDropzone={false}
+                  onDropRejected={(rejectedFiles) => {
+                    if (rejectedFiles.length > 0) {
+                      setFileError(
+                        "File size exceeds 5 MB. Please upload a smaller file.",
+                      );
+                    }
+                  }}
                   dropzoneText={
                     <Box textAlign="center">
                       <FileUploadIcon color="primary" fontSize="large" />
