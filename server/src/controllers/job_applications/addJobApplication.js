@@ -93,7 +93,12 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! check that customResponses is an object.
     // ! If it is not an object, return a 400 status code with an error message.
 
-    if (typeof customResponses !== "object") {
+    if (
+      Array.isArray(customResponses) &&
+      customResponses.every(
+        (item) => typeof item === "object" && !Array.isArray(item),
+      )
+    ) {
       return res
         .status(400)
         .json({ error: "Custom responses must be an object." });

@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
@@ -24,6 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { uploadJobApplication } from "../../utils/job_applications_api";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -50,10 +52,12 @@ function JobPostingPage() {
   };
 
   const statusOptions = [
-    { value: "citizen", label: "Citizen" },
-    { value: "permanent_resident", label: "Permanent Resident" },
-    { value: "temporary_work_permit", label: "Temporary Work Permit" },
-    { value: "other", label: "Other" },
+    { value: "Citizen", label: "Citizen" },
+    { value: "PR", label: "Permanent Resident" },
+    { value: "Refugee", label: "Refugee" },
+    { value: "Student Visa", label: "Student Visa" },
+    { value: "Open Work", label: "Open Work" },
+    { value: "Other", label: "Other" },
   ];
 
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
@@ -178,7 +182,7 @@ function JobPostingPage() {
 
     try {
       const formData = new FormData();
-      formData.append("job_posting_id", "1");
+      formData.append("job_posting_id", "67");
       formData.append("name", application.name);
       formData.append("email", application.emailAddress);
       formData.append("phone", application.phone);
@@ -190,9 +194,8 @@ function JobPostingPage() {
         "custom_responses",
         JSON.stringify(application.customResponses),
       );
-      formData.append("recaptchaToken", recaptchaToken);
 
-      const response = await uploadJobApplication(formData);
+      const response = await uploadJobApplication(formData, recaptchaToken);
 
       if (!response.ok) {
         throw new Error("Failed to submit application");
@@ -216,17 +219,6 @@ function JobPostingPage() {
 
   const formatSalaryRange = (min, max) => {
     return `$${min.toLocaleString()}/year - $${max.toLocaleString()}/year`;
-  };
-
-  const uploadJobApplication = async (formData) => {
-    const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Ensure this is set in your environment variables
-
-    const response = await fetch(`${REACT_APP_API_BASE_URL}/job_applications`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
-    return response;
   };
 
   return (
@@ -431,7 +423,7 @@ function JobPostingPage() {
                     <FormHelperText>Required</FormHelperText>
                   </FormControl>
                 </Grid>
-                {application.statusInCanada === "other" && (
+                {application.statusInCanada === "Other" && (
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
@@ -449,7 +441,7 @@ function JobPostingPage() {
                   Custom Responses
                 </Typography>
                 {application.customResponses.map((response, index) => (
-                  <Box key={index} sx={{ display: "flex", gap: 2, mt: 2 }}>
+                  <Box key={uuidv4()} sx={{ display: "flex", gap: 2, mt: 2 }}>
                     <TextField
                       fullWidth
                       required
