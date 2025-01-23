@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "dotenv": "^16.4.5",
-    "material-ui-dropzone": "^3.5.0",
     "mysql2": "^3.9.2",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.12",
