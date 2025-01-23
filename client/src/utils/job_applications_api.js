@@ -93,6 +93,26 @@ const getResumeUrl = async (jobApplicationId) => {
 
   const result = await response.json();
   return result;
+
+const updateJobApplicationStatus = async (
+  jobApplicationId,
+  newApplicationStatus,
+) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        new_application_status: newApplicationStatus,
+      },
+    },
+  );
+
+  return response;
 };
 
 export {
@@ -100,4 +120,5 @@ export {
   fetchJobApplicationsByApplicantName,
   uploadJobApplication,
   getResumeUrl,
+  updateJobApplicationStatus,
 };

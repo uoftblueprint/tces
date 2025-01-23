@@ -17,7 +17,8 @@ import AddJobDetails from "./job-info-form";
 import AddApplicationFields from "./application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
 import UserType from "../../prop-types/UserType";
-import createJobPost from "./mockResponse";
+import { createJobPost } from "../../utils/job_posts_api";
+// import createJobPost from "./mockResponse";
 import PostingResultDialog from "./posting-result-dialog";
 
 function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
@@ -33,7 +34,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_DRAFT = {
     isSuccess: true,
     message: "Your job posting was saved",
-    handleClose: () => navigate("/dashboard"),
+    handleClose: () => navigate("/job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_DRAFT = {
@@ -45,7 +46,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_PUBLISH = {
     isSuccess: true,
     message: "Your job posting was published",
-    handleClose: () => navigate("/dashboard"),
+    handleClose: () => navigate("/job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_PUBLISH = {
@@ -76,18 +77,17 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
 
   const handleSubmit = async (e, postState) => {
     const DRAFT = "Draft";
+    jobPostData.jobInfo.state = postState // eslint-disable-line no-param-reassign
     const updatedJobPost = { ...jobPostData, state: postState };
-    updateJobPostData("state", postState);
 
     setIsLoading(true);
     try {
       const response = await createJobPost(
-        updatedJobPost,
+        updatedJobPost.jobInfo,
         currUser.userID,
         currUser.userID,
       );
-
-      if (response.ok) {
+      if (response.status === "success") {
         setResultModalValues(
           postState === DRAFT ? SUCCESS_DRAFT : SUCCESS_PUBLISH,
         );
@@ -231,7 +231,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
                       variant="contained"
                       disabled={isLoading}
                       disableElevation
-                      onClick={() => handleSubmit(null, "Publish")}
+                      onClick={() => handleSubmit(null, "Active")}
                     >
                       PUBLISH
                     </Button>
