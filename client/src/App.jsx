@@ -22,6 +22,7 @@ import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
+import DataTable from "./components/job-application-table-component";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -253,8 +254,21 @@ function App() {
                 </AuthGuard>
               }
             />
-          </Route>
 
+            <Route
+              path="/job-applications"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <DataTable
+              
+                  />
+                </AuthGuard>
+              }
+            />
+          </Route>
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
