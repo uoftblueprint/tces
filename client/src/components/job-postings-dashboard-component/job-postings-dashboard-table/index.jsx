@@ -268,7 +268,7 @@ export default function JobPostingsDashboardTableComponent() {
             },
           }}
           startIcon={<AddIcon />}
-          onClick={() => navigate("/job-posts/add")}
+          onClick={() => navigate("/job-postings/add")}
         >
           NEW
         </Button>
