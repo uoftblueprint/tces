@@ -10,6 +10,8 @@ const getJobPostRequestHandler = require("../controllers/job_posts/getOneJobPost
 
 const getAllJobPostsRequestHandler = require("../controllers/job_posts/getAllJobPosts");
 
+const getAllActiveJobPostsRequestHandler = require("../controllers/job_posts/getAllActiveJobPosts");
+
 const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
@@ -92,6 +94,14 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
  * - isLoggedIn: Ensures that the user is authenticated before allowing the creation of job postings.
  */
 router.post("/", isLoggedIn, addJobPostRequestHandler);
+
+/**
+ * Get all active/public job posts info
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/active", getAllActiveJobPostsRequestHandler);
 
 /**
  * Update a specific job post's info, with id job_post_id

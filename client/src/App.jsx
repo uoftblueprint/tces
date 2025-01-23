@@ -30,6 +30,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 // data loading wrappers
 import Navbar from "./components/shared/navbar-component/Navbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
+import JobPostingsDashboard from "./pages/job-postings-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
 import EditJobLead from "./pages/edit-job-lead";
 import AddJobPostPage from "./pages/add-job-post";
@@ -237,7 +238,23 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/job-postings"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobPostingsDashboard
+                    managedJobLeads={managedJobLeads}
+                    setManagedJobLeads={setManagedJobLeads}
+                    getUserById={getUserById}
+                  />
+                </AuthGuard>
+              }
+            />
           </Route>
+
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
@@ -354,7 +371,7 @@ function App() {
               }
             />
             <Route
-              path="/job-posts/add"
+              path="/job-postings/add"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
