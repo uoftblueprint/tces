@@ -406,7 +406,7 @@ function JobPostingPage() {
                 margin="normal"
               />
               <Grid container spacing={2}>
-                <Grid item xs={application.statusInCanada === "other" ? 6 : 12}>
+                <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
                   <FormControl fullWidth margin="normal" required>
                     <InputLabel>Status in Canada</InputLabel>
                     <Select
