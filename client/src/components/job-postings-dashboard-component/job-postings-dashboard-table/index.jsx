@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -13,12 +14,6 @@ import {
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
-} from "@mui/x-data-grid-generator";
-import {
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,63 +23,45 @@ import {
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
+import { getAllJobPosts} from "../../../utils/job_posts_api";
 
-const statuses = ["Active", "Draft", "Inactive"];
-const randomStatus = () => randomArrayItem(statuses);
-
-const initialRows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company A",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company B",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company C",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company D",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company E",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-];
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
-  const [rows, setRows] = React.useState(initialRows);
+  const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
 
+  useEffect(() => {
+    const fetchJobPosts = async () => {
+      try {
+        const response = await getAllJobPosts(""); 
+        const data = await response.json();
+        console.log(data.allJobPosts.data[0].close_date)
+        const formattedData = data.allJobPosts.data.map((jobPost) => ({
+          id: jobPost.id,
+          jobTitle: jobPost.title,
+          employer: jobPost.employer,
+          closeDate: jobPost.close_date,
+          state: jobPost.state,
+        }));
+
+        setRows(formattedData);
+      } catch (error) {
+        console.error("Error fetching job posts:", error.message);
+      }
+    };
+    fetchJobPosts();
+  }, []);
   const handleSort = (sortOption) => {
     const sortedRows = [...rows].sort((a, b) => {
       if (sortOption === "ascending") {
-        return new Date(a.joinDate) - new Date(b.joinDate);
+        return new Date(a.closeDate) - new Date(b.closeDate);
       }
       if (sortOption === "descending") {
-        return new Date(b.joinDate) - new Date(a.joinDate);
+        return new Date(b.closeDate) - new Date(a.closeDate);
       }
       return 0;
     });
@@ -105,6 +82,7 @@ export default function JobPostingsDashboardTableComponent() {
         : [...prevSelectedRows, id]
     );
   };
+
 
   const handleEditClick = (id) => () => {
     setRowModesModel((prevModel) => ({
@@ -140,6 +118,10 @@ export default function JobPostingsDashboardTableComponent() {
     handleCloseDialog();
   };
 
+    const handleJobLeadNavClick = (jobLeadId) => {
+    navigate(`/job-postings/${jobLeadId}`);
+  };
+
   const columns = [
     {
       width: 60,
@@ -154,15 +136,31 @@ export default function JobPostingsDashboardTableComponent() {
       ),
     },
     {
-      field: "name",
+      field: "jobTitle",
       headerName: "Title",
       flex: 1,
       editable: true,
       cellClassName: "wrap-text",
       headerClassName: "header-class",
+      renderCell: (params) => (
+        <Button
+          onClick={() => handleJobLeadNavClick(params.row.jobLeadID)}
+          style={{
+            textDecoration: "underline",
+            color: "#3568E5",
+            textTransform: "none",
+            padding: 0,
+            textAlign: "left",
+            justifyContent: "flex-start",
+          }}
+        >
+          {params.value}
+        </Button>
+      ),
+      
     },
     {
-      field: "age",
+      field: "employer",
       headerName: "Employer",
       type: "string",
       flex: 1,
@@ -170,16 +168,18 @@ export default function JobPostingsDashboardTableComponent() {
       headerClassName: "header-class",
     },
     {
-      field: "joinDate",
+      field: "closeDate",
       headerName: "Close Date",
       type: "date",
-      width: 200,
+      width: 400,
       headerClassName: "header-class",
+      valueGetter: (params) => new Date(params.row.closeDate)
+
     },
     {
-      field: "status",
+      field: "state",
       headerName: "Status",
-      width: 200,
+      width: 100,
       type: "singleSelect",
       renderCell: (params) => (
         <JobTypeChipsComponent jobTypes={[params.value]} />
@@ -268,7 +268,7 @@ export default function JobPostingsDashboardTableComponent() {
             },
           }}
           startIcon={<AddIcon />}
-          onClick={() => navigate("/job-posts/add")}
+          onClick={() => navigate("/job-postings/add")}
         >
           NEW
         </Button>
