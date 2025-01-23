@@ -148,9 +148,12 @@ function JobPostingPage() {
   };
 
   const addCustomResponse = () => {
-    setApplication((prev) => ({
-      ...prev,
-      customResponses: [...prev.customResponses, { question: "", answer: "" }],
+    setApplication((prevApp) => ({
+      ...prevApp,
+      customResponses: [
+        ...prevApp.customResponses,
+        { id: uuidv4(), question: "", answer: "" },
+      ],
     }));
   };
 
@@ -441,7 +444,10 @@ function JobPostingPage() {
                   Custom Responses
                 </Typography>
                 {application.customResponses.map((response, index) => (
-                  <Box key={uuidv4()} sx={{ display: "flex", gap: 2, mt: 2 }}>
+                  <Box
+                    key={response.id || index}
+                    sx={{ display: "flex", gap: 2, mt: 2 }}
+                  >
                     <TextField
                       fullWidth
                       required
