@@ -1,6 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Menu, MenuItem, Radio, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Radio,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -72,7 +79,10 @@ function SortMenu({ applySort }) {
         </MenuItem>
         <MenuItem onClick={(event) => handleSelect(event, "descending")}>
           <ListItemIcon>
-            <Radio checked={selectedValue === "descending"} value="descending" />
+            <Radio
+              checked={selectedValue === "descending"}
+              value="descending"
+            />
           </ListItemIcon>
           <ListItemText primary="Close date: Descending" />
         </MenuItem>

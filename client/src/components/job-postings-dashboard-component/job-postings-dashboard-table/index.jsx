@@ -93,7 +93,7 @@ export default function JobPostingsDashboardTableComponent() {
 
   const handleStatus = (sortOption) => {
     const setStatus = rows.filter(
-      (row) => row.status.toLocaleLowerCase() === sortOption
+      (row) => row.status.toLocaleLowerCase() === sortOption,
     );
     setRows(setStatus);
   };
@@ -102,7 +102,7 @@ export default function JobPostingsDashboardTableComponent() {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
         ? prevSelectedRows.filter((rowId) => rowId !== id)
-        : [...prevSelectedRows, id]
+        : [...prevSelectedRows, id],
     );
   };
 
@@ -275,11 +275,11 @@ export default function JobPostingsDashboardTableComponent() {
       </Box>
       <Box
         sx={{
-          padding: "20px", 
-          marginTop: "20px", 
-          marginLeft: "20px", 
-          marginRight: "20px", 
-          borderRadius: "8px", 
+          padding: "20px",
+          marginTop: "20px",
+          marginLeft: "20px",
+          marginRight: "20px",
+          borderRadius: "8px",
         }}
       >
         <DataGrid
