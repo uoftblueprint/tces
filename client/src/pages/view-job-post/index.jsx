@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
@@ -35,7 +36,26 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
 }));
 
-function JobPostingPage({ jobPosting, statusOptions, onSubmit }) {
+function JobPostingPage() {
+  const jobPosting = {
+    title: "Software Engineer",
+    employer: "Tech Corp",
+    location: "Toronto, ON",
+    compensation: { min: 70000, max: 120000, frequency: "yearly" },
+    jobType: "Full-time",
+    hoursPerWeek: 40,
+    closeDate: "2025-01-31",
+    description:
+      "We are looking for a skilled Software Engineer to join our team. The role requires expertise in developing robust web applications and collaborating with cross-functional teams to deliver high-quality software. Responsibilities include writing clean code, performing code reviews, and ensuring the scalability of our system. Additionally, the candidate should have experience with cloud services and DevOps tools. This is a fantastic opportunity to join a fast-growing company and make a real impact.",
+  };
+
+  const statusOptions = [
+    { value: "citizen", label: "Citizen" },
+    { value: "permanent_resident", label: "Permanent Resident" },
+    { value: "temporary_work_permit", label: "Temporary Work Permit" },
+    { value: "other", label: "Other" },
+  ];
+
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
     name: "",
@@ -211,6 +231,53 @@ function JobPostingPage({ jobPosting, statusOptions, onSubmit }) {
 
   return (
     <StyledContainer maxWidth="lg">
+      {/* Top Section with Job Title and Company */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          padding: "16px 24px",
+          marginBottom: 3,
+          backgroundColor: "#fff", // White background
+          borderBottom: "1px solid rgba(0, 0, 0, 0.12)", // Bottom border to separate
+        }}
+      >
+        {/* Back Button */}
+        <IconButton
+          sx={{ marginRight: 2 }}
+          onClick={() => window.history.back()} // Navigate back
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            width="24"
+            height="24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </IconButton>
+
+        {/* Title and Employer */}
+        <Box>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "bold", marginBottom: 0.5 }}
+          >
+            {jobPosting.title}
+          </Typography>
+          <Typography variant="h6" sx={{ color: "gray" }}>
+            {jobPosting.employer}
+          </Typography>
+        </Box>
+      </Box>
+
       {/* Left Section */}
       <Grid container spacing={4}>
         <Grid item xs={12} md={5}>
@@ -550,7 +617,6 @@ function JobPostingPage({ jobPosting, statusOptions, onSubmit }) {
                   sx={{
                     width: "365px",
                   }}
-                  onClick={onSubmit}
                 >
                   Submit Application
                 </Button>
