@@ -26,6 +26,7 @@ import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips
 
 const mockdata = [
   {
+    id: 1,
     title: "Sales Account Manager",
     employer: "Aquatech",
     location: "Greater Toronto Area",
@@ -34,6 +35,7 @@ const mockdata = [
     url: "https://example.com/job/sales-account-manager",
   },
   {
+    id: 2,
     title: "Senior Portfolio Administrator",
     employer: "Rally Assets",
     location: "Spadina & Adelaide",
@@ -42,6 +44,7 @@ const mockdata = [
     url: "https://example.com/job/senior-portfolio-administrator",
   },
   {
+    id: 3,
     title: "Special Events Intern",
     employer: "National Ballet of Canada",
     location: "Spadina & Lakeshore",
@@ -49,14 +52,17 @@ const mockdata = [
     closeDate: "11/20/2024",
     url: "https://example.com/job/special-events-intern",
   },
-  ...Array(100).fill({
-    title: "Example Job Title",
-    employer: "Example Employer",
-    location: "Example Location",
-    jobTypes: ["Full-Time"],
-    closeDate: "12/01/2024",
-    url: "https://example.com/job/example-job-title",
-  }),
+  ...Array(100)
+    .fill(null)
+    .map((_, index) => ({
+      id: 4 + index, // Start from 4 since there are already 3 entries
+      title: "Example Job Title",
+      employer: "Example Employer",
+      location: "Example Location",
+      jobTypes: ["Full-Time"],
+      closeDate: "12/01/2024",
+      url: "https://example.com/job/example-job-title",
+    })),
 ];
 
 function JobPostingsClientDashboardTableComponent() {
@@ -99,7 +105,7 @@ function JobPostingsClientDashboardTableComponent() {
         </TableHead>
         <TableBody>
           {mockdata.slice(startRow - 1, endRow).map((row, index) => (
-            <TableRow key={index}>
+            <TableRow key={row.id}>
               <TableCell>
                 <a
                   href={row.url}
