@@ -70,7 +70,7 @@ export default function JobPostingsDashboardTableComponent() {
 
   const handleStatus = (sortOption) => {
     const setStatus = rows.filter(
-      (row) => row.status.toLocaleLowerCase() === sortOption
+      (row) => row.state.toLocaleLowerCase() === sortOption
     );
     setRows(setStatus);
   };
@@ -118,7 +118,7 @@ export default function JobPostingsDashboardTableComponent() {
     handleCloseDialog();
   };
 
-    const handleJobLeadNavClick = (jobLeadId) => {
+    const handleJobPostingsNavClick = (jobLeadId) => {
     navigate(`/job-postings/${jobLeadId}`);
   };
 
@@ -144,7 +144,7 @@ export default function JobPostingsDashboardTableComponent() {
       headerClassName: "header-class",
       renderCell: (params) => (
         <Button
-          onClick={() => handleJobLeadNavClick(params.row.jobLeadID)}
+          onClick={() => handleJobPostingsNavClick(params.row.jobLeadID)}
           style={{
             textDecoration: "underline",
             color: "#3568E5",
