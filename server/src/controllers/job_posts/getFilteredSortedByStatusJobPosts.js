@@ -1,6 +1,5 @@
 const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
-const { Op } = require("sequelize");
 
 const getFilteredSortedByStatusJobPostsRequestHandler = async (req, res) => {
   // check method is GET
@@ -40,8 +39,8 @@ const getFilteredSortedByStatusJobPostsRequestHandler = async (req, res) => {
     // get pagination parameters:
     const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
     const pageSize = req?.query?.pageSize
-        ? parseInt(req.query.pageSize, 10)
-        : null;
+      ? parseInt(req.query.pageSize, 10)
+      : null;
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
