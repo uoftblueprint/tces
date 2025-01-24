@@ -93,6 +93,7 @@ const getResumeUrl = async (jobApplicationId) => {
 
   const result = await response.json();
   return result;
+}
 
 const updateJobApplicationStatus = async (
   jobApplicationId,
