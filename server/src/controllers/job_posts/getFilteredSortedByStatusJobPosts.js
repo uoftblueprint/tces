@@ -44,7 +44,7 @@ const getFilteredSortedByStatusJobPostsRequestHandler = async (req, res) => {
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
-      searchConfig.offset = page * pageSize;
+      searchConfig.offset = (page - 1) * pageSize;
     }
 
     const allJobPosts = await JobPosting.findAndCountAll(searchConfig);

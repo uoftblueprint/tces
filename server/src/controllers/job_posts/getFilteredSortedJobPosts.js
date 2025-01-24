@@ -1,5 +1,5 @@
 const logger = require("pino")();
-const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 const JobPosting = require("../../models/job_posts.model");
 
 const getFilteredSortedJobPostsRequestHandler = async (req, res) => {
@@ -20,9 +20,9 @@ const getFilteredSortedJobPostsRequestHandler = async (req, res) => {
     }
 
     if (job_type) {
-      query.job_type = {
-        [Op.contains]: [job_type],
-      };
+      query.job_type = Sequelize.literal(  
+        `JSON_CONTAINS(job_postings.job_type, '["${job_type}"]')`
+      );
     }
 
     const sortOrder = order === "ascending" ? "ASC" : "DESC";
@@ -51,7 +51,7 @@ const getFilteredSortedJobPostsRequestHandler = async (req, res) => {
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
-      searchConfig.offset = page * pageSize;
+      searchConfig.offset = (page - 1) * pageSize;
     }
 
     const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
