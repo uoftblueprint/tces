@@ -22,7 +22,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 // Imported Components
-import JobTypeChipsComponent from "../../components/view-job-posts-component/job-type-chips-component";
+import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
 const mockdata = [
   {
