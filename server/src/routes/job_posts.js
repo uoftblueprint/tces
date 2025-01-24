@@ -23,6 +23,28 @@ const getFilteredSortedJobPostsRequestHandler = require("../controllers/job_post
 const getFilteredSortedByStatusJobPostsRequestHandler = require("../controllers/job_posts/getFilteredSortedByStatusJobPosts");
 
 /**
+ * Get all active/public job posts info
+ * Expected parameters:
+ * @type integer (in url) {params.page}
+ * @type integer (in url) {params.pageSize}
+ */
+router.get("/active", getAllActiveJobPostsRequestHandler);
+
+/**
+ * Get all possible locations across all jobs
+ */
+router.get("/locations", getAllLocationsRequestHandler);
+
+/**
+ * Get Job Posts for a specific location and/or specific job type, and sort by application_close_date
+ * Expected parameters:
+ * @type string (in query) {query.location}
+ * @type string (in query) {query.job_type}
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ */
+router.get("/filter", getFilteredSortedJobPostsRequestHandler);
+
+/**
  * Add a New Job Posting
  *
  * Creates a new job posting based on the provided data in the request body.
@@ -102,12 +124,32 @@ const getFilteredSortedByStatusJobPostsRequestHandler = require("../controllers/
 router.post("/", isLoggedIn, addJobPostRequestHandler);
 
 /**
- * Get all active/public job posts info
+ * Get all job posts info
  * Expected parameters:
  * @type integer (in url) {params.page}
  * @type integer (in url) {params.pageSize}
  */
-router.get("/active", getAllActiveJobPostsRequestHandler);
+router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
+
+/*
+ * Get a specific job post's info, with id job_post_id
+ *
+ * Expected parameters:
+ * @type integer (in url) {params.job_post_id}
+ */
+router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
+
+/**
+ * Get Job Posts sorted by application_close_date and/or filter by status
+ * Expected parameters:
+ * @type string (in query) {query.status}
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ */
+router.get(
+  "/filterByStatus",
+  isLoggedIn,
+  getFilteredSortedByStatusJobPostsRequestHandler,
+);
 
 /**
  * Update a specific job post's info, with id job_post_id
@@ -122,22 +164,6 @@ router.get("/active", getAllActiveJobPostsRequestHandler);
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
 router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
-
-/*
- * Get a specific job post's info, with id job_post_id
- *
- * Expected parameters:
- * @type integer (in url) {params.job_post_id}
- */
-router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
-
-/**
- * Get all job posts info
- * Expected parameters:
- * @type integer (in url) {params.page}
- * @type integer (in url) {params.pageSize}
- */
-router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
@@ -167,27 +193,5 @@ router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
  * - isLoggedIn: Ensures that the user is authenticated before allowing the deletion operation.
  */
 router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
-
-/**
- * Get all possible locations across all jobs
- */
-router.get("/locations", getAllLocationsRequestHandler);
-
-/**
- * Get Job Posts for a specific location and/or specific job type, and sort by application_close_date
- * Expected parameters:
- * @type string (in query) {query.location}
- * @type string (in query) {query.job_type}
- * @type string (in query) {query.order} - "ascending" or "descending"
- */
-router.get("/filter", getFilteredSortedJobPostsRequestHandler);
-
-/**
- * Get Job Posts sorted by application_close_date and/or filter by status
- * Expected parameters:
- * @type string (in query) {query.status}
- * @type string (in query) {query.order} - "ascending" or "descending"
- */
-router.get("/filterByStatus", getFilteredSortedByStatusJobPostsRequestHandler);
 
 module.exports = router;

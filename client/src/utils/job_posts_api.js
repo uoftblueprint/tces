@@ -111,7 +111,7 @@ const getOneJobPost = async (jobPostId) => {
 const getAllLocations = async () => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/locations`,
+    `${REACT_APP_API_BASE_URL}/job_postings/locations`,
     {
       method: "GET",
       credentials: "include",
@@ -126,7 +126,7 @@ const getAllLocations = async () => {
 const getFilteredSortedJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/filter?${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/filter?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
@@ -141,7 +141,7 @@ const getFilteredSortedJobPosts = async (queryParams) => {
 const getFilteredSortedByStatusJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/filterByStatus?${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/filterByStatus?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
