@@ -116,8 +116,14 @@ function JobPostingsClientDashboardTableComponent() {
               </TableCell>
               <TableCell>{row.employer}</TableCell>
               <TableCell>
-                <LocationOnIcon sx={{ color: "gray", marginRight: 1 }} />
-                {row.location}
+               <LocationOnIcon
+                  sx={{
+                    color: "gray",
+                    verticalAlign: "middle",
+                    marginRight: 1,
+                  }}
+                />
+                <span style={{ verticalAlign: "middle" }}>{row.location}</span>
               </TableCell>
               <TableCell>
                 <Box
