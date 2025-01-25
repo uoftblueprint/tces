@@ -68,7 +68,7 @@ describe("getAllJobPostsRequestHandler test suite", () => {
 
   it("Handles pagination correctly", async () => {
     // Simulate a request for page 2 with pageSize 2
-    mockReq.query = { page: "1", pageSize: "2" };
+    mockReq.query = { page: "2", pageSize: "2" };
 
     await getAllJobPostsRequestHandler(mockReq, mockRes);
 
@@ -79,7 +79,7 @@ describe("getAllJobPostsRequestHandler test suite", () => {
       allJobPosts: {
         totalPosts: 4, // Total posts in the database
         totalPages: 2, // With pageSize of 2, there are 2 total pages
-        currentPage: 1, // Page 1 (0-based indexing)
+        currentPage: 2, // Page 2
         data: [
           { id: 3, title: "Web Developer", state: "Active" },
           { id: 4, title: "DevOps Engineer", state: "Draft" },
