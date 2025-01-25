@@ -39,7 +39,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
 }));
 
-function JobPostingPage({ jobPosting, statusOptions, handleSubmit }) {
+function JobPostingPage({ jobPosting }) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
     name: "",
@@ -50,6 +50,57 @@ function JobPostingPage({ jobPosting, statusOptions, handleSubmit }) {
     otherStatus: "",
     customResponses: [],
   });
+
+  const statusOptions = [
+    { value: "Citizen", label: "Citizen" },
+    { value: "PR", label: "Permanent Resident" },
+    { value: "Refugee", label: "Refugee" },
+    { value: "Student Visa", label: "Student Visa" },
+    { value: "Open Work", label: "Open Work" },
+    { value: "Other", label: "Other" },
+  ];
+
+  const handleSubmit = async (event, token) => {
+    event.preventDefault();
+
+    if (!file) {
+      alert("Please upload a resume.");
+      return;
+    }
+
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA verification.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("job_posting_id", "67");
+      formData.append("name", application.name);
+      formData.append("email", application.emailAddress);
+      formData.append("phone", application.phone);
+      formData.append("postal_code", application.postalCode);
+      formData.append("resume", file);
+      formData.append("status_in_canada", application.statusInCanada);
+      formData.append("application_status", "New");
+      formData.append(
+        "custom_responses",
+        JSON.stringify(application.customResponses),
+      );
+      formData.append("token", recaptchaToken);
+
+      const response = await uploadJobApplication(formData, recaptchaToken);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit application");
+      }
+
+      alert("Application submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting application:", error.message);
+      alert("An error occurred while submitting your application.");
+    }
+  };
 
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
