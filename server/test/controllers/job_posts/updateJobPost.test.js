@@ -112,6 +112,10 @@ describe("updateJobPostsRequestHandler test suite", () => {
       body: { state: "Active" }, // Missing required fields
     };
 
+    mockUpdateJobPost.findOne = async () => {
+      return { id: 123, state: "Draft" };
+    };
+
     await updateJobPostsRequestHandler(mockReq, mockRes);
 
     expect(mockRes.statusCode).toBe(400);
