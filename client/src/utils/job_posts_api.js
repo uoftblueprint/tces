@@ -118,36 +118,6 @@ const getAllLocations = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-    }
-  );
-  return response;
-};
-
-const getFilteredSortedJobPosts = async (queryParams) => {
-  // eslint-disable-next-line no-useless-catch
-  const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings/filter?${queryParams}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-  return response;
-};
-
-const getFilteredSortedByStatusJobPosts = async (queryParams) => {
-  // eslint-disable-next-line no-useless-catch
-  const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings/filterByStatus?${queryParams}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
     },
   );
   return response;
@@ -161,6 +131,4 @@ module.exports = {
   getAllActiveJobPosts,
   getOneJobPost,
   getAllLocations,
-  getFilteredSortedJobPosts,
-  getFilteredSortedByStatusJobPosts,
 };
