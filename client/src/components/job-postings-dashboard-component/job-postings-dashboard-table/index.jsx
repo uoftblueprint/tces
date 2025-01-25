@@ -33,13 +33,21 @@ export default function JobPostingsDashboardTableComponent() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
-
+  const [paginationModel, setPaginationModel] = useState({ page: 1, pageSize: 10 });
+  const [filterStatus, setFilterStatus] = useState(""); 
+  const [sortOrder, setSortOrder] = useState(""); 
   useEffect(() => {
     const fetchJobPosts = async () => {
       try {
-        const response = await getAllJobPosts(""); 
+
+        const queryParams = new URLSearchParams({
+          status: filterStatus,
+          order: sortOrder, 
+        });
+        console.log("test",queryParams.toString())
+        const response = await getAllJobPosts(`?${queryParams.toString()}`); 
         const data = await response.json();
-        console.log(data.allJobPosts.data[0].close_date)
+        console.log(data.allJobPosts.data)
         const formattedData = data.allJobPosts.data.map((jobPost) => ({
           id: jobPost.id,
           jobTitle: jobPost.title,
@@ -54,25 +62,15 @@ export default function JobPostingsDashboardTableComponent() {
       }
     };
     fetchJobPosts();
-  }, []);
-  const handleSort = (sortOption) => {
-    const sortedRows = [...rows].sort((a, b) => {
-      if (sortOption === "ascending") {
-        return new Date(a.closeDate) - new Date(b.closeDate);
-      }
-      if (sortOption === "descending") {
-        return new Date(b.closeDate) - new Date(a.closeDate);
-      }
-      return 0;
-    });
-    setRows(sortedRows);
-  };
+  }, [paginationModel, filterStatus, sortOrder]);
 
-  const handleStatus = (sortOption) => {
-    const setStatus = rows.filter(
-      (row) => row.state.toLocaleLowerCase() === sortOption
-    );
-    setRows(setStatus);
+
+  const handleStatusChange = (status) => {
+    setFilterStatus(status);
+  };
+  
+  const handleSortOrderChange = (order) => {
+    setSortOrder(order);
   };
 
   const handleCheckboxChange = (id) => {
@@ -249,9 +247,9 @@ export default function JobPostingsDashboardTableComponent() {
             marginLeft: "40px",
           }}
         >
-          <JobPostsSortMenuComponent applySort={handleSort} />
+          <JobPostsSortMenuComponent applySort={(order) => handleSortOrderChange(order)} />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <JobPostsStatusMenuComponent applySort={handleStatus} />
+          <JobPostsStatusMenuComponent applySort={(status) => handleStatusChange(status)} />
         </Box>
         <Button
           sx={{
@@ -288,6 +286,11 @@ export default function JobPostingsDashboardTableComponent() {
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
+          pagination
+          paginationModel={paginationModel}
+          pageSizeOptions={[10, 25, 50]} 
+
+          onPaginationModelChange={(newModel) => setPaginationModel(newModel)}
           onRowEditStop={(params, event) => {
             if (params.reason === GridRowEditStopReasons.rowFocusOut) {
               event.preventDefault();
