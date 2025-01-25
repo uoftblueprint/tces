@@ -59,8 +59,8 @@ const getAllActiveJobPostsRequestHandler = async (req, res) => {
     // -------- Response:
     const response = {
       status: "success",
-      message: "All job posts found successfully",
-      allJobPosts: {
+      message: "All active job posts found successfully",
+      publicJobPosts: {
         totalPosts: allJobPosts.count,
         totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
         currentPage: page,
