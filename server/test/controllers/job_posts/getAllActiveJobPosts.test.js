@@ -1,23 +1,23 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
 const mock = require("mock-require");
-const mockGetAllJobPosts = require("../mocks/mockGetAllActiveJobPosts");
+const mockGetAllJobPosts = require("../../mocks/mockGetAllActiveJobPosts");
 
 let getAllActiveJobPostsRequestHandler;
 
 beforeEach(() => {
   // Mock the JobPosting model
-  mock("../../src/models/job_posts.model", mockGetAllJobPosts);
+  mock("../../../src/models/job_posts.model", mockGetAllJobPosts);
 
   // Re-require the handler to apply the mock
   getAllActiveJobPostsRequestHandler = mock.reRequire(
-    "../../src/controllers/job_posts/getAllActiveJobPosts",
+    "../../../src/controllers/job_posts/getAllActiveJobPosts",
   );
 });
 
 afterEach(() => {
   // Reset mocks after every test
-  mock.stop("../../src/models/job_posts.model");
+  mock.stop("../../../src/models/job_posts.model");
 });
 
 describe("getAllActiveJobPostsRequestHandler test suite", () => {

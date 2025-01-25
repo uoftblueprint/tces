@@ -208,8 +208,7 @@ function JobPostingsDashboardComponent({
             width: "100%",
           }}
         />
-        <JobPostingsDashboardTableComponent
-      />
+        <JobPostingsDashboardTableComponent />
       </LoadingScreenComponent>
     </DashboardContainer>
   );
