@@ -20,6 +20,8 @@ import CreateClient from "./pages/create-client";
 import EmployerPage from "./pages/employer";
 import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
+import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
+
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 
@@ -123,7 +125,7 @@ function App() {
             />
           }
         >
-          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route path="/" element={<Navigate to="/job-postings-client" />} />
           <Route
             path="/signin"
             element={
@@ -253,7 +255,14 @@ function App() {
                 </AuthGuard>
               }
             />
+            <Route
+              path="/job-postings-client"
+              element={
+                  <JobPostingsClientDashboard />
+              }
+            />
           </Route>
+
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
