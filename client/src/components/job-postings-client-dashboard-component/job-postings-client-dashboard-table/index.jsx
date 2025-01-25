@@ -104,7 +104,7 @@ function JobPostingsClientDashboardTableComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {mockdata.slice(startRow - 1, endRow).map((row, index) => (
+          {mockdata.slice(startRow - 1, endRow).map((row) => (
             <TableRow key={row.id}>
               <TableCell>
                 <a
