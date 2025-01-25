@@ -4,6 +4,7 @@ const path = require("path");
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
 const { uploadFileToS3 } = require("../../utils/s3");
+const validateRecaptchaToken = require("../../utils/validateRecaptchaToken");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -17,7 +18,16 @@ const addJobApplicationRequestHandler = async (req, res) => {
       status_other: statusOther,
       application_status: applicationStatus = "New",
       custom_responses: customResponses = {},
+      token,
     } = req.body;
+
+    const validation = await validateRecaptchaToken(token);
+
+    if (!validation) {
+      return res
+        .status(400)
+        .json({ error: "Could not validate reCAPTCHA token." });
+    }
 
     const resume = req.file;
 
