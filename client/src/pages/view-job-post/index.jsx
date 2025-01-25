@@ -25,7 +25,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { uploadJobApplication } from "../../utils/job_applications_api";
+
+const uploadJobApplication = () => {};
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -38,7 +39,6 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
 }));
 
-// eslint-disable-next-line react/prop-types
 function JobPostingPage({ jobPosting, statusOptions, handleSubmit }) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
@@ -149,47 +149,6 @@ function JobPostingPage({ jobPosting, statusOptions, handleSubmit }) {
   const handleRecaptchaChange = (token) => {
     setRecaptchaToken(token);
   };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   if (!file) {
-  //     alert("Please upload a resume.");
-  //     return;
-  //   }
-
-  //   if (!recaptchaToken) {
-  //     alert("Please complete the reCAPTCHA verification.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("job_posting_id", "67");
-  //     formData.append("name", application.name);
-  //     formData.append("email", application.emailAddress);
-  //     formData.append("phone", application.phone);
-  //     formData.append("postal_code", application.postalCode);
-  //     formData.append("resume", file);
-  //     formData.append("status_in_canada", application.statusInCanada);
-  //     formData.append("application_status", "New");
-  //     formData.append(
-  //       "custom_responses",
-  //       JSON.stringify(application.customResponses),
-  //     );
-
-  //     const response = await uploadJobApplication(formData, recaptchaToken);
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to submit application");
-  //     }
-
-  //     alert("Application submitted successfully!");
-  //   } catch (error) {
-  //     console.error("Error submitting application:", error.message);
-  //     alert("An error occurred while submitting your application.");
-  //   }
-  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
