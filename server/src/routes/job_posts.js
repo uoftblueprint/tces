@@ -16,6 +16,24 @@ const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
+const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
+
+/**
+ * Get Active Job Posts for a specific location and/or specific job type, and sort by application_close_date
+ * Expected parameters:
+ * @type string (in query) {query.location}
+ * @type string (in query) {query.job_type}
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ * @type integer (in query) {query.page}
+ * @type integer (in query) {query.pageSize}
+ */
+router.get("/active", getAllActiveJobPostsRequestHandler);
+
+/**
+ * Get all possible locations across all jobs
+ */
+router.get("/locations", getAllLocationsRequestHandler);
+
 /**
  * Add a New Job Posting
  *
@@ -96,12 +114,22 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 router.post("/", isLoggedIn, addJobPostRequestHandler);
 
 /**
- * Get all active/public job posts info
+ * Get Job Posts sorted by application_close_date and/or filter by status
  * Expected parameters:
- * @type integer (in url) {params.page}
- * @type integer (in url) {params.pageSize}
+ * @type string (in query) {query.status}
+ * @type string (in query) {query.order} - "ascending" or "descending"
+ * @type integer (in query) {query.page}
+ * @type integer (in query) {query.pageSize}
  */
-router.get("/active", getAllActiveJobPostsRequestHandler);
+router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
+
+/*
+ * Get a specific job post's info, with id job_post_id
+ *
+ * Expected parameters:
+ * @type integer (in url) {params.job_post_id}
+ */
+router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
 
 /**
  * Update a specific job post's info, with id job_post_id
@@ -116,22 +144,6 @@ router.get("/active", getAllActiveJobPostsRequestHandler);
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
 router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
-
-/*
- * Get a specific job post's info, with id job_post_id
- *
- * Expected parameters:
- * @type integer (in url) {params.job_post_id}
- */
-router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
-
-/**
- * Get all job posts info
- * Expected parameters:
- * @type integer (in url) {params.page}
- * @type integer (in url) {params.pageSize}
- */
-router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications
