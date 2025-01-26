@@ -18,7 +18,7 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
 
-const getPublicJobPostRequestHandler = require("../controllers/job_posts/getOneActiveJobPost");
+const getActiveJobPostRequestHandler = require("../controllers/job_posts/getOneActiveJobPost");
 
 /**
  * Get Active Job Posts for a specific location and/or specific job type, and sort by application_close_date
@@ -41,7 +41,7 @@ router.get("/locations", getAllLocationsRequestHandler);
  * Expected parameters:
  * @type string {params.job_posting_id}
  */
-router.get("/active/:job_posting_id", getPublicJobPostRequestHandler);
+router.get("/active/:job_posting_id", getActiveJobPostRequestHandler);
 
 /**
  * Add a New Job Posting

@@ -42,6 +42,12 @@ const getJobPostRequestHandler = async (req, res) => {
       attributes: requiredFields,
     });
 
+    if (!jobPost) {
+      return res
+        .status(404)
+        .json({ message: `No job post with id ${job_posting_id} found.` });
+    }
+
     // -------- Response:
     const response = {
       status: "success",

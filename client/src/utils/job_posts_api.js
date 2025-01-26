@@ -107,7 +107,7 @@ const getOneJobPost = async (jobPostId) => {
   return response;
 };
 
-const getOnePublicJobPost = async (jobPostId) => {
+const getOneActiveJobPost = async (jobPostId) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_postings/active/${jobPostId}`,
@@ -143,5 +143,5 @@ module.exports = {
   getAllActiveJobPosts,
   getOneJobPost,
   getAllLocations,
-  getOnePublicJobPost,
+  getOneActiveJobPost,
 };
