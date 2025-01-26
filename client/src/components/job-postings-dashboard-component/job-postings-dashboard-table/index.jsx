@@ -39,10 +39,13 @@ export default function JobPostingsDashboardTableComponent() {
   useEffect(() => {
     const fetchJobPosts = async () => {
       try {
-
+        const { page, pageSize } = paginationModel;
         const queryParams = new URLSearchParams({
+          page: page.toString(),
+          pageSize: pageSize.toString(),
           status: filterStatus,
           order: sortOrder, 
+          
         });
         const response = await getAllJobPosts(`?${queryParams.toString()}`); 
         const data = await response.json();
