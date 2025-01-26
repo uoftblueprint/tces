@@ -10,9 +10,11 @@ const AutocompleteCustomEndAdornment = styled("div")({
   transform: "translate(0, -50%)",
 });
 
-function SearchInput({ options, label }) {
+function SearchInput({ options, label, onChange, selectedValue }) {
   return (
     <Autocomplete
+      value={selectedValue}
+      onChange={onChange}
       disablePortal
       options={options}
       sx={{ width: 300 }}
@@ -44,6 +46,7 @@ SearchInput.propTypes = {
     }),
   ).isRequired,
   label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SearchInput;

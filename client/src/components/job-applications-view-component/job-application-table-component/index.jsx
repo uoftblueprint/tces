@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,10 +10,10 @@ import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 // import { fetchAllJobApplications } from "../../utils/job_applications_api";
 // import { getAllJobPosts } from "../../utils/job_posts_api";
-import "./index.styles";
 import ApplicationStatusChipComponent from "../application-status-chips";
 
-// TODO edit field values here
+// TODO: When resume download is implemented, add feature to the resume download button in table
+
 const tableHeaders = [
   "Job ID #",
   "Title",
@@ -26,10 +25,6 @@ const tableHeaders = [
   "Status",
   "Resume",
 ];
-
-// format postal code and phone number
-// date applied corresopnds to date created
-// const paginationModel = { page: 0, pageSize: 5 };
 
 function DataTable({ jobApplications }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -60,7 +55,7 @@ function DataTable({ jobApplications }) {
   return (
     <Paper sx={{ width: "100%", marginTop: "35px" }}>
       <TableContainer sx={{ width: "100%" }} component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               {tableHeaders.map((title) => (
@@ -76,37 +71,27 @@ function DataTable({ jobApplications }) {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell className=".half-a-border-on-top" align="left">
-                  {row.id}
-                </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
-                  {row.title}
-                </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
-                  {row.name}
-                </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
-                  {row.email}
-                </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
+                <TableCell align="left">{row.id}</TableCell>
+                <TableCell align="left">{row.title}</TableCell>
+                <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{row.email}</TableCell>
+                <TableCell align="left">
                   {formatPhoneNumber(row.phone)}
                 </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
+                <TableCell align="left">
                   {formatPostalCode(row.postal_code)}
                 </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
-
+                <TableCell align="left">
                   {/* Expect createdAt to be formated as date for ease of use here and sorting */}
                   {row.createdAt.toLocaleDateString("en-CA")}
                 </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
+                <TableCell align="left">
                   <ApplicationStatusChipComponent
                     status={[row.application_status]}
                   />
                 </TableCell>
-                <TableCell className=".half-a-border-on-top" align="left">
-                  {/* {row.resume} */}
-                  <DownloadIcon color="primary"/>
+                <TableCell align="left">
+                  <DownloadIcon color="primary" />
                 </TableCell>
               </TableRow>
             ))}

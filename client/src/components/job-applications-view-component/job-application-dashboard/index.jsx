@@ -1,55 +1,32 @@
 // import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Container, Typography } from "@mui/material";
 import DataTable from "../job-application-table-component";
 import SortMenu from "../../shared/job-applications-sort-component";
 import SearchInput from "../search-component";
 
-function JobApplicationDashboard({jobApplications, filterOptions}) {
-// Note: API here returns request promise object, NOT json
-  // const formatJobPostingMap = async () => {
-  //   const request = await getAllJobPosts("");
-  //   const data = await request.json();
-  //   const jobPostings = data.allJobPosts.data;
-  //   const jobPostingsMap = {};
-
-  //   jobPostings.forEach((jobPosting) => {
-  //     if (!(jobPosting.id in jobPostingsMap)) {
-  //       jobPostingsMap[jobPosting.id] = jobPosting.title;
-  //     }
-  //   });
-
-  //   return jobPostingsMap;
-  // };
-
-  // Note: fetchAllJobApplications api gets response in json, not a promise
-  // const fetchJobApplications = async () => {
-  //   const response = await fetchAllJobApplications();
-  //   const jobPostingMap = await formatJobPostingMap();
-
-  //   const rawJobApplications = response.jobApplications;
-  //   const formattedJobApplications = rawJobApplications.map(
-  //     (jobApplication) => {
-  //       return {
-  //         ...jobApplication,
-  //         title: jobPostingMap[jobApplication.id],
-  //       };
-  //     },
-  //   );
-  //   console.log(formattedJobApplications)
-  // setJobApplications(formattedJobApplications);
-  // };
-
-  // get job applications, turn into array of objects
-  // useEffect(() => {
-  //   // fetchJobApplications();
-  // }, []);
-
-  // const [jobApplications, setJobApplications] = useState([]);
+function JobApplicationDashboard({ jobApplications, filterOptions }) {
   const [sortType, setSortType] = useState("ascending");
+  const [selectedFilters, setSelectedFilters] = useState({
+    jobTitle: null,
+    applicant: null,
+    searchID: null,
+  });
 
   const applySort = (newSortType) => {
     setSortType(newSortType);
+  };
+
+  const handleFilterChange = (filter, value) => {
+    setSelectedFilters({ ...selectedFilters, [filter]: value });
+  };
+
+  const isAllEmptyFilters = Object.values(selectedFilters).every(
+    (value) => value === "",
+  );
+
+  const resetFilters = () => {
+    setSelectedFilters({ jobTitle: null, applicant: null, searchID: null });
   };
 
   if (sortType === "ascending") {
@@ -63,21 +40,6 @@ function JobApplicationDashboard({jobApplications, filterOptions}) {
         jobApplication2.createdAt - jobApplication1.createdAt,
     );
   }
-
-  const options = [
-    {
-      label: "Application date: Ascending",
-      value: "ascending",
-    },
-    {
-      label: "Application date: descending",
-      value: "descending",
-    },
-  ];
-
-  const {jobTitles} = filterOptions;
-  const {applicants} = filterOptions;
-  const {jobIDs} = filterOptions;
 
   return (
     <Container
@@ -114,7 +76,6 @@ function JobApplicationDashboard({jobApplications, filterOptions}) {
         disableGutters
       >
         <SortMenu
-          options={options}
           applySort={applySort}
           sx={{
             alignSelf: "start",
@@ -133,9 +94,24 @@ function JobApplicationDashboard({jobApplications, filterOptions}) {
           }}
           disableGutters
         >
-          <SearchInput options={jobTitles} label="Job Title" />
-          <SearchInput options={applicants} label="Applicant" />
-          <SearchInput options={["12345"]} label="Search ID#" />
+          <SearchInput
+            onChange={(e, value) => handleFilterChange("jobTitle", value)}
+            options={filterOptions.jobTitles}
+            label="Job Title"
+            selectedValue={selectedFilters.jobTitle}
+          />
+          <SearchInput
+            onChange={(e, value) => handleFilterChange("applicant", value)}
+            options={filterOptions.applicants}
+            label="Applicant"
+            selectedValue={selectedFilters.applicant}
+          />
+          <SearchInput
+            onChange={(e, value) => handleFilterChange("searchID", value)}
+            options={["12345"]}
+            label="Search ID#"
+            selectedValue={selectedFilters.searchID}
+          />
         </Container>
       </Container>
       <Button
@@ -147,6 +123,8 @@ function JobApplicationDashboard({jobApplications, filterOptions}) {
           justifySelf: "stretch",
           height: "38px",
         }}
+        disabled={isAllEmptyFilters}
+        onClick={resetFilters}
       >
         Reset All
       </Button>

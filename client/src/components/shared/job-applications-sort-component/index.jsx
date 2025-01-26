@@ -11,10 +11,20 @@ import {
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-function SortMenu({ options, applySort }) {
+function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedValue, setSelectedValue] = useState("ascending");
   const open = Boolean(anchorEl);
+  const options = [
+    {
+      label: "Application date: ascending",
+      value: "ascending",
+    },
+    {
+      label: "Application date: descending",
+      value: "descending",
+    },
+  ];
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -66,20 +76,6 @@ function SortMenu({ options, applySort }) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        // slotProps={{
-        //   paper: {
-        //     style: {
-        //       width: "35%",
-        //       display: "flex",
-        //       justifyContent: "center",
-        //       //   alignItsems: "center",
-        //       flexDirection: "column",
-        //     },
-        //   },
-        // }}
-        // MenuListProps={{
-        //   "aria-labelledby": "sort-button",
-        // }}
       >
         <MenuItem
           sx={{
@@ -115,7 +111,7 @@ function SortMenu({ options, applySort }) {
             variant="contained"
             color="primary"
             sx={{
-              alignSelf: "right",
+              alignSelf: "end",
               width: "auto",
               borderRadius: "12px",
             }}
