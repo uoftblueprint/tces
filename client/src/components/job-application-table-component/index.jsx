@@ -36,7 +36,6 @@ function DataTable() {
 
   const fetchJobApplications = async () => {
     const fetchedJobApplications = await fetchAllJobApplications();
-    console.log(fetchedJobApplications);
     setJobApplications(fetchedJobApplications.jobApplications);
   };
 
