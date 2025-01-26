@@ -8,9 +8,9 @@ const fetchAllJobApplications = async ({
   const url = new URL(`${REACT_APP_API_BASE_URL}/job_applications`);
 
   // Set query parameters for pagination and filtering by job posting ID
-  if (page) url.searchParams.append("page", page);
-  if (pageSize) url.searchParams.append("pageSize", pageSize);
-  if (jobPostingId) url.searchParams.append("job_posting_id", jobPostingId);
+  // if (page) url.searchParams.append("page", page);
+  // if (pageSize) url.searchParams.append("pageSize", pageSize);
+  // if (jobPostingId) url.searchParams.append("job_posting_id", jobPostingId);
 
   try {
     const response = await fetch(url, {

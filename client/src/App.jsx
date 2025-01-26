@@ -22,7 +22,6 @@ import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
-import DataTable from "./components/job-application-table-component";
 
 // protected route wrappers
 import RouteGuard from "./components/wrappers/route-guard-component";
@@ -43,6 +42,7 @@ import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
 import Error404 from "./pages/errors/404-error";
 import UserProfile from "./pages/user-profile";
+import JobApplicationView from "./pages/job-application-view";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -262,8 +262,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <DataTable
-              
+                  <JobApplicationView
                   />
                 </AuthGuard>
               }
