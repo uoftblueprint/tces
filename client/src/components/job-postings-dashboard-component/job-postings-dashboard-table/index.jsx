@@ -102,7 +102,7 @@ export default function JobPostingsDashboardTableComponent() {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
         ? prevSelectedRows.filter((rowId) => rowId !== id)
-        : [...prevSelectedRows, id]
+        : [...prevSelectedRows, id],
     );
   };
 
@@ -268,7 +268,7 @@ export default function JobPostingsDashboardTableComponent() {
             },
           }}
           startIcon={<AddIcon />}
-          onClick={() => navigate("/job-posts/add")}
+          onClick={() => navigate("/job-postings/add")}
         >
           NEW
         </Button>

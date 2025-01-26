@@ -6,16 +6,9 @@ import Typography from "@mui/material/Typography";
 
 import { HeaderContainer } from "../index.styles";
 
-function JobPostingsDashboardHeaderComponent({
-  jobPostingsResultsCount,
-}) {
-
-
-
-
+function JobPostingsDashboardHeaderComponent({ jobPostingsResultsCount }) {
   return (
     <HeaderContainer>
-
       <div>
         <Typography
           style={{
@@ -46,8 +39,7 @@ function JobPostingsDashboardHeaderComponent({
         </Typography>
       </div>
 
-      <Box sx={{ marginLeft: "auto", display: "flex" }}/>
-      
+      <Box sx={{ marginLeft: "auto", display: "flex" }} />
     </HeaderContainer>
   );
 }
