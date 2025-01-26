@@ -23,8 +23,8 @@ import {
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
+import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
 import { getAllJobPosts , deleteJobPost} from "../../../utils/job_posts_api";
-
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -36,6 +36,8 @@ export default function JobPostingsDashboardTableComponent() {
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [filterStatus,setFilteredStatus] = useState(""); 
   const [sortOrder, setSortOrder] = useState(""); 
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+
   useEffect(() => {
     const fetchJobPosts = async () => {
       try {
@@ -118,10 +120,12 @@ export default function JobPostingsDashboardTableComponent() {
 
     try{
       await deleteJobPost(rowDelete);
+      setRows((prevRows) => prevRows.filter((row) => row.id !== rowDelete));
+
     }
     catch(error){
       console.error("Error deleting job posting:", error);
-      alert("Failed to delete the job posting. Please try again later.");
+      setErrorDialogOpen(true);
     }
 
     handleCloseDialog();
@@ -334,6 +338,10 @@ export default function JobPostingsDashboardTableComponent() {
           </Button>
         </DialogActions>
       </Dialog>
+      <JobPostsDeleteErrorDialog
+        open={errorDialogOpen}
+        onClose={() => setErrorDialogOpen(false)}
+      />
     </Box>
   );
 }
