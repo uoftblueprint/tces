@@ -44,7 +44,7 @@ describe("getJobPostRequestHandler test suite", () => {
     it("Returns job post details successfully", async () => {
       const mockReq = {
         method: "GET",
-        params: { job_post_id: 123 },
+        params: { job_posting_id: 123 },
       };
 
       await getJobPostRequestHandler(mockReq, mockRes);
@@ -63,7 +63,7 @@ describe("getJobPostRequestHandler test suite", () => {
     it("Returns 404 if the job post is not found", async () => {
       const mockReq = {
         method: "GET",
-        params: { job_post_id: 999 },
+        params: { job_posting_id: 999 },
       };
 
       await getJobPostRequestHandler(mockReq, mockRes);
@@ -79,7 +79,7 @@ describe("getJobPostRequestHandler test suite", () => {
     it("Returns 405 if the method is not GET", async () => {
       const mockReq = {
         method: "POST",
-        params: { job_post_id: 123 },
+        params: { job_posting_id: 123 },
       };
 
       await getJobPostRequestHandler(mockReq, mockRes);
@@ -97,7 +97,7 @@ describe("getJobPostRequestHandler test suite", () => {
 
       const mockReq = {
         method: "GET",
-        params: { job_post_id: 123 },
+        params: { job_posting_id: 123 },
       };
 
       await getJobPostRequestHandler(mockReq, mockRes);

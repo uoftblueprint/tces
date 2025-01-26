@@ -4,7 +4,7 @@ const { deleteFileFromS3 } = require("../../utils/s3");
 
 const deleteJobPostHandler = async (req, res) => {
   // ! Delete a Job Post and all of its information regardless of close date.
-  // ! Delete any Job Applications associated with this Job Post (i.e job_post_id === given ID in path parameters).
+  // ! Delete any Job Applications associated with this Job Post (i.e job_posting_id === given ID in path parameters).
 
   const { job_posting_id: jobPostId } = req.params;
 

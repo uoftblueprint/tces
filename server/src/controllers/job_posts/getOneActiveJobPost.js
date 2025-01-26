@@ -36,11 +36,28 @@ const getJobPostRequestHandler = async (req, res) => {
       "state",
     ];
 
+    console.log(job_posting_id);
+
     // Get one Job Posts
     const jobPost = await JobPosting.findOne({
       where: { id: job_posting_id },
       attributes: requiredFields,
     });
+
+    console.log(jobPost);
+
+    if (!jobPost) {
+      return res
+        .status(404)
+        .json({ message: `No job post with id ${job_posting_id} found.` });
+    }
+
+    // Check if this is a public job post
+    if (jobPost.state !== "Active") {
+      return res
+        .status(403)
+        .json({ message: "This job post is not publicly available." });
+    }
 
     // -------- Response:
     const response = {

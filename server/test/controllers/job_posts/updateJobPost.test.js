@@ -45,7 +45,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Updates a job post successfully", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
       body: { title: "Updated Title" },
     };
 
@@ -59,10 +59,10 @@ describe("updateJobPostsRequestHandler test suite", () => {
     });
   });
 
-  it("Returns 400 for invalid job_post_id", async () => {
+  it("Returns 400 for invalid job_posting_id", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: "invalid" },
+      params: { job_posting_id: "invalid" },
     };
 
     await updateJobPostsRequestHandler(mockReq, mockRes);
@@ -70,14 +70,14 @@ describe("updateJobPostsRequestHandler test suite", () => {
     expect(mockRes.statusCode).toBe(400);
     expect(mockRes.response).toMatchObject({
       status: "fail",
-      message: "Invalid or missing job_post_id.",
+      message: "Invalid or missing job_posting_id.",
     });
   });
 
   it("Returns 404 if the job post is not found", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 999 },
+      params: { job_posting_id: 999 },
     };
 
     await updateJobPostsRequestHandler(mockReq, mockRes);
@@ -92,7 +92,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Returns 403 if trying to update the job post ID", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
       body: { id: 999 },
     };
 
@@ -108,7 +108,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Returns 400 if required fields are missing when changing state to Active", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
       body: { state: "Active" }, // Missing required fields
     };
 
@@ -130,7 +130,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Returns 400 if the creator does not exist", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
       body: { creator: 999 },
     };
 
@@ -146,7 +146,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Returns 405 for non-PUT requests", async () => {
     const mockReq = {
       method: "POST",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
     };
 
     await updateJobPostsRequestHandler(mockReq, mockRes);
@@ -160,7 +160,7 @@ describe("updateJobPostsRequestHandler test suite", () => {
   it("Handles server errors gracefully", async () => {
     const mockReq = {
       method: "PUT",
-      params: { job_post_id: 123 },
+      params: { job_posting_id: 123 },
       body: { title: "Server Error Test" },
     };
 
