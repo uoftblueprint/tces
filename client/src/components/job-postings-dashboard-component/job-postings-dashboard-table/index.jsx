@@ -33,8 +33,8 @@ export default function JobPostingsDashboardTableComponent() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
-  const [paginationModel, setPaginationModel] = useState({ page: 1, pageSize: 10 });
-  const [filterStatus, setFilterStatus] = useState(""); 
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const [filterStatus] = useState(""); 
   const [sortOrder, setSortOrder] = useState(""); 
   useEffect(() => {
     const fetchJobPosts = async () => {
@@ -44,10 +44,10 @@ export default function JobPostingsDashboardTableComponent() {
           status: filterStatus,
           order: sortOrder, 
         });
-        console.log("test",queryParams.toString())
         const response = await getAllJobPosts(`?${queryParams.toString()}`); 
         const data = await response.json();
         console.log(data.allJobPosts.data)
+        console.log("query params", queryParams.toString())
         const formattedData = data.allJobPosts.data.map((jobPost) => ({
           id: jobPost.id,
           jobTitle: jobPost.title,
@@ -66,7 +66,11 @@ export default function JobPostingsDashboardTableComponent() {
 
 
   const handleStatusChange = (status) => {
-    setFilterStatus(status);
+    const filteredRows = rows.filter(
+      (row) => row.state.toLocaleLowerCase() === status.toLocaleLowerCase()
+    );
+    console.log("status", status,filteredRows)
+    setRows(filteredRows);
   };
   
   const handleSortOrderChange = (order) => {
@@ -249,7 +253,7 @@ export default function JobPostingsDashboardTableComponent() {
         >
           <JobPostsSortMenuComponent applySort={(order) => handleSortOrderChange(order)} />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <JobPostsStatusMenuComponent applySort={(status) => handleStatusChange(status)} />
+          <JobPostsStatusMenuComponent applyStatus={(status) => handleStatusChange(status)} />
         </Box>
         <Button
           sx={{
