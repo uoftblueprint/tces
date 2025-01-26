@@ -25,8 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-
-const uploadJobApplication = () => {};
+import { uploadJobApplication } from "../../utils/job_applications_api";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -39,6 +38,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
 }));
 
+// eslint-disable-next-line react/prop-types
 function JobPostingPage({ jobPosting }) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
@@ -48,7 +48,7 @@ function JobPostingPage({ jobPosting }) {
     emailAddress: "",
     statusInCanada: "",
     otherStatus: "",
-    customResponses: [],
+    // customResponses: [],
   });
 
   const statusOptions = [
@@ -59,48 +59,6 @@ function JobPostingPage({ jobPosting }) {
     { value: "Open Work", label: "Open Work" },
     { value: "Other", label: "Other" },
   ];
-
-  const handleSubmit = async (event, token) => {
-    event.preventDefault();
-
-    if (!file) {
-      alert("Please upload a resume.");
-      return;
-    }
-
-    if (!recaptchaToken) {
-      alert("Please complete the reCAPTCHA verification.");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("job_posting_id", "67");
-      formData.append("name", application.name);
-      formData.append("email", application.emailAddress);
-      formData.append("phone", application.phone);
-      formData.append("postal_code", application.postalCode);
-      formData.append("resume", file);
-      formData.append("status_in_canada", application.statusInCanada);
-      formData.append("application_status", "New");
-      formData.append(
-        "custom_responses",
-        JSON.stringify(application.customResponses),
-      );
-      formData.append("token", recaptchaToken);
-
-      const response = await uploadJobApplication(formData, recaptchaToken);
-
-      if (!response.ok) {
-        throw new Error("Failed to submit application");
-      }
-
-      alert("Application submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting application:", error.message);
-      alert("An error occurred while submitting your application.");
-    }
-  };
 
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -167,35 +125,35 @@ function JobPostingPage({ jobPosting }) {
     }));
   };
 
-  const handleCustomResponseChange = (index, field, value) => {
-    setApplication((prev) => {
-      const updatedResponses = [...prev.customResponses];
-      updatedResponses[index] = {
-        ...updatedResponses[index],
-        [field]: value,
-      };
-      return { ...prev, customResponses: updatedResponses };
-    });
-  };
+  // const handleCustomResponseChange = (index, field, value) => {
+  //   setApplication((prev) => {
+  //     const updatedResponses = [...prev.customResponses];
+  //     updatedResponses[index] = {
+  //       ...updatedResponses[index],
+  //       [field]: value,
+  //     };
+  //     return { ...prev, customResponses: updatedResponses };
+  //   });
+  // };
 
-  const addCustomResponse = () => {
-    setApplication((prevApp) => ({
-      ...prevApp,
-      customResponses: [
-        ...prevApp.customResponses,
-        { id: uuidv4(), question: "", answer: "" },
-      ],
-    }));
-  };
+  // const addCustomResponse = () => {
+  //   setApplication((prevApp) => ({
+  //     ...prevApp,
+  //     customResponses: [
+  //       ...prevApp.customResponses,
+  //       { id: uuidv4(), question: "", answer: "" },
+  //     ],
+  //   }));
+  // };
 
-  const removeCustomResponse = (index) => {
-    setApplication((prev) => {
-      const updatedResponses = prev.customResponses.filter(
-        (_, i) => i !== index,
-      );
-      return { ...prev, customResponses: updatedResponses };
-    });
-  };
+  // const removeCustomResponse = (index) => {
+  //   setApplication((prev) => {
+  //     const updatedResponses = prev.customResponses.filter(
+  //       (_, i) => i !== index,
+  //     );
+  //     return { ...prev, customResponses: updatedResponses };
+  //   });
+  // };
 
   const handleRecaptchaChange = (token) => {
     setRecaptchaToken(token);
@@ -212,6 +170,48 @@ function JobPostingPage({ jobPosting }) {
 
   const formatSalaryRange = (min, max) => {
     return `$${min.toLocaleString()}/year - $${max.toLocaleString()}/year`;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!file) {
+      alert("Please upload a resume.");
+      return;
+    }
+
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA verification.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("job_posting_id", "67");
+      formData.append("name", application.name);
+      formData.append("email", application.emailAddress);
+      formData.append("phone", application.phone);
+      formData.append("postal_code", application.postalCode);
+      formData.append("resume", file);
+      formData.append("status_in_canada", application.statusInCanada);
+      formData.append("application_status", "New");
+      formData.append(
+        "custom_responses",
+        JSON.stringify(application.customResponses),
+      );
+      formData.append("token", recaptchaToken);
+
+      const response = await uploadJobApplication(formData, recaptchaToken);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit application");
+      }
+
+      alert("Application submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting application:", error.message);
+      alert("An error occurred while submitting your application.");
+    }
   };
 
   return (
@@ -429,7 +429,7 @@ function JobPostingPage({ jobPosting }) {
                   </Grid>
                 )}
               </Grid>
-              <Box sx={{ mt: 3 }}>
+              {/* <Box sx={{ mt: 3 }}>
                 <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                   Custom Responses
                 </Typography>
@@ -479,7 +479,7 @@ function JobPostingPage({ jobPosting }) {
                 >
                   Add Custom Response
                 </Button>
-              </Box>
+              </Box> */}
               <Box
                 sx={{
                   maxWidth: 500,
