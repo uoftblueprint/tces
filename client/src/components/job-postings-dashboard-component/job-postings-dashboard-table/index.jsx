@@ -23,7 +23,7 @@ import {
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
-import { getAllJobPosts} from "../../../utils/job_posts_api";
+import { getAllJobPosts , deleteJobPost} from "../../../utils/job_posts_api";
 
 
 export default function JobPostingsDashboardTableComponent() {
@@ -34,7 +34,7 @@ export default function JobPostingsDashboardTableComponent() {
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
-  const [filterStatus] = useState(""); 
+  const [filterStatus,setFilteredStatus] = useState(""); 
   const [sortOrder, setSortOrder] = useState(""); 
   useEffect(() => {
     const fetchJobPosts = async () => {
@@ -69,11 +69,7 @@ export default function JobPostingsDashboardTableComponent() {
 
 
   const handleStatusChange = (status) => {
-    const filteredRows = rows.filter(
-      (row) => row.state.toLocaleLowerCase() === status.toLocaleLowerCase()
-    );
-    console.log("status", status,filteredRows)
-    setRows(filteredRows);
+    setFilteredStatus(status);
   };
   
   const handleSortOrderChange = (order) => {
@@ -108,6 +104,7 @@ export default function JobPostingsDashboardTableComponent() {
 
   const handleOpenDialog = (id) => () => {
     setRowDelete(id);
+    console.log("deleted",id);
     setOpen(true);
   };
 
@@ -116,10 +113,17 @@ export default function JobPostingsDashboardTableComponent() {
     setRowDelete(null);
   };
 
-  const handleDeleteConfirm = () => {
-    if (rowDelete !== null) {
-      setRows((prevRows) => prevRows.filter((row) => row.id !== rowDelete));
+  const handleDeleteConfirm = async () => {
+    console.log("Deleting row with ID:", rowDelete); 
+
+    try{
+      await deleteJobPost(rowDelete);
     }
+    catch(error){
+      console.error("Error deleting job posting:", error);
+      alert("Failed to delete the job posting. Please try again later.");
+    }
+
     handleCloseDialog();
   };
 
