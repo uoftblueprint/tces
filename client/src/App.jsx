@@ -255,7 +255,6 @@ function App() {
             />
           </Route>
 
-
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
             element={

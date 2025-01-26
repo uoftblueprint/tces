@@ -1,6 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Menu, MenuItem, Radio, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Radio,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -90,6 +97,7 @@ function SortMenu({ applySort }) {
     </div>
   );
 }
+
 
 SortMenu.propTypes = {
   applySort: PropTypes.func.isRequired,

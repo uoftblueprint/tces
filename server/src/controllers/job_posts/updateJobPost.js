@@ -60,7 +60,9 @@ const updateJobPostsRequestHandler = async (req, res) => {
       ];
 
       // Check for any missing required fields
-      const missingField = requiredFields.find((field) => !req.body[field]);
+      const missingField = requiredFields.find(
+        (field) => !jobPost[field] && !req.body[field],
+      );
 
       if (missingField) {
         return res.status(400).json({

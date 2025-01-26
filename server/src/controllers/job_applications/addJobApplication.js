@@ -197,8 +197,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     return res.status(500).json({
       status: "fail",
-      message:
-        "An error has occurred while trying to create a job application.",
+      message: `An error has occurred while trying to create a job application. ${error}`,
       data: null,
     });
   }
