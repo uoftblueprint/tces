@@ -66,7 +66,7 @@ async function deleteJobPost(jobPostingId) {
 const getAllJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_postings?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
@@ -82,7 +82,7 @@ const getAllJobPosts = async (queryParams) => {
 const getAllActiveJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings/active${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/active?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
