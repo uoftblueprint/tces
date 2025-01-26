@@ -92,7 +92,6 @@ function SortMenu({ options, applySort }) {
           disableRipple
         >
           <FormControl>
-            {/* <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel> */}
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               name="application-date-sort"

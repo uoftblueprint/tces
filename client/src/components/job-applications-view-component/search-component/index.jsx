@@ -1,5 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const AutocompleteCustomEndAdornment = styled("div")({
+  position: "absolute",
+  right: "12px",
+  top: "55%",
+  transform: "translate(0, -50%)",
+});
 
 function SearchInput({ options, label }) {
   return (
@@ -7,7 +16,22 @@ function SearchInput({ options, label }) {
       disablePortal
       options={options}
       sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label={label} />}
+      renderInput={(props) => (
+        <TextField
+          {...props}
+          // InputProps={{
+          //   sx: { borderRadius: "10px" },
+          //   ...props.InputProps,
+          //   endAdornment: (
+          //     <AutocompleteCustomEndAdornment>
+          //       <SearchIcon />
+          //     </AutocompleteCustomEndAdornment>
+          //   ),
+          // }}
+          size="small"
+          label={label}
+        />
+      )}
     />
   );
 }
