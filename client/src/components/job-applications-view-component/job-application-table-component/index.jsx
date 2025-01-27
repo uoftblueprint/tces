@@ -1,44 +1,32 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { TablePagination } from "@mui/material";
-import { useState } from "react";
+import {
+  TablePagination,
+  TableFooter,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  TableContainer,
+} from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-// import { fetchAllJobApplications } from "../../utils/job_applications_api";
-// import { getAllJobPosts } from "../../utils/job_posts_api";
+import PropTypes from "prop-types";
 import ApplicationStatusChipComponent from "../application-status-chips";
 
-// TODO: When resume download is implemented, add feature to the resume download button in table
+// Future TODOs ------
+// 1. When single job specific pages and single application pages are implemented,
+//    replace `/job-posts/${row.job_posting_id}` and `/job-applications/${row.id}` to
+//    match the correct URLs
+// 2. When s3 resume download feature is complete, add download link to corresponding column
 
-const tableHeaders = [
-  "Job ID #",
-  "Title",
-  "Applicant Name",
-  "Email",
-  "Phone",
-  "Postal Code",
-  "Date Applied",
-  "Status",
-  "Resume",
-];
-
-function DataTable({ jobApplications }) {
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [page, setPage] = useState(0);
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangePage = (e, newPage) => {
-    setPage(newPage);
-  };
-
+function JobApplicationsTable({
+  jobApplications,
+  totalJobApplicationsNumber,
+  page,
+  rowsPerPage,
+  handlePageRowChange,
+}) {
   const formatPhoneNumber = (phoneNumber) =>
     phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 
@@ -47,68 +35,124 @@ function DataTable({ jobApplications }) {
       .toUpperCase()
       .replace(/^([A-Za-z]\d[A-Za-z])(\d[A-Za-z]\d)$/, "$1 $2");
 
-  const paginatedData = jobApplications.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage,
-  );
-
   return (
-    <Paper sx={{ width: "100%", marginTop: "35px" }}>
-      <TableContainer sx={{ width: "100%" }} component={Paper}>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead>
-            <TableRow>
-              {tableHeaders.map((title) => (
-                <TableCell sx={{ fontWeight: 700 }} align="left">
-                  {title}
-                </TableCell>
-              ))}
+    <TableContainer
+      sx={{ marginTop: "35px", width: "100%", padding: "10px 2%" }}
+      component={Paper}
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontWeight: 700, width: "8%" }} align="left">
+              Job ID #
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "15%" }} align="left">
+              Title
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "12.5%" }} align="left">
+              Applicant Name
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "12.5%" }} align="left">
+              Email
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
+              Phone
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
+              Postal Code
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
+              Date Applied
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
+              Status
+            </TableCell>
+            <TableCell sx={{ fontWeight: 700, width: "8%" }} align="left">
+              Resume
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {jobApplications.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell align="left">{row.id}</TableCell>
+              <TableCell align="left">
+                <Link href={`/job-posts/${row.job_posting_id}`}>
+                  {row.title}
+                </Link>
+              </TableCell>
+              <TableCell align="left">
+                <Link href={`/job-applications/${row.id}`}>{row.name}</Link>
+              </TableCell>
+              <TableCell align="left">{row.email}</TableCell>
+              <TableCell align="left">{formatPhoneNumber(row.phone)}</TableCell>
+              <TableCell align="left">
+                {formatPostalCode(row.postal_code)}
+              </TableCell>
+              <TableCell align="left">
+                {/* Expect createdAt to be formated as date for ease of formatting */}
+                {row.createdAt.toLocaleDateString("en-CA")}
+              </TableCell>
+              <TableCell align="left">
+                <ApplicationStatusChipComponent
+                  status={[row.application_status]}
+                />
+              </TableCell>
+              <TableCell align="left">
+                <DownloadIcon color="primary" />
+              </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {paginatedData.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="left">{row.id}</TableCell>
-                <TableCell align="left">{row.title}</TableCell>
-                <TableCell align="left">{row.name}</TableCell>
-                <TableCell align="left">{row.email}</TableCell>
-                <TableCell align="left">
-                  {formatPhoneNumber(row.phone)}
-                </TableCell>
-                <TableCell align="left">
-                  {formatPostalCode(row.postal_code)}
-                </TableCell>
-                <TableCell align="left">
-                  {/* Expect createdAt to be formated as date for ease of use here and sorting */}
-                  {row.createdAt.toLocaleDateString("en-CA")}
-                </TableCell>
-                <TableCell align="left">
-                  <ApplicationStatusChipComponent
-                    status={[row.application_status]}
-                  />
-                </TableCell>
-                <TableCell align="left">
-                  <DownloadIcon color="primary" />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={jobApplications.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell colSpan={9} sx={{ paddingTop: "0" }}>
+              <TablePagination
+                sx={{ textAlign: "right", boxShadow: "none" }}
+                colspan={9}
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalJobApplicationsNumber}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, newPage) =>
+                  handlePageRowChange({ page: parseInt(newPage, 10) })
+                }
+                onRowsPerPageChange={(e) => {
+                  handlePageRowChange({ rows: parseInt(e.target.value, 10) });
+                }}
+              />
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
   );
 }
 
-export default DataTable;
+JobApplicationsTable.propTypes = {
+  jobApplications: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      job_posting_id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+      postal_code: PropTypes.string.isRequired,
+      resume: PropTypes.string.isRequired,
+      status_in_canada: PropTypes.string,
+      status_other: PropTypes.string,
+      application_status: PropTypes.string.isRequired,
+      custom_responses: PropTypes.shape(),
+      createdAt: PropTypes.instanceOf(Date).isRequired,
+      updatedAt: PropTypes.instanceOf(Date).string,
+    }),
+  ).isRequired,
+  totalJobApplicationsNumber: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  handlePageRowChange: PropTypes.func.isRequired,
+};
+
+export default JobApplicationsTable;
