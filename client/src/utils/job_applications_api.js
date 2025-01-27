@@ -9,8 +9,6 @@ const fetchAllJobApplications = async (page, pageSize, jobPostingId) => {
   if (jobPostingId)
     url.searchParams.append("job_posting_id", parseInt(jobPostingId, 10));
 
-  console.log(url);
-
   try {
     const response = await fetch(url, {
       method: "GET",

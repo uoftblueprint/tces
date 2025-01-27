@@ -1,78 +1,108 @@
-// import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { fetchAllJobApplications } from "../../utils/job_applications_api";
-import { getAllJobPosts } from "../../utils/job_posts_api";
+import {
+  fetchJobTitles,
+  fetchSearchIDs,
+  fetchApplicantNames,
+  fetchAllJobApplicationsMock,
+  fetchPaginatedData,
+} from "../../mock-data/mockJobApplications";
 import JobApplicationDashboard from "../../components/job-applications-view-component/job-application-dashboard";
+
+const START_PAGE = 0;
+const START_ROWS = 5;
+const initialState = {
+  rows: START_ROWS,
+  page: START_PAGE,
+  searchID: null,
+  applicant: null,
+  jobTitle: null,
+  sort: "ascending",
+};
+
+// Future TODOs --------
+// 1. replace all instances of mock functions with actual functions that fetch filter dropdown values and job applications,
+// 2. jobTitle is expected to be an object with job_posting_ids as keys and job titles as values, this
+//    may need to change depending on the implementation of the api
 
 function JobApplicationView() {
   const [jobApplications, setJobApplications] = useState([]);
+  const [jobTitles, setJobTitles] = useState([]);
+  const [applicants, setApplicants] = useState([]);
+  const [searchIDs, setSearchIDs] = useState([]);
+  const [totalJobApplicationsNumber, setTotalJobApplications] = useState(0);
+  const [jobApplicationQuery, setJobApplicationQuery] = useState(initialState);
 
-  // Note: API here returns request promise object, NOT json
-  const formatJobPostingMap = async () => {
-    const request = await getAllJobPosts("");
-    const data = await request.json();
-    const jobPostings = data.allJobPosts.data;
-    const jobPostingsMap = {};
-
-    jobPostings.forEach((jobPosting) => {
-      if (!(jobPosting.id in jobPostingsMap)) {
-        jobPostingsMap[jobPosting.id] = jobPosting.title;
-      }
+  // Adds job title property to each job application and replaces string createdAt value to Date type
+  // jobTitlesMap consists of key value pairs between job_posting_id (from jobApplication api call) and
+  // the corresponding job title
+  const formatJobApplications = (rawJobApplications, jobTitlesMap) =>
+    rawJobApplications.map((jobApplication) => {
+      return {
+        ...jobApplication,
+        title: jobTitlesMap[jobApplication.job_posting_id],
+        createdAt: new Date(jobApplication.createdAt),
+      };
     });
 
-    return jobPostingsMap;
-  };
-
-  // Note: fetchAllJobApplications api gets response in json, not a promise
-  const fetchJobApplications = async () => {
-    const response = await fetchAllJobApplications();
-    const jobPostingMap = await formatJobPostingMap();
-
-    const rawJobApplications = response.jobApplications;
-    const formattedJobApplications = rawJobApplications.map(
-      (jobApplication) => {
-        return {
-          ...jobApplication,
-          title: jobPostingMap[jobApplication.id],
-          createdAt: new Date(jobApplication.createdAt),
-        };
-      },
+  const fetchFormattedJobApplications = async (jobTitlesMap) => {
+    // const response = await fetchAllJobApplications(START_PAGE, START_ROWS);
+    const response = await fetchAllJobApplicationsMock(
+      jobApplicationQuery.page,
+      jobApplicationQuery.rows,
     );
-    console.log(formattedJobApplications);
-    setJobApplications(formattedJobApplications);
+    const rawJobApplications = response.jobApplications;
+    const totalJobApps = parseInt(response.totalJobApplicationsNumber, 10);
+
+    const formattedJobApplications = formatJobApplications(
+      rawJobApplications,
+      jobTitlesMap,
+    );
+
+    return { formattedJobApplications, totalJobApps };
   };
 
-  // get job applications, turn into array of objects
+  const fetchFilteredApplications = async (newParams) => {
+    const newApplicationQuery = { ...jobApplicationQuery, ...newParams };
+
+    setJobApplicationQuery(newApplicationQuery);
+
+    const jobApplicationData = fetchPaginatedData(newApplicationQuery);
+    setTotalJobApplications(jobApplicationData.totalJobApplicationsNumber);
+    setJobApplications(
+      formatJobApplications(jobApplicationData.jobApplications, jobTitles),
+    );
+  };
+
+  const firstTimeLoad = async () => {
+    const newJobTitles = fetchJobTitles();
+    const newApplicants = fetchApplicantNames();
+    const newSearchIDs = fetchSearchIDs();
+
+    setJobTitles(newJobTitles);
+    setApplicants(newApplicants);
+    setSearchIDs(newSearchIDs);
+
+    const jobApplicationData =
+      await fetchFormattedJobApplications(newJobTitles);
+
+    // set table to initially show some rows
+    setJobApplications(jobApplicationData.formattedJobApplications);
+    setTotalJobApplications(jobApplicationData.totalJobApps);
+  };
+
   useEffect(() => {
-    fetchJobApplications();
+    firstTimeLoad();
   }, []);
-
-  // for (let i = 0; i < 100; i += 1) {
-  //   const titlee = String(i) + "frontend dev";
-  //   jobApplications.push({
-  //     id: String(i),
-  //     title: titlee,
-  //     name: "Henrix Bartholomew Dark Shadow",
-  //     phone: "1234567890",
-  //     email: "hallo",
-  //     postal_code: "a1s2d3",
-  //     createdAt: new Date("2025-01-26T00:18:25.000Z"),
-  //     application_status: "New",
-  //     resume: "hello.txt",
-  //   });
-  // }
-  // jobApplications[10].createdAt = new Date("2023-01-01");
-
-  const tempFilterOptions = {
-    jobTitles: ["frontend dev", "backend dev"],
-    applicants: ["olya jaworsky"],
-    jobIDs: ["1", "2", "3"],
-  };
 
   return (
     <JobApplicationDashboard
       jobApplications={jobApplications}
-      filterOptions={tempFilterOptions}
+      jobApplicationQuery={jobApplicationQuery}
+      fetchFilteredApplications={fetchFilteredApplications}
+      jobTitles={jobTitles}
+      applicants={applicants}
+      searchIDs={searchIDs}
+      totalJobApplicationsNumber={totalJobApplicationsNumber}
     />
   );
 }
