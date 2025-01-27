@@ -14,14 +14,15 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedValue, setSelectedValue] = useState("ascending");
+
   const open = Boolean(anchorEl);
   const options = [
     {
-      label: "Application date: ascending",
+      label: "Application date: Ascending",
       value: "ascending",
     },
     {
-      label: "Application date: descending",
+      label: "Application date: Descending",
       value: "descending",
     },
   ];
@@ -51,22 +52,19 @@ function SortMenu({ applySort }) {
         variant="outlined"
         startIcon={<FilterListIcon />}
         endIcon={
-          <>
-            <span
-              style={{
-                borderLeft: "1px solid #90bce4",
-                height: "100%",
-                marginLeft: "6px",
-                paddingLeft: "14px",
-                paddingRight: "6px",
-                marginTop: "-6px",
-                marginBottom: "-6px",
-              }}
-            >
-              &#9662;
-            </span>
-            {/* <ArrowDropDownIcon /> */}
-          </>
+          <span
+            style={{
+              borderLeft: "1px solid #90bce4",
+              height: "100%",
+              marginLeft: "6px",
+              paddingLeft: "14px",
+              paddingRight: "6px",
+              marginTop: "-6px",
+              marginBottom: "-6px",
+            }}
+          >
+            &#9662;
+          </span>
         }
       >
         Sort
@@ -125,12 +123,6 @@ function SortMenu({ applySort }) {
 }
 
 SortMenu.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
   applySort: PropTypes.func.isRequired,
 };
 
