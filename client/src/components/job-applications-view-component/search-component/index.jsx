@@ -1,38 +1,23 @@
 import { Autocomplete, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
-const AutocompleteCustomEndAdornment = styled("div")({
-  position: "absolute",
-  right: "12px",
-  top: "55%",
-  transform: "translate(0, -50%)",
-});
-
-function SearchInput({ options, label, onChange, selectedValue }) {
+function SearchInput({
+  options,
+  label,
+  onChange,
+  selectedValue,
+  getOptionLabel,
+}) {
   return (
     <Autocomplete
       value={selectedValue}
       onChange={onChange}
       disablePortal
       options={options}
+      getOptionLabel={getOptionLabel}
       sx={{ width: 300 }}
       renderInput={(props) => (
-        <TextField
-          {...props}
-          // InputProps={{
-          //   sx: { borderRadius: "10px" },
-          //   ...props.InputProps,
-          //   endAdornment: (
-          //     <AutocompleteCustomEndAdornment>
-          //       <SearchIcon />
-          //     </AutocompleteCustomEndAdornment>
-          //   ),
-          // }}
-          size="small"
-          label={label}
-        />
+        <TextField {...props} size="small" label={label} />
       )}
     />
   );
@@ -40,13 +25,16 @@ function SearchInput({ options, label, onChange, selectedValue }) {
 
 SearchInput.propTypes = {
   options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    }),
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ).isRequired,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+  getOptionLabel: PropTypes.func,
+};
+
+SearchInput.defaultProps = {
+  getOptionLabel: (option) => option,
 };
 
 export default SearchInput;
