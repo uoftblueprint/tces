@@ -2,6 +2,8 @@ import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
 import path from "path";
 import fs from "fs";
+import os from "os";
+
 const mock = require("mock-require");
 const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
@@ -245,7 +247,29 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   describe("Successful Behavior", () => {
-    it("Returns 201 if the application is successfully created and generates a mock file", async () => {
+    let tempDir; // Temporary directory
+    let mockFilePath; // Path to the dynamically created mock file
+
+    beforeEach(() => {
+      // Create a temporary directory for the test
+      tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "test-uploads-"));
+      mockFilePath = path.join(tempDir, "mock-file.pdf");
+
+      // Create the mock file
+      fs.writeFileSync(mockFilePath, "Mock file content");
+    });
+
+    afterEach(() => {
+      // Clean up: Remove the mock file and temporary directory
+      if (fs.existsSync(mockFilePath)) {
+        fs.unlinkSync(mockFilePath);
+      }
+      if (fs.existsSync(tempDir)) {
+        fs.rmdirSync(tempDir, { recursive: true });
+      }
+    });
+
+    it("Returns 201 if the application is successfully created using a dynamically created mock file", async () => {
       const mockReq = {
         body: {
           job_posting_id: 123,
@@ -258,41 +282,18 @@ describe("addJobApplicationRequestHandler test suite", () => {
           custom_responses: {},
           token: "valid-token",
         },
-        file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
-      };
-
-      // Define the mock directory and file path relative to the controller folder
-      // "../../../src/controllers/job_applications/addJobApplication",
-
-      const uploadsDir = path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "controllers",
-        "uploads",
-      );
-      const mockFilePath = path.join(uploadsDir, "mock-file.pdf");
-
-      // Ensure the uploads directory exists
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
-
-      // Create a mock file
-      fs.writeFileSync(mockFilePath, "Mock file content");
-
-      // Set the file in the request object
-      mockReq.file = {
-        buffer: fs.readFileSync(mockFilePath), // Read the file contents as a buffer
-        mimetype: "application/pdf", // Set the MIME type
-        originalname: "mock-file.pdf", // Optional: Provide the file name
-        size: fs.statSync(mockFilePath).size, // Set the file size (in bytes)
+        file: {
+          buffer: fs.readFileSync(mockFilePath), // Read the dynamically created mock file
+          mimetype: "application/pdf", // Set the MIME type
+          originalname: "mock-file.pdf", // Optional: Provide the file name
+          size: fs.statSync(mockFilePath).size, // Set the file size (in bytes)
+        },
       };
 
       // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
+      // Assert the response status
       expect(mockRes.statusCode).toBe(201);
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -300,11 +301,8 @@ describe("addJobApplicationRequestHandler test suite", () => {
         }),
       );
 
-      // Check that the file was created
+      // Assert the file was processed successfully (if applicable)
       expect(fs.existsSync(mockFilePath)).toBe(true);
-
-      // Clean up: Remove the mock file after the test
-      fs.unlinkSync(mockFilePath);
     });
   });
 });
