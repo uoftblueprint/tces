@@ -76,7 +76,6 @@ const getAllJobPosts = async (queryParams) => {
       },
     },
   );
-  console.log("response", response);
   return response;
 };
 

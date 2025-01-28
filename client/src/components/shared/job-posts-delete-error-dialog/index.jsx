@@ -29,7 +29,9 @@ function JobPostsDeleteErrorDialog({ open, onClose }) {
           textAlign: "center",
         }}
       >
-        <ErrorOutlineIcon style={{ fontSize: 40, color: "#D32F2F", marginBottom: 10 }} />
+        <ErrorOutlineIcon
+          style={{ fontSize: 40, color: "#D32F2F", marginBottom: 10 }}
+        />
         <DialogTitle>Error Deleting Job Posting</DialogTitle>
         <DialogContent>
           <Typography variant="body1">
