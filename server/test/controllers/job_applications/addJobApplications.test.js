@@ -288,6 +288,8 @@ describe("addJobApplicationRequestHandler test suite", () => {
       };
 
       // Define the mock directory and file path relative to the controller folder
+      // "../../../src/controllers/job_applications/addJobApplication",
+
       const uploadsDir = path.join(
         __dirname,
         "..",
@@ -306,9 +308,6 @@ describe("addJobApplicationRequestHandler test suite", () => {
       // Create a mock file
       fs.writeFileSync(mockFilePath, "Mock file content");
 
-      // Ensure the file is created before running the handler
-      expect(fs.existsSync(mockFilePath)).toBe(true);
-
       // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
@@ -319,7 +318,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
         }),
       );
 
-      // Check that the file was created (again for safety)
+      // Check that the file was created
       expect(fs.existsSync(mockFilePath)).toBe(true);
 
       // Clean up: Remove the mock file after the test
