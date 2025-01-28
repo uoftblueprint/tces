@@ -52,6 +52,8 @@ export default function JobPostingsDashboardTableComponent() {
         });
         const response = await getAllJobPosts(`?${queryParams.toString()}`); 
         const data = await response.json();
+        console.log(data.allJobPosts.data)
+        console.log("query params", queryParams.toString())
         const formattedData = data.allJobPosts.data.map((jobPost) => ({
           id: jobPost.id,
           jobTitle: jobPost.title,
@@ -62,8 +64,7 @@ export default function JobPostingsDashboardTableComponent() {
 
         setRows(formattedData);
       } catch (error) {
-        setRows([]);
-        return <ErrorScreenComponent />;
+        <ErrorScreenComponent/>
       }
     };
     fetchJobPosts();
