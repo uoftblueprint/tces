@@ -271,6 +271,39 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   describe("Successful Behavior", () => {
+    let uploadsDir;
+    let mockFilePath;
+
+    beforeEach(() => {
+      // Define a unique temporary uploads directory for the test
+      uploadsDir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "controllers",
+        "uploads",
+      );
+
+      // Ensure the uploads directory exists
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      // Define the mock file path
+      mockFilePath = path.join(uploadsDir, "mock-file.pdf");
+    });
+
+    afterEach(() => {
+      // Cleanup: Remove the mock file and directory if they exist
+      if (fs.existsSync(mockFilePath)) {
+        fs.unlinkSync(mockFilePath);
+      }
+      if (fs.existsSync(uploadsDir)) {
+        fs.rmdirSync(uploadsDir, { recursive: true });
+      }
+    });
+
     it("Returns 201 if the application is successfully created and generates a mock file", async () => {
       const mockReq = {
         body: {
@@ -282,35 +315,18 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
-          token: "valid-token",
+          token: "valid-token", // Ensure valid token for the test
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
 
-      // Define the mock directory and file path relative to the controller folder
-      // "../../../src/controllers/job_applications/addJobApplication",
-
-      const uploadsDir = path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "controllers",
-        "uploads",
-      );
-      const mockFilePath = path.join(uploadsDir, "mock-file.pdf");
-
-      // Ensure the uploads directory exists
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
-
-      // Create a mock file
+      // Mock file creation to simulate successful application handling
       fs.writeFileSync(mockFilePath, "Mock file content");
 
       // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
+      // Assert the response status
       expect(mockRes.statusCode).toBe(201);
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -318,11 +334,8 @@ describe("addJobApplicationRequestHandler test suite", () => {
         }),
       );
 
-      // Check that the file was created
+      // Assert the mock file exists
       expect(fs.existsSync(mockFilePath)).toBe(true);
-
-      // Clean up: Remove the mock file after the test
-      fs.unlinkSync(mockFilePath);
     });
   });
 });
