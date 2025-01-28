@@ -476,28 +476,30 @@ function JobPostingPage({ jobPosting }) {
                   PDF file only
                 </Typography>
               </Box>
-              {/* Error Message */}
-              {fileError && (
-                <Box sx={{ mt: 2, color: "error.main", textAlign: "center" }}>
-                  <Typography variant="body2">{fileError}</Typography>
-                </Box>
-              )}
-
-              {/* Uploaded File Info & Progress Bar */}
-              {file && (
+              {file || fileError ? (
                 <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "space-between", // Adjust content alignment
                     mt: 2,
                     p: 1,
-                    backgroundColor: "white",
+                    backgroundColor: fileError ? "#ffebee" : "white", // Light red for errors
+                    borderRadius: 1,
+                    border: fileError
+                      ? "1px solid #f44336"
+                      : "1px solid #e0e0e0", // Red border for errors
+                    width: "100%", // Take up the full width of the container
+                    maxWidth: "100%", // Prevent overflow beyond the parent container
+                    boxSizing: "border-box", // Ensure padding doesn't affect width
                   }}
                 >
+                  {/* Left Icon */}
                   <Box sx={{ mr: 2 }}>
                     {fileError ? (
-                      <ErrorIcon color="error" />
+                      <Typography variant="body2" color="error.main">
+                        <ErrorIcon />
+                      </Typography>
                     ) : uploadProgress === 100 ? (
                       <Typography variant="body2" color="success.main">
                         <CheckIcon />
@@ -506,38 +508,63 @@ function JobPostingPage({ jobPosting }) {
                       <UploadFileIcon color="primary" />
                     )}
                   </Box>
+
+                  {/* Center Content */}
                   <Box
                     sx={{
                       flex: 1,
-                      display: "flex", // Enable flexbox for alignment
-                      flexDirection: "column", // Stack items vertically
-                      alignItems: "center", // Center horizontally
-                      justifyContent: "center", // Center vertically
-                      textAlign: "center", // Center-align text
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textAlign: "center",
                     }}
                   >
-                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      {file.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {formatFileSize(file.size)} •{" "}
-                      {fileError ||
-                        (uploadProgress === 100 ? "Complete" : "Uploading...")}
-                    </Typography>
-                    {!fileError && (
-                      <LinearProgress
-                        variant="determinate"
-                        value={uploadProgress || 0}
-                        sx={{ mt: 1, width: "100%" }} // Full width for the progress bar
-                      />
+                    {fileError ? (
+                      <>
+                        <Typography
+                          variant="body1"
+                          sx={{ fontWeight: 500, color: "error.main" }}
+                        >
+                          Upload failed.
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "error.main",
+                            fontWeight: 600,
+                          }}
+                        >
+                          File too large • Failed
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                          {file.name}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          {`${formatFileSize(file.size)} • ${
+                            uploadProgress === 100 ? "Complete" : "Uploading..."
+                          }`}
+                        </Typography>
+                        {!fileError && (
+                          <LinearProgress
+                            variant="determinate"
+                            value={uploadProgress || 0}
+                            sx={{ mt: 1, width: "100%" }}
+                          />
+                        )}
+                      </>
                     )}
                   </Box>
 
+                  {/* Right Delete Icon */}
                   <IconButton onClick={handleRemoveFile}>
                     <DeleteIcon color="error" />
                   </IconButton>
                 </Box>
-              )}
+              ) : null}
 
               <Box
                 sx={{
