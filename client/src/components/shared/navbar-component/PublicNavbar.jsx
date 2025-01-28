@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
-function PublicNavBar() {
+function PublicNavbar() {
   const navigate = useNavigate();
 
   return (
