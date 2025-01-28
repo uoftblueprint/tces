@@ -192,7 +192,7 @@ function JobPostingPage({ jobPosting }) {
 
     try {
       const formData = new FormData();
-      formData.append("job_posting_id", "67");
+      formData.append("job_posting_id", jobPosting.id);
       formData.append("name", application.name);
       formData.append("email", application.emailAddress);
       formData.append("phone", application.phone);

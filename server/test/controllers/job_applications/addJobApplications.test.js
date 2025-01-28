@@ -4,6 +4,7 @@ const mock = require("mock-require");
 const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
 const mockS3 = require("../../mocks/mockS3");
+const mockValidateRecaptchaToken = require("../../mocks/mockRevalidateRecaptchaToken");
 
 import path from "path";
 import fs from "fs";
@@ -17,6 +18,9 @@ beforeEach(() => {
 
   // Mock the S3 upload utility
   mock("../../../src/utils/s3", mockS3);
+
+  // Mock the validateRecaptchaToken function
+  mock("../../../src/utils/validateRecaptchaToken", mockValidateRecaptchaToken);
 
   // Re-require the handler to apply the mocks
   addJobApplicationRequestHandler = mock.reRequire(
@@ -59,6 +63,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -82,6 +87,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "InvalidStatus",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -105,6 +111,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "InvalidStatus",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -128,6 +135,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -151,6 +159,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -174,6 +183,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -197,6 +207,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Other",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -220,6 +231,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -229,6 +241,31 @@ describe("addJobApplicationRequestHandler test suite", () => {
       expect(mockRes.statusCode).toBe(404);
       expect(mockRes.json).toHaveBeenCalledWith({
         error: "Job posting not found.",
+      });
+    });
+  });
+
+  describe("Validation Behavior", () => {
+    it("Returns 400 if a required field is missing", async () => {
+      const mockReq = {
+        body: {
+          name: "John Doe",
+          email: "john.doe@example.com",
+          phone: "1234567890",
+          postal_code: "A1A 1A1",
+          status_in_canada: "Citizen",
+          application_status: "New",
+          custom_responses: {},
+          token: "valid-token", // Include a valid token for the test
+        },
+        file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
+      };
+
+      await addJobApplicationRequestHandler(mockReq, mockRes);
+
+      expect(mockRes.statusCode).toBe(400);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        error: "One or more required fields are missing.",
       });
     });
   });
@@ -245,6 +282,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
