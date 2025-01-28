@@ -226,7 +226,7 @@ function JobPostingPage({ jobPosting }) {
         sx={{
           display: "flex",
           alignItems: "center",
-          padding: "8px 16px", // Reduced padding
+          padding: "4px 8px", // Reduced padding
           marginBottom: 2, // Reduced margin
           backgroundColor: "#fff",
           borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
@@ -255,7 +255,7 @@ function JobPostingPage({ jobPosting }) {
 
         <Box>
           <Typography
-            variant="h5" // Smaller font size
+            variant="h4" // Smaller font size
             sx={{ fontWeight: "bold", marginBottom: 0.5 }}
           >
             {jobPosting.title}
@@ -271,7 +271,7 @@ function JobPostingPage({ jobPosting }) {
         {/* Left Section */}
         <Grid item xs={12} md={5}>
           <StyledPaper elevation={1}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h7" gutterBottom>
               Information
             </Typography>
             <Box sx={{ mt: 1 }}>
@@ -308,13 +308,13 @@ function JobPostingPage({ jobPosting }) {
                   }}
                 >
                   <Typography
-                    variant="body2"
+                    variant="body3"
                     sx={{ fontWeight: "bold", color: "rgba(0, 0, 0, 0.87)" }}
                   >
                     {item.label}
                   </Typography>
                   <Typography
-                    variant="body2"
+                    variant="body3"
                     sx={{ color: "rgba(0, 0, 0, 0.6)", textAlign: "right" }}
                   >
                     {item.value}
@@ -323,7 +323,7 @@ function JobPostingPage({ jobPosting }) {
               ))}
               <Box sx={{ mt: 1 }}>
                 <Typography
-                  variant="body2"
+                  variant="body3"
                   sx={{
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
@@ -352,7 +352,7 @@ function JobPostingPage({ jobPosting }) {
         {/* Right Section */}
         <Grid item xs={12} md={7}>
           <StyledPaper elevation={1}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h7" gutterBottom>
               Apply for this Position
             </Typography>
             <form onSubmit={handleSubmit}>
@@ -467,12 +467,12 @@ function JobPostingPage({ jobPosting }) {
                   <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 32 }} />
                 </Box>
                 <Typography
-                  variant="body1"
+                  variant="body2"
                   sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.5 }}
                 >
                   Click to upload a file
                 </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography variant="3" sx={{ color: "text.secondary" }}>
                   PDF file only
                 </Typography>
               </Box>
@@ -497,11 +497,11 @@ function JobPostingPage({ jobPosting }) {
                   {/* Left Icon */}
                   <Box sx={{ mr: 2 }}>
                     {fileError ? (
-                      <Typography variant="body2" color="error.main">
+                      <Typography variant="body3" color="error.main">
                         <ErrorIcon />
                       </Typography>
                     ) : uploadProgress === 100 ? (
-                      <Typography variant="body2" color="success.main">
+                      <Typography variant="body3" color="success.main">
                         <CheckIcon />
                       </Typography>
                     ) : (
@@ -523,13 +523,13 @@ function JobPostingPage({ jobPosting }) {
                     {fileError ? (
                       <>
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           sx={{ fontWeight: 500, color: "error.main" }}
                         >
                           Upload failed.
                         </Typography>
                         <Typography
-                          variant="body2"
+                          variant="body3"
                           sx={{
                             color: "error.main",
                             fontWeight: 600,
@@ -540,10 +540,10 @@ function JobPostingPage({ jobPosting }) {
                       </>
                     ) : (
                       <>
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
                           {file.name}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
+                        <Typography variant="body3" color="textSecondary">
                           {`${formatFileSize(file.size)} • ${
                             uploadProgress === 100 ? "Complete" : "Uploading..."
                           }`}
@@ -572,7 +572,7 @@ function JobPostingPage({ jobPosting }) {
                   justifyContent: "center",
                   alignItems: "center",
                   mt: 3,
-                  transform: "scale(1.2)",
+                  transform: "scale(1)",
                   transformOrigin: "center",
                 }}
               >
