@@ -1,13 +1,13 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
+import path from "path";
+import fs from "fs";
+
 const mock = require("mock-require");
 const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
 const mockS3 = require("../../mocks/mockS3");
 const mockValidateRecaptchaToken = require("../../mocks/mockRevalidateRecaptchaToken");
-
-import path from "path";
-import fs from "fs";
 
 let addJobApplicationRequestHandler;
 
