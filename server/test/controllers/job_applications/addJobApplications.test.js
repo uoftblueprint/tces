@@ -282,6 +282,14 @@ describe("addJobApplicationRequestHandler test suite", () => {
       // Create a mock file
       fs.writeFileSync(mockFilePath, "Mock file content");
 
+      // Set the file in the request object
+      mockReq.file = {
+        buffer: fs.readFileSync(mockFilePath), // Read the file contents as a buffer
+        mimetype: "application/pdf", // Set the MIME type
+        originalname: "mock-file.pdf", // Optional: Provide the file name
+        size: fs.statSync(mockFilePath).size, // Set the file size (in bytes)
+      };
+
       // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
