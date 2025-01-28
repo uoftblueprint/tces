@@ -20,8 +20,8 @@ const getAllActiveJobPostsRequestHandler = async (req, res) => {
     }
 
     if (job_type) {
-      query.job_type = Sequelize.literal(  
-        `JSON_CONTAINS(job_postings.job_type, '["${job_type}"]')`
+      query.job_type = Sequelize.literal(
+        `JSON_CONTAINS(job_postings.job_type, '["${job_type}"]')`,
       );
     }
 

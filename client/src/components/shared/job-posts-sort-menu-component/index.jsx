@@ -101,7 +101,6 @@ function SortMenu({ applySort }) {
   );
 }
 
-
 SortMenu.propTypes = {
   applySort: PropTypes.func.isRequired,
 };

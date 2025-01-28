@@ -122,7 +122,7 @@ function JobPostingsClientDashboardTableComponent() {
               </TableCell>
               <TableCell>{row.employer}</TableCell>
               <TableCell>
-               <LocationOnIcon
+                <LocationOnIcon
                   sx={{
                     color: "gray",
                     verticalAlign: "middle",
