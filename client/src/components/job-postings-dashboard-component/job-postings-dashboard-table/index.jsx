@@ -23,6 +23,7 @@ import {
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
+import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
 import { getAllJobPosts , deleteJobPost} from "../../../utils/job_posts_api";
 
@@ -63,7 +64,8 @@ export default function JobPostingsDashboardTableComponent() {
 
         setRows(formattedData);
       } catch (error) {
-        console.error("Error fetching job posts:", error.message);
+        setRows([]);
+        return <ErrorScreenComponent />;
       }
     };
     fetchJobPosts();
@@ -124,7 +126,6 @@ export default function JobPostingsDashboardTableComponent() {
 
     }
     catch(error){
-      console.error("Error deleting job posting:", error);
       setErrorDialogOpen(true);
     }
 
