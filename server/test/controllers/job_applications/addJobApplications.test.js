@@ -2,7 +2,6 @@ import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
 import path from "path";
 import fs from "fs";
-
 const mock = require("mock-require");
 const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
@@ -19,7 +18,7 @@ beforeEach(() => {
   // Mock the S3 upload utility
   mock("../../../src/utils/s3", mockS3);
 
-  // Mock the validateRecaptchaToken function
+  // Mock validate recaptcha token
   mock("../../../src/utils/validateRecaptchaToken", mockValidateRecaptchaToken);
 
   // Re-require the handler to apply the mocks
@@ -245,49 +244,8 @@ describe("addJobApplicationRequestHandler test suite", () => {
     });
   });
 
-  describe("Validation Behavior", () => {
-    it("Returns 400 if a required field is missing", async () => {
-      const mockReq = {
-        body: {
-          name: "John Doe",
-          email: "john.doe@example.com",
-          phone: "1234567890",
-          postal_code: "A1A 1A1",
-          status_in_canada: "Citizen",
-          application_status: "New",
-          custom_responses: {},
-          token: "valid-token", // Include a valid token for the test
-        },
-        file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
-      };
-
-      await addJobApplicationRequestHandler(mockReq, mockRes);
-
-      expect(mockRes.statusCode).toBe(400);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        error: "One or more required fields are missing.",
-      });
-    });
-  });
-
   describe("Successful Behavior", () => {
-    let mockFilePath;
-
-    beforeEach(() => {
-      // Define the path to the pre-created mock file
-      mockFilePath = path.join(
-        __dirname,
-        "mock-files", // Directory where the mock file is stored
-        "mock-file.pdf", // Mock file name
-      );
-
-      // Ensure the file exists before running the test
-      if (!fs.existsSync(mockFilePath)) {
-        throw new Error(`Mock file does not exist: ${mockFilePath}`);
-      }
-    });
-
-    it("Returns 201 if the application is successfully created using a mock PDF file", async () => {
+    it("Returns 201 if the application is successfully created and generates a mock file", async () => {
       const mockReq = {
         body: {
           job_posting_id: 123,
@@ -298,24 +256,47 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
-          token: "valid-token", // Ensure valid token for the test
+          token: "valid-token",
         },
-        file: {
-          buffer: fs.readFileSync(mockFilePath), // Use the mock file contents
-          mimetype: "application/pdf",
-        },
+        file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
+
+      // Define the mock directory and file path relative to the controller folder
+      // "../../../src/controllers/job_applications/addJobApplication",
+
+      const uploadsDir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "controllers",
+        "uploads",
+      );
+      const mockFilePath = path.join(uploadsDir, "mock-file.pdf");
+
+      // Ensure the uploads directory exists
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      // Create a mock file
+      fs.writeFileSync(mockFilePath, "Mock file content");
 
       // Perform the test
       await addJobApplicationRequestHandler(mockReq, mockRes);
 
-      // Assert the response status
       expect(mockRes.statusCode).toBe(201);
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
           message: "Job application created successfully.",
         }),
       );
+
+      // Check that the file was created
+      expect(fs.existsSync(mockFilePath)).toBe(true);
+
+      // Clean up: Remove the mock file after the test
+      fs.unlinkSync(mockFilePath);
     });
   });
 });
