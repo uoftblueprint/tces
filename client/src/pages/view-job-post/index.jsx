@@ -1,6 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useDropzone } from "react-dropzone";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorIcon from "@mui/icons-material/Error";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
@@ -20,11 +24,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import { DropzoneArea } from "material-ui-dropzone";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ErrorIcon from "@mui/icons-material/Error";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { uploadJobApplication } from "../../utils/job_applications_api";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -66,13 +65,13 @@ function JobPostingPage({ jobPosting }) {
   const [dropzoneKey, setDropzoneKey] = useState(0);
   const [recaptchaToken, setRecaptchaToken] = useState("");
 
-  const handleFileChange = (selectedFiles) => {
-    if (!selectedFiles || selectedFiles.length === 0) {
+  const handleFileChange = (acceptedFiles) => {
+    if (!acceptedFiles || acceptedFiles.length === 0) {
       return;
     }
 
     const maxSize = 5000000; // 5 MB
-    const selectedFile = selectedFiles[0];
+    const selectedFile = acceptedFiles[0];
 
     if (selectedFile.size > maxSize) {
       setFileError("Upload failed: file too big");
@@ -97,6 +96,12 @@ function JobPostingPage({ jobPosting }) {
       });
     }, 500);
   };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleFileChange,
+    accept: { "application/pdf": [] },
+    maxFiles: 1,
+  });
 
   const formatFileSize = (size) => {
     if (size < 1024) return `${size} B`;
@@ -395,7 +400,7 @@ function JobPostingPage({ jobPosting }) {
                 size="small"
               />
               <Grid container spacing={1}>
-                <Grid item xs={12}>
+                <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
                   <FormControl fullWidth margin="dense" size="small">
                     <InputLabel>Status in Canada</InputLabel>
                     <Select
@@ -412,36 +417,141 @@ function JobPostingPage({ jobPosting }) {
                     <FormHelperText>Required</FormHelperText>
                   </FormControl>
                 </Grid>
+                {application.statusInCanada === "Other" && (
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      size="small"
+                      label="Please specify"
+                      value={application.otherStatus}
+                      onChange={handleInputChange("otherStatus")}
+                    />
+                  </Grid>
+                )}
               </Grid>
+
               <Box
+                {...getRootProps()}
                 sx={{
-                  maxWidth: 400,
-                  margin: "auto",
-                  mt: 3,
-                  p: 1,
-                  border: "1px dashed #ccc",
-                  borderRadius: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  p: 3,
+                  border: "2px dashed #ccc",
+                  borderRadius: 2,
                   textAlign: "center",
+                  backgroundColor: "white",
+                  color: "#666",
+                  cursor: "pointer",
+                  transition: "border-color 0.3s ease",
+                  "&:hover": {
+                    borderColor: "#3f51b5",
+                  },
                 }}
               >
-                <DropzoneArea
-                  key={dropzoneKey}
-                  acceptedFiles={["application/pdf"]}
-                  maxFileSize={5000000}
-                  onChange={handleFileChange}
-                  showPreviewsInDropzone={false}
-                  dropzoneText={
-                    <Box textAlign="center">
-                      <UploadFileIcon color="primary" fontSize="large" />
-                      <Typography variant="body2" fontWeight="bold">
-                        Click to upload
+                <input {...getInputProps()} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    mb: 1,
+                  }}
+                >
+                  <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 32 }} />
+                </Box>
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.5 }}
+                >
+                  Click to upload a file
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  PDF file only
+                </Typography>
+              </Box>
+              {/* Error Message */}
+              {fileError && (
+                <Box sx={{ mt: 2, color: "error.main", textAlign: "center" }}>
+                  <Typography variant="body2">{fileError}</Typography>
+                </Box>
+              )}
+
+              {/* Uploaded File Info & Progress Bar */}
+              {file && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mt: 2,
+                    p: 1,
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Box sx={{ mr: 2 }}>
+                    {fileError ? (
+                      <ErrorIcon color="error" />
+                    ) : uploadProgress === 100 ? (
+                      <Typography variant="body2" color="success.main">
+                        <CheckIcon />
                       </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        PDF file only
-                      </Typography>
-                    </Box>
-                  }
-                  filesLimit={1}
+                    ) : (
+                      <UploadFileIcon color="primary" />
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      flex: 1,
+                      display: "flex", // Enable flexbox for alignment
+                      flexDirection: "column", // Stack items vertically
+                      alignItems: "center", // Center horizontally
+                      justifyContent: "center", // Center vertically
+                      textAlign: "center", // Center-align text
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {file.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {formatFileSize(file.size)} •{" "}
+                      {fileError ||
+                        (uploadProgress === 100 ? "Complete" : "Uploading...")}
+                    </Typography>
+                    {!fileError && (
+                      <LinearProgress
+                        variant="determinate"
+                        value={uploadProgress || 0}
+                        sx={{ mt: 1, width: "100%" }} // Full width for the progress bar
+                      />
+                    )}
+                  </Box>
+
+                  <IconButton onClick={handleRemoveFile}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Box>
+              )}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 3,
+                  transform: "scale(1.2)",
+                  transformOrigin: "center",
+                }}
+              >
+                <ReCAPTCHA
+                  sitekey="6LfIPsAqAAAAAL7OYC0zIrYsnD0SNcyYJuPmgnSw"
+                  onChange={handleRecaptchaChange}
                 />
               </Box>
               <Box
