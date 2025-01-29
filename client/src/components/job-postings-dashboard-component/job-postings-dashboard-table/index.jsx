@@ -38,37 +38,51 @@ export default function JobPostingsDashboardTableComponent() {
   const [filterStatus,setFilteredStatus] = useState(""); 
   const [sortOrder, setSortOrder] = useState(""); 
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [, setLoading] = React.useState(false);
+  const [errorOb, setError] = React.useState(null);
 
   useEffect(() => {
     const fetchJobPosts = async () => {
+      const { page, pageSize } = paginationModel;
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        pageSize: pageSize.toString(),
+        status: filterStatus,
+        order: sortOrder, 
+      });
+  
       try {
-        const { page, pageSize } = paginationModel;
-        const queryParams = new URLSearchParams({
-          page: page.toString(),
-          pageSize: pageSize.toString(),
-          status: filterStatus,
-          order: sortOrder, 
-          
-        });
-        const response = await getAllJobPosts(`?${queryParams.toString()}`); 
-        const data = await response.json();
-        console.log(data.allJobPosts.data)
-        console.log("query params", queryParams.toString())
-        const formattedData = data.allJobPosts.data.map((jobPost) => ({
-          id: jobPost.id,
-          jobTitle: jobPost.title,
-          employer: jobPost.employer,
-          closeDate: jobPost.close_date,
-          state: jobPost.state,
-        }));
-
-        setRows(formattedData);
+        setLoading(true);
+        const response = await getAllJobPosts(`?${queryParams.toString()}`);
+  
+        if (response.ok) {
+          const data = await response.json();
+          const formattedData = data.allJobPosts.data.map((jobPost) => ({
+            id: jobPost.id,
+            jobTitle: jobPost.title,
+            employer: jobPost.employer,
+            closeDate: jobPost.close_date,
+            state: jobPost.state,
+          }));
+  
+          setRows(formattedData);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Fetch failed.");
+        }
       } catch (error) {
-        <ErrorScreenComponent/>
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
+  
     fetchJobPosts();
   }, [paginationModel, filterStatus, sortOrder]);
+  
+  
+  if (errorOb) return <ErrorScreenComponent message={errorOb.message} />;
+
 
 
   const handleStatusChange = (status) => {
@@ -107,7 +121,6 @@ export default function JobPostingsDashboardTableComponent() {
 
   const handleOpenDialog = (id) => () => {
     setRowDelete(id);
-    console.log("deleted",id);
     setOpen(true);
   };
 
@@ -117,7 +130,6 @@ export default function JobPostingsDashboardTableComponent() {
   };
 
   const handleDeleteConfirm = async () => {
-    console.log("Deleting row with ID:", rowDelete); 
 
     try{
       await deleteJobPost(rowDelete);
