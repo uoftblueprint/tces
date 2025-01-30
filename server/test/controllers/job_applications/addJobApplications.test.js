@@ -260,7 +260,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   it("Returns 201 if the application is successfully created using a mocked file", async () => {
-    const uploadsDir = path.join(__dirname, "../uploads"); // Adjust path as needed
+    const uploadsDir = path.join(__dirname, "../../src/uploads"); // Ensure this matches the expected directory
 
     // Ensure the uploads directory exists before tests
     if (!fs.existsSync(uploadsDir)) {
@@ -269,6 +269,14 @@ describe("addJobApplicationRequestHandler test suite", () => {
     } else {
       console.log(`Uploads directory already exists: ${uploadsDir}`);
     }
+
+    const mockFileName = "mock-file.pdf";
+    const mockFilePath = path.join(uploadsDir, mockFileName);
+    const mockFileContent = "Mock file content";
+
+    // Write a mock file to the uploads directory
+    fs.writeFileSync(mockFilePath, mockFileContent);
+    console.log(`Created mock file at: ${mockFilePath}`);
 
     const mockReq = {
       body: {
@@ -283,10 +291,10 @@ describe("addJobApplicationRequestHandler test suite", () => {
         token: "valid-token",
       },
       file: {
-        buffer: Buffer.from("Mock file content"), // Mock the file content
+        buffer: Buffer.from(mockFileContent), // Mock the file content
         mimetype: "application/pdf", // Set the MIME type
-        originalname: "mock-file.pdf", // Provide the mock file name
-        size: 1024, // Mock file size
+        originalname: mockFileName, // Provide the mock file name
+        size: Buffer.byteLength(mockFileContent), // Set file size
       },
     };
 
@@ -298,5 +306,11 @@ describe("addJobApplicationRequestHandler test suite", () => {
         message: "Job application created successfully.",
       }),
     );
+
+    // Check if the file was successfully written
+    const fileExists = fs.existsSync(mockFilePath);
+    expect(fileExists).toBe(true);
+
+    console.log(`Verified uploaded file exists: ${mockFilePath}`);
   });
 });
