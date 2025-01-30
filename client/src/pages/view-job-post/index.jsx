@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,6 +27,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 import { uploadJobApplication } from "../../utils/job_applications_api";
+import { getOneJobPost } from "../../utils/job_posts_api";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -38,7 +41,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
 }));
 
 // eslint-disable-next-line react/prop-types
-function JobPostingPage({ jobPosting }) {
+function JobPostingPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [application, setApplication] = useState({
     name: "",
@@ -49,6 +52,77 @@ function JobPostingPage({ jobPosting }) {
     otherStatus: "",
     // customResponses: [],
   });
+
+  // const { jobPostingId } = useParams(); // Get jobPostingId from URL
+
+  const jobPostingId = 6;
+
+  // Define the initial state based on the JobPosting model attributes
+  const [jobPosting, setJobPosting] = useState({
+    id: null,
+    title: "",
+    employer: "",
+    location: "",
+    hoursPerWeek: null,
+    rateOfPayMin: null,
+    rateOfPayMax: null,
+    rateOfPayFrequency: "",
+    jobType: [],
+    closeDate: null,
+    jobDescription: "",
+    customQuestions: [],
+    creator: null,
+    state: "Draft",
+    createdAt: "",
+    updatedAt: "",
+    compensation: {
+      min: null,
+      max: null,
+    },
+  });
+
+  useEffect(() => {
+    const fetchJobPosting = async () => {
+      if (jobPostingId) {
+        try {
+          const response = await getOneJobPost(jobPostingId);
+          const jobPostingData = await response.json();
+          const data = jobPostingData.jobPost;
+
+          setJobPosting({
+            id: data.id,
+            title: data.title || "N/A",
+            employer: data.employer || "N/A",
+            location: data.location || "N/A",
+            hoursPerWeek: data.hours_per_week || 0,
+            rateOfPayMin: data.rate_of_pay_min || 0,
+            rateOfPayMax: data.rate_of_pay_max || 0,
+            rateOfPayFrequency: data.rate_of_pay_frequency || "N/A",
+            jobType: data.job_type || [],
+            closeDate: data.close_date || "N/A",
+            jobDescription: data.job_description || "N/A",
+            customQuestions: data.custom_questions || [],
+            creator: data.creator || null,
+            state: data.state || "Draft",
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt,
+            compensation: {
+              min: data.rate_of_pay_min || 0,
+              max: data.rate_of_pay_max || 0,
+            },
+          });
+
+          console.log(data);
+        } catch (error) {
+          console.error("Error fetching job posting:", error);
+        }
+      }
+    };
+
+    fetchJobPosting();
+  }, []);
+
+  // return <div>{JSON.stringify(jobPosting, null, 2)}</div>;
 
   const statusOptions = [
     { value: "Citizen", label: "Citizen" },
@@ -62,7 +136,7 @@ function JobPostingPage({ jobPosting }) {
   const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileError, setFileError] = useState("");
-  const [dropzoneKey, setDropzoneKey] = useState(0);
+  const [, setDropzoneKey] = useState(0);
   const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleFileChange = (acceptedFiles) => {
@@ -97,7 +171,7 @@ function JobPostingPage({ jobPosting }) {
     }, 500);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleFileChange,
     accept: { "application/pdf": [] },
     maxFiles: 1,
@@ -174,7 +248,11 @@ function JobPostingPage({ jobPosting }) {
   };
 
   const formatSalaryRange = (min, max) => {
-    return `$${min.toLocaleString()}/year - $${max.toLocaleString()}/year`;
+    // Convert to numbers before calling toLocaleString()
+    const minNum = Number(min) * 1000;
+    const maxNum = Number(max) * 1000;
+
+    return `$${minNum.toLocaleString()}/year - $${maxNum.toLocaleString()}/year`;
   };
 
   const handleSubmit = async (event) => {
@@ -332,7 +410,7 @@ function JobPostingPage({ jobPosting }) {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {jobPosting.description}
+                  {jobPosting.jobDescription}
                 </Typography>
                 <Button
                   variant="text"
