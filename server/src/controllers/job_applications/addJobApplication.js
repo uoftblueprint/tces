@@ -187,6 +187,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     console.log(uploadsDir);
 
     fs.readdir(uploadsDir, (err, files) => {
+      console.log(files);
       files.forEach((file) => {
         const filePath = path.join(uploadsDir, file);
         if (file !== ".gitkeep") {
