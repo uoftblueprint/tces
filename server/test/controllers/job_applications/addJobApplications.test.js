@@ -260,7 +260,11 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   it("Returns 201 if the application is successfully created using a mocked file", async () => {
-    const uploadsDir = path.join(__dirname, "../../src/uploads"); // Ensure this matches the expected directory
+    // ✅ Adjusted path to ensure it points to `src/uploads` relative to the controller
+    const uploadsDir = path.join(__dirname, "..", "..", "..", "src", "uploads");
+
+    console.log("THIS IS SO THAT IT IS EASY TO LOOK AT!");
+    console.log(`Uploads directory path: ${uploadsDir}`);
 
     // Ensure the uploads directory exists before tests
     if (!fs.existsSync(uploadsDir)) {
@@ -310,7 +314,5 @@ describe("addJobApplicationRequestHandler test suite", () => {
     // Check if the file was successfully written
     const fileExists = fs.existsSync(mockFilePath);
     expect(fileExists).toBe(true);
-
-    console.log(`Verified uploaded file exists: ${mockFilePath}`);
   });
 });

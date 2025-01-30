@@ -187,23 +187,11 @@ const addJobApplicationRequestHandler = async (req, res) => {
     console.log(uploadsDir);
 
     fs.readdir(uploadsDir, (err, files) => {
-      if (err) {
-        console.error("Error reading uploads directory:", err);
-        return;
-      }
-
-      console.log("Files in uploadsDir:", files);
-
+      console.log(files);
       files.forEach((file) => {
         const filePath = path.join(uploadsDir, file);
         if (file !== ".gitkeep") {
-          fs.unlink(filePath, (unlinkErr) => {
-            if (unlinkErr) {
-              console.error("Error deleting file:", filePath, unlinkErr);
-            } else {
-              console.log("Deleted file:", filePath);
-            }
-          });
+          fs.unlink(filePath, () => {});
         }
       });
     });
