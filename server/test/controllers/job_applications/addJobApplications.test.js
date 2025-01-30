@@ -263,15 +263,9 @@ describe("addJobApplicationRequestHandler test suite", () => {
     // ✅ Adjusted path to ensure it points to `src/uploads` relative to the controller
     const uploadsDir = path.join(__dirname, "..", "..", "..", "src", "uploads");
 
-    console.log("THIS IS SO THAT IT IS EASY TO LOOK AT!");
-    console.log(`Uploads directory path: ${uploadsDir}`);
-
     // Ensure the uploads directory exists before tests
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
-      console.log(`Created uploads directory: ${uploadsDir}`);
-    } else {
-      console.log(`Uploads directory already exists: ${uploadsDir}`);
     }
 
     const mockFileName = "mock-file.pdf";
@@ -280,7 +274,6 @@ describe("addJobApplicationRequestHandler test suite", () => {
 
     // Write a mock file to the uploads directory
     fs.writeFileSync(mockFilePath, mockFileContent);
-    console.log(`Created mock file at: ${mockFilePath}`);
 
     const mockReq = {
       body: {
