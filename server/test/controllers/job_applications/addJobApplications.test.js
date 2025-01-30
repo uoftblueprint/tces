@@ -260,6 +260,16 @@ describe("addJobApplicationRequestHandler test suite", () => {
   });
 
   it("Returns 201 if the application is successfully created using a mocked file", async () => {
+    const uploadsDir = path.join(__dirname, "../uploads"); // Adjust path as needed
+
+    // Ensure the uploads directory exists before tests
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+      console.log(`Created uploads directory: ${uploadsDir}`);
+    } else {
+      console.log(`Uploads directory already exists: ${uploadsDir}`);
+    }
+
     const mockReq = {
       body: {
         job_posting_id: 123,
