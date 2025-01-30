@@ -10,6 +10,19 @@ const mockJobPostings = require("../../mocks/mockJobPostings");
 const mockS3 = require("../../mocks/mockS3");
 const mockValidateRecaptchaToken = require("../../mocks/mockRevalidateRecaptchaToken");
 
+// Mock the multer middleware
+vi.mock("multer", () => ({
+  single: () => (req, res, next) => {
+    req.file = {
+      buffer: Buffer.from("Mock file content"), // Mock file content
+      mimetype: "application/pdf", // MIME type of the file
+      originalname: "mock-file.pdf", // Original file name
+      size: 1024, // Mock file size in bytes
+    };
+    next(); // Call the next middleware
+  },
+}));
+
 let addJobApplicationRequestHandler;
 
 beforeEach(() => {
@@ -246,47 +259,34 @@ describe("addJobApplicationRequestHandler test suite", () => {
     });
   });
 
-  describe("Successful Behavior", () => {
-    it("Returns 201 if the application is successfully created using a mocked file", async () => {
-      const mockReq = {
-        body: {
-          job_posting_id: 123,
-          name: "John Doe",
-          email: "john.doe@example.com",
-          phone: "1234567890",
-          postal_code: "A1A 1A1",
-          status_in_canada: "Citizen",
-          application_status: "New",
-          custom_responses: {},
-          token: "valid-token",
-        },
-        file: {
-          buffer: Buffer.from("Mock file content"), // Mock the file content as a buffer
-          mimetype: "application/pdf", // Set the MIME type
-          originalname: "mock-file.pdf", // Provide the mock file name
-          size: 1024, // Set a mock file size (in bytes)
-        },
-      };
+  it("Returns 201 if the application is successfully created using a mocked file", async () => {
+    const mockReq = {
+      body: {
+        job_posting_id: 123,
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone: "1234567890",
+        postal_code: "A1A 1A1",
+        status_in_canada: "Citizen",
+        application_status: "New",
+        custom_responses: {},
+        token: "valid-token",
+      },
+      file: {
+        buffer: Buffer.from("Mock file content"), // Mock the file content
+        mimetype: "application/pdf", // Set the MIME type
+        originalname: "mock-file.pdf", // Provide the mock file name
+        size: 1024, // Mock file size
+      },
+    };
 
-      const mockRes = {
-        status: vi.fn().mockImplementation(function (code) {
-          this.statusCode = code;
-          return this;
-        }),
-        json: vi.fn(),
-        statusCode: 0,
-      };
+    await addJobApplicationRequestHandler(mockReq, mockRes);
 
-      // Perform the test
-      await addJobApplicationRequestHandler(mockReq, mockRes);
-
-      // Assert the response status
-      expect(mockRes.statusCode).toBe(201);
-      expect(mockRes.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "Job application created successfully.",
-        }),
-      );
-    });
+    expect(mockRes.statusCode).toBe(201);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Job application created successfully.",
+      }),
+    );
   });
 });

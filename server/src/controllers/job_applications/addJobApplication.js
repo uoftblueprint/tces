@@ -183,6 +183,9 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     const uploadsDir = path.join(__dirname, "..", "..", "uploads");
 
+    console.log("THIS IS SO THAT IT IS EASY TO LOOK AT!");
+    console.log(uploadsDir);
+
     fs.readdir(uploadsDir, (err, files) => {
       files.forEach((file) => {
         const filePath = path.join(uploadsDir, file);
