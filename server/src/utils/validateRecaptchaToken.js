@@ -24,14 +24,11 @@ async function validateRecaptchaToken(token) {
     // Parse the response JSON
     const data = await response.json();
     if (data.success) {
-      console.log("reCAPTCHA token is valid.");
       return true;
-    } else {
-      console.error("reCAPTCHA validation failed:", data["error-codes"]);
-      return false;
     }
+
+    return false;
   } catch (error) {
-    console.error("Error validating reCAPTCHA token:", error);
     return false;
   }
 }
