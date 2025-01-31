@@ -37,7 +37,12 @@ function JobApplicationsTable({
 
   return (
     <TableContainer
-      sx={{ marginTop: "35px", width: "100%", padding: "10px 2%" }}
+      sx={{
+        marginTop: "35px",
+        width: "100%",
+        padding: "10px 2%",
+        boxSizing: "border-box",
+      }}
       component={Paper}
     >
       <Table>

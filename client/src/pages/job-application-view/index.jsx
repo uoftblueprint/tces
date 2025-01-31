@@ -44,6 +44,7 @@ function JobApplicationView() {
       };
     });
 
+  // Used to get job titles on page load
   const fetchFormattedJobApplications = async (jobTitlesMap) => {
     // const response = await fetchAllJobApplications(START_PAGE, START_ROWS);
     const response = await fetchAllJobApplicationsMock(

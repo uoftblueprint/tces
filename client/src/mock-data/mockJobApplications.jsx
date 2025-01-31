@@ -89,7 +89,6 @@ const fetchAllJobApplicationsMock = (START_PAGE = 1, START_ROWS = 10) => {
   };
 };
 const fetchPaginatedData = (queryParams) => {
-  console.log(queryParams);
   if (queryParams.page === 1) {
     return {
       jobApplications: [
