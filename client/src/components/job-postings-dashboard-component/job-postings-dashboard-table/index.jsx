@@ -274,9 +274,35 @@ export default function JobPostingsDashboardTableComponent() {
             marginLeft: "40px",
           }}
         >
-          <JobPostsSortMenuComponent applySort={(order) => handleSortOrderChange(order)} />
+  <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <JobPostsSortMenuComponent applySort={(order) => handleSortOrderChange(order)} />
+
+    <Button
+      variant="outlined"
+      onClick={() => {
+        setFilteredStatus("");
+        setSortOrder("");
+      }}
+      sx={{
+        textTransform: "none",
+        borderColor: "#3568E5",
+        borderRadius: "8px",
+        height: "36px",
+        padding: "6px 16px",
+        backgroundColor: "#3568E5",
+        color: "white",
+        "&:hover": {
+          backgroundColor: "#3568E5",
+          color: "white",
+        },
+      }}
+    >
+      RESET ALL
+    </Button>
+  </Box>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <JobPostsStatusMenuComponent applyStatus={(status) => handleStatusChange(status)} />
+
         </Box>
         <Button
           sx={{
