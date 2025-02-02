@@ -46,8 +46,8 @@ router.get("resume/:job_application_id", isLoggedIn, async (req, res) => {
  * }
  */
 router.put(
-  "/:job_application_id", 
-  isLoggedIn, 
+  "/:job_application_id",
+  isLoggedIn,
   updateJobApplicationStatusRequestHandler,
 );
 
