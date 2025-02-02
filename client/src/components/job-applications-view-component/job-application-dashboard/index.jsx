@@ -114,7 +114,7 @@ function JobApplicationDashboard({
               handleFilterChange({ searchID: parseInt(value, 10) })
             }
             options={searchIDs}
-            label="Search ID"
+            label="Search ID#"
             selectedValue={jobApplicationQuery.searchID}
           />
         </Container>

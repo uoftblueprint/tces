@@ -40,7 +40,6 @@ function JobApplicationView() {
       return {
         ...jobApplication,
         title: jobTitlesMap[jobApplication.job_posting_id],
-        createdAt: new Date(jobApplication.createdAt),
       };
     });
 

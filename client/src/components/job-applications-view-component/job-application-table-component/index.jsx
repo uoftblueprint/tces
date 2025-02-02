@@ -13,6 +13,8 @@ import {
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
 import ApplicationStatusChipComponent from "../application-status-chips";
+import { formatDateStr } from "../../../utils/date";
+import { ContentTableCell, HeaderTableCell } from "../index.styles";
 
 // Future TODOs ------
 // 1. When single job specific pages and single application pages are implemented,
@@ -48,64 +50,68 @@ function JobApplicationsTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 700, width: "8%" }} align="left">
-              Job ID #
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "15%" }} align="left">
-              Title
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "12.5%" }} align="left">
+            <HeaderTableCell sx={{ width: "8%" }}>Job ID #</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "15%" }}>Title</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "12.5%" }}>
               Applicant Name
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "12.5%" }} align="left">
-              Email
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
-              Phone
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
-              Postal Code
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
+            </HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "12.5%" }}>Email</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "10%" }}>Phone</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "10%" }}>Postal Code</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "10%" }}>
               Date Applied
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "10%" }} align="left">
-              Status
-            </TableCell>
-            <TableCell sx={{ fontWeight: 700, width: "8%" }} align="left">
-              Resume
-            </TableCell>
+            </HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "12%" }}>Status</HeaderTableCell>
+
+            <HeaderTableCell sx={{ width: "8%" }}>Resume</HeaderTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {jobApplications.map((row) => (
             <TableRow key={row.id}>
-              <TableCell align="left">{row.id}</TableCell>
-              <TableCell align="left">
+              <ContentTableCell>{row.id}</ContentTableCell>
+
+              <ContentTableCell>
                 <Link href={`/job-posts/${row.job_posting_id}`}>
                   {row.title}
                 </Link>
-              </TableCell>
-              <TableCell align="left">
+              </ContentTableCell>
+
+              <ContentTableCell>
                 <Link href={`/job-applications/${row.id}`}>{row.name}</Link>
-              </TableCell>
-              <TableCell align="left">{row.email}</TableCell>
-              <TableCell align="left">{formatPhoneNumber(row.phone)}</TableCell>
-              <TableCell align="left">
+              </ContentTableCell>
+
+              <ContentTableCell>{row.email}</ContentTableCell>
+
+              <ContentTableCell>
+                {formatPhoneNumber(row.phone)}
+              </ContentTableCell>
+
+              <ContentTableCell>
                 {formatPostalCode(row.postal_code)}
-              </TableCell>
-              <TableCell align="left">
-                {/* Expect createdAt to be formated as date for ease of formatting */}
-                {row.createdAt.toLocaleDateString("en-CA")}
-              </TableCell>
-              <TableCell align="left">
+              </ContentTableCell>
+
+              <ContentTableCell>
+                {formatDateStr(row.createdAt)}
+              </ContentTableCell>
+
+              <ContentTableCell>
                 <ApplicationStatusChipComponent
                   status={[row.application_status]}
                 />
-              </TableCell>
-              <TableCell align="left">
+              </ContentTableCell>
+
+              {/* Add corresponding resume link  to this columns values */}
+              <ContentTableCell>
                 <DownloadIcon color="primary" />
-              </TableCell>
+              </ContentTableCell>
             </TableRow>
           ))}
         </TableBody>

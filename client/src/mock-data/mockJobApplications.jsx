@@ -9,7 +9,7 @@ const fetchAllJobApplicationsMock = (START_PAGE = 1, START_ROWS = 10) => {
       {
         id: 1,
         job_posting_id: 23,
-        name: "olya jaworsky",
+        name: "Name Name Longname Longname Longname",
         email: "test@mail.com",
         phone: "1234567890",
         postal_code: "q1w2e3",
@@ -95,7 +95,7 @@ const fetchPaginatedData = (queryParams) => {
         {
           id: 6,
           job_posting_id: 23,
-          name: "olya jaworsky",
+          name: "Name Name Longname Longname Longname",
           email: "test@mail.com",
           phone: "1234567890",
           postal_code: "q1w2e3",
@@ -104,7 +104,7 @@ const fetchPaginatedData = (queryParams) => {
           status_other: null,
           application_status: "In Progress",
           custom_responses: {},
-          createdAt: "2025-01-12T03:50:22.000Z",
+          createdAt: "2025-01-11T03:50:22.000Z",
           updatedAt: "2025-01-12T17:55:29.000Z",
         },
       ],
