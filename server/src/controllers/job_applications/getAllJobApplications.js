@@ -63,7 +63,6 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
     });
 
     console.log(jobApplications);
-    console.log('From gAJA.js')
     return res.status(200).json({
       status: "success",
       message: "All Job Applications found successfully",
