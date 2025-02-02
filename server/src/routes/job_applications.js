@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
   return getAllJobApplicationsRequestHandler(req, res);
 });
 
-// Route to get job application by id (not job_posting_id since some job_posting_ids are duplicated) 
+// Route to get job application by id (not job_posting_id since some job_posting_ids are duplicated)
 router.get("/:job_posting_id", async (req, res) => {
   const jobPostingId = req.params.job_posting_id;
   return getAllJobApplicationsRequestHandler(req, res, jobPostingId);
