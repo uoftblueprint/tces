@@ -151,17 +151,30 @@ function JobApplicationDashboard({
 }
 
 JobApplicationDashboard.propTypes = {
-  jobApplications: PropTypes.object.isRequired,
+  jobApplications: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      job_posting_id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+      postal_code: PropTypes.string.isRequired,
+      resume: PropTypes.string.isRequired,
+      status_in_canada: PropTypes.string,
+      status_other: PropTypes.string,
+      application_status: PropTypes.string.isRequired,
+      custom_responses: PropTypes.shape(),
+      createdAt: PropTypes.instanceOf(Date).isRequired,
+      updatedAt: PropTypes.instanceOf(Date).string,
+    }),
+  ).isRequired,
   jobApplicationQuery: PropTypes.shape({
     rows: PropTypes.number.isRequired,
     page: PropTypes.number.isRequired,
-    searchID: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.null,
-    ]),
-    applicant: PropTypes.oneOfType([PropTypes.string, PropTypes.null]),
-    jobTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.null]),
+    searchID: PropTypes.oneOfType([PropTypes.string, PropTypes.number, null]),
+    applicant: PropTypes.oneOfType([PropTypes.string, null]),
+    jobTitle: PropTypes.oneOfType([PropTypes.string, null]),
     sort: PropTypes.string.isRequired,
   }).isRequired,
   fetchFilteredApplications: PropTypes.func.isRequired,
