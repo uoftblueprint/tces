@@ -1,23 +1,23 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
 const mock = require("mock-require");
-const mockGetAllJobPosts = require("../mocks/mockGetAllJobPosts");
+const mockGetAllJobPosts = require("../../mocks/mockGetAllJobPosts");
 
 let getAllJobPostsRequestHandler;
 
 beforeEach(() => {
   // Mock the JobPosting model
-  mock("../../src/models/job_posts.model", mockGetAllJobPosts);
+  mock("../../../src/models/job_posts.model", mockGetAllJobPosts);
 
   // Re-require the handler to apply the mock
   getAllJobPostsRequestHandler = mock.reRequire(
-    "../../src/controllers/job_posts/getAllJobPosts",
+    "../../../src/controllers/job_posts/getAllJobPosts",
   );
 });
 
 afterEach(() => {
   // Reset mocks after every test
-  mock.stop("../../src/models/job_posts.model");
+  mock.stop("../../../src/models/job_posts.model");
 });
 
 describe("getAllJobPostsRequestHandler test suite", () => {
@@ -68,7 +68,7 @@ describe("getAllJobPostsRequestHandler test suite", () => {
 
   it("Handles pagination correctly", async () => {
     // Simulate a request for page 2 with pageSize 2
-    mockReq.query = { page: "1", pageSize: "2" };
+    mockReq.query = { page: "2", pageSize: "2" };
 
     await getAllJobPostsRequestHandler(mockReq, mockRes);
 
@@ -79,7 +79,7 @@ describe("getAllJobPostsRequestHandler test suite", () => {
       allJobPosts: {
         totalPosts: 4, // Total posts in the database
         totalPages: 2, // With pageSize of 2, there are 2 total pages
-        currentPage: 1, // Page 1 (0-based indexing)
+        currentPage: 2, // Page 2
         data: [
           { id: 3, title: "Web Developer", state: "Active" },
           { id: 4, title: "DevOps Engineer", state: "Draft" },

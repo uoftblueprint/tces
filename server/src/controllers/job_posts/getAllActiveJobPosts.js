@@ -1,15 +1,5 @@
-// Get All Job Posts
-// a) GET request to get all job posts [id, title, employer, application_close_date, state]
-// Return the id, title, employer, application_close_date, state values of ALL job posts
-
-// b) GET request to get all public job posts
-// Return the id, title, employer, location, application_close_date of job posts where state is "Active"
-
-// c) GET request by job type using job type parameter
-// Return all job posts with that job type and state = "Active"
-
-// const { query } = require("express");
 const logger = require("pino")();
+const Sequelize = require("sequelize");
 const JobPosting = require("../../models/job_posts.model");
 
 const getAllActiveJobPostsRequestHandler = async (req, res) => {
@@ -21,10 +11,26 @@ const getAllActiveJobPostsRequestHandler = async (req, res) => {
   }
 
   try {
+    const { location, job_type, order = "descending" } = req.query;
+
     const query = {};
 
-    // Pagination Configs
+    if (location) {
+      query.location = location;
+    }
+
+    if (job_type) {
+      query.job_type = Sequelize.literal(  
+        `JSON_CONTAINS(job_postings.job_type, '["${job_type}"]')`
+      );
+    }
+
+    const sortOrder = order === "ascending" ? "ASC" : "DESC";
+
+    query.state = "Active";
+
     const searchConfig = {
+      order: [["close_date", sortOrder]],
       where: query,
       attributes: [
         "id",
@@ -45,28 +51,20 @@ const getAllActiveJobPostsRequestHandler = async (req, res) => {
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
-      searchConfig.offset = page * pageSize;
+      searchConfig.offset = (page - 1) * pageSize;
     }
 
-    // a) Get all Public Job Posts
-    query.state = "Active";
-    const allActiveJobPosts = await JobPosting.findAndCountAll(searchConfig);
-
-    // // c)
-    // query.job_type = req?.query?.job_type
-    // const allActiveJobPostsByType = await JobPosting.findAndCountAll(searchConfig);
+    const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
     // -------- Response:
     const response = {
       status: "success",
       message: "All active job posts found successfully",
       publicJobPosts: {
-        totalPosts: allActiveJobPosts.count,
-        totalPages: pageSize
-          ? Math.ceil(allActiveJobPosts.count / pageSize)
-          : 1,
+        totalPosts: allJobPosts.count,
+        totalPages: pageSize ? Math.ceil(allJobPosts.count / pageSize) : 1,
         currentPage: page,
-        data: allActiveJobPosts.rows,
+        data: allJobPosts.rows,
       },
     };
 

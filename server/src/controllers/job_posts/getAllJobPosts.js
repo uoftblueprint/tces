@@ -1,14 +1,3 @@
-// Get All Job Posts
-// a) GET request to get all job posts [id, title, employer, application_close_date, state]
-// Return the id, title, employer, application_close_date, state values of ALL job posts
-
-// b) GET request to get all public job posts
-// Return the id, title, employer, location, application_close_date of job posts where state is "Active"
-
-// c) GET request by job type using job type parameter
-// Return all job posts with that job type and state = "Active"
-
-// const { query } = require("express");
 const logger = require("pino")();
 const JobPosting = require("../../models/job_posts.model");
 
@@ -21,11 +10,21 @@ const getAllJobPostsRequestHandler = async (req, res) => {
   }
 
   try {
+    const { status, order = "descending" } = req.query;
+
     const query = {};
+
+    if (status) {
+      query.state = status;
+    }
+
+    // Determine the sorting order
+    const sortOrder = order === "ascending" ? "ASC" : "DESC";
 
     // Pagination Configs
     const searchConfig = {
       where: query,
+      order: [["close_date", sortOrder]],
       attributes: [
         "id",
         "title",
@@ -45,13 +44,12 @@ const getAllJobPostsRequestHandler = async (req, res) => {
 
     if (page != null && pageSize != null) {
       searchConfig.limit = pageSize;
-      searchConfig.offset = page * pageSize;
+      searchConfig.offset = (page - 1) * pageSize;
     }
 
-    // a) Get all Job Posts
     const allJobPosts = await JobPosting.findAndCountAll(searchConfig);
 
-    // -------- Response:
+    // Response
     const response = {
       status: "success",
       message: "All job posts found successfully",

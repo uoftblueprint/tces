@@ -102,7 +102,7 @@ export default function JobPostingsDashboardTableComponent() {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
         ? prevSelectedRows.filter((rowId) => rowId !== id)
-        : [...prevSelectedRows, id]
+        : [...prevSelectedRows, id],
     );
   };
 

@@ -31,7 +31,19 @@ function StatusMenu({ applySort }) {
         onClick={handleClick}
         variant="outlined"
         endIcon={
-          <span style={{ borderLeft: "1px solid #90bce4", height: "100%", marginLeft: "6px", paddingLeft: "14px", paddingRight: "6px", marginTop: "-6px", marginBottom: "-6px" }}>&#9662;</span>
+          <span
+            style={{
+              borderLeft: "1px solid #90bce4",
+              height: "100%",
+              marginLeft: "6px",
+              paddingLeft: "14px",
+              paddingRight: "6px",
+              marginTop: "-6px",
+              marginBottom: "-6px",
+            }}
+          >
+            &#9662;
+          </span>
         }
       >
         Status
@@ -47,33 +59,29 @@ function StatusMenu({ applySort }) {
       >
         <MenuItem onClick={(event) => handleSelect(event, "inactive")}>
           <ListItemIcon>
-            <Radio
-              checked={selectedValue === "inactive"}
-              value="inactive"
-            />
+            <Radio checked={selectedValue === "inactive"} value="inactive" />
           </ListItemIcon>
           <ListItemText primary="Inactive" />
         </MenuItem>
         <MenuItem onClick={(event) => handleSelect(event, "draft")}>
           <ListItemIcon>
-            <Radio
-              checked={selectedValue === "draft"}
-              value="draft"
-            />
+            <Radio checked={selectedValue === "draft"} value="draft" />
           </ListItemIcon>
           <ListItemText primary="Draft" />
         </MenuItem>
         <MenuItem onClick={(event) => handleSelect(event, "active")}>
           <ListItemIcon>
-            <Radio
-              checked={selectedValue === "active"}
-              value="active"
-            />
+            <Radio checked={selectedValue === "active"} value="active" />
           </ListItemIcon>
           <ListItemText primary="Active" />
         </MenuItem>
-        <MenuItem style={{ justifyContent: "right"}}>
-          <Button onClick={handleApply} variant="contained" color="primary" style={{ width: "auto", borderRadius: "12px"}}>
+        <MenuItem style={{ justifyContent: "right" }}>
+          <Button
+            onClick={handleApply}
+            variant="contained"
+            color="primary"
+            style={{ width: "auto", borderRadius: "12px" }}
+          >
             Apply
           </Button>
         </MenuItem>
