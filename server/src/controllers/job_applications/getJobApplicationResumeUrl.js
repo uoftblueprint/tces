@@ -6,6 +6,7 @@ const getJobApplicationResumeRequestHandler = async (req, res) => {
   let jobApplicationId;
   try {
     jobApplicationId = req.params.job_application_id;
+    console.log(jobApplicationId)
 
     // Get the resume key for the give job application id
     const JobApplication = await JobApplications.findOne({

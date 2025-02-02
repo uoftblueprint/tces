@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const logger = require("pino")();
 const JobApplications = require("../../models/job_applications.model");
 
-const getAllJobApplicationsRequestHandler = async (req, res) => {
+const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
   try {
     // ! Return all applications sorted in descending order by application date (newest first)
     // ! There is probably a sequelize function that can do this for me.
@@ -16,10 +16,8 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    const { job_posting_id: jobPostingId } = req.query;
-
     if (jobPostingId) {
-      query.job_posting_id = jobPostingId;
+      query.id = jobPostingId;
     }
 
     // ! This is an example of how the pagination logic is used with the Job Lead model.
@@ -65,7 +63,7 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
     });
 
     console.log(jobApplications);
-
+    console.log('From gAJA.js')
     return res.status(200).json({
       status: "success",
       message: "All Job Applications found successfully",
