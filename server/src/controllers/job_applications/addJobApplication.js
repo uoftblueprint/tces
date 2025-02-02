@@ -4,6 +4,7 @@ const path = require("path");
 const JobPosting = require("../../models/job_posts.model");
 const JobApplication = require("../../models/job_applications.model");
 const { uploadFileToS3 } = require("../../utils/s3");
+const validateRecaptchaToken = require("../../utils/validateRecaptchaToken");
 
 const addJobApplicationRequestHandler = async (req, res) => {
   try {
@@ -17,7 +18,16 @@ const addJobApplicationRequestHandler = async (req, res) => {
       status_other: statusOther,
       application_status: applicationStatus = "New",
       custom_responses: customResponses = {},
+      token,
     } = req.body;
+
+    const validation = await validateRecaptchaToken(token);
+
+    if (!validation) {
+      return res
+        .status(400)
+        .json({ error: "Could not validate reCAPTCHA token." });
+    }
 
     const resume = req.file;
 
@@ -93,7 +103,12 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! check that customResponses is an object.
     // ! If it is not an object, return a 400 status code with an error message.
 
-    if (typeof customResponses !== "object") {
+    if (
+      Array.isArray(customResponses) &&
+      customResponses.every(
+        (item) => typeof item === "object" && !Array.isArray(item),
+      )
+    ) {
       return res
         .status(400)
         .json({ error: "Custom responses must be an object." });

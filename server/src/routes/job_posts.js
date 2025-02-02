@@ -129,7 +129,7 @@ router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
  * Expected parameters:
  * @type integer (in url) {params.job_post_id}
  */
-router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
+router.get("/:job_post_id", getJobPostRequestHandler);
 
 /**
  * Update a specific job post's info, with id job_post_id

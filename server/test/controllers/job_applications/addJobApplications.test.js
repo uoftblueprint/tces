@@ -1,12 +1,27 @@
 import { expect, vi, describe, it, afterEach, beforeEach } from "vitest";
 
+import path from "path";
+import fs from "fs";
+import os from "os";
+
 const mock = require("mock-require");
 const mockAddJobApplications = require("../../mocks/mockAddJobApplications");
 const mockJobPostings = require("../../mocks/mockJobPostings");
 const mockS3 = require("../../mocks/mockS3");
+const mockValidateRecaptchaToken = require("../../mocks/mockRevalidateRecaptchaToken");
 
-import path from "path";
-import fs from "fs";
+// Mock the multer middleware
+vi.mock("multer", () => ({
+  single: () => (req, res, next) => {
+    req.file = {
+      buffer: Buffer.from("Mock file content"), // Mock file content
+      mimetype: "application/pdf", // MIME type of the file
+      originalname: "mock-file.pdf", // Original file name
+      size: 1024, // Mock file size in bytes
+    };
+    next(); // Call the next middleware
+  },
+}));
 
 let addJobApplicationRequestHandler;
 
@@ -17,6 +32,9 @@ beforeEach(() => {
 
   // Mock the S3 upload utility
   mock("../../../src/utils/s3", mockS3);
+
+  // Mock validate recaptcha token
+  mock("../../../src/utils/validateRecaptchaToken", mockValidateRecaptchaToken);
 
   // Re-require the handler to apply the mocks
   addJobApplicationRequestHandler = mock.reRequire(
@@ -59,6 +77,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -82,6 +101,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "InvalidStatus",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -105,6 +125,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "InvalidStatus",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -128,6 +149,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -151,6 +173,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -174,6 +197,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -197,6 +221,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Other",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -220,6 +245,7 @@ describe("addJobApplicationRequestHandler test suite", () => {
           status_in_canada: "Citizen",
           application_status: "New",
           custom_responses: {},
+          token: "valid-token",
         },
         file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
       };
@@ -233,58 +259,53 @@ describe("addJobApplicationRequestHandler test suite", () => {
     });
   });
 
-  describe("Successful Behavior", () => {
-    it("Returns 201 if the application is successfully created and generates a mock file", async () => {
-      const mockReq = {
-        body: {
-          job_posting_id: 123,
-          name: "John Doe",
-          email: "john.doe@example.com",
-          phone: "1234567890",
-          postal_code: "A1A 1A1",
-          status_in_canada: "Citizen",
-          application_status: "New",
-          custom_responses: {},
-        },
-        file: { buffer: Buffer.from("test"), mimetype: "application/pdf" },
-      };
+  it("Returns 201 if the application is successfully created using a mocked file", async () => {
+    // ✅ Adjusted path to ensure it points to `src/uploads` relative to the controller
+    const uploadsDir = path.join(__dirname, "..", "..", "..", "src", "uploads");
 
-      // Define the mock directory and file path relative to the controller folder
-      // "../../../src/controllers/job_applications/addJobApplication",
+    // Ensure the uploads directory exists before tests
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
 
-      const uploadsDir = path.join(
-        __dirname,
-        "..",
-        "..",
-        "..",
-        "controllers",
-        "uploads",
-      );
-      const mockFilePath = path.join(uploadsDir, "mock-file.pdf");
+    const mockFileName = "mock-file.pdf";
+    const mockFilePath = path.join(uploadsDir, mockFileName);
+    const mockFileContent = "Mock file content";
 
-      // Ensure the uploads directory exists
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
+    // Write a mock file to the uploads directory
+    fs.writeFileSync(mockFilePath, mockFileContent);
 
-      // Create a mock file
-      fs.writeFileSync(mockFilePath, "Mock file content");
+    const mockReq = {
+      body: {
+        job_posting_id: 123,
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone: "1234567890",
+        postal_code: "A1A 1A1",
+        status_in_canada: "Citizen",
+        application_status: "New",
+        custom_responses: {},
+        token: "valid-token",
+      },
+      file: {
+        buffer: Buffer.from(mockFileContent), // Mock the file content
+        mimetype: "application/pdf", // Set the MIME type
+        originalname: mockFileName, // Provide the mock file name
+        size: Buffer.byteLength(mockFileContent), // Set file size
+      },
+    };
 
-      // Perform the test
-      await addJobApplicationRequestHandler(mockReq, mockRes);
+    await addJobApplicationRequestHandler(mockReq, mockRes);
 
-      expect(mockRes.statusCode).toBe(201);
-      expect(mockRes.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "Job application created successfully.",
-        }),
-      );
+    expect(mockRes.statusCode).toBe(201);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Job application created successfully.",
+      }),
+    );
 
-      // Check that the file was created
-      expect(fs.existsSync(mockFilePath)).toBe(true);
-
-      // Clean up: Remove the mock file after the test
-      fs.unlinkSync(mockFilePath);
-    });
+    // Check if the file was successfully written
+    const fileExists = fs.existsSync(mockFilePath);
+    expect(fileExists).toBe(true);
   });
 });

@@ -79,7 +79,10 @@ function SortMenu({ applySort }) {
         </MenuItem>
         <MenuItem onClick={(event) => handleSelect(event, "descending")}>
           <ListItemIcon>
-            <Radio checked={selectedValue === "descending"} value="descending" />
+            <Radio
+              checked={selectedValue === "descending"}
+              value="descending"
+            />
           </ListItemIcon>
           <ListItemText primary="Close date: Descending" />
         </MenuItem>
@@ -97,7 +100,6 @@ function SortMenu({ applySort }) {
     </div>
   );
 }
-
 
 SortMenu.propTypes = {
   applySort: PropTypes.func.isRequired,

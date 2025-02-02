@@ -77,7 +77,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
 
   const handleSubmit = async (e, postState) => {
     const DRAFT = "Draft";
-    jobPostData.jobInfo.state = postState // eslint-disable-line no-param-reassign
+    jobPostData.jobInfo.state = postState; // eslint-disable-line no-param-reassign
     const updatedJobPost = { ...jobPostData, state: postState };
 
     setIsLoading(true);
