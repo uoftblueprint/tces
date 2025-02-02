@@ -1,5 +1,4 @@
-
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -25,7 +24,7 @@ import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-componen
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts , deleteJobPost} from "../../../utils/job_posts_api";
+import { getAllJobPosts, deleteJobPost } from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -34,9 +33,12 @@ export default function JobPostingsDashboardTableComponent() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
-  const [filterStatus,setFilteredStatus] = useState(""); 
-  const [sortOrder, setSortOrder] = useState(""); 
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [filterStatus, setFilteredStatus] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [, setLoading] = React.useState(false);
   const [errorOb, setError] = React.useState(null);
@@ -48,13 +50,13 @@ export default function JobPostingsDashboardTableComponent() {
         page: page.toString(),
         pageSize: pageSize.toString(),
         status: filterStatus,
-        order: sortOrder, 
+        order: sortOrder,
       });
-  
+
       try {
         setLoading(true);
         const response = await getAllJobPosts(`?${queryParams.toString()}`);
-  
+
         if (response.ok) {
           const data = await response.json();
           const formattedData = data.allJobPosts.data.map((jobPost) => ({
@@ -64,7 +66,7 @@ export default function JobPostingsDashboardTableComponent() {
             closeDate: jobPost.close_date,
             state: jobPost.state,
           }));
-  
+
           setRows(formattedData);
         } else {
           const errorData = await response.json();
@@ -76,19 +78,16 @@ export default function JobPostingsDashboardTableComponent() {
         setLoading(false);
       }
     };
-  
+
     fetchJobPosts();
   }, [paginationModel, filterStatus, sortOrder]);
-  
-  
+
   if (errorOb) return <ErrorScreenComponent message={errorOb.message} />;
-
-
 
   const handleStatusChange = (status) => {
     setFilteredStatus(status);
   };
-  
+
   const handleSortOrderChange = (order) => {
     setSortOrder(order);
   };
@@ -100,7 +99,6 @@ export default function JobPostingsDashboardTableComponent() {
         : [...prevSelectedRows, id],
     );
   };
-
 
   const handleEditClick = (id) => () => {
     setRowModesModel((prevModel) => ({
@@ -130,20 +128,17 @@ export default function JobPostingsDashboardTableComponent() {
   };
 
   const handleDeleteConfirm = async () => {
-
-    try{
+    try {
       await deleteJobPost(rowDelete);
       setRows((prevRows) => prevRows.filter((row) => row.id !== rowDelete));
-
-    }
-    catch(error){
+    } catch (error) {
       setErrorDialogOpen(true);
     }
 
     handleCloseDialog();
   };
 
-    const handleJobPostingsNavClick = (jobLeadId) => {
+  const handleJobPostingsNavClick = (jobLeadId) => {
     navigate(`/job-postings/${jobLeadId}`);
   };
 
@@ -182,7 +177,6 @@ export default function JobPostingsDashboardTableComponent() {
           {params.value}
         </Button>
       ),
-      
     },
     {
       field: "employer",
@@ -198,8 +192,7 @@ export default function JobPostingsDashboardTableComponent() {
       type: "date",
       width: 400,
       headerClassName: "header-class",
-      valueGetter: (params) => new Date(params.row.closeDate)
-
+      valueGetter: (params) => new Date(params.row.closeDate),
     },
     {
       field: "state",
@@ -274,37 +267,44 @@ export default function JobPostingsDashboardTableComponent() {
             marginLeft: "40px",
           }}
         >
-  <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-    <JobPostsSortMenuComponent applySort={(order) => handleSortOrderChange(order)} />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <JobPostsSortMenuComponent
+              applySort={(order) => handleSortOrderChange(order)}
+            />
 
-    <Button
-      variant="outlined"
-      onClick={() => {
-        setFilteredStatus("");
-        setSortOrder("");
-      }}
-      sx={{
-        textTransform: "none",
-        borderColor: "#3568E5",
-        borderRadius: "8px",
-        height: "36px",
-        padding: "6px 16px",
-        width: "100px",
-        fontSize: "12.5px",
-        backgroundColor: "#3568E5",
-        color: "white",
-        "&:hover": {
-          backgroundColor: "#3568E5",
-          color: "white",
-        },
-      }}
-    >
-      RESET ALL
-    </Button>
-  </Box>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setFilteredStatus("");
+                setSortOrder("");
+              }}
+              sx={{
+                textTransform: "none",
+                borderColor: "#3568E5",
+                borderRadius: "8px",
+                height: "36px",
+                padding: "6px 16px",
+                width: "100px",
+                fontSize: "12.5px",
+                backgroundColor: "#3568E5",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#3568E5",
+                  color: "white",
+                },
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                whiteSpace: "nowrap",
+              }}
+            >
+              RESET ALL
+            </Button>
+          </Box>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <JobPostsStatusMenuComponent applyStatus={(status) => handleStatusChange(status)} />
-
+          <JobPostsStatusMenuComponent
+            applyStatus={(status) => handleStatusChange(status)}
+          />
         </Box>
         <Button
           sx={{
@@ -328,11 +328,11 @@ export default function JobPostingsDashboardTableComponent() {
       </Box>
       <Box
         sx={{
-          padding: "20px", 
-          marginTop: "20px", 
-          marginLeft: "20px", 
-          marginRight: "20px", 
-          borderRadius: "8px", 
+          padding: "20px",
+          marginTop: "20px",
+          marginLeft: "20px",
+          marginRight: "20px",
+          borderRadius: "8px",
         }}
       >
         <DataGrid
@@ -343,8 +343,7 @@ export default function JobPostingsDashboardTableComponent() {
           onRowModesModelChange={handleRowModesModelChange}
           pagination
           paginationModel={paginationModel}
-          pageSizeOptions={[10, 25, 50]} 
-
+          pageSizeOptions={[10, 25, 50]}
           onPaginationModelChange={(newModel) => setPaginationModel(newModel)}
           onRowEditStop={(params, event) => {
             if (params.reason === GridRowEditStopReasons.rowFocusOut) {
