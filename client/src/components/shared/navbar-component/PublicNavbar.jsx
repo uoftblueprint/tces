@@ -10,7 +10,7 @@ function PublicNavbar() {
         <div className="left-content">
           <div className="image">
             <Button
-              onClick={() => navigate("/job-postings-client")}
+              onClick={() => navigate("/job-postings")}
               style={{
                 borderRadius: "50%",
               }}
