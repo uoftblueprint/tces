@@ -278,6 +278,7 @@ export default function JobPostingsDashboardTableComponent() {
                 setFilteredStatus("");
                 setSortOrder("");
               }}
+              disabled={!filterStatus && !sortOrder}
               sx={{
                 textTransform: "none",
                 borderColor: "#3568E5",
@@ -286,8 +287,8 @@ export default function JobPostingsDashboardTableComponent() {
                 padding: "6px 16px",
                 width: "100px",
                 fontSize: "12.5px",
-                backgroundColor: "#3568E5",
-                color: "white",
+                backgroundColor: !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
+                color: !filterStatus && !sortOrder ? "#666" : "white",
                 "&:hover": {
                   backgroundColor: "#3568E5",
                   color: "white",
