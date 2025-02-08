@@ -195,10 +195,10 @@ router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
  * @route /filter-options
  *
  * Query Parameters:
- * @param {string} [applicant_name] - Filter by applicant name.
- * @param {string} [email] - Filter by email.
- * @param {string} [job_title] - Filter by job title.
- * @param {string} [job_posting_id] - Filter by job posting ID.
+ * @param {string} [applicant_name]
+ * @param {string} [email]
+ * @param {string} [job_title]
+ * @param {string} [job_posting_id]
  */
 
 router.get("/filter-options", isLoggedIn, getFilterOptionsRequestHandler);
