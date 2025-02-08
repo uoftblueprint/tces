@@ -10,9 +10,9 @@ function JobPostingsClientDashboardComponent() {
   }, []);
 
   return (
-    <div style={{ padding: "24px" }}>
+    <div style={{ padding:"24px", paddingBottom: "72px", paddingTop: "24px"}}>
         <JobPostingsClientDashboardHeader />
-
+        
         <JobPostingsClientDashboardTableComponent />
     </div>
   );
