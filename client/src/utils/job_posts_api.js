@@ -138,7 +138,7 @@ const getAllLocations = async () => {
 };
 
 const getFilterOptions = async (queryParams = {}) => {
-  // make a query string from given paramets, no queryString if empty
+  // make a query string from given parameters, no queryString if empty
   const queryString = new URLSearchParams(queryParams).toString();
 
   try {
