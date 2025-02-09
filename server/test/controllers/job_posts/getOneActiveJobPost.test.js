@@ -103,9 +103,9 @@ describe("getActiveJobPostRequestHandler test suite", () => {
 
       await getActiveJobPostRequestHandler(mockReq, mockRes);
 
-      expect(mockRes.statusCode).toBe(403);
+      expect(mockRes.statusCode).toBe(404);
       expect(mockRes.response).toMatchObject({
-        message: "This job post is not publicly available.",
+        message: "No job post with id 124 found.",
       });
     });
 
