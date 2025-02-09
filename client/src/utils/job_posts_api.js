@@ -143,7 +143,7 @@ const getFilterOptions = async (queryParams = {}) => {
 
   try {
     const response = await fetch(
-      `${REACT_APP_API_BASE_URL}/job_posts/filter-options?${queryString}`,
+      `${REACT_APP_API_BASE_URL}/job_postings/filter-options?${queryString}`,
       {
         method: "GET",
         credentials: "include",

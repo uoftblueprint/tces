@@ -3,7 +3,8 @@ const { Op } = require("sequelize");
 const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 
-const getFilterOptionsRequestHandler = async (req, res) => {
+const getFilterDropdownOptionsHandler = async (req, res) => {
+  console.log("getFilterDropdownOptionsHandler called");
   // Check method is GET
   if (req.method !== "GET") {
     return res

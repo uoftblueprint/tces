@@ -17,7 +17,7 @@ const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
-const getFilterOptionsRequestHandler = require("../controllers/job_posts/getFilterOptions");
+const getFilterDropdownOptionsHandler = require("../controllers/job_posts/getFilterDropdownOptionsHandler");
 
 const getActiveJobPostRequestHandler = require("../controllers/job_posts/getOneActiveJobPost");
 
@@ -201,6 +201,6 @@ router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
  * @param {string} [job_posting_id]
  */
 
-router.get("/filter-options", isLoggedIn, getFilterOptionsRequestHandler);
+router.get("/filter-options", isLoggedIn, getFilterDropdownOptionsHandler);
 
 module.exports = router;
