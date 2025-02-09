@@ -17,6 +17,7 @@ const deleteJobPostHandler = require("../controllers/job_posts/deleteJobPost");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
+const getFilterDropdownOptionsHandler = require("../controllers/job_posts/getFilterDropdownOptionsHandler");
 
 /**
  * Get Active Job Posts for a specific location and/or specific job type, and sort by application_close_date
@@ -173,5 +174,24 @@ router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
  * - isLoggedIn: Ensures that the user is authenticated before allowing the deletion operation.
  */
 router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
+
+/**
+ * Get Filter Options for Dropdowns
+ *
+ * Retrieves unique applicant names, emails, job titles, and job posting IDs.
+ * Supports filtering by applicant name, email, job title, and job posting ID.
+ *
+ * @type GET
+ *
+ * @route /filter-options
+ *
+ * Query Parameters:
+ * @param {string} [applicant_name]
+ * @param {string} [email]
+ * @param {string} [job_title]
+ * @param {string} [job_posting_id]
+ */
+
+router.get("/filter-options", isLoggedIn, getFilterDropdownOptionsHandler);
 
 module.exports = router;
