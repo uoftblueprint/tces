@@ -86,4 +86,6 @@ const JobApplication = sequelize.define(
   },
 );
 
+JobApplication.belongsTo(JobPosting, { foreignKey: 'id' });
+
 module.exports = JobApplication;

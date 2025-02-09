@@ -1,8 +1,9 @@
 const Sequelize = require("sequelize");
 const logger = require("pino")();
 const JobApplications = require("../../models/job_applications.model");
+const JobPostings = require("../../models/job_posts.model");
 
-const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
+const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId, name, email, title) => {
   try {
     // ! Return all applications sorted in descending order by application date (newest first)
     // ! There is probably a sequelize function that can do this for me.
@@ -19,6 +20,14 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
     if (jobPostingId) {
       query.id = jobPostingId;
     }
+    if (name) {
+      query.name = name;
+    }
+    if (email) {
+      query.email = email;
+    }
+    
+    console.log(title)
 
     // ! This is an example of how the pagination logic is used with the Job Lead model.
 
@@ -40,7 +49,20 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
         "createdAt", // Include createdAt explicitly
         "updatedAt", // Include updatedAt explicitly
       ],
+      include: [
+        {
+          model: JobPostings,
+          attributes: ["title"],
+          required: true, 
+          where: {
+          },
+        }
+      ],
     };
+
+    if (title) {
+      searchConfig.include[0].where.title = title
+    }
 
     if (page !== null && pageSize !== null) {
       searchConfig.limit = parseInt(pageSize, 10);
