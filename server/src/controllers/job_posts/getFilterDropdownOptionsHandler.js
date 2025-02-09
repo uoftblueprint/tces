@@ -26,7 +26,7 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
           },
         },
       ],
-      attributes: ["name", "email", "hob_posting_id"],
+      attributes: ["name", "email", "job_posting_id"],
     };
 
     if (job_posting_id) {
@@ -42,10 +42,7 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
     }
 
     if (jobTitle) {
-      baseQuery[0].include.where = {
-        ...baseQuery.include[0].where,
-        title: { [Op.iLike]: `%${jobTitle}` },
-      };
+      baseQuery[0].include.where.title = { [Op.iLike]: `%${jobTitle}` };
     }
     const applications = await JobApplication.findAll(baseQuery); // make databse query
 
