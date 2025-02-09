@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-function SortMenu({ applySort }) {
+function SortMenu({ applySort, intialState }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("ascending");
+  const [selectedValue, setSelectedValue] = useState(intialState);
 
   const open = Boolean(anchorEl);
   const options = [
@@ -28,6 +28,7 @@ function SortMenu({ applySort }) {
   ];
 
   const handleClick = (e) => {
+    setSelectedValue(intialState);
     setAnchorEl(e.currentTarget);
   };
   const handleSelect = (e) => {
@@ -124,6 +125,7 @@ function SortMenu({ applySort }) {
 
 SortMenu.propTypes = {
   applySort: PropTypes.func.isRequired,
+  intialState: PropTypes.bool.isRequired,
 };
 
 export default SortMenu;

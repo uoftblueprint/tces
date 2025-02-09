@@ -20,7 +20,8 @@ function JobApplicationDashboard({
   const isAllEmptyFilters =
     !jobApplicationQuery.jobTitle &&
     !jobApplicationQuery.applicant &&
-    !jobApplicationQuery.searchID;
+    !jobApplicationQuery.searchID &&
+    jobApplicationQuery.sort === "descending";
 
   if (jobApplicationQuery) {
     if (jobApplicationQuery.sort === "ascending") {
@@ -76,6 +77,7 @@ function JobApplicationDashboard({
       >
         <SortMenu
           applySort={(newSortType) => handleFilterChange({ sort: newSortType })}
+          intialState={jobApplicationQuery.sort}
           sx={{
             alignSelf: "start",
             alignItems: "start",
