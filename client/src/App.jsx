@@ -20,6 +20,8 @@ import CreateClient from "./pages/create-client";
 import EmployerPage from "./pages/employer";
 import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
+import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
+
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
 
@@ -29,6 +31,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import Navbar from "./components/shared/navbar-component/Navbar";
+import PublicNavBar from "./components/shared/navbar-component/PublicNavBar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import JobPostingsDashboard from "./pages/job-postings-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -123,7 +126,14 @@ function App() {
             />
           }
         >
-          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route path="/" element={<Navigate to="/job-postings" />} />
+          <Route element={<PublicNavBar />}>
+            <Route
+              path="/job-postings"
+              element={<JobPostingsClientDashboard />}
+            />
+          </Route>
+
           <Route
             path="/signin"
             element={
@@ -239,7 +249,7 @@ function App() {
               }
             />
             <Route
-              path="/job-postings"
+              path="/all-job-postings"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
