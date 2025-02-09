@@ -41,6 +41,7 @@ async function deleteJobPost(jobPostingId) {
       `${REACT_APP_API_BASE_URL}/job_postings/${jobPostingId}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json", // Include headers if needed
         },
