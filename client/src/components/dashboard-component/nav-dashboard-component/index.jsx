@@ -64,7 +64,7 @@ function DashboardNavigationComponent() {
             variant="contained"
             startIcon={<ContentPasteIcon />}
             iconbackgroundcolour="#9F4DB7"
-            onClick={() => navigate("/job-postings/")}
+            onClick={() => navigate("/all-job-postings/")}
             sx={{
               whiteSpace: "nowrap",
             }}

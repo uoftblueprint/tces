@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import JobPostingsClientDashboardTableComponent from "./job-postings-client-dashboard-table";
 import JobPostingsClientDashboardHeader from "./job-postings-client-dashboard-header";
 
-
 function JobPostingsClientDashboardComponent() {
   // Scroll to the top on initialization
   useEffect(() => {
@@ -10,10 +9,10 @@ function JobPostingsClientDashboardComponent() {
   }, []);
 
   return (
-    <div style={{ padding:"24px", paddingBottom: "72px", paddingTop: "24px"}}>
-        <JobPostingsClientDashboardHeader />
-        
-        <JobPostingsClientDashboardTableComponent />
+    <div style={{ padding: "90px", paddingBottom: "72px", paddingTop: "24px" }}>
+      <JobPostingsClientDashboardHeader />
+
+      <JobPostingsClientDashboardTableComponent />
     </div>
   );
 }
