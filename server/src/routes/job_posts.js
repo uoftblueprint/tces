@@ -18,6 +18,8 @@ const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 
 const getAllLocationsRequestHandler = require("../controllers/job_posts/getAllLocations");
 
+const getActiveJobPostRequestHandler = require("../controllers/job_posts/getOneActiveJobPost");
+
 /**
  * Get Active Job Posts for a specific location and/or specific job type, and sort by application_close_date
  * Expected parameters:
@@ -33,6 +35,13 @@ router.get("/active", getAllActiveJobPostsRequestHandler);
  * Get all possible locations across all jobs
  */
 router.get("/locations", getAllLocationsRequestHandler);
+
+/**
+ * Get a public job posting
+ * Expected parameters:
+ * @type string {params.job_posting_id}
+ */
+router.get("/active/:job_posting_id", getActiveJobPostRequestHandler);
 
 /**
  * Add a New Job Posting
@@ -124,18 +133,18 @@ router.post("/", isLoggedIn, addJobPostRequestHandler);
 router.get("/", isLoggedIn, getAllJobPostsRequestHandler);
 
 /*
- * Get a specific job post's info, with id job_post_id
+ * Get a specific job post's info, with id job_posting_id
  *
  * Expected parameters:
- * @type integer (in url) {params.job_post_id}
+ * @type integer (in url) {params.job_posting_id}
  */
-router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
+router.get("/:job_posting_id", isLoggedIn, getJobPostRequestHandler);
 
 /**
- * Update a specific job post's info, with id job_post_id
+ * Update a specific job post's info, with id job_posting_id
  *
  * Expected parameters:
- * @type string {params.job_post_id}
+ * @type string {params.job_posting_id}
  * Expected body parameters:
  * @type JobPost {params.body}
  *    <--
@@ -143,7 +152,7 @@ router.get("/:job_post_id", isLoggedIn, getJobPostRequestHandler);
  *      note: any value you do not pass in will be left unchanged
  *      For updating status from Draft to Active, all other fields must be filled in.
  */
-router.put("/:job_post_id", isLoggedIn, updateJobPostRequestHandler);
+router.put("/:job_posting_id", isLoggedIn, updateJobPostRequestHandler);
 
 /**
  * Delete a Job Post and its Associated Job Applications

@@ -12,14 +12,14 @@ const updateJobPostsRequestHandler = async (req, res) => {
 
   try {
     // Get Job Id
-    const jobPostId = req?.params?.job_post_id
-      ? parseInt(req.params.job_post_id, 10)
+    const jobPostId = req?.params?.job_posting_id
+      ? parseInt(req.params.job_posting_id, 10)
       : null;
 
     if (!jobPostId) {
       return res.status(400).json({
         status: "fail",
-        message: "Invalid or missing job_post_id.",
+        message: "Invalid or missing job_posting_id.",
       });
     }
 
