@@ -73,6 +73,25 @@ const uploadJobApplication = async (file) => {
   return response;
 };
 
+const getResumeUrl = async (jobApplicationId) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response.ok)
+    throw new Error(
+      `Failed to fetch resume for job application with id: ${jobApplicationId}`,
+    );
+
+  const result = await response.json();
+  return result;
+}
+
 const updateJobApplicationStatus = async (
   jobApplicationId,
   newApplicationStatus,
@@ -98,5 +117,6 @@ export {
   fetchAllJobApplications,
   fetchJobApplicationsByApplicantName,
   uploadJobApplication,
+  getResumeUrl,
   updateJobApplicationStatus,
 };
