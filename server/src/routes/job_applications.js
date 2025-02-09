@@ -18,9 +18,9 @@ router.get("/", isLoggedIn, async (req, res) => {
 });
 
 // Route to get job application by id (not job_posting_id since some job_posting_ids are duplicated)
-router.get("/:job_posting_id", isLoggedIn, async (req, res) => {
-  const { jobPostingId } = req.params;
-  return getAllJobApplicationsRequestHandler(req, res, jobPostingId, null, null, null);
+router.get("/:id", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  return getAllJobApplicationsRequestHandler(req, res, id, null, null, null);
 });
 
 // Route to get job applications by applicant name
