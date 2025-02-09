@@ -16,7 +16,7 @@ const initialState = {
   searchID: null,
   applicant: null,
   jobTitle: null,
-  sort: "ascending",
+  sort: "descending",
 };
 
 // Future TODOs --------

@@ -95,24 +95,38 @@ function JobApplicationDashboard({
           disableGutters
         >
           <SearchInput
-            onChange={(e, value) =>
-              handleFilterChange({ jobTitle: parseInt(value, 10) })
-            }
+            onChange={(e, value, reason) => {
+              if (reason === "clear" && e.type === "click") {
+                handleFilterChange({ jobTitle: null });
+              } else {
+                handleFilterChange({ jobTitle: parseInt(value, 10) });
+              }
+            }}
             options={jobTitleIds}
             getOptionLabel={getJobTitleLabels}
             label="Job Title"
             selectedValue={jobApplicationQuery.jobTitle}
           />
           <SearchInput
-            onChange={(e, value) => handleFilterChange({ applicant: value })}
+            onChange={(e, value, reason) => {
+              if (reason === "clear" && e.type === "click") {
+                handleFilterChange({ applicant: null });
+              } else {
+                handleFilterChange({ applicant: value });
+              }
+            }}
             options={applicants}
             label="Applicant"
             selectedValue={jobApplicationQuery.applicant}
           />
           <SearchInput
-            onChange={(e, value) =>
-              handleFilterChange({ searchID: parseInt(value, 10) })
-            }
+            onChange={(e, value, reason) => {
+              if (reason === "clear" && e.type === "click") {
+                handleFilterChange({ searchID: null });
+              } else {
+                handleFilterChange({ searchID: parseInt(value, 10) });
+              }
+            }}
             options={searchIDs}
             label="Search ID#"
             selectedValue={jobApplicationQuery.searchID}
@@ -134,6 +148,7 @@ function JobApplicationDashboard({
             searchID: null,
             applicant: null,
             jobTitle: null,
+            sort: "descending",
           });
         }}
       >
