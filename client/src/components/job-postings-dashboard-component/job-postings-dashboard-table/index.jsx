@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -13,12 +13,6 @@ import {
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
-} from "@mui/x-data-grid-generator";
-import {
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,74 +22,74 @@ import {
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
-
-const statuses = ["Active", "Draft", "Inactive"];
-const randomStatus = () => randomArrayItem(statuses);
-
-const initialRows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company A",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company B",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company C",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company D",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: "Company E",
-    joinDate: randomCreatedDate(),
-    status: randomStatus(),
-  },
-];
+import ErrorScreenComponent from "../../shared/error-screen-component";
+import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
+import { getAllJobPosts, deleteJobPost } from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
-  const [rows, setRows] = React.useState(initialRows);
+  const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [rowDelete, setRowDelete] = React.useState(null);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const [filterStatus, setFilteredStatus] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [, setLoading] = React.useState(false);
+  const [errorOb, setError] = React.useState(null);
 
-  const handleSort = (sortOption) => {
-    const sortedRows = [...rows].sort((a, b) => {
-      if (sortOption === "ascending") {
-        return new Date(a.joinDate) - new Date(b.joinDate);
+  useEffect(() => {
+    const fetchJobPosts = async () => {
+      const { page, pageSize } = paginationModel;
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        pageSize: pageSize.toString(),
+        status: filterStatus,
+        order: sortOrder,
+      });
+
+      try {
+        setLoading(true);
+        const response = await getAllJobPosts(`?${queryParams.toString()}`);
+
+        if (response.ok) {
+          const data = await response.json();
+          const formattedData = data.allJobPosts.data.map((jobPost) => ({
+            id: jobPost.id,
+            jobTitle: jobPost.title,
+            employer: jobPost.employer,
+            closeDate: jobPost.close_date,
+            state: jobPost.state,
+          }));
+
+          setRows(formattedData);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Fetch failed.");
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-      if (sortOption === "descending") {
-        return new Date(b.joinDate) - new Date(a.joinDate);
-      }
-      return 0;
-    });
-    setRows(sortedRows);
+    };
+
+    fetchJobPosts();
+  }, [paginationModel, filterStatus, sortOrder]);
+
+  if (errorOb) return <ErrorScreenComponent message={errorOb.message} />;
+
+  const handleStatusChange = (status) => {
+    setFilteredStatus(status);
   };
 
-  const handleStatus = (sortOption) => {
-    const setStatus = rows.filter(
-      (row) => row.status.toLocaleLowerCase() === sortOption,
-    );
-    setRows(setStatus);
+  const handleSortOrderChange = (order) => {
+    setSortOrder(order);
   };
 
   const handleCheckboxChange = (id) => {
@@ -133,11 +127,19 @@ export default function JobPostingsDashboardTableComponent() {
     setRowDelete(null);
   };
 
-  const handleDeleteConfirm = () => {
-    if (rowDelete !== null) {
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteJobPost(rowDelete);
       setRows((prevRows) => prevRows.filter((row) => row.id !== rowDelete));
+    } catch (error) {
+      setErrorDialogOpen(true);
     }
+
     handleCloseDialog();
+  };
+
+  const handleJobPostingsNavClick = (jobLeadId) => {
+    navigate(`/job-postings/${jobLeadId}`);
   };
 
   const columns = [
@@ -154,15 +156,30 @@ export default function JobPostingsDashboardTableComponent() {
       ),
     },
     {
-      field: "name",
+      field: "jobTitle",
       headerName: "Title",
       flex: 1,
       editable: true,
       cellClassName: "wrap-text",
       headerClassName: "header-class",
+      renderCell: (params) => (
+        <Button
+          onClick={() => handleJobPostingsNavClick(params.row.jobLeadID)}
+          style={{
+            textDecoration: "underline",
+            color: "#3568E5",
+            textTransform: "none",
+            padding: 0,
+            textAlign: "left",
+            justifyContent: "flex-start",
+          }}
+        >
+          {params.value}
+        </Button>
+      ),
     },
     {
-      field: "age",
+      field: "employer",
       headerName: "Employer",
       type: "string",
       flex: 1,
@@ -170,16 +187,17 @@ export default function JobPostingsDashboardTableComponent() {
       headerClassName: "header-class",
     },
     {
-      field: "joinDate",
+      field: "closeDate",
       headerName: "Close Date",
       type: "date",
-      width: 200,
+      width: 400,
       headerClassName: "header-class",
+      valueGetter: (params) => new Date(params.row.closeDate),
     },
     {
-      field: "status",
+      field: "state",
       headerName: "Status",
-      width: 200,
+      width: 100,
       type: "singleSelect",
       renderCell: (params) => (
         <JobTypeChipsComponent jobTypes={[params.value]} />
@@ -249,9 +267,45 @@ export default function JobPostingsDashboardTableComponent() {
             marginLeft: "40px",
           }}
         >
-          <JobPostsSortMenuComponent applySort={handleSort} />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <JobPostsSortMenuComponent
+              applySort={(order) => handleSortOrderChange(order)}
+            />
+
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setFilteredStatus("");
+                setSortOrder("");
+              }}
+              disabled={!filterStatus && !sortOrder}
+              sx={{
+                textTransform: "none",
+                borderColor: "#3568E5",
+                borderRadius: "8px",
+                height: "36px",
+                padding: "6px 16px",
+                width: "100px",
+                fontSize: "12.5px",
+                backgroundColor: !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
+                color: !filterStatus && !sortOrder ? "#666" : "white",
+                "&:hover": {
+                  backgroundColor: "#3568E5",
+                  color: "white",
+                },
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                whiteSpace: "nowrap",
+              }}
+            >
+              RESET ALL
+            </Button>
+          </Box>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <JobPostsStatusMenuComponent applySort={handleStatus} />
+          <JobPostsStatusMenuComponent
+            applyStatus={(status) => handleStatusChange(status)}
+          />
         </Box>
         <Button
           sx={{
@@ -288,6 +342,10 @@ export default function JobPostingsDashboardTableComponent() {
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
+          pagination
+          paginationModel={paginationModel}
+          pageSizeOptions={[10, 25, 50]}
+          onPaginationModelChange={(newModel) => setPaginationModel(newModel)}
           onRowEditStop={(params, event) => {
             if (params.reason === GridRowEditStopReasons.rowFocusOut) {
               event.preventDefault();
@@ -320,6 +378,10 @@ export default function JobPostingsDashboardTableComponent() {
           </Button>
         </DialogActions>
       </Dialog>
+      <JobPostsDeleteErrorDialog
+        open={errorDialogOpen}
+        onClose={() => setErrorDialogOpen(false)}
+      />
     </Box>
   );
 }

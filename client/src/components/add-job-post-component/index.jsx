@@ -34,7 +34,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_DRAFT = {
     isSuccess: true,
     message: "Your job posting was saved",
-    handleClose: () => navigate("/job-postings"),
+    handleClose: () => navigate("/all-job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_DRAFT = {
@@ -46,7 +46,7 @@ function AddJobPost({ jobPostData, updateJobPostData, currUser }) {
   const SUCCESS_PUBLISH = {
     isSuccess: true,
     message: "Your job posting was published",
-    handleClose: () => navigate("/job-postings"),
+    handleClose: () => navigate("/all-job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_PUBLISH = {

@@ -11,7 +11,7 @@ import {
 
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("ascending");
+  const [selectedValue, setSelectedValue] = useState("descending");
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
