@@ -171,8 +171,8 @@ export default function JobPostingsDashboardTableComponent() {
       console.error("Failed to fetch job post:", error);
     }
   };
+ 
   
-
   const columns = [
     {
       width: 60,
