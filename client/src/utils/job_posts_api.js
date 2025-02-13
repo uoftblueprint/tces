@@ -22,7 +22,7 @@ const createJobPost = async (jobPostData) => {
 const modifyJobPost = async (modifiedJobPost) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings/${modifiedJobPost.job_post_id}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/${modifiedJobPost.jobPostID}`,
     {
       method: "PUT",
       credentials: "include",
@@ -68,6 +68,21 @@ const getAllJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_postings?${queryParams}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const getJobPostInner = async (jobPostID) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/${jobPostID}`,
     {
       method: "GET",
       credentials: "include",
@@ -129,6 +144,7 @@ module.exports = {
   deleteJobPost,
   modifyJobPost,
   getAllJobPosts,
+  getJobPostInner,
   getAllActiveJobPosts,
   getOneJobPost,
   getAllLocations,

@@ -34,6 +34,8 @@ import JobPostingsDashboard from "./pages/job-postings-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
 import EditJobLead from "./pages/edit-job-lead";
 import AddJobPostPage from "./pages/add-job-post";
+import JobPostInner from "./pages/inner-job-post";
+import JobPostEdit from "./pages/edit-job-post";
 
 // helper functions
 import { getUserByIdHelper } from "./utils/users";
@@ -294,6 +296,46 @@ function App() {
                   <AddJobLeadPage
                     currUser={currUser}
                     setLocalExitRoute={setLocalExitRoute}
+                  />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/job-postings/:jobPostID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobPostInner
+                    managedUsers={managedUsers}
+                    managedJobLeads={managedJobLeads}
+                    managedClients={managedClients}
+                    getUserById={getUserById}
+                    setLocalExitRoute={setLocalExitRoute}
+                    setSnackBarMessage={setSnackBarMessage}
+                    setManagedJobLeads={setManagedJobLeads}
+                    setManagedClients={setManagedClients}
+                  />
+                </AuthGuard>
+              }
+            />
+                        <Route
+              path="/job-postings/edit/:jobPostID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobPostEdit
+                    managedUsers={managedUsers}
+                    managedJobLeads={managedJobLeads}
+                    managedClients={managedClients}
+                    getUserById={getUserById}
+                    setLocalExitRoute={setLocalExitRoute}
+                    setSnackBarMessage={setSnackBarMessage}
+                    setManagedJobLeads={setManagedJobLeads}
+                    setManagedClients={setManagedClients}
                   />
                 </AuthGuard>
               }

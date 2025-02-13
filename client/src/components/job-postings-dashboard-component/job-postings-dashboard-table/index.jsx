@@ -7,7 +7,6 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  GridRowModes,
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
@@ -24,7 +23,7 @@ import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-componen
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts, deleteJobPost } from "../../../utils/job_posts_api";
+import { getAllJobPosts, deleteJobPost, getJobPostInner} from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -100,12 +99,27 @@ export default function JobPostingsDashboardTableComponent() {
     );
   };
 
-  const handleEditClick = (id) => () => {
-    setRowModesModel((prevModel) => ({
-      ...prevModel,
-      [id]: { mode: GridRowModes.Edit },
-    }));
+  const handleEditClick = (id) => async () => {
+    try {
+      const response = await getJobPostInner(id);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("data",data.jobPost)
+      if (data.status === "success" && data.jobPost) {
+        console.log("Fetched Job Post:", data.jobPost);
+        // Pass the jobPostData via state to the EditJobPost component
+        navigate(`/job-postings/edit/${id}`, { state: { jobPostData: data.jobPost } });
+      } else {
+        console.error("Error fetching job post:", data.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch job post:", error);
+    }
   };
+  
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
@@ -138,9 +152,26 @@ export default function JobPostingsDashboardTableComponent() {
     handleCloseDialog();
   };
 
-  const handleJobPostingsNavClick = (jobLeadId) => {
-    navigate(`/job-postings/${jobLeadId}`);
+  const handleJobPostingsNavClick = async (jobLeadId) => {
+    try {
+      const response = await getJobPostInner(jobLeadId);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.status === "success" && data.jobPost) {
+        console.log("Fetched Job Post 2:", data.jobPost);
+        navigate(`/job-postings/${jobLeadId}`, { state: { jobPostData: data.jobPost } });
+      } else {
+        console.error("Error fetching job post:", data.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch job post:", error);
+    }
   };
+  
 
   const columns = [
     {
@@ -164,7 +195,7 @@ export default function JobPostingsDashboardTableComponent() {
       headerClassName: "header-class",
       renderCell: (params) => (
         <Button
-          onClick={() => handleJobPostingsNavClick(params.row.jobLeadID)}
+          onClick={() => handleJobPostingsNavClick(params.row.id)}
           style={{
             textDecoration: "underline",
             color: "#3568E5",
