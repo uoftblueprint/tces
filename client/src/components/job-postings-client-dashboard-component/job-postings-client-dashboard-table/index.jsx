@@ -84,7 +84,7 @@ function JobPostingsClientDashboardTableComponent() {
             <TableRow key={row.id}>
               <TableCell>
                 <a
-                  href={row.url || "#"} // Handle missing URLs
+                  href={`${window.location.origin}/job-postings/${row.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
