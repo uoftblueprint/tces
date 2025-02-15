@@ -21,6 +21,7 @@ import EmployerPage from "./pages/employer";
 import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
+import ViewJobPosting from "./pages/view-job-post/index";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -133,6 +134,10 @@ function App() {
               element={<JobPostingsClientDashboard />}
             />
           </Route>
+          <Route
+            path="/job-postings/:jobPostingId"
+            element={<ViewJobPosting />}
+          />
 
           <Route
             path="/signin"

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // MUI
 import {
@@ -35,6 +36,8 @@ function JobPostingsClientDashboardTableComponent() {
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const startRow = (currentPage - 1) * rowsPerPage + 1;
   const endRow = Math.min(currentPage * rowsPerPage, totalRows);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActiveJobPostings = async () => {
@@ -80,23 +83,28 @@ function JobPostingsClientDashboardTableComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {jobPostings.slice(startRow - 1, endRow).map((row) => (
-            <TableRow key={row.id}>
+          {jobPostings.slice(startRow - 1, endRow).map((jobPosting) => (
+            <TableRow key={jobPosting.id}>
               <TableCell>
-                <a
-                  href={`${window.location.origin}/job-postings/${row.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <span
+                  onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter")
+                      navigate(`/job-postings/${jobPosting.id}`);
+                  }}
+                  role="button"
+                  tabIndex={0}
                   style={{
                     textDecoration: "none",
                     color: "#1976d2",
                     fontWeight: "bold",
+                    cursor: "pointer",
                   }}
                 >
-                  {row.title}
-                </a>
+                  {jobPosting.title}
+                </span>
               </TableCell>
-              <TableCell>{row.employer}</TableCell>
+              <TableCell>{jobPosting.employer}</TableCell>
               <TableCell>
                 <LocationOnIcon
                   sx={{
@@ -105,7 +113,9 @@ function JobPostingsClientDashboardTableComponent() {
                     marginRight: 1,
                   }}
                 />
-                <span style={{ verticalAlign: "middle" }}>{row.location}</span>
+                <span style={{ verticalAlign: "middle" }}>
+                  {jobPosting.location}
+                </span>
               </TableCell>
               <TableCell>
                 <Box
@@ -116,14 +126,12 @@ function JobPostingsClientDashboardTableComponent() {
                     alignItems: "center",
                   }}
                 >
-                  <JobTypeChipsComponent jobTypes={row.job_type} />{" "}
-                  {/* Updated for correct field */}
+                  <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
                 </Box>
               </TableCell>
               <TableCell>
-                {new Date(row.close_date).toLocaleDateString()}
-              </TableCell>{" "}
-              {/* Convert ISO date */}
+                {new Date(jobPosting.close_date).toLocaleDateString()}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
