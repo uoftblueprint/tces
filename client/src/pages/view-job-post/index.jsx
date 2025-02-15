@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
 import { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,7 +27,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 import { uploadJobApplication } from "../../utils/job_applications_api";
-import { getOneJobPost } from "../../utils/job_posts_api";
+import { getOneActiveJobPost } from "../../utils/job_posts_api";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -53,9 +53,7 @@ function JobPostingPage() {
     // customResponses: [],
   });
 
-  // const { jobPostingId } = useParams(); // Get jobPostingId from URL
-
-  const jobPostingId = 6;
+  const { jobPostingId } = useParams(); // Get jobPostingId from URL
 
   // Define the initial state based on the JobPosting model attributes
   const [jobPosting, setJobPosting] = useState({
@@ -85,9 +83,11 @@ function JobPostingPage() {
     const fetchJobPosting = async () => {
       if (jobPostingId) {
         try {
-          const response = await getOneJobPost(jobPostingId);
+          const response = await getOneActiveJobPost(jobPostingId);
           const jobPostingData = await response.json();
           const data = jobPostingData.jobPost;
+
+          console.log(data);
 
           setJobPosting({
             id: data.id,
