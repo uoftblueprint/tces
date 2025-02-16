@@ -46,6 +46,7 @@ import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
 import Error404 from "./pages/errors/404-error";
 import UserProfile from "./pages/user-profile";
+import JobApplicationView from "./pages/job-application-view";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -264,6 +265,19 @@ function App() {
                     managedJobLeads={managedJobLeads}
                     setManagedJobLeads={setManagedJobLeads}
                     getUserById={getUserById}
+                  />
+                </AuthGuard>
+              }
+            />
+
+            <Route
+              path="/job-applications"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobApplicationView
                   />
                 </AuthGuard>
               }
