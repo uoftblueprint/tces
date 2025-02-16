@@ -42,7 +42,7 @@ const getJobPostRequestHandler = async (req, res) => {
       attributes: requiredFields,
     });
 
-    if (!jobPost) {
+    if (!jobPost || jobPost.state !== "Active") {
       return res
         .status(404)
         .json({ message: `No job post with id ${job_posting_id} found.` });

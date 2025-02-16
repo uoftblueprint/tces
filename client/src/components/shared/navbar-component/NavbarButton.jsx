@@ -18,7 +18,7 @@ function NavbarButton({ keyword, setLocalExitRoute }) {
     clients: "/clients",
     "job-leads": "/job-leads",
     employers: "/employers",
-    "job-postings": "/job-postings",
+    "job-postings": "/all-job-postings",
     "job-applications": "/job-applications",
   };
 

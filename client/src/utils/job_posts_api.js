@@ -3,11 +3,11 @@ const { REACT_APP_API_BASE_URL } = process.env;
 const createJobPost = async (jobPostData) => {
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_postings`, {
     method: "POST",
-    credentials: "include", // Include cookies for cross-origin requests if needed
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(jobPostData), // Convert jobPostData to JSON
+    body: JSON.stringify(jobPostData),
   });
 
   if (!response.ok) {
@@ -22,7 +22,7 @@ const createJobPost = async (jobPostData) => {
 const modifyJobPost = async (modifiedJobPost) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_postings/${modifiedJobPost.job_post_id}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/${modifiedJobPost.job_posting_id}`,
     {
       method: "PUT",
       credentials: "include",
@@ -85,7 +85,6 @@ const getAllActiveJobPosts = async (queryParams) => {
     `${REACT_APP_API_BASE_URL}/job_postings/active?${queryParams}`,
     {
       method: "GET",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -109,13 +108,26 @@ const getOneJobPost = async (jobPostId) => {
   return response;
 };
 
+const getOneActiveJobPost = async (jobPostId) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/active/${jobPostId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 const getAllLocations = async () => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_postings/locations`,
     {
       method: "GET",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -132,4 +144,5 @@ module.exports = {
   getAllActiveJobPosts,
   getOneJobPost,
   getAllLocations,
+  getOneActiveJobPost,
 };
