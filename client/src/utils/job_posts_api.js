@@ -79,18 +79,30 @@ const getAllJobPost = async (queryParams) => {
 };
 
 const getOneJobPost = async (jobPostId) => {
-  // eslint-disable-next-line no-useless-catch
-  const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/${jobPostId}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await fetch(
+      `${REACT_APP_API_BASE_URL}/job_postings/${jobPostId}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    },
-  );
-  return response;
+    );
+  
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error fetching job application: ${errorText}`);
+    }
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error("Error fetching job application:", error);
+    throw error;
+  }
 };
 
 module.exports = {
