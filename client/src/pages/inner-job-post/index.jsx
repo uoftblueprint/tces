@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ErrorComponent from "../../components/shared/error-screen-component";
 import EditJobPostComponent from "../../components/job-postings-dashboard-component/job-postings-dashboard-details";
 import JobLeadType from "../../prop-types/JobLeadType";
 import UserType from "../../prop-types/UserType";
 import ClientType from "../../prop-types/ClientType";
-import {  getJobPostInner } from "../../utils/job_posts_api";
+import {  getOneJobPost } from "../../utils/job_posts_api";
 import LoadingScreenComponent from "../../components/shared/loading-screen-component";
 import { formatDateStr } from "../../utils/date";
 
@@ -20,42 +21,40 @@ function InnerJobPost({
   setManagedJobLeads,
 }) {
   const errorMessage = "Job Post not found.";
-  const parsedjobLeadID = 70;
+  const { jobPostID } = useParams();
+  const parsedjobLeadID = parseInt(jobPostID,10);
 
-  const [jobLeadToEdit, setJobLeadToEdit] = useState(null);
+  const [jobPostToEdit, setJobPostToEdit] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
     setError("");
     const fetchJobLead = async () => {
-      const res = await  getJobPostInner(parsedjobLeadID);
+      const res = await  getOneJobPost(parsedjobLeadID);
       const json = await res.json();
       if (json.status === "success") {
-        const jobLead = json.jobPost;
+        const jobPosting = json.jobPost;
 
-        const jobLeadBody = {
-          id: jobLead.id,
-          jobLeadID: jobLead.id,
-          ownerID: jobLead.owner,
-          creatorID: jobLead.creator,
-          employerID: jobLead.employer,
-          employerDetails: jobLead.employer_details,
-          jobTitle: jobLead.job_title,
-          jobDescription: jobLead.job_description,
-          compensationMax: jobLead.rate_of_pay_max,
-          compensationMin: jobLead.rate_of_pay_min,
-          hoursPerWeek: jobLead.hours_per_week,
-          noc: jobLead.national_occupation_code,
-          creationDate: formatDateStr(jobLead.creation_date),
-          expirationDate: formatDateStr(jobLead.expiration_date),
-          employmentType: jobLead.employment_type,
-          numOfPostions: jobLead.num_of_positions,
-          clientCount: jobLead.client_count,
-          ownerDetails: jobLead.owner_details,
-          creatorDetails: jobLead.creator_details,
+        const jobPostBody = {
+          id: jobPosting.id,
+          jobLeadID: jobPosting.id,
+          employerID: jobPosting.employer,
+          employerDetails: jobPosting.employer_details,
+          jobTitle: jobPosting.job_title,
+          jobDescription: jobPosting.job_description,
+          compensationMax: jobPosting.rate_of_pay_max,
+          compensationMin: jobPosting.rate_of_pay_min,
+          hoursPerWeek: jobPosting.hours_per_week,
+          creationDate: formatDateStr(jobPosting.creation_date),
+          expirationDate: formatDateStr(jobPosting.expiration_date),
+          employmentType: jobPosting.employment_type,
+          numOfPostions: jobPosting.num_of_positions,
+          clientCount: jobPosting.client_count,
+          ownerDetails: jobPosting.owner_details,
+          creatorDetails: jobPosting.creator_details,
         };
 
-        setJobLeadToEdit(jobLeadBody);
+        setJobPostToEdit(jobPostBody);
       } else {
         setError(errorMessage);
       }
@@ -64,7 +63,7 @@ function InnerJobPost({
     fetchJobLead();
   }, []);
 
-  if (!jobLeadToEdit) return <LoadingScreenComponent isLoading />;
+  if (!jobPostToEdit) return <LoadingScreenComponent isLoading />;
 
   if (error) return <ErrorComponent message={errorMessage} />;
   return (
@@ -72,7 +71,7 @@ function InnerJobPost({
       managedUsers={managedUsers}
       managedClients={managedClients}
       managedJobLeads={managedJobLeads}
-      jobLead={jobLeadToEdit}
+      jobLead={jobPostToEdit}
       getUserById={getUserById}
       setLocalExitRoute={setLocalExitRoute}
       setSnackBarMessage={setSnackBarMessage}

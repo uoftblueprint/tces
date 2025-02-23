@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef} from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -13,14 +13,15 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
+import dayjs from "dayjs";
 import AddJobDetails from "./jobInfoForm";
 import AddApplicationFields from "../add-job-post-component/application-form-fields";
 import { Container, ButtonContainer } from "./index.styles";
-import UserType from "../../prop-types/UserType";
-import { createJobPost } from "../../utils/job_posts_api";
+import { modifyJobPost } from "../../utils/job_posts_api";
 import PostingResultDialog from "../add-job-post-component/posting-result-dialog";
 
-function EditJobPost({ updateJobPostData, currUser }) {
+
+function EditJobPost({ updateJobPostData}) {
   const navigate = useNavigate();
   const location = useLocation();
   const formRef = useRef(null);
@@ -29,33 +30,37 @@ function EditJobPost({ updateJobPostData, currUser }) {
   const [resultOpen, setResultOpen] = useState(false);
   const [resultModalValues, setResultModalValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-
+  const [errors,] = useState({});
   const initialJobData = location.state?.jobPostData || {
-    title: "",
-    employer: "",
-    location: "",
-    compensation_min: "",
-    compensation_max: "",
-    job_type: "",
-    hours_per_week: "",
-    close_date: "",
-    job_description: "",
-    job_id: "",
+    jobInfo: {
+      id: 0,
+      title: "",
+      employer: "",
+      location: "",
+      rate_of_pay_min: null,
+      rate_of_pay_max: null,
+      rate_of_pay_frequency: "",
+      hours_per_week: null,
+      creation_date: dayjs(),
+      close_date: dayjs().add(1, "month"),
+      job_type: [],
+      job_description: "",
+      state: "",
+    },
+    applicationFields: {
+      custom_questions: [],
+    },
+    state: "",
   };
 
-  const [jobPostData, setJobPostData] = useState(initialJobData);
-
-  useEffect(() => {
-      setJobPostData(jobPostData);
-  }, [jobPostData, setJobPostData, setErrors]);
+  const [jobPostData,] = useState(initialJobData);
 
   console.log("log",jobPostData)
 
   const SUCCESS_DRAFT = {
     isSuccess: true,
     message: "Your job posting was saved",
-    handleClose: () => navigate("/job-postings"),
+    handleClose: () => navigate("/all-job-postings"),
     buttonMessage: "CLOSE",
   };
   const ERROR_DRAFT = {
@@ -97,15 +102,13 @@ function EditJobPost({ updateJobPostData, currUser }) {
 
   const handleSubmit = async (e, postState) => {
     const DRAFT = "Draft";
-    jobPostData.jobInfo.state = postState; // eslint-disable-line no-param-reassign
+    jobPostData.jobInfo.state = postState;
     const updatedJobPost = { ...jobPostData, state: postState };
 
     setIsLoading(true);
     try {
-      const response = await createJobPost(
-        updatedJobPost.jobInfo,
-        currUser.userID,
-        currUser.userID,
+      const response = await modifyJobPost(
+        updatedJobPost.jobInfo
       );
       if (response.status === "success") {
         setResultModalValues(
@@ -308,7 +311,6 @@ function EditJobPost({ updateJobPostData, currUser }) {
 EditJobPost.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   updateJobPostData: PropTypes.func.isRequired,
-  currUser: UserType.isRequired,
 };
 
 export default EditJobPost;

@@ -23,7 +23,7 @@ import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-componen
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts, deleteJobPost, getJobPostInner} from "../../../utils/job_posts_api";
+import { getAllJobPosts, deleteJobPost, getOneJobPost} from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ export default function JobPostingsDashboardTableComponent() {
             closeDate: jobPost.close_date,
             state: jobPost.state,
           }));
-
+          console.log("get all data",formattedData)
           setRows(formattedData);
         } else {
           const errorData = await response.json();
@@ -101,7 +101,7 @@ export default function JobPostingsDashboardTableComponent() {
 
   const handleEditClick = (id) => async () => {
     try {
-      const response = await getJobPostInner(id);
+      const response = await getOneJobPost(id);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -153,8 +153,9 @@ export default function JobPostingsDashboardTableComponent() {
   };
 
   const handleJobPostingsNavClick = async (jobLeadId) => {
+    navigate(`/job-postings/${jobLeadId}`);
     try {
-      const response = await getJobPostInner(jobLeadId);
+      const response = await getOneJobPost(jobLeadId);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

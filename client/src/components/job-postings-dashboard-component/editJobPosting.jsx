@@ -1,6 +1,6 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-import AddJobPost from "./editJobPostingMock";
+import EditJob from "./editJobPostingMock";
 import UserType from "../../prop-types/UserType";
 
 function EditJobPost({ currUser }) {
@@ -34,9 +34,10 @@ function EditJobPost({ currUser }) {
       [section]: data,
     }));
   };
+  console.log("catch", setJobPostData);
   return (
-    <AddJobPost
-      jobPostData={jobPostData}
+    <EditJob
+      jobPostData={jobPostData.jobInfo}
       updateJobPostData={updateJobPostData}
       currUser={currUser}
     />

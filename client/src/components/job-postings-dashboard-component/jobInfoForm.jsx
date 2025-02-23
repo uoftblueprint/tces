@@ -21,13 +21,10 @@ import {
 
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
-    // Update the specific field in jobPostData
-    setJobPostData((prevData) => ({
-        ...prevData,
-        [field]: input,
-      }));
-  };
+    console.log(`Updating ${field} to:`, input); 
+    setJobPostData({ ...jobPostData, [field]: input });
 
+  };
   return (
     <JobLeadContainer>
       <H3 style={{ paddingLeft: "2%" }}>Job Information</H3>
@@ -48,8 +45,9 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           sx={{ m: 1, width: "96%" }}
           id="title"
           label="Job Title"
-          value={jobPostData.title || ""}
+          value={jobPostData.title}
           onChange={(e) => handleInputChange(e.target.value, "title")}
+          helperText="*Required"
           required
           InputLabelProps={{ required: false }}
         />

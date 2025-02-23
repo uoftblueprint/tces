@@ -31,48 +31,48 @@ import { formateDateObjToStr } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobPost } from "../../../utils/job_posts_api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
-import { JOB_TYPES } from "../../../utils/constants";
+import { JOB_TYPES_FOR_JOB_POSTS } from "../../../utils/constants";
 import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
-function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
+function EditJobPostingFormComponent({ jobPost, setSnackBarMessage }) {
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
     useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
-  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [isEditMode, setIsEditMode] = React.useState(false);  
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
-  const [jobTitle, setJobTitle] = React.useState(jobLead.title || "");
-  const [employer, setEmployer] = React.useState(jobLead.employer || "");
-  const [location, setLocation] = React.useState(jobLead.location || "");
+  const [title, setJobTitle] = React.useState(jobPost.title || "");
+  const [employer, setEmployer] = React.useState(jobPost.employer || "");
+  const [location, setLocation] = React.useState(jobPost.location || "");
   const [minCompensation, setMinCompensation] = React.useState(
-    jobLead.rate_of_pay_max !== undefined &&
-      jobLead.rate_of_pay_min !== null &&
-      !Number.isNaN(jobLead.rate_of_pay_min)
-      ? jobLead.rate_of_pay_min
+    jobPost.rate_of_pay_max !== undefined &&
+      jobPost.rate_of_pay_min !== null &&
+      !Number.isNaN(jobPost.rate_of_pay_min)
+      ? jobPost.rate_of_pay_min
       : NaN,
   );
   const [maxCompensation, setMaxCompensation] = React.useState(
-    jobLead.rate_of_pay_max !== undefined &&
-      jobLead.rate_of_pay_max !== null &&
-      !Number.isNaN(jobLead.rate_of_pay_max)
-      ? jobLead.rate_of_pay_max
+    jobPost.rate_of_pay_max !== undefined &&
+      jobPost.rate_of_pay_max !== null &&
+      !Number.isNaN(jobPost.rate_of_pay_max)
+      ? jobPost.rate_of_pay_max
       : NaN,
   );
 
   const [employmentType, setEmploymentType] = React.useState(
-    jobLead.job_type || NaN,
+    jobPost.job_type || NaN,
   );
   const [hoursPerWeek, setHoursPerWeek] = React.useState(
-    jobLead.hours_per_week !== undefined && jobLead.hours_per_week !== null
-      ? jobLead.hours_per_week
+    jobPost.hours_per_week !== undefined && jobPost.hours_per_week !== null
+      ? jobPost.hours_per_week
       : NaN,
   );
   const [expirationDate, setExpirationDate] = React.useState(
-    dayjs(jobLead.close_date) || null,
+    dayjs(jobPost.close_date) || null,
   );
   const [jobDescription, setJobDescription] = React.useState(
-    jobLead.job_description || "",
+    jobPost.job_description || "",
   );
 
   const toggleEditMode = () => {
@@ -149,22 +149,22 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
     event.preventDefault();
     setIsLoading(true);
 
-    const modifiedJobLead = {
-      jobTitle,
+    const modifiedJobPost = {
+      title,
       employer,
       location,
-      minCompensation,
-      maxCompensation,
-      employmentType,
-      hoursPerWeek,
-      expirationDate: expirationDate?.toISOString(),
-      jobDescription,
-      jobPostID: jobLead.id,
+      rate_of_pay_min : minCompensation,
+      rate_of_pay_max : maxCompensation,
+      job_type : employmentType,
+      hours_per_week: hoursPerWeek,
+      close_date: expirationDate?.toISOString(),
+      job_description : jobDescription,
+      jobPostID: jobPost.id,
     };
 
     try {
-      const response = await modifyJobPost(modifiedJobLead);
-      console.log("take lead",modifiedJobLead, modifiedJobLead.jobPostID)
+      const response = await modifyJobPost(modifiedJobPost);
+      console.log("take lead",modifiedJobPost)
       console.log("response",response)
       if (response.ok) {
         setSnackBarMessage("Job posting updated successfully.");
@@ -229,14 +229,14 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
                   <TextField
                     variant="outlined"
                     fullWidth
-                    value={jobTitle}
+                    value={title}
                     onChange={(event) => setJobTitle(event.target.value)}
                     disabled={!isEditMode}
-                    error={!jobTitle}
+                    error={!title}
                     required
                   />
                 ) : (
-                  renderViewValue("Title", jobTitle)
+                  renderViewValue("Title", title)
                 )}
               </Grid>
             </Grid>
@@ -299,12 +299,12 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
                   <Grid item xs={4.5}>
                     <FormControl fullWidth>
                       <InputLabel
-                        id={`minCompensationLabel-${jobLead.id}`}
+                        id={`minCompensationLabel-${jobPost.id}`}
                       >
                         Compensation Minimum
                       </InputLabel>
                       <OutlinedInput
-                        id={`minCompensation-${jobLead.id}`}
+                        id={`minCompensation-${jobPost.id}`}
                         type="number"
                         fullWidth
                         startAdornment={
@@ -324,12 +324,12 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
                   <Grid item xs={4.5}>
                     <FormControl fullWidth>
                       <InputLabel
-                        id={`minCompensationLabel-${jobLead.id}`}
+                        id={`minCompensationLabel-${jobPost.id}`}
                       >
                         Compensation Maximum
                       </InputLabel>
                       <OutlinedInput
-                        id={`maxCompensation-${jobLead.id}`}
+                        id={`maxCompensation-${jobPost.id}`}
                         type="number"
                         fullWidth
                         startAdornment={
@@ -395,7 +395,7 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
                       error={!employmentType}
                       required
                     >
-                      {JOB_TYPES.map((jobType) => (
+                      {JOB_TYPES_FOR_JOB_POSTS.map((jobType) => (
                         <MenuItem key={jobType} value={jobType}>
                           {jobType}
                         </MenuItem>
@@ -417,7 +417,7 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
               <Grid item xs={9}>
                 {isEditMode ? (
                   <OutlinedInput
-                    id={`hoursPerWeek-${jobLead.id}`}
+                    id={`hoursPerWeek-${jobPost.id}`}
                     type="number"
                     fullWidth
                     endAdornment={
@@ -496,8 +496,7 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
                       borderColor: "#ced4da",
                     }}
                     onChange={(event) => setJobDescription(event.target.value)}
-                    error={!jobDescription}
-                    required
+                    
                   />
                 ) : (
                   renderViewValue("Job Description", jobDescription)
@@ -540,7 +539,7 @@ function EditJobPostingFormComponent({ jobLead, setSnackBarMessage }) {
 }
 
 EditJobPostingFormComponent.propTypes = {
-  jobLead: JobLeadType.isRequired,
+  jobPost: JobLeadType.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };

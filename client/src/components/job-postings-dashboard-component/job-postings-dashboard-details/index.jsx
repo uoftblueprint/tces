@@ -64,7 +64,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
         {/* Job Details Section */}
         <Grid item xs={12} md={7}>
           
-          <EditJobPostingFormComponent jobLead={jobPostData} setSnackBarMessage={setSnackBarMessage}
+          <EditJobPostingFormComponent jobPost={jobPostData} setSnackBarMessage={setSnackBarMessage}
           />
         </Grid>
 
