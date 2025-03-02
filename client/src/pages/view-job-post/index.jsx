@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -123,6 +123,29 @@ function JobPostingPage() {
   }, []);
 
   // return <div>{JSON.stringify(jobPosting, null, 2)}</div>;
+
+  const descriptionRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (descriptionRef.current) {
+        // Force a slight delay to ensure DOM updates before checking height
+        setTimeout(() => {
+          setIsOverflowing(descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight);
+        }, 100);
+      }
+    };
+  
+    checkOverflow(); // Run initially
+  
+    // Re-run when window resizes
+    window.addEventListener("resize", checkOverflow);
+  
+    return () => {
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [jobPosting.jobDescription, isDescriptionExpanded]); // Runs when description changes or expands
 
   const statusOptions = [
     { value: "Citizen", label: "Citizen" },
@@ -248,12 +271,17 @@ function JobPostingPage() {
   };
 
   const formatSalaryRange = (min, max) => {
-    // Convert to numbers before calling toLocaleString()
-    const minNum = Number(min) * 1000;
-    const maxNum = Number(max) * 1000;
-
-    return `$${minNum.toLocaleString()}/year - $${maxNum.toLocaleString()}/year`;
+    // Convert to numbers
+    const minNum = Number(min);
+    const maxNum = Number(max);
+  
+    // Format with "K" notation (divide by 1000 and append "K")
+    const formattedMin = `${minNum}K`;
+    const formattedMax = `${maxNum}K`;
+  
+    return `$${formattedMin}/year - $${formattedMax}/year`;
   };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -346,340 +374,310 @@ function JobPostingPage() {
 
       {/* Main Content */}
       <Grid container spacing={2}>
-        {/* Left Section */}
-        <Grid item xs={12} md={5}>
-          <StyledPaper elevation={1}>
-            <Typography variant="h7" gutterBottom>
-              Information
-            </Typography>
-            <Box sx={{ mt: 1 }}>
-              {[
-                { label: "Title", value: jobPosting.title },
-                { label: "Employer", value: jobPosting.employer },
-                { label: "Location", value: jobPosting.location },
-                {
-                  label: "Compensation",
-                  value: formatSalaryRange(
-                    jobPosting.compensation.min,
-                    jobPosting.compensation.max,
-                  ),
-                },
-                { label: "Job Type", value: jobPosting.jobType },
-                {
-                  label: "Hours per Week",
-                  value: `${jobPosting.hoursPerWeek} hours`,
-                },
-                {
-                  label: "Close Date",
-                  value: formatDate(jobPosting.closeDate),
-                },
-              ].map((item, index) => (
-                <Box
-                  key={item.label}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderBottom:
-                      index < 6 ? "1px solid rgba(0, 0, 0, 0.12)" : "none",
-                    padding: "4px 0", // Reduced padding
-                  }}
-                >
-                  <Typography
-                    variant="body3"
-                    sx={{ fontWeight: "bold", color: "rgba(0, 0, 0, 0.87)" }}
-                  >
-                    {item.label}
-                  </Typography>
-                  <Typography
-                    variant="body3"
-                    sx={{ color: "rgba(0, 0, 0, 0.6)", textAlign: "right" }}
-                  >
-                    {item.value}
-                  </Typography>
-                </Box>
-              ))}
-              <Box sx={{ mt: 1 }}>
+        {/* Left Section - Job Information */}
+      <Grid item xs={12} md={5}>
+        <StyledPaper elevation={1} sx={{ p: 2, maxHeight: "623px" }}>
+          {/* Information Header (Slightly Bigger but Compact) */}
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            sx={{
+              pb: 1.5,
+              borderBottom: "2px solid #E0E0E0",
+              fontSize: "1rem", // Reduced font size
+            }}
+          >
+            Information
+          </Typography>
+
+          <Box sx={{ mt: 1 }}>
+            {[
+              { label: "Title", value: jobPosting.title },
+              { label: "Employer", value: jobPosting.employer },
+              { label: "Location", value: jobPosting.location },
+              {
+                label: "Compensation",
+                value: formatSalaryRange(jobPosting.compensation.min, jobPosting.compensation.max),
+              },
+              { label: "Job Type", value: jobPosting.jobType },
+              {
+                label: "Hours per Week",
+                value: `${jobPosting.hoursPerWeek} hours`,
+              },
+              {
+                label: "Close Date",
+                value: formatDate(jobPosting.closeDate),
+              },
+            ].map((item, index) => (
+              <Box
+                key={item.label}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1.2fr", // Slightly more compact column sizing
+                  alignItems: "center",
+                  py: 1.2, // Reduced padding for compact layout
+                  borderBottom: index < 6 ? "1px solid #E0E0E0" : "none",
+                }}
+              >
                 <Typography
-                  variant="body3"
+                  variant="body2"
+                  fontWeight={500}
                   sx={{
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: isDescriptionExpanded ? "none" : 3,
-                    overflow: isDescriptionExpanded ? "visible" : "hidden",
-                    textOverflow: "ellipsis",
+                    color: "#333",
+                    fontSize: "0.85rem", // Slightly smaller font
+                    textAlign: "left",
                   }}
                 >
-                  {jobPosting.jobDescription}
+                  {item.label}
                 </Typography>
-                <Button
-                  variant="text"
-                  size="small"
-                  sx={{ mt: 0.5 }} // Reduced margin
-                  onClick={() =>
-                    setIsDescriptionExpanded(!isDescriptionExpanded)
-                  }
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "#666",
+                    fontSize: "0.85rem",
+                    textAlign: "left",
+                  }}
                 >
-                  {isDescriptionExpanded ? "Read Less" : "Read More"}
-                </Button>
+                  {item.value || "N/A"}
+                </Typography>
               </Box>
-            </Box>
-          </StyledPaper>
-        </Grid>
+            ))}
+          </Box>
+
+          {/* Description Section */}
+<Typography
+  variant="h6"
+  fontWeight={600}
+  sx={{
+    pt: 2,
+    pb: 1.5,
+    borderBottom: "2px solid #E0E0E0",
+    fontSize: "1rem", // Matched font size with "Information"
+  }}
+>
+  Description
+</Typography>
+
+<Box
+  sx={{
+    maxHeight: isDescriptionExpanded ? "200px" : "80px", // Expands but stops at 300px
+    overflowY: isDescriptionExpanded ? "auto" : "hidden", // Allows scrolling when expanded
+    transition: "max-height 0.3s ease-in-out",
+    backgroundColor: "white", // Ensures background extends
+    padding: "10px",
+    borderRadius: "4px",
+  }}
+>
+  <Typography
+    ref={descriptionRef}
+    variant="body2"
+    sx={{
+      color: "#444",
+      lineHeight: 1.5,
+      fontSize: "0.85rem",
+      whiteSpace: "normal", // Ensure text wraps correctly
+      wordBreak: "break-word", // Prevent horizontal scroll issues
+    }}
+  >
+    {jobPosting.jobDescription}
+  </Typography>
+</Box>
+
+{/* READ MORE Button (Only Shows If Text Overflows) */}
+{true && (
+  <Button
+    variant="text"
+    size="small"
+    sx={{
+      mt: 0.5,
+      fontWeight: 500,
+      color: "#3f51b5",
+      textTransform: "uppercase",
+      fontSize: "0.75rem",
+    }}
+    onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+  >
+    {isDescriptionExpanded ? "Read Less" : "Read More"}
+  </Button>
+)}
+
+        </StyledPaper>
+      </Grid>
+
+
+
 
         {/* Right Section */}
         <Grid item xs={12} md={7}>
-          <StyledPaper elevation={1}>
-            <Typography variant="h7" gutterBottom>
-              Apply for this Position
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                fullWidth
-                required
-                label="Name"
-                value={application.name}
-                onChange={handleInputChange("name")}
-                margin="dense" // Reduced spacing
-                size="small" // Smaller input
-              />
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    required
-                    label="Phone"
-                    value={application.phone}
-                    onChange={handleInputChange("phone")}
-                    margin="dense"
-                    size="small"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    required
-                    label="Postal Code"
-                    value={application.postalCode}
-                    onChange={handleInputChange("postalCode")}
-                    margin="dense"
-                    size="small"
-                  />
-                </Grid>
-              </Grid>
-              <TextField
-                fullWidth
-                required
-                label="Email Address"
-                type="email"
-                value={application.emailAddress}
-                onChange={handleInputChange("emailAddress")}
-                margin="dense"
-                size="small"
-              />
-              <Grid container spacing={1}>
-                <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
-                  <FormControl fullWidth margin="dense" size="small">
-                    <InputLabel>Status in Canada</InputLabel>
-                    <Select
-                      value={application.statusInCanada}
-                      onChange={handleStatusChange}
-                      label="Status in Canada"
-                    >
-                      {statusOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>Required</FormHelperText>
-                  </FormControl>
-                </Grid>
-                {application.statusInCanada === "Other" && (
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      margin="dense"
-                      size="small"
-                      label="Please specify"
-                      value={application.otherStatus}
-                      onChange={handleInputChange("otherStatus")}
-                    />
-                  </Grid>
-                )}
-              </Grid>
+  <StyledPaper elevation={1} sx={{ p: 2.5 }}>
+    {/* Apply for Position Header */}
+    <Typography 
+      variant="h6" 
+      fontWeight={600} 
+      sx={{ mb: 1.5, fontSize: "0.95rem" }} // Slightly smaller
+    >
+      Apply for this Position
+    </Typography>
 
-              <Box
-                {...getRootProps()}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  p: 3,
-                  border: "2px dashed #ccc",
-                  borderRadius: 2,
-                  textAlign: "center",
-                  backgroundColor: "white",
-                  color: "#666",
-                  cursor: "pointer",
-                  transition: "border-color 0.3s ease",
-                  "&:hover": {
-                    borderColor: "#3f51b5",
-                  },
-                }}
-              >
-                <input {...getInputProps()} />
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 48,
-                    height: 48,
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    mb: 1,
-                  }}
-                >
-                  <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 32 }} />
-                </Box>
-                <Typography
-                  variant="body2"
-                  sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.5 }}
-                >
-                  Click to upload a file
-                </Typography>
-                <Typography variant="3" sx={{ color: "text.secondary" }}>
-                  PDF file only
-                </Typography>
-              </Box>
-              {file || fileError ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between", // Adjust content alignment
-                    mt: 2,
-                    p: 1,
-                    backgroundColor: fileError ? "#ffebee" : "white", // Light red for errors
-                    borderRadius: 1,
-                    border: fileError
-                      ? "1px solid #f44336"
-                      : "1px solid #e0e0e0", // Red border for errors
-                    width: "100%", // Take up the full width of the container
-                    maxWidth: "100%", // Prevent overflow beyond the parent container
-                    boxSizing: "border-box", // Ensure padding doesn't affect width
-                  }}
-                >
-                  {/* Left Icon */}
-                  <Box sx={{ mr: 2 }}>
-                    {fileError ? (
-                      <Typography variant="body3" color="error.main">
-                        <ErrorIcon />
-                      </Typography>
-                    ) : uploadProgress === 100 ? (
-                      <Typography variant="body3" color="success.main">
-                        <CheckIcon />
-                      </Typography>
-                    ) : (
-                      <UploadFileIcon color="primary" />
-                    )}
-                  </Box>
+    <form onSubmit={handleSubmit}>
+      {/* Name Field */}
+      <Box sx={{ mb: 0.5 }}>
+        <TextField
+          fullWidth
+          required
+          label="Name"
+          value={application.name}
+          onChange={handleInputChange("name")}
+          size="small"
+        />
+        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+      </Box>
 
-                  {/* Center Content */}
-                  <Box
-                    sx={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      textAlign: "center",
-                    }}
-                  >
-                    {fileError ? (
-                      <>
-                        <Typography
-                          variant="body2"
-                          sx={{ fontWeight: 500, color: "error.main" }}
-                        >
-                          Upload failed.
-                        </Typography>
-                        <Typography
-                          variant="body3"
-                          sx={{
-                            color: "error.main",
-                            fontWeight: 600,
-                          }}
-                        >
-                          File too large • Failed
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                          {file.name}
-                        </Typography>
-                        <Typography variant="body3" color="textSecondary">
-                          {`${formatFileSize(file.size)} • ${
-                            uploadProgress === 100 ? "Complete" : "Uploading..."
-                          }`}
-                        </Typography>
-                        {!fileError && (
-                          <LinearProgress
-                            variant="determinate"
-                            value={uploadProgress || 0}
-                            sx={{ mt: 1, width: "100%" }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </Box>
-
-                  {/* Right Delete Icon */}
-                  <IconButton onClick={handleRemoveFile}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </Box>
-              ) : null}
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mt: 3,
-                  transform: "scale(1)",
-                  transformOrigin: "center",
-                }}
-              >
-                <ReCAPTCHA
-                  sitekey="6LfIPsAqAAAAAL7OYC0zIrYsnD0SNcyYJuPmgnSw"
-                  onChange={handleRecaptchaChange}
-                />
-              </Box>
-              <Box
-                sx={{
-                  mt: 2,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="medium"
-                  sx={{
-                    width: "250px",
-                  }}
-                >
-                  Submit Application
-                </Button>
-              </Box>
-            </form>
-          </StyledPaper>
+      {/* Phone & Postal Code Fields */}
+      <Grid container spacing={1}>
+        <Grid item xs={12} sm={6}>
+          <Box>
+            <TextField
+              fullWidth
+              required
+              label="Phone"
+              value={application.phone}
+              onChange={handleInputChange("phone")}
+              size="small"
+            />
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+          </Box>
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <Box>
+            <TextField
+              fullWidth
+              required
+              label="Postal Code"
+              value={application.postalCode}
+              onChange={handleInputChange("postalCode")}
+              size="small"
+            />
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* Email Address Field */}
+      <Box sx={{ mt: 0.5, mb: 0.5 }}>
+        <TextField
+          fullWidth
+          required
+          label="Email Address"
+          type="email"
+          value={application.emailAddress}
+          onChange={handleInputChange("emailAddress")}
+          size="small"
+        />
+        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+      </Box>
+
+      {/* Status in Canada Dropdown & Other Text Input */}
+      <Grid container spacing={1}>
+        <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
+          <FormControl fullWidth size="small">
+            <InputLabel>Status in Canada</InputLabel>
+            <Select
+              value={application.statusInCanada}
+              onChange={handleStatusChange}
+              label="Status in Canada"
+            >
+              {statusOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+        </Grid>
+
+        {/* Other Status Field (Only Shows if "Other" is Selected) */}
+        {application.statusInCanada === "Other" && (
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              label="Other: Please specify"
+              value={application.otherStatus}
+              onChange={handleInputChange("otherStatus")}
+              size="small"
+            />
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+          </Grid>
+        )}
+      </Grid>
+
+      {/* Upload Resume Section */}
+      <Box mt={2}>
+        <Typography 
+          variant="subtitle1" 
+          fontWeight={600} 
+          sx={{ mb: 0.5, fontSize: "0.9rem" }}
+        >
+          *Upload Resume
+        </Typography>
+        <Box
+          {...getRootProps()}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 2, // Reduced padding
+            border: "2px dashed #ccc",
+            borderRadius: 2,
+            textAlign: "center",
+            backgroundColor: "white",
+            color: "#666",
+            cursor: "pointer",
+            transition: "border-color 0.3s ease",
+            "&:hover": { borderColor: "#3f51b5" },
+          }}
+        >
+          <input {...getInputProps()} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 38, // Reduced icon size
+              height: 38,
+              borderRadius: "50%",
+              backgroundColor: "white",
+              mb: 1,
+            }}
+          >
+            <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 26 }} />
+          </Box>
+          <Typography variant="body2" sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.3, fontSize: "0.8rem" }}>
+            Click to upload a file
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary", fontSize: "0.7rem" }}>
+            PDF file only
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Recaptcha */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 1.5 }}>
+        <ReCAPTCHA sitekey="6LfIPsAqAAAAAL7OYC0zIrYsnD0SNcyYJuPmgnSw" onChange={handleRecaptchaChange} />
+      </Box>
+
+      {/* Submit Button */}
+      <Box sx={{ mt: 1.5, display: "flex", justifyContent: "right" }}>
+        <Button type="submit" variant="contained" size="small" sx={{ width: "95px" }}>
+          Submit
+        </Button>
+      </Box>
+    </form>
+  </StyledPaper>
+</Grid>
+
       </Grid>
     </StyledContainer>
   );

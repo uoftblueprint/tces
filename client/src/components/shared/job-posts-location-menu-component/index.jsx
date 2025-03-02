@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-function LocationMenu({ locations }) {
+function LocationMenu({ locations, onLocationSelect }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedValue, setSelectedValue] = useState("ascending");
   const open = Boolean(anchorEl);
@@ -21,6 +21,10 @@ function LocationMenu({ locations }) {
     setSelectedValue(event.target.value);
   };
   const handleApply = () => {
+    console.log("Applying location filter:", selectedValue);
+    if (selectedValue) {
+      onLocationSelect(selectedValue);
+    }
     setAnchorEl(null);
   };
   const handleClose = () => {

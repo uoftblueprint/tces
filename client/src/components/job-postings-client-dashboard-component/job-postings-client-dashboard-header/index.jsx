@@ -39,6 +39,11 @@ function JobPostingsClientDashboardHeader() {
 
     const [locations, setLocations] = useState([]);
 
+    // const handleLocationSelect = (location) => {
+    //     setSelectedLocation(location);
+    //     refetchLocations(location);
+    // };
+
     useEffect(() => {
         const fetchLocations = async () => {
           const uniqueLocations = await getAllUniqueLocations();
@@ -74,7 +79,7 @@ function JobPostingsClientDashboardHeader() {
                     }}
                 >
                     <JobTypeMenu />
-                    <LocationMenu locations={locations} />
+                    <LocationMenu locations={locations}/>
                 </div>
 
             </div>
