@@ -532,6 +532,9 @@ function JobPostingPage() {
                   value={application.name}
                   onChange={handleInputChange("name")}
                   size="small"
+                  InputProps={{
+                    sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
+                  }}
                 />
                 <Typography
                   variant="caption"
@@ -552,6 +555,9 @@ function JobPostingPage() {
                       value={application.phone}
                       onChange={handleInputChange("phone")}
                       size="small"
+                      InputProps={{
+                        sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
+                      }}
                     />
                     <Typography
                       variant="caption"
@@ -570,6 +576,9 @@ function JobPostingPage() {
                       value={application.postalCode}
                       onChange={handleInputChange("postalCode")}
                       size="small"
+                      InputProps={{
+                        sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
+                      }}
                     />
                     <Typography
                       variant="caption"
@@ -591,6 +600,9 @@ function JobPostingPage() {
                   value={application.emailAddress}
                   onChange={handleInputChange("emailAddress")}
                   size="small"
+                  InputProps={{
+                    sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
+                  }}
                 />
                 <Typography
                   variant="caption"
@@ -600,15 +612,30 @@ function JobPostingPage() {
                 </Typography>
               </Box>
 
-              {/* Status in Canada Dropdown & Other Text Input */}
-              <Grid container spacing={1}>
+              <Grid container spacing={2} alignItems="center" sx={{ mt: 1 }}>
+                {/* Status in Canada Dropdown */}
                 <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Status in Canada</InputLabel>
+                  <FormControl fullWidth variant="outlined" size="small">
+                    <InputLabel id="status-label">Status in Canada</InputLabel>
                     <Select
+                      labelId="status-label"
                       value={application.statusInCanada}
                       onChange={handleStatusChange}
                       label="Status in Canada"
+                      sx={{
+                        height: "50px", // Ensures uniform height
+                        display: "flex",
+                        alignItems: "center",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "gray",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "black",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "black",
+                        },
+                      }}
                     >
                       {statusOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -617,30 +644,44 @@ function JobPostingPage() {
                       ))}
                     </Select>
                   </FormControl>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                  >
-                    *Required
-                  </Typography>
                 </Grid>
 
-                {/* Other Status Field (Only Shows if "Other" is Selected) */}
+                {/* Other Status Input (Only if "Other" is selected) */}
                 {application.statusInCanada === "Other" && (
-                  <Grid item xs={6}>
+                  <Grid
+                    item
+                    xs={6}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
                     <TextField
                       fullWidth
+                      size="small"
+                      variant="outlined"
                       label="Other: Please specify"
                       value={application.otherStatus}
                       onChange={handleInputChange("otherStatus")}
-                      size="small"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          height: "50px", // Ensures uniform height
+                          display: "flex",
+                          alignItems: "center", // Centers text vertically
+                        },
+                        "& .MuiInputBase-input": {
+                          paddingY: 0, // Removes unnecessary top/bottom padding
+                          display: "flex",
+                          alignItems: "center", // Ensures text is centered properly
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "gray",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "black",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "black",
+                        },
+                      }}
                     />
-                    <Typography
-                      variant="caption"
-                      sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                    >
-                      *Required
-                    </Typography>
                   </Grid>
                 )}
               </Grid>
