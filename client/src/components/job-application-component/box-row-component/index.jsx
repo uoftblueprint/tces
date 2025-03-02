@@ -34,23 +34,31 @@ TextMaskCustom.propTypes = {
 function BoxRowComponent({
   leftSide,
   rightSide,
+  rightSideWrapper,
   downloadable,
   editable,
   setRightSide,
   required,
   options,
+  isFirst,
+  isLast,
 }) {
-  const [selectedValue, setSelectedValue] = useState(rightSide[0] || "Select");
+  const [selectedValue, setSelectedValue] = useState(rightSide || "Select");
 
   return (
     <>
       <Grid
         container
         justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 1, paddingX: "20px" }}
+        alignItems={editable ? "flex-start" : "center"}
+        sx={{
+          my: 2,
+          paddingX: "20px",
+          mt: isFirst ? 0 : 2,
+          mb: isLast ? 0 : 2,
+        }}
       >
-        <Grid item xs={4} container alignItems="center">
+        <Grid item xs={4} container alignItems="flex-start">
           <span>
             <Typography variant="body1" align="left">
               {leftSide}
@@ -70,7 +78,6 @@ function BoxRowComponent({
                 onChange={(event) => {
                   setRightSide(event.target.value);
                   setSelectedValue(event.target.value);
-                  // console.log("Selected value:", event.target.value);
                 }}
                 required={required}
               >
@@ -89,18 +96,18 @@ function BoxRowComponent({
                       {option.value}
                     </Box>
                   </MenuItem>
-              ))}
-            </Select>
+                ))}
+              </Select>
             </FormControl>
-            ) : (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <Typography variant="body1" align="left">
-                {rightSide}
+                {rightSideWrapper ? rightSideWrapper(rightSide) : rightSide}
               </Typography>
               {downloadable && (
                 <DownloadIcon
@@ -115,14 +122,18 @@ function BoxRowComponent({
           )}
         </Grid>
       </Grid>
-      <BoxDivider />
+      {!isLast && <BoxDivider />}
     </>
   );
 }
 
 BoxRowComponent.propTypes = {
   leftSide: PropTypes.string.isRequired,
-  rightSide: PropTypes.string,
+  rightSide: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  rightSideWrapper: PropTypes.func,
   downloadable: PropTypes.bool,
   editable: PropTypes.bool.isRequired,
   setRightSide: PropTypes.func,
@@ -133,13 +144,18 @@ BoxRowComponent.propTypes = {
       color: PropTypes.string.isRequired,
     })
   ).isRequired,
+  isFirst: PropTypes.bool,
+  isLast: PropTypes.bool,
 };
 
 BoxRowComponent.defaultProps = {
   rightSide: "",
+  rightSideWrapper: null,
   downloadable: false,
   setRightSide: () => {},
   required: true,
+  isFirst: false,
+  isLast: false,
 };
 
 export default BoxRowComponent;

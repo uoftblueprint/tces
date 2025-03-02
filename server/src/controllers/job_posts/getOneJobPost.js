@@ -16,7 +16,7 @@ const getJobPostRequestHandler = async (req, res) => {
 
   try {
     // ------ Get Job Id
-    const { job_post_id } = req.params;
+    const { job_posting_id } = req.params;
 
     // Return to include id, title, employer, application_close_date, state
     const requiredFields = [
@@ -38,9 +38,15 @@ const getJobPostRequestHandler = async (req, res) => {
 
     // Get one Job Posts
     const jobPost = await JobPosting.findOne({
-      where: { id: job_post_id },
+      where: { id: job_posting_id },
       attributes: requiredFields,
     });
+
+    if (!jobPost) {
+      return res
+        .status(404)
+        .json({ message: `No job post with id ${job_posting_id} found.` });
+    }
 
     // -------- Response:
     const response = {

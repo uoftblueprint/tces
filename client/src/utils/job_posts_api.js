@@ -3,11 +3,11 @@ const { REACT_APP_API_BASE_URL } = process.env;
 const createJobPost = async (jobPostData) => {
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_postings`, {
     method: "POST",
-    credentials: "include", // Include cookies for cross-origin requests if needed
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(jobPostData), // Convert jobPostData to JSON
+    body: JSON.stringify(jobPostData),
   });
 
   if (!response.ok) {
@@ -22,25 +22,26 @@ const createJobPost = async (jobPostData) => {
 const modifyJobPost = async (modifiedJobPost) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/${modifiedJobPost.job_post_id}`,
+    `${REACT_APP_API_BASE_URL}/job_postings/${modifiedJobPost.job_posting_id}`,
     {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(modifyJobPost),
+      body: JSON.stringify(modifiedJobPost),
     },
   );
   return response;
 };
 
-async function deleteJobPosting(jobPostingId) {
+async function deleteJobPost(jobPostingId) {
   try {
     const response = await fetch(
       `${REACT_APP_API_BASE_URL}/job_postings/${jobPostingId}`,
       {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json", // Include headers if needed
         },
@@ -63,13 +64,27 @@ async function deleteJobPosting(jobPostingId) {
   }
 }
 
-const getAllJobPost = async (queryParams) => {
+const getAllJobPosts = async (queryParams) => {
   // eslint-disable-next-line no-useless-catch
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_posts/${queryParams}`,
+    `${REACT_APP_API_BASE_URL}/job_postings?${queryParams}`,
     {
       method: "GET",
       credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const getAllActiveJobPosts = async (queryParams) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/active?${queryParams}`,
+    {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -105,10 +120,41 @@ const getOneJobPost = async (jobPostId) => {
   }
 };
 
+const getOneActiveJobPost = async (jobPostId) => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/active/${jobPostId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
+const getAllLocations = async () => {
+  // eslint-disable-next-line no-useless-catch
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/locations`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+};
+
 module.exports = {
   createJobPost,
-  deleteJobPosting,
+  deleteJobPost,
   modifyJobPost,
-  getAllJobPost,
+  getAllJobPosts,
+  getAllActiveJobPosts,
   getOneJobPost,
+  getAllLocations,
+  getOneActiveJobPost,
 };

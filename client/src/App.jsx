@@ -20,7 +20,7 @@ import CreateClient from "./pages/create-client";
 import EmployerPage from "./pages/employer";
 import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
-
+import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
 import JobApplicationPage from "./pages/job-application";
 
 // mock data
@@ -32,6 +32,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import Navbar from "./components/shared/navbar-component/Navbar";
+import PublicNavBar from "./components/shared/navbar-component/PublicNavbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import JobPostingsDashboard from "./pages/job-postings-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -45,6 +46,7 @@ import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
 import Error404 from "./pages/errors/404-error";
 import UserProfile from "./pages/user-profile";
+import JobApplicationView from "./pages/job-application-view";
 
 // API functions
 import {
@@ -133,7 +135,14 @@ function App() {
             />
           }
         >
-          <Route path="/" element={<Navigate to="/signin" />} />
+          <Route path="/" element={<Navigate to="/job-postings" />} />
+          <Route element={<PublicNavBar />}>
+            <Route
+              path="/job-postings"
+              element={<JobPostingsClientDashboard />}
+            />
+          </Route>
+
           <Route
             path="/signin"
             element={
@@ -249,7 +258,7 @@ function App() {
               }
             />
             <Route
-              path="/job-postings"
+              path="/all-job-postings"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
@@ -263,8 +272,20 @@ function App() {
                 </AuthGuard>
               }
             />
-          </Route>
 
+            <Route
+              path="/job-applications"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobApplicationView
+                  />
+                </AuthGuard>
+              }
+            />
+          </Route>
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
           <Route
@@ -395,7 +416,7 @@ function App() {
               }
             />
             <Route
-              path="/job-posts/add"
+              path="/job-postings/add"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}

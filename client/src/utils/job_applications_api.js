@@ -1,16 +1,13 @@
 const { REACT_APP_API_BASE_URL } = process.env;
 
-const fetchAllJobApplications = async ({
-  page = 1,
-  pageSize = 10,
-  jobPostingId = null,
-} = {}) => {
+const fetchAllJobApplications = async (page, pageSize, jobPostingId) => {
   const url = new URL(`${REACT_APP_API_BASE_URL}/job_applications`);
 
   // Set query parameters for pagination and filtering by job posting ID
-  if (page) url.searchParams.append("page", page);
-  if (pageSize) url.searchParams.append("pageSize", pageSize);
-  if (jobPostingId) url.searchParams.append("job_posting_id", jobPostingId);
+  if (page) url.searchParams.append("page", parseInt(page, 10));
+  if (pageSize) url.searchParams.append("pageSize", parseInt(pageSize, 10));
+  if (jobPostingId)
+    url.searchParams.append("job_posting_id", parseInt(jobPostingId, 10));
 
   try {
     const response = await fetch(url, {
@@ -76,20 +73,46 @@ const uploadJobApplication = async (file) => {
   return response;
 };
 
-const updateJobApplicationStatus = async (applicationId, status) => {
+const getResumeUrl = async (jobApplicationId) => {
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_applications/${applicationId}`,
+    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response.ok)
+    throw new Error(
+      `Failed to fetch resume for job application with id: ${jobApplicationId}`,
+    );
+
+  const result = await response.json();
+  return result;
+}
+
+const updateJobApplicationStatus = async (
+  jobApplicationId,
+  newApplicationStatus,
+) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
     {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status }),
-    }
+      body: JSON.stringify({
+        job_application_id: jobApplicationId,
+        new_application_status: newApplicationStatus,
+      }),
+    },
   );
+
   return response;
-}
+};
 
 const getOneJobApplication = async (jobApplicationId) => {
   try {
@@ -122,6 +145,7 @@ export {
   fetchAllJobApplications,
   fetchJobApplicationsByApplicantName,
   uploadJobApplication,
+  getResumeUrl,
   updateJobApplicationStatus,
   getOneJobApplication,
 };

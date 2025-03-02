@@ -34,12 +34,7 @@ function ApplicantInformationCard({ application }) {
         ml: 9,
       }}
     >
-      <CardContent
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
+      <CardContent>
         <Typography
           variant="h5"
           align="left"
@@ -57,27 +52,29 @@ function ApplicantInformationCard({ application }) {
       <Divider />
       <CardContent>
         <BoxRowComponent
-            leftSide="Name"
-            rightSide={applicationName}
-          />
-          <BoxRowComponent
-            leftSide="Email"
-            rightSideWrapper={emailWrapper}
-            rightSide={applicationEmail}
-          />
-          <BoxRowComponent
-            leftSide="Phone Number"
-            rightSide={applicationPhoneNumber}
-            isPhoneNumber
-          />
-          <BoxRowComponent
-            leftSide="Postal Code"
-            rightSide={applicationPostalCode}
-          />
-          <BoxRowComponent
-            leftSide="Status"
-            rightSide={applicationStatus}
-          />
+          leftSide="Name"
+          rightSide={applicationName}
+          isFirst
+        />
+        <BoxRowComponent
+          leftSide="Email"
+          rightSideWrapper={emailWrapper}
+          rightSide={applicationEmail}
+        />
+        <BoxRowComponent
+          leftSide="Phone"
+          rightSide={applicationPhoneNumber}
+          isPhoneNumber
+        />
+        <BoxRowComponent
+          leftSide="Postal Code"
+          rightSide={applicationPostalCode}
+        />
+        <BoxRowComponent
+          leftSide="Status"
+          rightSide={applicationStatus}
+          isLast
+        />
       </CardContent>
     </Card>
   );

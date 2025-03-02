@@ -57,7 +57,7 @@ function JobApplicationComponent({
                 <IconButton onClick={() => navigate("/job-applications")}>
                 <ArrowBackIcon />
                 </IconButton>
-                <Typography variant="h4" component="div" sx={{ marginLeft: "10px" }}>
+                <Typography variant="h4" component="div" sx={{ marginLeft: "10px", fontWeight: "bold" }}>
                 Applicant: {application.name}
                 </Typography>
             </Box>
@@ -67,6 +67,7 @@ function JobApplicationComponent({
                     flexDirection: "row",
                     width: "98%",
                     justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
                 <ApplicantInformationCard application={application} />
