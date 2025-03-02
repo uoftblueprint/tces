@@ -4,7 +4,6 @@ const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 
 const getFilterDropdownOptionsHandler = async (req, res) => {
-  console.log("getFilterDropdownOptionsHandler called");
   // Check method is GET
   if (req.method !== "GET") {
     return res
@@ -16,7 +15,7 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
     const { job_posting_id, name, email, jobTitle } = req.query;
 
     const baseQuery = {
-      where: {}, // build query attributes
+      where: {}, // Build query attributes
       include: [
         {
           model: JobPosting,
@@ -29,32 +28,37 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
       attributes: ["name", "email", "job_posting_id"],
     };
 
+    // Add filters to the base query
     if (job_posting_id) {
       baseQuery.where.job_posting_id = job_posting_id;
     }
 
     if (name) {
-      baseQuery.where.name = { [Op.iLike]: `%${name}}` }; // assuming case insensitive
+      baseQuery.where.name = { [Op.iLike]: `%${name}%` };
     }
 
     if (email) {
-      baseQuery.where.email = { [Op.iLike]: `%${email}` }; // assuming case insensitive
+      baseQuery.where.email = { [Op.iLike]: `%${email}%` };
     }
 
     if (jobTitle) {
-      baseQuery[0].include.where.title = { [Op.iLike]: `%${jobTitle}` };
+      baseQuery.include[0].where.title = { [Op.iLike]: `%${jobTitle}%` };
     }
-    const applications = await JobApplication.findAll(baseQuery); // make databse query
 
+    // Fetch data from the database
+    const applications = await JobApplication.findAll(baseQuery);
+
+    // Extract unique values for dropdown options
     const names = [...new Set(applications.map((app) => app.name))].sort();
     const emails = [...new Set(applications.map((app) => app.email))].sort();
     const jobTitles = [
-      ...new Set(applications.map((app) => app.job_posting.title)),
+      ...new Set(applications.map((app) => app.job_posting?.title)),
     ].sort();
     const jobPostingIds = [
       ...new Set(applications.map((app) => app.job_posting_id)),
     ];
 
+    // Return the response
     return res.status(200).json({
       status: "success",
       data: {
