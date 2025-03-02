@@ -277,8 +277,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <JobApplicationView
-                  />
+                  <JobApplicationView />
                 </AuthGuard>
               }
             />

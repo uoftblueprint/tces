@@ -287,7 +287,8 @@ export default function JobPostingsDashboardTableComponent() {
                 padding: "6px 16px",
                 width: "100px",
                 fontSize: "12.5px",
-                backgroundColor: !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
+                backgroundColor:
+                  !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
                 color: !filterStatus && !sortOrder ? "#666" : "white",
                 "&:hover": {
                   backgroundColor: "#3568E5",
