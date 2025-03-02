@@ -508,20 +508,20 @@ function JobPostingPage() {
 
 
         {/* Right Section */}
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={6.5}> {/* Reduced width from md={7} to md={6.5} */}
   <StyledPaper elevation={1} sx={{ p: 2.5 }}>
     {/* Apply for Position Header */}
     <Typography 
       variant="h6" 
       fontWeight={600} 
-      sx={{ mb: 1.5, fontSize: "0.95rem" }} // Slightly smaller
+      sx={{ mb: 1.5, fontSize: "0.9rem" }} // Slightly smaller
     >
       Apply for this Position
     </Typography>
 
     <form onSubmit={handleSubmit}>
       {/* Name Field */}
-      <Box sx={{ mb: 0.5 }}>
+      <Box sx={{ mb: 1 }}>
         <TextField
           fullWidth
           required
@@ -530,13 +530,15 @@ function JobPostingPage() {
           onChange={handleInputChange("name")}
           size="small"
         />
-        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+          *Required
+        </Typography>
       </Box>
 
       {/* Phone & Postal Code Fields */}
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
-          <Box>
+          <Box sx={{ mb: 1 }}>
             <TextField
               fullWidth
               required
@@ -545,11 +547,13 @@ function JobPostingPage() {
               onChange={handleInputChange("phone")}
               size="small"
             />
-            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+              *Required
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Box>
+          <Box sx={{ mb: 1 }}>
             <TextField
               fullWidth
               required
@@ -558,13 +562,15 @@ function JobPostingPage() {
               onChange={handleInputChange("postalCode")}
               size="small"
             />
-            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+              *Required
+            </Typography>
           </Box>
         </Grid>
       </Grid>
 
       {/* Email Address Field */}
-      <Box sx={{ mt: 0.5, mb: 0.5 }}>
+      <Box sx={{ mt: 1, mb: 1 }}>
         <TextField
           fullWidth
           required
@@ -574,7 +580,9 @@ function JobPostingPage() {
           onChange={handleInputChange("emailAddress")}
           size="small"
         />
-        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+        <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+          *Required
+        </Typography>
       </Box>
 
       {/* Status in Canada Dropdown & Other Text Input */}
@@ -594,7 +602,9 @@ function JobPostingPage() {
               ))}
             </Select>
           </FormControl>
-          <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+          <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+            *Required
+          </Typography>
         </Grid>
 
         {/* Other Status Field (Only Shows if "Other" is Selected) */}
@@ -607,7 +617,9 @@ function JobPostingPage() {
               onChange={handleInputChange("otherStatus")}
               size="small"
             />
-            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem" }}>*Required</Typography>
+            <Typography variant="caption" sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}>
+              *Required
+            </Typography>
           </Grid>
         )}
       </Grid>
@@ -617,7 +629,7 @@ function JobPostingPage() {
         <Typography 
           variant="subtitle1" 
           fontWeight={600} 
-          sx={{ mb: 0.5, fontSize: "0.9rem" }}
+          sx={{ mb: 0.7, fontSize: "0.9rem" }}
         >
           *Upload Resume
         </Typography>
@@ -645,14 +657,14 @@ function JobPostingPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 38, // Reduced icon size
-              height: 38,
+              width: 35, // Reduced icon size
+              height: 35,
               borderRadius: "50%",
               backgroundColor: "white",
-              mb: 1,
+              mb: 0.8,
             }}
           >
-            <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 26 }} />
+            <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 28 }} />
           </Box>
           <Typography variant="body2" sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.3, fontSize: "0.8rem" }}>
             Click to upload a file
@@ -664,13 +676,13 @@ function JobPostingPage() {
       </Box>
 
       {/* Recaptcha */}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 1.5 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 1.2 }}>
         <ReCAPTCHA sitekey="6LfIPsAqAAAAAL7OYC0zIrYsnD0SNcyYJuPmgnSw" onChange={handleRecaptchaChange} />
       </Box>
 
       {/* Submit Button */}
       <Box sx={{ mt: 1.5, display: "flex", justifyContent: "right" }}>
-        <Button type="submit" variant="contained" size="small" sx={{ width: "95px" }}>
+        <Button type="submit" variant="contained" size="small" sx={{ width: "90px" }}>
           Submit
         </Button>
       </Box>
