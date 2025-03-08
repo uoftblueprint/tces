@@ -11,7 +11,7 @@ const titleStyle = {
   marginLeft: "40px",
 };
 
-function PublicNavBar() {
+function PublicNavbar() {
   const navigate = useNavigate();
 
   return (
@@ -48,4 +48,4 @@ function PublicNavBar() {
   );
 }
 
-export default PublicNavBar;
+export default PublicNavbar;
