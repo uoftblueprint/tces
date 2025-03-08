@@ -1,30 +1,42 @@
 const Sequelize = require("sequelize");
 const logger = require("pino")();
 const JobApplications = require("../../models/job_applications.model");
+const JobPosting = require("../../models/job_posts.model");
 
 const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
   try {
     // ! Return all applications sorted in descending order by application date (newest first)
     // ! There is probably a sequelize function that can do this for me.
     const query = {};
+    const { job_posting_id, name, email, job_title, sort } = req.query;
 
     // ! Paginate the data (take a look at the existing API endpoints in the codebase for an example)
     // ! This pagination logic is from the existing code base. Maybe I should use this.
 
-    const page = req?.query?.page ? parseInt(req.query.page, 10) : null;
+    const page = req?.query?.page ? parseInt(req.query.page, 10) - 1 : null;
     const pageSize = req?.query?.pageSize
       ? parseInt(req.query.pageSize, 10)
       : null;
 
-    if (jobPostingId) {
-      query.id = jobPostingId;
+    if (name) {
+      query.name = name;
     }
+  
+    if (email) {
+      query.email = email;
+    }
+
+    if (job_posting_id) {
+      query.job_posting_id = job_posting_id;
+    }
+
+    const order = [["createdAt", sort === "asc" ? "ASC" : "DESC"]];
 
     // ! This is an example of how the pagination logic is used with the Job Lead model.
 
     const searchConfig = {
       where: query || {},
-      order: [["createdAt", "DESC"]],
+      order: order,
       attributes: [
         "id",
         "job_posting_id",
@@ -37,8 +49,15 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
         "status_other",
         "application_status",
         "custom_responses",
-        "createdAt", // Include createdAt explicitly
-        "updatedAt", // Include updatedAt explicitly
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: JobPosting,
+          attributes: ["title"],
+          where: job_title ? { title: job_title } : {},
+        },
       ],
     };
 
