@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // MUI
 import {
@@ -21,58 +22,36 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
+import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
+
 // Imported Components
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
-
-const mockdata = [
-  {
-    id: 1,
-    title: "Sales Account Manager",
-    employer: "Aquatech",
-    location: "Greater Toronto Area",
-    jobTypes: ["Full-Time"],
-    closeDate: "11/20/2024",
-    url: "https://example.com/job/sales-account-manager",
-  },
-  {
-    id: 2,
-    title: "Senior Portfolio Administrator",
-    employer: "Rally Assets",
-    location: "Spadina & Adelaide",
-    jobTypes: ["Full-Time", "Contract"],
-    closeDate: "11/15/2024",
-    url: "https://example.com/job/senior-portfolio-administrator",
-  },
-  {
-    id: 3,
-    title: "Special Events Intern",
-    employer: "National Ballet of Canada",
-    location: "Spadina & Lakeshore",
-    jobTypes: ["Full-Time", "Seasonal", "Internship"],
-    closeDate: "11/20/2024",
-    url: "https://example.com/job/special-events-intern",
-  },
-  ...Array(100)
-    .fill(null)
-    .map((_, index) => ({
-      id: 4 + index, // Start from 4 since there are already 3 entries
-      title: "Example Job Title",
-      employer: "Example Employer",
-      location: "Example Location",
-      jobTypes: ["Full-Time"],
-      closeDate: "12/01/2024",
-      url: "https://example.com/job/example-job-title",
-    })),
-];
 
 function JobPostingsClientDashboardTableComponent() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [jobPostings, setJobPostings] = useState([]);
 
-  const totalRows = mockdata.length;
+  const totalRows = jobPostings.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const startRow = (currentPage - 1) * rowsPerPage + 1;
   const endRow = Math.min(currentPage * rowsPerPage, totalRows);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchActiveJobPostings = async () => {
+      try {
+        const response = await getAllActiveJobPosts();
+        const activeJobPostings = await response.json(); // Parse JSON here
+        setJobPostings(activeJobPostings.publicJobPosts.data);
+      } catch (error) {
+        console.error("Error fetching active job postings:", error);
+      }
+    };
+
+    fetchActiveJobPostings();
+  }, []);
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
@@ -104,32 +83,39 @@ function JobPostingsClientDashboardTableComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {mockdata.slice(startRow - 1, endRow).map((row) => (
-            <TableRow key={row.id}>
+          {jobPostings.slice(startRow - 1, endRow).map((jobPosting) => (
+            <TableRow key={jobPosting.id}>
               <TableCell>
-                <a
-                  href={row.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <span
+                  onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter")
+                      navigate(`/job-postings/${jobPosting.id}`);
+                  }}
+                  role="button"
+                  tabIndex={0}
                   style={{
                     textDecoration: "none",
                     color: "#1976d2",
                     fontWeight: "bold",
+                    cursor: "pointer",
                   }}
                 >
-                  {row.title}
-                </a>
+                  {jobPosting.title}
+                </span>
               </TableCell>
-              <TableCell>{row.employer}</TableCell>
+              <TableCell>{jobPosting.employer}</TableCell>
               <TableCell>
-               <LocationOnIcon
+                <LocationOnIcon
                   sx={{
                     color: "gray",
                     verticalAlign: "middle",
                     marginRight: 1,
                   }}
                 />
-                <span style={{ verticalAlign: "middle" }}>{row.location}</span>
+                <span style={{ verticalAlign: "middle" }}>
+                  {jobPosting.location}
+                </span>
               </TableCell>
               <TableCell>
                 <Box
@@ -140,10 +126,12 @@ function JobPostingsClientDashboardTableComponent() {
                     alignItems: "center",
                   }}
                 >
-                  <JobTypeChipsComponent jobTypes={row.jobTypes} />
+                  <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
                 </Box>
               </TableCell>
-              <TableCell>{row.closeDate}</TableCell>
+              <TableCell>
+                {new Date(jobPosting.close_date).toLocaleDateString()}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

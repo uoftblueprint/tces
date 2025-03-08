@@ -17,7 +17,7 @@ function SearchInput({
       getOptionLabel={getOptionLabel}
       sx={{ width: 300 }}
       renderInput={(props) => (
-         /* eslint-disable react/jsx-props-no-spreading */
+        /* eslint-disable react/jsx-props-no-spreading */
         <TextField {...props} size="small" label={label} />
       )}
     />
