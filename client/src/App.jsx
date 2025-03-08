@@ -31,7 +31,7 @@ import AuthGuard from "./components/wrappers/auth-guard-component";
 
 // data loading wrappers
 import Navbar from "./components/shared/navbar-component/Navbar";
-import PublicNavBar from "./components/shared/navbar-component/PublicNavBar";
+import PublicNavbar from "./components/shared/navbar-component/PublicNavbar";
 import JobLeadDashboard from "./pages/job-lead-dashboard";
 import JobPostingsDashboard from "./pages/job-postings-dashboard";
 import AddJobLeadPage from "./pages/add-job-lead";
@@ -128,7 +128,7 @@ function App() {
           }
         >
           <Route path="/" element={<Navigate to="/job-postings" />} />
-          <Route element={<PublicNavBar />}>
+          <Route element={<PublicNavbar />}>
             <Route
               path="/job-postings"
               element={<JobPostingsClientDashboard />}
