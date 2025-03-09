@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { Divider } from "../index.styles";
 import BoxRowComponent from "../box-row-component";
 import { formatDateStr } from "../../../utils/date";
 import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 
-function ApplicationDetailsCard({ application, jobPost, setApplicationStatus }) {
-
+function ApplicationDetailsCard({
+  application,
+  jobPost,
+  setApplicationStatus,
+}) {
   const jobTitle = useState(jobPost.title);
   const employerName = useState(jobPost.employer);
   const [dateApplied] = useState(formatDateStr(application.createdAt));
@@ -62,24 +61,10 @@ function ApplicationDetailsCard({ application, jobPost, setApplicationStatus }) 
       </CardContent>
       <Divider />
       <CardContent>
-        <BoxRowComponent
-          leftSide="Title"
-          rightSide={jobTitle}
-          isFirst
-        />
-        <BoxRowComponent
-          leftSide="Employer"
-          rightSide={employerName}
-        />
-        <BoxRowComponent
-          leftSide="Date applied"
-          rightSide={dateApplied}
-        />
-        <BoxRowComponent
-          leftSide="Resume"
-          rightSide={filename}
-          downloadable
-        />
+        <BoxRowComponent leftSide="Title" rightSide={jobTitle} isFirst />
+        <BoxRowComponent leftSide="Employer" rightSide={employerName} />
+        <BoxRowComponent leftSide="Date applied" rightSide={dateApplied} />
+        <BoxRowComponent leftSide="Resume" rightSide={filename} downloadable />
         <BoxRowComponent
           leftSide="Application status"
           setRightSide={setApplicationStatus}

@@ -94,30 +94,17 @@ const getAllActiveJobPosts = async (queryParams) => {
 };
 
 const getOneJobPost = async (jobPostId) => {
-  try {
-    const response = await fetch(
-      `${REACT_APP_API_BASE_URL}/job_postings/${jobPostId}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_postings/${jobPostId}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
-  
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error fetching job application: ${errorText}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error("Error fetching job application:", error);
-    throw error;
-  }
+    },
+  );
+  return response;
 };
 
 const getOneActiveJobPost = async (jobPostId) => {

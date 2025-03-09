@@ -280,8 +280,7 @@ function App() {
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
-                  <JobApplicationView
-                  />
+                  <JobApplicationView />
                 </AuthGuard>
               }
             />
@@ -296,16 +295,17 @@ function App() {
               />
             }
           >
-            <Route path="/job-applications/:jobApplicationID"
+            <Route
+              path="/job-applications/:jobApplicationID"
               element={
                 <AuthGuard
                   isAuthenticated={isAuthenticated}
                   loginUser={loginUser}
                 >
                   <JobApplicationPage
-                  getApplicationById={getOneJobApplication}
-                  setApplicationStatus={updateJobApplicationStatus}
-                  getJobPostById={getOneJobPost}
+                    getApplicationById={getOneJobApplication}
+                    setApplicationStatus={updateJobApplicationStatus}
+                    getJobPostById={getOneJobPost}
                   />
                 </AuthGuard>
               }
