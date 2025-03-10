@@ -4,7 +4,6 @@ import { Card, CardContent, Typography } from "@mui/material";
 import { Divider } from "../index.styles";
 import BoxRowComponent from "../box-row-component";
 import { formatDateStr } from "../../../utils/date";
-import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 
 function ApplicationDetailsCard({
   application,
@@ -15,7 +14,7 @@ function ApplicationDetailsCard({
   const employerName = useState(jobPost.employer);
   const [dateApplied] = useState(formatDateStr(application.createdAt));
   const filename = useState(application.resume);
-  const status = useState(application.application_status[0]);
+  const status = useState(application.application_status);
 
   const statusOptions = [
     { value: "Contacted", color: "#00C0FF" },
@@ -68,7 +67,7 @@ function ApplicationDetailsCard({
         <BoxRowComponent
           leftSide="Application status"
           setRightSide={setApplicationStatus}
-          rightSide={<ApplicationStatusChipComponent status={status} />}
+          rightSide={status}
           editable
           options={statusOptions}
           isLast

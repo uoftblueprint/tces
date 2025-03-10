@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { Grid, Typography, Select, MenuItem, Box, FormControl, InputLabel } from "@mui/material";
+import { Grid, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import { IMaskInput } from "react-imask";
-
 import PropTypes from "prop-types";
 import { BoxDivider } from "./index.styles";
+import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -43,7 +43,7 @@ function BoxRowComponent({
   isFirst,
   isLast,
 }) {
-  const [selectedValue, setSelectedValue] = useState(rightSide || "Select");
+  const [selectedValue, setSelectedValue] = useState(rightSide[0]);
 
   return (
     <>
@@ -83,18 +83,7 @@ function BoxRowComponent({
               >
                 {options.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
-                    <Box
-                      sx={{
-                        display: "inline-block",
-                        border: `1px solid ${option.color}`,
-                        borderRadius: "12px",
-                        backgroundColor: `rgba(${parseInt(option.color.slice(1, 3), 16)}, ${parseInt(option.color.slice(3, 5), 16)}, ${parseInt(option.color.slice(5, 7), 16)}, 0.1)`,
-                        padding: "2px 8px",
-                        margin: "4px",
-                      }}
-                    >
-                      {option.value}
-                    </Box>
+                    <ApplicationStatusChipComponent status={option.value} />
                   </MenuItem>
                 ))}
               </Select>
