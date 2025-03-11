@@ -187,7 +187,7 @@ function JobPostingPage() {
     // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
-        const progress = prev + 10;
+        const progress = prev + 50;
         if (progress >= 100) {
           clearInterval(interval);
           console.log("Simulated upload complete for file:", selectedFile.name);
@@ -695,57 +695,140 @@ function JobPostingPage() {
                 >
                   *Upload Resume
                 </Typography>
+              <Box
+                {...getRootProps()}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  p: 3,
+                  border: "2px dashed #ccc",
+                  borderRadius: 2,
+                  textAlign: "center",
+                  backgroundColor: "white",
+                  color: "#666",
+                  cursor: "pointer",
+                  transition: "border-color 0.3s ease",
+                  "&:hover": {
+                    borderColor: "#3f51b5",
+                  },
+                }}
+              >
+                <input {...getInputProps()} />
                 <Box
-                  {...getRootProps()}
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    p: 2, // Reduced padding
-                    border: "2px dashed #ccc",
-                    borderRadius: 2,
-                    textAlign: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
                     backgroundColor: "white",
-                    color: "#666",
-                    cursor: "pointer",
-                    transition: "border-color 0.3s ease",
-                    "&:hover": { borderColor: "#3f51b5" },
+                    mb: 1,
                   }}
                 >
-                  <input {...getInputProps()} />
+                  <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 32 }} />
+                </Box>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.5 }}
+                >
+                  Click to upload a file
+                </Typography>
+                <Typography variant="3" sx={{ color: "text.secondary" }}>
+                  PDF file only
+                </Typography>
+              </Box>
+              {file || fileError ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between", // Adjust content alignment
+                    mt: 2,
+                    p: 1,
+                    backgroundColor: fileError ? "#ffebee" : "white", // Light red for errors
+                    borderRadius: 1,
+                    border: fileError
+                      ? "1px solid #f44336"
+                      : "1px solid #e0e0e0", // Red border for errors
+                    width: "100%", // Take up the full width of the container
+                    maxWidth: "100%", // Prevent overflow beyond the parent container
+                    boxSizing: "border-box", // Ensure padding doesn't affect width
+                  }}
+                >
+                  {/* Left Icon */}
+                  <Box sx={{ mr: 2 }}>
+                    {fileError ? (
+                      <Typography variant="body3" color="error.main">
+                        <ErrorIcon />
+                      </Typography>
+                    ) : uploadProgress === 100 ? (
+                      <Typography variant="body3" color="success.main">
+                        <CheckIcon />
+                      </Typography>
+                    ) : (
+                      <UploadFileIcon color="primary" />
+                    )}
+                  </Box>
+
+                  {/* Center Content */}
                   <Box
                     sx={{
+                      flex: 1,
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      width: 35, // Reduced icon size
-                      height: 35,
-                      borderRadius: "50%",
-                      backgroundColor: "white",
-                      mb: 0.8,
+                      textAlign: "center",
                     }}
                   >
-                    <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 28 }} />
+                    {fileError ? (
+                      <>
+                        <Typography
+                          variant="body2"
+                          sx={{ fontWeight: 500, color: "error.main" }}
+                        >
+                          Upload failed.
+                        </Typography>
+                        <Typography
+                          variant="body3"
+                          sx={{
+                            color: "error.main",
+                            fontWeight: 600,
+                          }}
+                        >
+                          File too large • Failed
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          {file.name}
+                        </Typography>
+                        <Typography variant="body3" color="textSecondary">
+                          {`${formatFileSize(file.size)} • ${
+                            uploadProgress === 100 ? "Complete" : "Uploading..."
+                          }`}
+                        </Typography>
+                        {!fileError && (
+                          <LinearProgress
+                            variant="determinate"
+                            value={uploadProgress || 0}
+                            sx={{ mt: 1, width: "100%" }}
+                          />
+                        )}
+                      </>
+                    )}
                   </Box>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 500,
-                      color: "#3f51b5",
-                      mb: 0.3,
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    Click to upload a file
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", fontSize: "0.7rem" }}
-                  >
-                    PDF file only
-                  </Typography>
+
+                  {/* Right Delete Icon */}
+                  <IconButton onClick={handleRemoveFile}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
                 </Box>
+              ) : null}
               </Box>
 
               {/* Recaptcha */}
