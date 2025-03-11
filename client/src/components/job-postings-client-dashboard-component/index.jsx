@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import JobPostingsClientDashboardTableComponent from "./job-postings-client-dashboard-table";
 import JobPostingsClientDashboardHeader from "./job-postings-client-dashboard-header";
 
 function JobPostingsClientDashboardComponent() {
-  // Scroll to the top on initialization
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Sorting state: key = column name, direction = "asc" or "desc"
   const [sortConfig, setSortConfig] = useState(null);
+  const [selectedJobType, setSelectedJobType] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
-    // Function to update sorting state
+  // Function to update sorting state
   const handleSortChange = (sortConfig) => {
     setSortConfig((prevSortConfig) => {
       if (prevSortConfig?.key === sortConfig.key) {
@@ -21,11 +17,20 @@ function JobPostingsClientDashboardComponent() {
     });
   };
 
-
   return (
     <div style={{ padding: "90px", paddingBottom: "72px", paddingTop: "24px" }}>
-      <JobPostingsClientDashboardHeader onSortChange={handleSortChange} sortConfig={sortConfig} />
-      <JobPostingsClientDashboardTableComponent sortConfig={sortConfig} />
+      <JobPostingsClientDashboardHeader
+        onSortChange={handleSortChange}
+        sortConfig={sortConfig}
+        setSelectedJobType={setSelectedJobType}
+        setSelectedLocation={setSelectedLocation}
+      />
+
+      <JobPostingsClientDashboardTableComponent
+        sortConfig={sortConfig}
+        selectedJobType={selectedJobType}
+        selectedLocation={selectedLocation}
+      />
     </div>
   );
 }

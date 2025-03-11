@@ -24,7 +24,6 @@ function SortMenu({ applySort }) {
 
   const handleApply = () => {
     // Now sends correct sortConfig with key: "close_date"
-    console.log("TEST")
     applySort({ key: "close_date", direction: selectedDirection });
     setAnchorEl(null);
   };

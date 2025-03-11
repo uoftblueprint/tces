@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// MUI
+// MUI Components
 import {
   Table,
   TableBody,
@@ -23,19 +23,19 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
-
-// Imported Components
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
-function JobPostingsClientDashboardTableComponent({ sortConfig }) {
+function JobPostingsClientDashboardTableComponent({ 
+  sortConfig, 
+  selectedJobType, 
+  selectedLocation 
+}) {
+  const [jobPostings, setJobPostings] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobPostings, setJobPostings] = useState([]);
-
   const navigate = useNavigate();
 
-  console.log(sortConfig);
-
+  // Fetch job postings when the component mounts
   useEffect(() => {
     const fetchActiveJobPostings = async () => {
       try {
@@ -50,19 +50,39 @@ function JobPostingsClientDashboardTableComponent({ sortConfig }) {
     fetchActiveJobPostings();
   }, []);
 
-  // Sorting logic
-  const sortedJobPostings = [...jobPostings].sort((a, b) => {
-    if (!sortConfig || !a[sortConfig.key] || !b[sortConfig.key]) return 0; // If no sorting applied, return original array
+  console.log("SortConfig:", sortConfig);
+  console.log("Selected Job Type:", selectedJobType);
+  console.log("Selected Location:", selectedLocation);
+
+  // Apply filters first
+  const filteredJobPostings = jobPostings.filter((job) => {
+    const matchesJobType = selectedJobType
+      ? job.job_type.includes(selectedJobType) // ✅ Checks if selected job type exists in array
+      : true;
+    const matchesLocation = selectedLocation ? job.location === selectedLocation : true;
+    
+    return matchesJobType && matchesLocation;
+  });
+  
+
+  // Apply sorting after filtering
+  const sortedJobPostings = [...filteredJobPostings].sort((a, b) => {
+    if (!sortConfig || !a[sortConfig.key] || !b[sortConfig.key]) return 0;
 
     const { key, direction } = sortConfig;
-
     let valA = a[key];
     let valB = b[key];
 
-    // Convert date fields to Date objects for accurate comparison
+    // Convert to Date object for proper sorting by date
     if (key === "close_date") {
       valA = new Date(a[key]);
       valB = new Date(b[key]);
+    }
+
+    // Ensure case-insensitive sorting for job type and location
+    if (key === "job_type" || key === "location") {
+      valA = valA.toString().toLowerCase();
+      valB = valB.toString().toLowerCase();
     }
 
     if (valA < valB) return direction === "asc" ? -1 : 1;
@@ -70,7 +90,7 @@ function JobPostingsClientDashboardTableComponent({ sortConfig }) {
     return 0;
   });
 
-  // Pagination calculations
+  // Pagination calculations (applied after filtering & sorting)
   const totalRows = sortedJobPostings.length;
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const startRow = (currentPage - 1) * rowsPerPage;
@@ -106,41 +126,49 @@ function JobPostingsClientDashboardTableComponent({ sortConfig }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedJobPostings.slice(startRow, endRow).map((jobPosting) => (
-            <TableRow key={jobPosting.id}>
-              <TableCell>
-                <span
-                  onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") navigate(`/job-postings/${jobPosting.id}`);
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  style={{
-                    textDecoration: "none",
-                    color: "#1976d2",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  {jobPosting.title}
-                </span>
-              </TableCell>
-              <TableCell>{jobPosting.employer}</TableCell>
-              <TableCell>
-                <LocationOnIcon sx={{ color: "gray", verticalAlign: "middle", marginRight: 1 }} />
-                <span style={{ verticalAlign: "middle" }}>{jobPosting.location}</span>
-              </TableCell>
-              <TableCell>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
-                  <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
-                </Box>
-              </TableCell>
-              <TableCell>
-                {new Date(jobPosting.close_date).toLocaleDateString()}
+          {sortedJobPostings.length > 0 ? (
+            sortedJobPostings.slice(startRow, endRow).map((jobPosting) => (
+              <TableRow key={jobPosting.id}>
+                <TableCell>
+                  <span
+                    onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") navigate(`/job-postings/${jobPosting.id}`);
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    style={{
+                      textDecoration: "none",
+                      color: "#1976d2",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {jobPosting.title}
+                  </span>
+                </TableCell>
+                <TableCell>{jobPosting.employer}</TableCell>
+                <TableCell>
+                  <LocationOnIcon sx={{ color: "gray", verticalAlign: "middle", marginRight: 1 }} />
+                  <span style={{ verticalAlign: "middle" }}>{jobPosting.location}</span>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
+                    <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  {new Date(jobPosting.close_date).toLocaleDateString()}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} align="center">
+                No job postings found.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
 

@@ -31,7 +31,12 @@ const getAllUniqueLocations = async (queryParams = "") => {
   }
 };
 
-function JobPostingsClientDashboardHeader({ onSortChange, sortConfig }) {
+function JobPostingsClientDashboardHeader({ 
+  onSortChange, 
+  sortConfig, 
+  setSelectedJobType, 
+  setSelectedLocation 
+}) {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
@@ -69,8 +74,9 @@ function JobPostingsClientDashboardHeader({ onSortChange, sortConfig }) {
             gap: "16px",
           }}
         >
-          <JobTypeMenu />
-          <LocationMenu locations={locations} />
+          {/* Pass filtering handlers to JobTypeMenu & LocationMenu */}
+          <JobTypeMenu onSelectJobType={setSelectedJobType} />
+          <LocationMenu locations={locations} onSelectLocation={setSelectedLocation} />
         </div>
       </div>
     </>

@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 import { HeaderContainer } from "../index.styles";
 
-function JobPostingsDashboardHeaderComponent({ jobPostingsResultsCount }) {
+function JobPostingsDashboardHeaderComponent({ filteredJobPostingsCount }) {
   return (
     <HeaderContainer>
       <div>
@@ -35,7 +35,7 @@ function JobPostingsDashboardHeaderComponent({ jobPostingsResultsCount }) {
             textAlign: "left",
           }}
         >
-          {jobPostingsResultsCount}
+          {filteredJobPostingsCount} Job{filteredJobPostingsCount !== 1 ? "s" : ""} Found
         </Typography>
       </div>
 
@@ -45,7 +45,7 @@ function JobPostingsDashboardHeaderComponent({ jobPostingsResultsCount }) {
 }
 
 JobPostingsDashboardHeaderComponent.propTypes = {
-  jobPostingsResultsCount: PropTypes.number.isRequired,
+  filteredJobPostingsCount: PropTypes.number.isRequired,
 };
 
 export default JobPostingsDashboardHeaderComponent;
