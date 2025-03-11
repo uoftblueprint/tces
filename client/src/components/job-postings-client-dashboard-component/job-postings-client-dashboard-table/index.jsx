@@ -27,23 +27,20 @@ import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
 // Imported Components
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
-function JobPostingsClientDashboardTableComponent() {
+function JobPostingsClientDashboardTableComponent({ sortConfig }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [jobPostings, setJobPostings] = useState([]);
 
-  const totalRows = jobPostings.length;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
-  const startRow = (currentPage - 1) * rowsPerPage + 1;
-  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
-
   const navigate = useNavigate();
+
+  console.log(sortConfig);
 
   useEffect(() => {
     const fetchActiveJobPostings = async () => {
       try {
         const response = await getAllActiveJobPosts();
-        const activeJobPostings = await response.json(); // Parse JSON here
+        const activeJobPostings = await response.json();
         setJobPostings(activeJobPostings.publicJobPosts.data);
       } catch (error) {
         console.error("Error fetching active job postings:", error);
@@ -52,6 +49,32 @@ function JobPostingsClientDashboardTableComponent() {
 
     fetchActiveJobPostings();
   }, []);
+
+  // Sorting logic
+  const sortedJobPostings = [...jobPostings].sort((a, b) => {
+    if (!sortConfig || !a[sortConfig.key] || !b[sortConfig.key]) return 0; // If no sorting applied, return original array
+
+    const { key, direction } = sortConfig;
+
+    let valA = a[key];
+    let valB = b[key];
+
+    // Convert date fields to Date objects for accurate comparison
+    if (key === "close_date") {
+      valA = new Date(a[key]);
+      valB = new Date(b[key]);
+    }
+
+    if (valA < valB) return direction === "asc" ? -1 : 1;
+    if (valA > valB) return direction === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Pagination calculations
+  const totalRows = sortedJobPostings.length;
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
+  const startRow = (currentPage - 1) * rowsPerPage;
+  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
@@ -83,14 +106,13 @@ function JobPostingsClientDashboardTableComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {jobPostings.slice(startRow - 1, endRow).map((jobPosting) => (
+          {sortedJobPostings.slice(startRow, endRow).map((jobPosting) => (
             <TableRow key={jobPosting.id}>
               <TableCell>
                 <span
                   onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter")
-                      navigate(`/job-postings/${jobPosting.id}`);
+                    if (e.key === "Enter") navigate(`/job-postings/${jobPosting.id}`);
                   }}
                   role="button"
                   tabIndex={0}
@@ -106,26 +128,11 @@ function JobPostingsClientDashboardTableComponent() {
               </TableCell>
               <TableCell>{jobPosting.employer}</TableCell>
               <TableCell>
-                <LocationOnIcon
-                  sx={{
-                    color: "gray",
-                    verticalAlign: "middle",
-                    marginRight: 1,
-                  }}
-                />
-                <span style={{ verticalAlign: "middle" }}>
-                  {jobPosting.location}
-                </span>
+                <LocationOnIcon sx={{ color: "gray", verticalAlign: "middle", marginRight: 1 }} />
+                <span style={{ verticalAlign: "middle" }}>{jobPosting.location}</span>
               </TableCell>
               <TableCell>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "2px",
-                    alignItems: "center",
-                  }}
-                >
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
                   <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
                 </Box>
               </TableCell>
@@ -161,14 +168,11 @@ function JobPostingsClientDashboardTableComponent() {
             </MenuItem>
           ))}
         </Select>
-        <Typography variant="body2">{`${startRow} - ${endRow} of ${totalRows}`}</Typography>
+        <Typography variant="body2">{`${startRow + 1} - ${endRow} of ${totalRows}`}</Typography>
         <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
           <ChevronLeftIcon />
         </IconButton>
-        <IconButton
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
+        <IconButton onClick={handleNextPage} disabled={currentPage === totalPages}>
           <ChevronRightIcon />
         </IconButton>
       </Box>

@@ -4,10 +4,7 @@ import SortMenu from "../../shared/job-posts-sort-menu-component";
 import LocationMenu from "../../shared/job-posts-location-menu-component";
 import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
 
-function applySort(selectedValue) {
-  console.log(`Sorting by: ${selectedValue}`);
-}
-
+// Fetch unique locations
 const getAllUniqueLocations = async (queryParams = "") => {
   try {
     const response = await getAllActiveJobPosts(queryParams);
@@ -17,8 +14,6 @@ const getAllUniqueLocations = async (queryParams = "") => {
     }
 
     const jobPosts = await response.json();
-
-    console.log(jobPosts);
 
     // Extract unique locations
     const uniqueLocations = [
@@ -36,13 +31,8 @@ const getAllUniqueLocations = async (queryParams = "") => {
   }
 };
 
-function JobPostingsClientDashboardHeader() {
+function JobPostingsClientDashboardHeader({ onSortChange, sortConfig }) {
   const [locations, setLocations] = useState([]);
-
-  // const handleLocationSelect = (location) => {
-  //     setSelectedLocation(location);
-  //     refetchLocations(location);
-  // };
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -68,7 +58,8 @@ function JobPostingsClientDashboardHeader() {
         }}
       >
         <div style={{ marginRight: "auto" }}>
-          <SortMenu applySort={applySort} />
+          {/* SortMenu now updates sorting state in the parent */}
+          <SortMenu applySort={onSortChange} currentSort={sortConfig} />
         </div>
 
         <div
