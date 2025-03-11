@@ -11,7 +11,10 @@ function JobPostingsClientDashboardComponent() {
   const handleSortChange = (sortConfig) => {
     setSortConfig((prevSortConfig) => {
       if (prevSortConfig?.key === sortConfig.key) {
-        return { key: sortConfig.key, direction: prevSortConfig.direction === "asc" ? "desc" : "asc" };
+        return {
+          key: sortConfig.key,
+          direction: prevSortConfig.direction === "asc" ? "desc" : "asc",
+        };
       }
       return { key: sortConfig.key, direction: sortConfig.direction };
     });

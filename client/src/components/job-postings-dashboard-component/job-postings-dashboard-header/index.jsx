@@ -35,7 +35,8 @@ function JobPostingsDashboardHeaderComponent({ filteredJobPostingsCount }) {
             textAlign: "left",
           }}
         >
-          {filteredJobPostingsCount} Job{filteredJobPostingsCount !== 1 ? "s" : ""} Found
+          {filteredJobPostingsCount} Job
+          {filteredJobPostingsCount !== 1 ? "s" : ""} Found
         </Typography>
       </div>
 

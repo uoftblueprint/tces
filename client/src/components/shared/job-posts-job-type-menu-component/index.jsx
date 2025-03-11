@@ -82,9 +82,15 @@ function JobTypeMenu({ onSelectJobType }) {
           { value: "Freelance", label: "Freelance" },
           { value: "Internship", label: "Internship" },
         ].map((jobType) => (
-          <MenuItem key={jobType.value} onClick={() => handleSelect(jobType.value)}>
+          <MenuItem
+            key={jobType.value}
+            onClick={() => handleSelect(jobType.value)}
+          >
             <ListItemIcon>
-              <Radio checked={selectedValue === jobType.value} value={jobType.value} />
+              <Radio
+                checked={selectedValue === jobType.value}
+                value={jobType.value}
+              />
             </ListItemIcon>
             <ListItemText primary={jobType.label} />
           </MenuItem>

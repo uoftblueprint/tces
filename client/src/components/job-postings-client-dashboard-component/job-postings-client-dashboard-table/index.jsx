@@ -25,10 +25,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
-function JobPostingsClientDashboardTableComponent({ 
-  sortConfig, 
-  selectedJobType, 
-  selectedLocation 
+function JobPostingsClientDashboardTableComponent({
+  sortConfig,
+  selectedJobType,
+  selectedLocation,
 }) {
   const [jobPostings, setJobPostings] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -57,13 +57,14 @@ function JobPostingsClientDashboardTableComponent({
   // Apply filters first
   const filteredJobPostings = jobPostings.filter((job) => {
     const matchesJobType = selectedJobType
-      ? job.job_type.includes(selectedJobType) // ✅ Checks if selected job type exists in array
+      ? job.job_type.includes(selectedJobType)
       : true;
-    const matchesLocation = selectedLocation ? job.location === selectedLocation : true;
-    
+    const matchesLocation = selectedLocation
+      ? job.location === selectedLocation
+      : true; // ✅ Directly matches full location string
+
     return matchesJobType && matchesLocation;
   });
-  
 
   // Apply sorting after filtering
   const sortedJobPostings = [...filteredJobPostings].sort((a, b) => {
@@ -133,7 +134,8 @@ function JobPostingsClientDashboardTableComponent({
                   <span
                     onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") navigate(`/job-postings/${jobPosting.id}`);
+                      if (e.key === "Enter")
+                        navigate(`/job-postings/${jobPosting.id}`);
                     }}
                     role="button"
                     tabIndex={0}
@@ -149,11 +151,26 @@ function JobPostingsClientDashboardTableComponent({
                 </TableCell>
                 <TableCell>{jobPosting.employer}</TableCell>
                 <TableCell>
-                  <LocationOnIcon sx={{ color: "gray", verticalAlign: "middle", marginRight: 1 }} />
-                  <span style={{ verticalAlign: "middle" }}>{jobPosting.location}</span>
+                  <LocationOnIcon
+                    sx={{
+                      color: "gray",
+                      verticalAlign: "middle",
+                      marginRight: 1,
+                    }}
+                  />
+                  <span style={{ verticalAlign: "middle" }}>
+                    {jobPosting.location}
+                  </span>
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "2px",
+                      alignItems: "center",
+                    }}
+                  >
                     <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
                   </Box>
                 </TableCell>
@@ -196,11 +213,16 @@ function JobPostingsClientDashboardTableComponent({
             </MenuItem>
           ))}
         </Select>
-        <Typography variant="body2">{`${startRow + 1} - ${endRow} of ${totalRows}`}</Typography>
+        <Typography variant="body2">{`${
+          startRow + 1
+        } - ${endRow} of ${totalRows}`}</Typography>
         <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
           <ChevronLeftIcon />
         </IconButton>
-        <IconButton onClick={handleNextPage} disabled={currentPage === totalPages}>
+        <IconButton
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
           <ChevronRightIcon />
         </IconButton>
       </Box>
