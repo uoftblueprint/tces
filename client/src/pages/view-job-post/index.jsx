@@ -87,8 +87,6 @@ function JobPostingPage() {
           const jobPostingData = await response.json();
           const data = jobPostingData.jobPost;
 
-          console.log(data);
-
           setJobPosting({
             id: data.id,
             title: data.title || "N/A",
@@ -111,8 +109,6 @@ function JobPostingPage() {
               max: data.rate_of_pay_max || 0,
             },
           });
-
-          console.log(data);
         } catch (error) {
           console.error("Error fetching job posting:", error);
         }
@@ -190,7 +186,6 @@ function JobPostingPage() {
         const progress = prev + 50;
         if (progress >= 100) {
           clearInterval(interval);
-          console.log("Simulated upload complete for file:", selectedFile.name);
         }
         return Math.min(progress, 100);
       });
@@ -335,7 +330,7 @@ function JobPostingPage() {
           display: "flex",
           alignItems: "center",
           padding: "4px 8px", // Reduced padding
-          marginBottom: 2, // Reduced margin
+          marginBottom: 1, // Reduced margin
           backgroundColor: "#fff",
           borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         }}
@@ -375,7 +370,7 @@ function JobPostingPage() {
       </Box>
 
       {/* Main Content */}
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         {/* Left Section - Job Information */}
         <Grid item xs={12} md={5}>
           <StyledPaper elevation={1} sx={{ p: 2, maxHeight: "623px" }}>
@@ -464,6 +459,7 @@ function JobPostingPage() {
             </Typography>
 
             <Box
+              ref={descriptionRef} // Move ref here
               sx={{
                 maxHeight: isDescriptionExpanded ? "200px" : "80px", // Expands but stops at 300px
                 overflowY: isDescriptionExpanded ? "auto" : "hidden", // Allows scrolling when expanded
@@ -474,7 +470,6 @@ function JobPostingPage() {
               }}
             >
               <Typography
-                ref={descriptionRef}
                 variant="body2"
                 sx={{
                   color: "#444",
@@ -489,7 +484,7 @@ function JobPostingPage() {
             </Box>
 
             {/* READ MORE Button (Only Shows If Text Overflows) */}
-            {true && (
+            {isOverflowing && (
               <Button
                 variant="text"
                 size="small"
@@ -500,7 +495,16 @@ function JobPostingPage() {
                   textTransform: "uppercase",
                   fontSize: "0.75rem",
                 }}
-                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                onClick={() => {
+                  setIsDescriptionExpanded(!isDescriptionExpanded);
+
+                  if (isDescriptionExpanded && descriptionRef.current) {
+                    // Reset scroll position when collapsing
+                    setTimeout(() => {
+                      descriptionRef.current.scrollTop = 0;
+                    }, 100);
+                  }
+                }}
               >
                 {isDescriptionExpanded ? "Read Less" : "Read More"}
               </Button>
@@ -591,7 +595,7 @@ function JobPostingPage() {
               </Grid>
 
               {/* Email Address Field */}
-              <Box sx={{ mt: 1, mb: 1 }}>
+              <Box sx={{ mb: 1 }}>
                 <TextField
                   fullWidth
                   required
@@ -612,7 +616,7 @@ function JobPostingPage() {
                 </Typography>
               </Box>
 
-              <Grid container spacing={2} alignItems="center" sx={{ mt: 1 }}>
+              <Grid container spacing={2} alignItems="center">
                 {/* Status in Canada Dropdown */}
                 <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
                   <FormControl fullWidth variant="outlined" size="small">
@@ -687,7 +691,7 @@ function JobPostingPage() {
               </Grid>
 
               {/* Upload Resume Section */}
-              <Box mt={2}>
+              <Box mt={1}>
                 <Typography
                   variant="subtitle1"
                   fontWeight={600}
