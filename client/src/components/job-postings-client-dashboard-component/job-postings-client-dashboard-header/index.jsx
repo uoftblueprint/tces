@@ -4,7 +4,6 @@ import SortMenu from "../../shared/job-posts-sort-menu-component";
 import LocationMenu from "../../shared/job-posts-location-menu-component";
 import { getAllLocations } from "../../../utils/job_posts_api";
 
-
 function JobPostingsClientDashboardHeader({
   onSortChange,
   sortConfig,
@@ -14,13 +13,12 @@ function JobPostingsClientDashboardHeader({
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-      const fetchLocations = async () => {
-        const response = await getAllLocations();
-        const uniqueLocations = await response.json();
-        console.log(uniqueLocations);
-        setLocations(uniqueLocations.data);
+    const fetchLocations = async () => {
+      const response = await getAllLocations();
+      const uniqueLocations = await response.json();
+      console.log(uniqueLocations);
+      setLocations(uniqueLocations.data);
     };
-   
 
     fetchLocations();
   }, []);

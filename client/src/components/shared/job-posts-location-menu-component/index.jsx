@@ -22,7 +22,7 @@ function LocationMenu({ locations, onSelectLocation }) {
   };
   const handleApply = () => {
     console.log("Applying location filter:", selectedValue);
-    console.log(locations)
+    console.log(locations);
 
     onSelectLocation(selectedValue);
     setAnchorEl(null);
@@ -107,7 +107,7 @@ LocationMenu.propTypes = {
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   onSelectLocation: PropTypes.func.isRequired,
 };
