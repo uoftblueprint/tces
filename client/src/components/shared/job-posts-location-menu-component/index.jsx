@@ -11,18 +11,20 @@ import PropTypes from "prop-types";
 
 function LocationMenu({ locations, onSelectLocation }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("ascending");
+  const [selectedValue, setSelectedValue] = useState("all");
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleSelect = (event) => {
-    setSelectedValue(event.target.value);
+  const handleSelect = (value) => {
+    setSelectedValue(value);
   };
   const handleApply = () => {
     console.log("Applying location filter:", selectedValue);
-    onSelectLocation(selectedValue); // ✅ Passes full location string
+    console.log(locations)
+
+    onSelectLocation(selectedValue);
     setAnchorEl(null);
   };
   const handleClose = () => {
@@ -70,20 +72,21 @@ function LocationMenu({ locations, onSelectLocation }) {
           "aria-labelledby": "sort-button",
         }}
       >
+        <MenuItem onClick={() => handleSelect(null)}>
+          <ListItemIcon>
+            <Radio checked={selectedValue === null} value={null} />
+          </ListItemIcon>
+          <ListItemText primary="All Locations" />
+        </MenuItem>
         {locations.map((location) => (
-          <MenuItem
-            key={location.value}
-            onClick={(event) => handleSelect(event, location.value)}
-          >
+          <MenuItem key={location} onClick={() => handleSelect(location)}>
             <ListItemIcon>
-              <Radio
-                checked={selectedValue === location.value}
-                value={location.value}
-              />
+              <Radio checked={selectedValue === location} value={location} />
             </ListItemIcon>
-            <ListItemText primary={location.label} />
+            <ListItemText primary={location} />
           </MenuItem>
         ))}
+
         <MenuItem style={{ justifyContent: "right" }}>
           <Button
             onClick={handleApply}
@@ -104,8 +107,9 @@ LocationMenu.propTypes = {
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-    }),
+    })
   ).isRequired,
+  onSelectLocation: PropTypes.func.isRequired,
 };
 
 export default LocationMenu;
