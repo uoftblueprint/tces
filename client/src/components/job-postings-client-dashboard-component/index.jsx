@@ -8,15 +8,15 @@ function JobPostingsClientDashboardComponent() {
   const [selectedLocation, setSelectedLocation] = useState(null);
 
   // Function to update sorting state
-  const handleSortChange = (sortConfig) => {
+  const handleSortChange = (newSortConfig) => {
     setSortConfig((prevSortConfig) => {
-      if (prevSortConfig?.key === sortConfig.key) {
+      if (prevSortConfig?.key === newSortConfig.key) {
         return {
-          key: sortConfig.key,
+          key: newSortConfig.key,
           direction: prevSortConfig.direction === "asc" ? "desc" : "asc",
         };
       }
-      return { key: sortConfig.key, direction: sortConfig.direction };
+      return { key: newSortConfig.key, direction: newSortConfig.direction };
     });
   };
 

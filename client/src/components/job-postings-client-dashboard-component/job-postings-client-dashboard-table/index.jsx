@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -43,16 +44,13 @@ function JobPostingsClientDashboardTableComponent({
         const activeJobPostings = await response.json();
         setJobPostings(activeJobPostings.publicJobPosts.data);
       } catch (error) {
+        // eslint-disable-next-line
         console.error("Error fetching active job postings:", error);
       }
     };
 
     fetchActiveJobPostings();
   }, []);
-
-  console.log("SortConfig:", sortConfig);
-  console.log("Selected Job Type:", selectedJobType);
-  console.log("Selected Location:", selectedLocation);
 
   // Apply filters first
   const filteredJobPostings = jobPostings.filter((job) => {
@@ -229,5 +227,19 @@ function JobPostingsClientDashboardTableComponent({
     </TableContainer>
   );
 }
+
+JobPostingsClientDashboardTableComponent.propTypes = {
+  sortConfig: PropTypes.shape({
+    key: PropTypes.string.isRequired,
+    direction: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  }).isRequired,
+  selectedJobType: PropTypes.string,
+  selectedLocation: PropTypes.string,
+};
+
+JobPostingsClientDashboardTableComponent.defaultProps = {
+  selectedJobType: null, // Default value when not provided
+  selectedLocation: null, // Default value when not provided
+};
 
 export default JobPostingsClientDashboardTableComponent;

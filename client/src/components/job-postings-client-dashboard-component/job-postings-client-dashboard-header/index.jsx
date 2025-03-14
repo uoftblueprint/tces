@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import JobTypeMenu from "../../shared/job-posts-job-type-menu-component";
 import SortMenu from "../../shared/job-posts-sort-menu-component";
@@ -16,7 +17,6 @@ function JobPostingsClientDashboardHeader({
     const fetchLocations = async () => {
       const response = await getAllLocations();
       const uniqueLocations = await response.json();
-      console.log(uniqueLocations);
       setLocations(uniqueLocations.data);
     };
 
@@ -60,5 +60,15 @@ function JobPostingsClientDashboardHeader({
     </>
   );
 }
+
+JobPostingsClientDashboardHeader.propTypes = {
+  onSortChange: PropTypes.func.isRequired,
+  sortConfig: PropTypes.shape({
+    key: PropTypes.string.isRequired,
+    direction: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  }).isRequired,
+  setSelectedJobType: PropTypes.func.isRequired,
+  setSelectedLocation: PropTypes.func.isRequired,
+};
 
 export default JobPostingsClientDashboardHeader;

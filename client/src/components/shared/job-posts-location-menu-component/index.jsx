@@ -21,9 +21,6 @@ function LocationMenu({ locations, onSelectLocation }) {
     setSelectedValue(value);
   };
   const handleApply = () => {
-    console.log("Applying location filter:", selectedValue);
-    console.log(locations);
-
     onSelectLocation(selectedValue);
     setAnchorEl(null);
   };
