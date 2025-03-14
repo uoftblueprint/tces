@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // MUI Components
@@ -23,94 +22,17 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-import { getAllActiveJobPosts } from "../../../utils/job_posts_api";
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
 function JobPostingsClientDashboardTableComponent({
-  sortConfig,
-  selectedJobType,
-  selectedLocation,
+  jobPostings,
+  currentPage,
+  setCurrentPage,
+  rowsPerPage,
+  setRowsPerPage,
+  totalPages,
 }) {
-  const [jobPostings, setJobPostings] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-
-  // Fetch job postings when the component mounts
-  useEffect(() => {
-    const fetchActiveJobPostings = async () => {
-      try {
-        const response = await getAllActiveJobPosts();
-        const activeJobPostings = await response.json();
-        setJobPostings(activeJobPostings.publicJobPosts.data);
-      } catch (error) {
-        // eslint-disable-next-line
-        console.error("Error fetching active job postings:", error);
-      }
-    };
-
-    fetchActiveJobPostings();
-  }, []);
-
-  // Apply filters first
-  const filteredJobPostings = jobPostings.filter((job) => {
-    const matchesJobType = selectedJobType
-      ? job.job_type.includes(selectedJobType)
-      : true;
-    const matchesLocation = selectedLocation
-      ? job.location === selectedLocation
-      : true; // ✅ Directly matches full location string
-
-    return matchesJobType && matchesLocation;
-  });
-
-  // Apply sorting after filtering
-  const sortedJobPostings = [...filteredJobPostings].sort((a, b) => {
-    if (!sortConfig || !a[sortConfig.key] || !b[sortConfig.key]) return 0;
-
-    const { key, direction } = sortConfig;
-    let valA = a[key];
-    let valB = b[key];
-
-    // Convert to Date object for proper sorting by date
-    if (key === "close_date") {
-      valA = new Date(a[key]);
-      valB = new Date(b[key]);
-    }
-
-    // Ensure case-insensitive sorting for job type and location
-    if (key === "job_type" || key === "location") {
-      valA = valA.toString().toLowerCase();
-      valB = valB.toString().toLowerCase();
-    }
-
-    if (valA < valB) return direction === "asc" ? -1 : 1;
-    if (valA > valB) return direction === "asc" ? 1 : -1;
-    return 0;
-  });
-
-  // Pagination calculations (applied after filtering & sorting)
-  const totalRows = sortedJobPostings.length;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
-  const startRow = (currentPage - 1) * rowsPerPage;
-  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
-
-  const handleRowsPerPageChange = (event) => {
-    setRowsPerPage(event.target.value);
-    setCurrentPage(1);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
 
   return (
     <TableContainer component={Paper}>
@@ -125,8 +47,8 @@ function JobPostingsClientDashboardTableComponent({
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedJobPostings.length > 0 ? (
-            sortedJobPostings.slice(startRow, endRow).map((jobPosting) => (
+          {jobPostings.length > 0 ? (
+            jobPostings.map((jobPosting) => (
               <TableRow key={jobPosting.id}>
                 <TableCell>
                   <span
@@ -169,7 +91,13 @@ function JobPostingsClientDashboardTableComponent({
                       alignItems: "center",
                     }}
                   >
-                    <JobTypeChipsComponent jobTypes={jobPosting.job_type} />
+                    <JobTypeChipsComponent
+                      jobTypes={
+                        Array.isArray(jobPosting.job_type)
+                          ? jobPosting.job_type
+                          : [jobPosting.job_type]
+                      }
+                    />
                   </Box>
                 </TableCell>
                 <TableCell>
@@ -201,9 +129,8 @@ function JobPostingsClientDashboardTableComponent({
         <Typography variant="body2">Rows per page</Typography>
         <Select
           value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
+          onChange={(e) => setRowsPerPage(e.target.value)}
           size="small"
-          sx={{ minWidth: "120px" }}
         >
           {[10, 20, 30, 50].map((option) => (
             <MenuItem key={option} value={option}>
@@ -211,14 +138,17 @@ function JobPostingsClientDashboardTableComponent({
             </MenuItem>
           ))}
         </Select>
-        <Typography variant="body2">{`${
-          startRow + 1
-        } - ${endRow} of ${totalRows}`}</Typography>
-        <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
+        <Typography variant="body2">{`Page ${currentPage} of ${totalPages}`}</Typography>
+        <IconButton
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
           <ChevronLeftIcon />
         </IconButton>
         <IconButton
-          onClick={handleNextPage}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
         >
           <ChevronRightIcon />
@@ -229,17 +159,24 @@ function JobPostingsClientDashboardTableComponent({
 }
 
 JobPostingsClientDashboardTableComponent.propTypes = {
-  sortConfig: PropTypes.shape({
-    key: PropTypes.string.isRequired,
-    direction: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  }).isRequired,
-  selectedJobType: PropTypes.string,
-  selectedLocation: PropTypes.string,
-};
-
-JobPostingsClientDashboardTableComponent.defaultProps = {
-  selectedJobType: null, // Default value when not provided
-  selectedLocation: null, // Default value when not provided
+  jobPostings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      employer: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      job_type: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+      ]).isRequired,
+      close_date: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
+  totalPages: PropTypes.number.isRequired,
 };
 
 export default JobPostingsClientDashboardTableComponent;
