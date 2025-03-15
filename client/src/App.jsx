@@ -22,6 +22,7 @@ import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
 import ViewJobPosting from "./pages/view-job-post/index";
+import JobApplicationPage from "./pages/job-application";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -47,6 +48,13 @@ import AddEmployerPage from "./pages/add-employer";
 import Error404 from "./pages/errors/404-error";
 import UserProfile from "./pages/user-profile";
 import JobApplicationView from "./pages/job-application-view";
+
+// API functions
+import {
+  getOneJobApplication,
+  updateJobApplicationStatus,
+} from "./utils/job_applications_api";
+import { getOneJobPost } from "./utils/job_posts_api";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -292,6 +300,21 @@ function App() {
               />
             }
           >
+            <Route
+              path="/job-applications/:jobApplicationID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobApplicationPage
+                    getApplicationById={getOneJobApplication}
+                    setApplicationStatus={updateJobApplicationStatus}
+                    getJobPostById={getOneJobPost}
+                  />
+                </AuthGuard>
+              }
+            />
             <Route
               path="/job-leads/:jobLeadID"
               element={

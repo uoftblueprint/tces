@@ -96,7 +96,6 @@ const getAllActiveJobPosts = async (queryParams) => {
 };
 
 const getOneJobPost = async (jobPostId) => {
-  // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_postings/${jobPostId}`,
     {
