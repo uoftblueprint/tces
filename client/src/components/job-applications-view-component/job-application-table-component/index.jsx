@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
-import ApplicationStatusChipComponent from "../application-status-chips";
+import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 import { formatDateStr } from "../../../utils/date";
 import { ContentTableCell, HeaderTableCell } from "../index.styles";
 

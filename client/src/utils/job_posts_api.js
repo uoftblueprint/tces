@@ -51,14 +51,16 @@ async function deleteJobPost(jobPostingId) {
     if (!response.ok) {
       // Handle errors
       const errorData = await response.json();
+      // eslint-disable-next-line
       console.error("Error deleting job posting:", errorData);
       throw new Error(errorData.error || "Failed to delete job posting");
     }
 
     // Handle success
-    console.log("Job posting deleted successfully");
+
     return await response.json(); // Return response if needed
   } catch (error) {
+    // eslint-disable-next-line
     console.error("Error:", error.message);
     throw error;
   }
@@ -94,7 +96,6 @@ const getAllActiveJobPosts = async (queryParams) => {
 };
 
 const getOneJobPost = async (jobPostId) => {
-  // eslint-disable-next-line no-useless-catch
   const response = await fetch(
     `${REACT_APP_API_BASE_URL}/job_postings/${jobPostId}`,
     {
