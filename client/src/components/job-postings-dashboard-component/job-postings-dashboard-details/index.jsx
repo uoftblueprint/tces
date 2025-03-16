@@ -18,7 +18,10 @@ import EditJobPostingFormComponent from "./editJobPostForm";
 
 function JobDetails({ setJobPostData,setSnackBarMessage}) {
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
+
+  const editMode = location.state?.editMode || false;
+  const [isEditMode, setIsEditMode] = useState(editMode);
   
   const initialJobData = location.state?.jobPostData || {
     title: "",
@@ -44,7 +47,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
   return (
     <JobLeadContainer maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-        <IconButton onClick={() => navigate("/job-postings")}>
+        <IconButton onClick={() => navigate("/all-job-postings")}>
           <ArrowBack/>
         </IconButton>
         <Box sx={{ ml: 5 }}>
@@ -63,8 +66,8 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
       <Grid container spacing={4}>
         {/* Job Details Section */}
         <Grid item xs={12} md={7}>
-          
-          <EditJobPostingFormComponent jobPost={jobPostData} setSnackBarMessage={setSnackBarMessage}
+          <EditJobPostingFormComponent jobPost={jobPostData} setJobPost={setLocalJobPostData} setSnackBarMessage={setSnackBarMessage} 
+          isEditMode={isEditMode} setIsEditMode={setIsEditMode}
           />
         </Grid>
 
@@ -117,12 +120,12 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
 
 JobDetails.propTypes = {
   setJobPostData: PropTypes.func,
-  setSnackBarMessage: PropTypes.func,
+  setSnackBarMessage: PropTypes.func
 };
 
 JobDetails.defaultProps = {
   setJobPostData: () => {},
-  setSnackBarMessage: () => {},
+  setSnackBarMessage: () => {}
 };
 
 export default JobDetails;

@@ -65,7 +65,6 @@ export default function JobPostingsDashboardTableComponent() {
             closeDate: jobPost.close_date,
             state: jobPost.state,
           }));
-          console.log("get all data",formattedData)
           setRows(formattedData);
         } else {
           const errorData = await response.json();
@@ -107,11 +106,9 @@ export default function JobPostingsDashboardTableComponent() {
       }
   
       const data = await response.json();
-      console.log("data",data.jobPost)
       if (data.status === "success" && data.jobPost) {
-        console.log("Fetched Job Post:", data.jobPost);
         // Pass the jobPostData via state to the EditJobPost component
-        navigate(`/job-postings/edit/${id}`, { state: { jobPostData: data.jobPost } });
+        navigate(`/job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -163,7 +160,6 @@ export default function JobPostingsDashboardTableComponent() {
       const data = await response.json();
       
       if (data.status === "success" && data.jobPost) {
-        console.log("Fetched Job Post 2:", data.jobPost);
         navigate(`/job-postings/${jobLeadId}`, { state: { jobPostData: data.jobPost } });
       } else {
         console.error("Error fetching job post:", data.message);

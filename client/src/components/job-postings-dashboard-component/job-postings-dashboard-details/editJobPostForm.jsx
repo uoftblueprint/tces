@@ -34,13 +34,12 @@ import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { JOB_TYPES_FOR_JOB_POSTS } from "../../../utils/constants";
 import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
-function EditJobPostingFormComponent({ jobPost, setSnackBarMessage }) {
+function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, isEditMode, setIsEditMode }) {
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
     useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorObj, setErrorObj] = React.useState(null);
-  const [isEditMode, setIsEditMode] = React.useState(false);  
   const [shouldSubmit, setShouldSubmit] = React.useState(false);
   const [title, setJobTitle] = React.useState(jobPost.title || "");
   const [employer, setEmployer] = React.useState(jobPost.employer || "");
@@ -164,11 +163,11 @@ function EditJobPostingFormComponent({ jobPost, setSnackBarMessage }) {
 
     try {
       const response = await modifyJobPost(modifiedJobPost);
-      console.log("take lead",modifiedJobPost)
-      console.log("response",response)
       if (response.ok) {
         setSnackBarMessage("Job posting updated successfully.");
         setIsEditMode(false);
+        setJobPost(modifiedJobPost);
+        console.log(jobPost);
       } else {
         setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job posting.");
@@ -540,7 +539,10 @@ function EditJobPostingFormComponent({ jobPost, setSnackBarMessage }) {
 
 EditJobPostingFormComponent.propTypes = {
   jobPost: JobLeadType.isRequired,
+  setJobPost: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
+  isEditMode: PropTypes.func.isRequired,
+  setIsEditMode: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
 

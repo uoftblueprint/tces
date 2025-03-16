@@ -77,7 +77,7 @@ function DashboardNavigationComponent() {
             variant="contained"
             startIcon={<InboxIcon />}
             iconbackgroundcolour="#F4B73F"
-            onClick={() => navigate("/job-apps/")}
+            onClick={() => navigate("/job-applications/")}
             sx={{
               whiteSpace: "nowrap",
             }}
