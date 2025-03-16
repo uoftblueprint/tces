@@ -9,7 +9,7 @@ const updateJobApplicationStatusRequestHandler = require("../controllers/job_app
 const getOneJobApplicationByIdRequestHandler = require("../controllers/job_applications/getOneJobApplicationById");
 const getJobApplicationResumeRequestHandler = require("../controllers/job_applications/getJobApplicationResumeUrl");
 
-const upload = multer({ dest: path.join(__dirname, "..", "uploads") });
+const upload = require("../middlewares/multer/upload");
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.get("/:name", isLoggedIn, async (req, res) => {
   return getOneJobApplicationRequestHandler(req, res);
 });
 
-router.post("/", isLoggedIn, upload.single("resume"), async (req, res) => {
+router.post("/", upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
 
