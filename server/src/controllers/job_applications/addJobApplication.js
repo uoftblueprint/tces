@@ -172,11 +172,14 @@ const addJobApplicationRequestHandler = async (req, res) => {
       },
     });
 
-    // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on Supabase
+    // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on AWS 
 
+    const sanitizedJobTitle = associatedJobPost.title.replace(/[^a-zA-Z0-9_-]/g, "_");
+    const fileName = `${jobApplication.id}_${name}_${sanitizedJobTitle}`;
+    
     uploadFileToS3(
       resume,
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+      fileName,
     );
 
     // ! Delete temporarily saved resume file that was uploaded.
