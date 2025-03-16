@@ -1,16 +1,13 @@
 const { REACT_APP_API_BASE_URL } = process.env;
 
-const fetchAllJobApplications = async ({
-  page = 1,
-  pageSize = 10,
-  jobPostingId = null,
-} = {}) => {
+const fetchAllJobApplications = async (page, pageSize, jobPostingId) => {
   const url = new URL(`${REACT_APP_API_BASE_URL}/job_applications`);
 
   // Set query parameters for pagination and filtering by job posting ID
-  if (page) url.searchParams.append("page", page);
-  if (pageSize) url.searchParams.append("pageSize", pageSize);
-  if (jobPostingId) url.searchParams.append("job_posting_id", jobPostingId);
+  if (page) url.searchParams.append("page", parseInt(page, 10));
+  if (pageSize) url.searchParams.append("pageSize", parseInt(pageSize, 10));
+  if (jobPostingId)
+    url.searchParams.append("job_posting_id", parseInt(jobPostingId, 10));
 
   try {
     const response = await fetch(url, {
@@ -63,15 +60,17 @@ const fetchJobApplicationsByApplicantName = async ({
   }
 };
 
-const uploadJobApplication = async (file) => {
-  const formData = new FormData();
-  formData.append("resume", file); // Assuming "resume" is the field name for the file
-
+const uploadJobApplication = async (formData, token) => {
   // eslint-disable-next-line no-useless-catch
+
+  const formDataObject = Object.fromEntries(formData.entries());
+  console.log(formDataObject);
+
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_applications`, {
     method: "POST",
     credentials: "include",
     body: formData,
+    token,
   });
   return response;
 };
@@ -93,7 +92,7 @@ const getResumeUrl = async (jobApplicationId) => {
 
   const result = await response.json();
   return result;
-}
+};
 
 const updateJobApplicationStatus = async (
   jobApplicationId,
@@ -107,8 +106,24 @@ const updateJobApplicationStatus = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
+        job_application_id: jobApplicationId,
         new_application_status: newApplicationStatus,
+      }),
+    },
+  );
+
+  return response;
+};
+
+const getOneJobApplication = async (jobApplicationId) => {
+  const response = await fetch(
+    `${REACT_APP_API_BASE_URL}/job_applications/id/${jobApplicationId}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
     },
   );
@@ -122,4 +137,5 @@ export {
   uploadJobApplication,
   getResumeUrl,
   updateJobApplicationStatus,
+  getOneJobApplication,
 };

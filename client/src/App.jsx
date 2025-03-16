@@ -21,6 +21,8 @@ import EmployerPage from "./pages/employer";
 import UploadPage from "./pages/import";
 import CommonOverlayComponent from "./components/shared/common-overlay-component";
 import JobPostingsClientDashboard from "./pages/job-postings-client-dashboard";
+import ViewJobPosting from "./pages/view-job-post/index";
+import JobApplicationPage from "./pages/job-application";
 
 // mock data
 import mockJobUpdates from "./mock-data/mockJobUpdates";
@@ -46,6 +48,14 @@ import EmployerDashboard from "./pages/employer-dashboard";
 import AddEmployerPage from "./pages/add-employer";
 import Error404 from "./pages/errors/404-error";
 import UserProfile from "./pages/user-profile";
+import JobApplicationView from "./pages/job-application-view";
+
+// API functions
+import {
+  getOneJobApplication,
+  updateJobApplicationStatus,
+} from "./utils/job_applications_api";
+import { getOneJobPost } from "./utils/job_posts_api";
 
 function App() {
   // redirect urls in-case user has a cached login or not
@@ -128,12 +138,16 @@ function App() {
           }
         >
           <Route path="/" element={<Navigate to="/job-postings" />} />
-          <Route element={<PublicNavBar />}>
+          <Route element={<PublicNavbar />}>
             <Route
               path="/job-postings"
               element={<JobPostingsClientDashboard />}
             />
           </Route>
+          <Route
+            path="/job-postings/:jobPostingId"
+            element={<ViewJobPosting />}
+          />
 
           <Route
             path="/signin"
@@ -264,6 +278,18 @@ function App() {
                 </AuthGuard>
               }
             />
+
+            <Route
+              path="/job-applications"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobApplicationView />
+                </AuthGuard>
+              }
+            />
           </Route>
 
           {/* Render navbar for child routes that need confirm dialog e.g create job lead */}
@@ -275,6 +301,21 @@ function App() {
               />
             }
           >
+            <Route
+              path="/job-applications/:jobApplicationID"
+              element={
+                <AuthGuard
+                  isAuthenticated={isAuthenticated}
+                  loginUser={loginUser}
+                >
+                  <JobApplicationPage
+                    getApplicationById={getOneJobApplication}
+                    setApplicationStatus={updateJobApplicationStatus}
+                    getJobPostById={getOneJobPost}
+                  />
+                </AuthGuard>
+              }
+            />
             <Route
               path="/job-leads/:jobLeadID"
               element={

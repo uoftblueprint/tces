@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Menu,
@@ -8,20 +9,24 @@ import {
   ListItemText,
 } from "@mui/material";
 
-function JobTypeMenu() {
+function JobTypeMenu({ onSelectJobType }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("ascending");
+  const [selectedValue, setSelectedValue] = useState(""); // Default to all job types
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleSelect = (event) => {
-    setSelectedValue(event.target.value);
+
+  const handleSelect = (value) => {
+    setSelectedValue(value);
   };
+
   const handleApply = () => {
+    onSelectJobType(selectedValue); // Send selected job type to parent
     setAnchorEl(null);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -29,8 +34,8 @@ function JobTypeMenu() {
   return (
     <div>
       <Button
-        id="sort-button"
-        aria-controls={open ? "sort-menu" : undefined}
+        id="job-type-button"
+        aria-controls={open ? "job-type-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
@@ -59,65 +64,37 @@ function JobTypeMenu() {
         Job Type
       </Button>
       <Menu
-        id="sort-menu"
+        id="job-type-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          "aria-labelledby": "sort-button",
+          "aria-labelledby": "job-type-button",
         }}
       >
-        <MenuItem onClick={(event) => handleSelect(event, "all")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "all"} value="all" />
-          </ListItemIcon>
-          <ListItemText primary="All job types" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "full-time")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "full-time"} value="full-time" />
-          </ListItemIcon>
-          <ListItemText primary="Full-time" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "part-time")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "part-time"} value="part-time" />
-          </ListItemIcon>
-          <ListItemText primary="Part-time" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "permanent")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "permanent"} value="permanent" />
-          </ListItemIcon>
-          <ListItemText primary="Permanent" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "contract")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "contract"} value="contract" />
-          </ListItemIcon>
-          <ListItemText primary="Contract" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "seasonal")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "seasonal"} value="seasonal" />
-          </ListItemIcon>
-          <ListItemText primary="Seasonal" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "freelance")}>
-          <ListItemIcon>
-            <Radio checked={selectedValue === "freelance"} value="freelance" />
-          </ListItemIcon>
-          <ListItemText primary="Freelance" />
-        </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "internship")}>
-          <ListItemIcon>
-            <Radio
-              checked={selectedValue === "internship"}
-              value="internship"
-            />
-          </ListItemIcon>
-          <ListItemText primary="Internship" />
-        </MenuItem>
+        {[
+          { value: "", label: "All Job Types" },
+          { value: "Full-time", label: "Full-time" },
+          { value: "Part-time", label: "Part-time" },
+          { value: "Permanent", label: "Permanent" },
+          { value: "Contract", label: "Contract" },
+          { value: "Seasonal", label: "Seasonal" },
+          { value: "Freelance", label: "Freelance" },
+          { value: "Internship", label: "Internship" },
+        ].map((jobType) => (
+          <MenuItem
+            key={jobType.value}
+            onClick={() => handleSelect(jobType.value)}
+          >
+            <ListItemIcon>
+              <Radio
+                checked={selectedValue === jobType.value}
+                value={jobType.value}
+              />
+            </ListItemIcon>
+            <ListItemText primary={jobType.label} />
+          </MenuItem>
+        ))}
         <MenuItem style={{ justifyContent: "right" }}>
           <Button
             onClick={handleApply}
@@ -132,5 +109,9 @@ function JobTypeMenu() {
     </div>
   );
 }
+
+JobTypeMenu.propTypes = {
+  onSelectJobType: PropTypes.func.isRequired,
+};
 
 export default JobTypeMenu;
