@@ -11,19 +11,23 @@ import {
 
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("descending");
+  const [selectedDirection, setSelectedDirection] = useState("desc"); // Default to descending
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleSelect = (event) => {
-    setSelectedValue(event.target.value);
+
+  const handleSelect = (direction) => {
+    setSelectedDirection(direction);
   };
+
   const handleApply = () => {
-    applySort(selectedValue);
+    // Now sends correct sortConfig with key: "close_date"
+    applySort({ key: "close_date", direction: selectedDirection });
     setAnchorEl(null);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -71,18 +75,15 @@ function SortMenu({ applySort }) {
           "aria-labelledby": "sort-button",
         }}
       >
-        <MenuItem onClick={(event) => handleSelect(event, "ascending")}>
+        <MenuItem onClick={() => handleSelect("asc")}>
           <ListItemIcon>
-            <Radio checked={selectedValue === "ascending"} value="ascending" />
+            <Radio checked={selectedDirection === "asc"} value="asc" />
           </ListItemIcon>
           <ListItemText primary="Close date: Ascending" />
         </MenuItem>
-        <MenuItem onClick={(event) => handleSelect(event, "descending")}>
+        <MenuItem onClick={() => handleSelect("desc")}>
           <ListItemIcon>
-            <Radio
-              checked={selectedValue === "descending"}
-              value="descending"
-            />
+            <Radio checked={selectedDirection === "desc"} value="desc" />
           </ListItemIcon>
           <ListItemText primary="Close date: Descending" />
         </MenuItem>
