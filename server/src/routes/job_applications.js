@@ -8,6 +8,7 @@ const addJobApplicationRequestHandler = require("../controllers/job_applications
 const updateJobApplicationStatusRequestHandler = require("../controllers/job_applications/updateJobApplicationStatus");
 const getOneJobApplicationByIdRequestHandler = require("../controllers/job_applications/getOneJobApplicationById");
 const getJobApplicationResumeRequestHandler = require("../controllers/job_applications/getJobApplicationResumeUrl");
+const getFilterDropdownOptionsHandler = require("../controllers/job_applications/getFilterDropdownOptionsHandler");
 
 const upload = multer({ dest: path.join(__dirname, "..", "uploads") });
 
@@ -50,5 +51,26 @@ router.put(
   isLoggedIn,
   updateJobApplicationStatusRequestHandler,
 );
+
+module.exports = router;
+
+/**
+ * Get Filter Options for Dropdowns
+ *
+ * Retrieves unique applicant names, emails, job titles, and job posting IDs.
+ * Supports filtering by applicant name, email, job title, and job posting ID.
+ *
+ * @type GET
+ *
+ * @route /filter-options
+ *
+ * Query Parameters:
+ * @param {string} [applicant_name]
+ * @param {string} [email]
+ * @param {string} [job_title]
+ * @param {string} [job_posting_id]
+ */
+
+router.get("/filter-options", isLoggedIn, getFilterDropdownOptionsHandler);
 
 module.exports = router;
