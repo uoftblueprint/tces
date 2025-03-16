@@ -167,7 +167,6 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
         setSnackBarMessage("Job posting updated successfully.");
         setIsEditMode(false);
         setJobPost(modifiedJobPost);
-        console.log(jobPost);
       } else {
         setFormSubmissionErrorDialog(true);
         setSnackBarMessage("Failed to update job posting.");
