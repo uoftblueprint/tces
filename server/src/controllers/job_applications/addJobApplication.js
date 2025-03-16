@@ -175,7 +175,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on AWS 
 
     const sanitizedJobTitle = associatedJobPost.title.replace(/[^a-zA-Z0-9_-]/g, "_");
-    const fileName = `${jobApplication.id}_${name}_${sanitizedJobTitle}`;
+    const fileName = `${jobApplication.id}_${parseInt(jobPostingId, 10)}_${name}_${sanitizedJobTitle}`;
     
     uploadFileToS3(
       resume,
@@ -195,11 +195,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
       });
     });
 
-    // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
-
-    const nameWithNoSpaces = name.replace(/\s+/g, "_");
-
-    jobApplication.resume = `${jobApplication.id}_${nameWithNoSpaces}_${associatedJobPost.title}`;
+    jobApplication.resume = fileName;
 
     // ! Save the job application with the updated resume field
 
