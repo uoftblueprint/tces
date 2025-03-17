@@ -130,7 +130,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Confirm the phone number is valid.
 
     if (!/^\d{10}$/.test(phone)) {
-      return res.status(400).json({ error: "Invalid phone number." });
+      return res.status(403).json({ error: "Invalid phone number." });
     }
 
     // ! Confirm that the email is valid.
@@ -184,19 +184,6 @@ const addJobApplicationRequestHandler = async (req, res) => {
     )}_${name}_${sanitizedJobTitle}`;
 
     uploadFileToS3(resume, fileName);
-
-    // ! Delete temporarily saved resume file that was uploaded.
-
-    const uploadsDir = path.join(__dirname, "..", "..", "uploads");
-
-    fs.readdir(uploadsDir, (err, files) => {
-      files.forEach((file) => {
-        const filePath = path.join(uploadsDir, file);
-        if (file !== ".gitkeep") {
-          fs.unlink(filePath, () => {});
-        }
-      });
-    });
 
     jobApplication.resume = fileName;
 
