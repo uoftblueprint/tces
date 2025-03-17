@@ -1,6 +1,4 @@
 const express = require("express");
-const multer = require("multer");
-const path = require("path");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
 const getOneJobApplicationRequestHandler = require("../controllers/job_applications/getOneJobApplication");
