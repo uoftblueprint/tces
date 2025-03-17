@@ -40,9 +40,8 @@ function JobApplicationsTable({
       .replace(/^([A-Za-z]\d[A-Za-z])(\d[A-Za-z]\d)$/, "$1 $2");
 
   const handleDownload = async (resume) => {
-
     const presignedUrlObject = await getResumeUrl(resume);
-    const presignedUrl = presignedUrlObject.resume_url
+    const presignedUrl = presignedUrlObject.resume_url;
     if (!presignedUrl) {
       console.error("Failed to retrieve the presigned URL.");
       return;

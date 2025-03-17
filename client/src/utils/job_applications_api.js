@@ -80,6 +80,7 @@ const getResumeUrl = async (jobApplicationId) => {
     `${REACT_APP_API_BASE_URL}/job_applications/resume/${jobApplicationId}`,
     {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
