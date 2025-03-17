@@ -130,7 +130,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
     // ! Confirm the phone number is valid.
 
     if (!/^\d{10}$/.test(phone)) {
-      return res.status(403).json({ error: "Invalid phone number." });
+      return res.status(400).json({ error: "Invalid phone number." });
     }
 
     // ! Confirm that the email is valid.
