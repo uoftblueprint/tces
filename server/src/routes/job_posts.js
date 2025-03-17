@@ -181,6 +181,6 @@ router.put("/:job_posting_id", isLoggedIn, updateJobPostRequestHandler);
  * Middleware:
  * - isLoggedIn: Ensures that the user is authenticated before allowing the deletion operation.
  */
-router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
+router.delete("/:job_posting_id", deleteJobPostHandler);
 
 module.exports = router;
