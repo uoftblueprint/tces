@@ -25,8 +25,6 @@ const getJobApplicationResumeRequestHandler = async (req, res) => {
 
     const presignedResumeUrl = await getResumePresignedUrl(resumeKey);
 
-    console.log(presignedResumeUrl)
-
     const response = {
       status: "success",
       message: `Successfully created presigned url for job application id: ${jobApplicationId}`,
