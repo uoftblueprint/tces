@@ -23,13 +23,11 @@ const getOneJobApplicationByIdRequestHandler = async (req, res) => {
     });
 
     if (!application) {
-      return res
-        .status(404)
-        .json({
-          status: "fail",
-          message: "Job application not found",
-          data: null,
-        });
+      return res.status(404).json({
+        status: "fail",
+        message: "Job application not found",
+        data: null,
+      });
     }
 
     return res.status(200).json({
