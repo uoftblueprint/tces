@@ -9,6 +9,7 @@ import {
   TableRow,
   Paper,
   TableContainer,
+  IconButton
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
@@ -36,6 +37,25 @@ function JobApplicationsTable({
     postalCode
       .toUpperCase()
       .replace(/^([A-Za-z]\d[A-Za-z])(\d[A-Za-z]\d)$/, "$1 $2");
+
+  const handleDownload = async (resume) => {
+
+    // This should be a fetch request.
+
+    // const presignedUrl = await getResumePresignedUrl(resume);
+
+    // if (!presignedUrl) {
+    //   console.error("Failed to retrieve the presigned URL.");
+    //   return;
+    // }
+
+    // window.open(presignedUrl, "_blank"); // Opens in a new tab
+  };
+      
+  // Route to get the presigned resume URL for a job application
+  // router.get("resume/:job_application_id", isLoggedIn, async (req, res) => {
+  //   return getJobApplicationResumeRequestHandler(req, res);
+  // });
 
   return (
     <TableContainer
@@ -110,7 +130,9 @@ function JobApplicationsTable({
 
               {/* Add corresponding resume link  to this columns values */}
               <ContentTableCell>
-                <DownloadIcon color="primary" />
+                <IconButton color="primary" onClick={() => handleDownload(row.resume)}>
+                  <DownloadIcon />
+                </IconButton>
               </ContentTableCell>
             </TableRow>
           ))}
