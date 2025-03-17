@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 import { formatDateStr } from "../../../utils/date";
 import { ContentTableCell, HeaderTableCell } from "../index.styles";
+import { getResumeUrl } from "../../../utils/job_applications_api";
 
 // Future TODOs ------
 // 1. When single job specific pages and single application pages are implemented,
@@ -39,19 +40,15 @@ function JobApplicationsTable({
       .replace(/^([A-Za-z]\d[A-Za-z])(\d[A-Za-z]\d)$/, "$1 $2");
 
   const handleDownload = async (resume) => {
-    // This should be a fetch request.
-    // const presignedUrl = await getResumePresignedUrl(resume);
-    // if (!presignedUrl) {
-    //   console.error("Failed to retrieve the presigned URL.");
-    //   return;
-    // }
-    // window.open(presignedUrl, "_blank"); // Opens in a new tab
-  };
 
-  // Route to get the presigned resume URL for a job application
-  // router.get("resume/:job_application_id", isLoggedIn, async (req, res) => {
-  //   return getJobApplicationResumeRequestHandler(req, res);
-  // });
+    const presignedUrlObject = await getResumeUrl(resume);
+    const presignedUrl = presignedUrlObject.resume_url
+    if (!presignedUrl) {
+      console.error("Failed to retrieve the presigned URL.");
+      return;
+    }
+    window.open(presignedUrl, "_blank");
+  };
 
   return (
     <TableContainer
