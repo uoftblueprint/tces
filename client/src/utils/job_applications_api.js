@@ -77,9 +77,10 @@ const uploadJobApplication = async (formData, token) => {
 
 const getResumeUrl = async (jobApplicationId) => {
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    `${REACT_APP_API_BASE_URL}/job_applications/resume/${jobApplicationId}`,
     {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

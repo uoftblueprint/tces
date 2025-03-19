@@ -6,7 +6,6 @@ const getJobApplicationResumeRequestHandler = async (req, res) => {
   let jobApplicationId;
   try {
     jobApplicationId = req.params.job_application_id;
-    console.log(jobApplicationId)
 
     // Get the resume key for the give job application id
     const JobApplication = await JobApplications.findOne({
@@ -23,7 +22,7 @@ const getJobApplicationResumeRequestHandler = async (req, res) => {
 
     const resumeKey = JobApplication.resume; // Access the 'resume' attribute correctly.
 
-    const presignedResumeUrl = getResumePresignedUrl(resumeKey);
+    const presignedResumeUrl = await getResumePresignedUrl(resumeKey);
 
     const response = {
       status: "success",
