@@ -37,7 +37,7 @@ router.get("/id/:application_id", async (req, res) => {
 });
 
 // Route to get the presigned resume URL for a job application
-router.get("/resume/:job_application_id", isLoggedIn , async (req, res) => {
+router.get("/resume/:job_application_id", isLoggedIn, async (req, res) => {
   return getJobApplicationResumeRequestHandler(req, res);
 });
 
