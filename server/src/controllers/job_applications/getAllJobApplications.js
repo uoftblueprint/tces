@@ -73,10 +73,6 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
       raw: true,
     });
 
-    const uniqueApplicationsObject = uniqueApplicants.map(
-      (applicant) => applicant.name,
-    );
-
     const totalJobApplicationsNumber = await JobApplications.count({
       where: query,
     });
@@ -87,7 +83,6 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
       message: "All Job Applications found successfully",
       totalJobApplicationsNumber,
       jobApplications,
-      uniqueApplicants: uniqueApplicationsObject,
     });
   } catch (error) {
     logger.error(error);
