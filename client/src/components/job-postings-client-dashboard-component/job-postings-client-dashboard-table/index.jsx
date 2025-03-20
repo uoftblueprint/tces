@@ -1,6 +1,7 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-// MUI
+// MUI Components
 import {
   Table,
   TableBody,
@@ -21,75 +22,17 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-// Imported Components
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 
-const mockdata = [
-  {
-    id: 1,
-    title: "Sales Account Manager",
-    employer: "Aquatech",
-    location: "Greater Toronto Area",
-    jobTypes: ["Full-Time"],
-    closeDate: "11/20/2024",
-    url: "https://example.com/job/sales-account-manager",
-  },
-  {
-    id: 2,
-    title: "Senior Portfolio Administrator",
-    employer: "Rally Assets",
-    location: "Spadina & Adelaide",
-    jobTypes: ["Full-Time", "Contract"],
-    closeDate: "11/15/2024",
-    url: "https://example.com/job/senior-portfolio-administrator",
-  },
-  {
-    id: 3,
-    title: "Special Events Intern",
-    employer: "National Ballet of Canada",
-    location: "Spadina & Lakeshore",
-    jobTypes: ["Full-Time", "Seasonal", "Internship"],
-    closeDate: "11/20/2024",
-    url: "https://example.com/job/special-events-intern",
-  },
-  ...Array(100)
-    .fill(null)
-    .map((_, index) => ({
-      id: 4 + index, // Start from 4 since there are already 3 entries
-      title: "Example Job Title",
-      employer: "Example Employer",
-      location: "Example Location",
-      jobTypes: ["Full-Time"],
-      closeDate: "12/01/2024",
-      url: "https://example.com/job/example-job-title",
-    })),
-];
-
-function JobPostingsClientDashboardTableComponent() {
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalRows = mockdata.length;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
-  const startRow = (currentPage - 1) * rowsPerPage + 1;
-  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
-
-  const handleRowsPerPageChange = (event) => {
-    setRowsPerPage(event.target.value);
-    setCurrentPage(1);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+function JobPostingsClientDashboardTableComponent({
+  jobPostings,
+  currentPage,
+  setCurrentPage,
+  rowsPerPage,
+  setRowsPerPage,
+  totalPages,
+}) {
+  const navigate = useNavigate();
 
   return (
     <TableContainer component={Paper}>
@@ -104,48 +47,71 @@ function JobPostingsClientDashboardTableComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {mockdata.slice(startRow - 1, endRow).map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>
-                <a
-                  href={row.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    textDecoration: "none",
-                    color: "#1976d2",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {row.title}
-                </a>
+          {jobPostings.length > 0 ? (
+            jobPostings.map((jobPosting) => (
+              <TableRow key={jobPosting.id}>
+                <TableCell>
+                  <span
+                    onClick={() => navigate(`/job-postings/${jobPosting.id}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter")
+                        navigate(`/job-postings/${jobPosting.id}`);
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    style={{
+                      textDecoration: "none",
+                      color: "#1976d2",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {jobPosting.title}
+                  </span>
+                </TableCell>
+                <TableCell>{jobPosting.employer}</TableCell>
+                <TableCell>
+                  <LocationOnIcon
+                    sx={{
+                      color: "gray",
+                      verticalAlign: "middle",
+                      marginRight: 1,
+                    }}
+                  />
+                  <span style={{ verticalAlign: "middle" }}>
+                    {jobPosting.location}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "2px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <JobTypeChipsComponent
+                      jobTypes={
+                        Array.isArray(jobPosting.job_type)
+                          ? jobPosting.job_type
+                          : [jobPosting.job_type]
+                      }
+                    />
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  {new Date(jobPosting.close_date).toLocaleDateString()}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} align="center">
+                No job postings found.
               </TableCell>
-              <TableCell>{row.employer}</TableCell>
-              <TableCell>
-               <LocationOnIcon
-                  sx={{
-                    color: "gray",
-                    verticalAlign: "middle",
-                    marginRight: 1,
-                  }}
-                />
-                <span style={{ verticalAlign: "middle" }}>{row.location}</span>
-              </TableCell>
-              <TableCell>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "2px",
-                    alignItems: "center",
-                  }}
-                >
-                  <JobTypeChipsComponent jobTypes={row.jobTypes} />
-                </Box>
-              </TableCell>
-              <TableCell>{row.closeDate}</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
 
@@ -163,9 +129,8 @@ function JobPostingsClientDashboardTableComponent() {
         <Typography variant="body2">Rows per page</Typography>
         <Select
           value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
+          onChange={(e) => setRowsPerPage(e.target.value)}
           size="small"
-          sx={{ minWidth: "120px" }}
         >
           {[10, 20, 30, 50].map((option) => (
             <MenuItem key={option} value={option}>
@@ -173,12 +138,17 @@ function JobPostingsClientDashboardTableComponent() {
             </MenuItem>
           ))}
         </Select>
-        <Typography variant="body2">{`${startRow} - ${endRow} of ${totalRows}`}</Typography>
-        <IconButton onClick={handlePrevPage} disabled={currentPage === 1}>
+        <Typography variant="body2">{`Page ${currentPage} of ${totalPages}`}</Typography>
+        <IconButton
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
           <ChevronLeftIcon />
         </IconButton>
         <IconButton
-          onClick={handleNextPage}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
         >
           <ChevronRightIcon />
@@ -187,5 +157,26 @@ function JobPostingsClientDashboardTableComponent() {
     </TableContainer>
   );
 }
+
+JobPostingsClientDashboardTableComponent.propTypes = {
+  jobPostings: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      employer: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      job_type: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+      ]).isRequired,
+      close_date: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
+  totalPages: PropTypes.number.isRequired,
+};
 
 export default JobPostingsClientDashboardTableComponent;
