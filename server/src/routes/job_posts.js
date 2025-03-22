@@ -182,3 +182,5 @@ router.put("/:job_posting_id", isLoggedIn, updateJobPostRequestHandler);
  * - isLoggedIn: Ensures that the user is authenticated before allowing the deletion operation.
  */
 router.delete("/:job_posting_id", isLoggedIn, deleteJobPostHandler);
+
+module.exports = router;

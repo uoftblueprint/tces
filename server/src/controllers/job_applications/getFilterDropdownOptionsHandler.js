@@ -12,17 +12,14 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
   }
 
   try {
+    // The value selected in the dropdown, null if nothing is selected
     const { job_posting_id, name, email, jobTitle } = req.query;
-
     const baseQuery = {
       where: {}, // Build query attributes
       include: [
         {
           model: JobPosting,
           attributes: ["id", "title"],
-          where: {
-            state: "Active",
-          },
         },
       ],
       attributes: ["name", "email", "job_posting_id"],
@@ -34,15 +31,15 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
     }
 
     if (name) {
-      baseQuery.where.name = { [Op.iLike]: `%${name}%` };
+      baseQuery.where.name = { [Op.like]: `%${name}%` };
     }
 
     if (email) {
-      baseQuery.where.email = { [Op.iLike]: `%${email}%` };
+      baseQuery.where.email = { [Op.like]: `%${email}%` };
     }
 
     if (jobTitle) {
-      baseQuery.include[0].where.title = { [Op.iLike]: `%${jobTitle}%` };
+      baseQuery.include[0].where.title = { [Op.like]: `%${jobTitle}%` };
     }
 
     // Fetch data from the database

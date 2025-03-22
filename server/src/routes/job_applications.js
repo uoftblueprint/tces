@@ -3,7 +3,6 @@ const multer = require("multer");
 const path = require("path");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
-const getOneJobApplicationRequestHandler = require("../controllers/job_applications/getOneJobApplication");
 const addJobApplicationRequestHandler = require("../controllers/job_applications/addJobApplication");
 const updateJobApplicationStatusRequestHandler = require("../controllers/job_applications/updateJobApplicationStatus");
 const getOneJobApplicationByIdRequestHandler = require("../controllers/job_applications/getOneJobApplicationById");
@@ -17,12 +16,6 @@ const router = express.Router();
 // Route to get all job applications
 router.get("/", isLoggedIn, async (req, res) => {
   return getAllJobApplicationsRequestHandler(req, res);
-});
-
-// Route to get job applications by name
-// NOT CURRENTLY USED
-router.get("/:name", isLoggedIn, async (req, res) => {
-  return getOneJobApplicationRequestHandler(req, res);
 });
 
 router.post("/", isLoggedIn, upload.single("resume"), async (req, res) => {
@@ -52,13 +45,10 @@ router.put(
   updateJobApplicationStatusRequestHandler,
 );
 
-module.exports = router;
-
 /**
  * Get Filter Options for Dropdowns
  *
- * Retrieves unique applicant names, emails, job titles, and job posting IDs.
- * Supports filtering by applicant name, email, job title, and job posting ID.
+ * Retrieves unique applicant names, emails, job titles, and job posting IDs based on the selected dropdown value.
  *
  * @type GET
  *
