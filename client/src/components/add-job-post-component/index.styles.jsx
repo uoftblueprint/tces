@@ -19,7 +19,7 @@ const ButtonContainer = styled.div`
   padding-top: 10px;
 `;
 
-const JobLeadContainer = styled.div`
+const JobPostContainer = styled.div`
   display: flex-wrap;
   flex-wrap: wrap;
   flex-direction: column;
@@ -69,4 +69,4 @@ const ButtonL = styled.button`
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%233568E5FF' stroke-width='4' stroke-dasharray='20%2c 10' stroke-dashoffset='2' stroke-linecap='butt'/%3e%3c/svg%3e");
 `;
 
-export { Container, ButtonContainer, JobLeadContainer, H3, H1, Body, ButtonL };
+export { Container, ButtonContainer, JobPostContainer, H3, H1, Body, ButtonL };

@@ -8,35 +8,25 @@ import {
   TextField,
   OutlinedInput,
   InputAdornment,
-  FormHelperText,
   Autocomplete,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { useState } from "react";
-import { JobPostContainer, H3 } from "../index.styles";
+import { JobLeadContainer, H3 } from "./index.styles";
 import {
   JOB_TYPES_FOR_JOB_POSTS,
   COMPENSATION_RATES_FOR_JOB_POSTS,
-} from "../../../utils/constants";
+} from "../../utils/constants";
 
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
     setJobPostData({ ...jobPostData, [field]: input });
-  };
-  const [compensationBoundary, setCompensationBoundary] = useState(
-    jobPostData.rate_of_pay_max,
-  );
 
-  const handleCompensationChange = (value) => {
-    setCompensationBoundary(value);
   };
-
   return (
-    <JobPostContainer>
+    <JobLeadContainer>
       <H3 style={{ paddingLeft: "2%" }}>Job Information</H3>
-
       <Container
         disableGutters
         maxWidth={false}
@@ -67,9 +57,8 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           sx={{ m: 1, width: "96%" }}
           id="employer"
           label="Employer Name"
-          value={jobPostData.employer}
+          value={jobPostData.employer || ""}
           onChange={(e) => handleInputChange(e.target.value, "employer")}
-          helperText="*Required"
           required
           InputLabelProps={{ required: false }}
         />
@@ -80,9 +69,8 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           sx={{ m: 1, width: "96%" }}
           id="location"
           label="Location"
-          value={jobPostData.location}
+          value={jobPostData.location || ""}
           onChange={(e) => handleInputChange(e.target.value, "location")}
-          helperText="*Required"
           required
           InputLabelProps={{ required: false }}
         />
@@ -97,15 +85,10 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             type="number"
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Minimum Compensation"
-            inputProps={{ min: 0, max: compensationBoundary }}
-            value={jobPostData.rate_of_pay_min}
-            min={1000}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (/^\d*\.?\d*$/.test(value))
-                handleInputChange(value, "rate_of_pay_min");
-              handleCompensationChange(value);
-            }}
+            value={jobPostData.rate_of_pay_min || ""}
+            onChange={(e) =>
+              handleInputChange(e.target.value, "rate_of_pay_min")
+            }
             required
             InputLabelProps={{ required: false }}
           />
@@ -119,16 +102,12 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           <OutlinedInput
             id="maxCompensationLabel"
             type="number"
-            inputProps={{ min: compensationBoundary }}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Maximum Compensation"
-            value={jobPostData.rate_of_pay_max}
-            onChange={(e) => {
-              const { value } = e.target;
-              if (/^\d*\.?\d*$/.test(value))
-                handleInputChange(value, "rate_of_pay_max");
-              handleCompensationChange(value);
-            }}
+            value={jobPostData.rate_of_pay_max || ""}
+            onChange={(e) =>
+              handleInputChange(e.target.value, "rate_of_pay_max")
+            }
             required
             InputLabelProps={{ required: false }}
           />
@@ -141,7 +120,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             sx={{ textAlign: "left" }}
             labelId="compensationRateLabel"
             id="compensationRateLabel"
-            value={jobPostData.rate_of_pay_frequency}
+            value={jobPostData.rate_of_pay_frequency || ""}
             label="Compensation rate"
             onChange={(e) =>
               handleInputChange(e.target.value, "rate_of_pay_frequency")
@@ -149,13 +128,12 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             required
             InputLabelProps={{ required: false }}
           >
-            {COMPENSATION_RATES_FOR_JOB_POSTS.map((jobType) => (
-              <MenuItem key={jobType} value={jobType}>
-                {jobType}
+            {COMPENSATION_RATES_FOR_JOB_POSTS.map((rate) => (
+              <MenuItem key={rate} value={rate}>
+                {rate}
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>*Required</FormHelperText>
         </FormControl>
 
         {/* Hours Per Week Field */}
@@ -165,13 +143,8 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           id="hoursPerWeek"
           type="number"
           label="Hours per week"
-          inputProps={{ min: 0 }}
-          value={jobPostData.hours_per_week}
-          onChange={(e) => {
-            const { value } = e.target;
-            if (/^\d*\.?\d*$/.test(value))
-              handleInputChange(value, "hours_per_week");
-          }}
+          value={jobPostData.hours_per_week || ""}
+          onChange={(e) => handleInputChange(e.target.value, "hours_per_week")}
           required
           InputLabelProps={{ required: false }}
         />
@@ -183,40 +156,16 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             id="tags-outlined"
             options={JOB_TYPES_FOR_JOB_POSTS}
             getOptionLabel={(option) => option}
-            defaultValue={jobPostData.job_type}
+            value={jobPostData.job_type || []}
             filterSelectedOptions
             onChange={(e, value) => handleInputChange(value, "job_type")}
             required
             renderInput={(params) => (
-              <TextField
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...params}
-                label="Employment Type"
-                labelId="employmentTypeLabel"
-                id="employmentTypeLabel"
-              />
-            )}
-          />
-          <FormHelperText>*Required</FormHelperText>
-        </FormControl>
-
-        {/* Creation Date Picker */}
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            id="creation"
-            label="Creation Date"
-            fullWidth
-            sx={{ m: 1, width: "47%" }}
-            value={jobPostData.creation_date}
-            disabled
-            renderInput={(params) => (
               // eslint-disable-next-line
               <TextField {...params} error={false} helperText="" required />
             )}
-            required
-            InputLabelProps={{ required: false }}
           />
-        </LocalizationProvider>
+        </FormControl>
 
         {/* Expiration Date Picker */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -225,15 +174,15 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
             label="Expiration Date"
             fullWidth
             sx={{ m: 1, width: "47%" }}
-            value={jobPostData.close_date}
+            value={dayjs(jobPostData.close_date) || null}
             minDate={dayjs()}
-            onChange={(newValue) => handleInputChange(newValue, "close_date")}
+            onChange={(newValue) =>
+              handleInputChange(newValue.toISOString(), "close_date")
+            }
             renderInput={(params) => (
               // eslint-disable-next-line
               <TextField {...params} error={false} helperText="" required />
             )}
-            required
-            InputLabelProps={{ required: false }}
           />
         </LocalizationProvider>
 
@@ -245,20 +194,19 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           label="Description"
           multiline
           rows={4}
-          value={jobPostData.job_description}
-          InputLabelProps={{ shrink: true, required: false }}
-          helperText="*Required"
+          value={jobPostData.job_description || ""}
           onChange={(e) => handleInputChange(e.target.value, "job_description")}
           required
+          InputLabelProps={{ shrink: true, required: false }}
         />
-      </Container>
-    </JobPostContainer>
+      </Container> 
+    </JobLeadContainer>
   );
 }
 
 AddJobDetails.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  jobPostData: PropTypes.array.isRequired,
+  jobPostData: PropTypes.object.isRequired, // Changed from array to object
   setJobPostData: PropTypes.func.isRequired,
 };
 
