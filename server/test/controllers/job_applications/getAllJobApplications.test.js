@@ -90,22 +90,6 @@ describe("getAllJobApplicationsRequestHandler test suite", () => {
         message: "All Job Applications found successfully",
         jobApplications: expect.any(Array),
         totalJobApplicationsNumber: expect.any(Number),
-        uniqueApplicants: expect.any(Array),
-      }),
-    );
-  });
-
-  it("Returns unique applicants' names", async () => {
-    const mockReq = {
-      query: {},
-    };
-
-    await getAllJobApplicationsRequestHandler(mockReq, mockRes);
-
-    expect(mockRes.statusCode).toBe(200);
-    expect(mockRes.json).toHaveBeenCalledWith(
-      expect.objectContaining({
-        uniqueApplicants: expect.any(Array),
       }),
     );
   });
