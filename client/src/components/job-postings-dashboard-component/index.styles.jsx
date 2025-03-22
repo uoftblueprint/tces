@@ -18,7 +18,7 @@ const ButtonContainer = styled.div`
   padding-top: 10px;
 `;
 
-const JobLeadContainer = styled.div`
+const JobPostContainer = styled.div`
   display: flex-wrap;
   flex-wrap: wrap;
   flex-direction: column;
@@ -63,4 +63,4 @@ const Container = styled.div`
   background-color: #f0f3f8;
   gap: 30px;
 `;
-export { DashboardContainer, ButtonContainer, HeaderContainer, JobLeadContainer, H3, ButtonL , Container};
+export { DashboardContainer, ButtonContainer, HeaderContainer, JobPostContainer, H3, ButtonL , Container};

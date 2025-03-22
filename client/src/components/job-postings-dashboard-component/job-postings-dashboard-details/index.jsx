@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { UploadFile,ArrowBack} from "@mui/icons-material";
 import { useState, useEffect } from "react";
-import { JobLeadContainer } from "../index.styles";
+import { JobPostContainer } from "../index.styles";
 import EditJobPostingFormComponent from "./editJobPostForm";
 
 function JobDetails({ setJobPostData,setSnackBarMessage}) {
@@ -45,7 +45,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
 
 
   return (
-    <JobLeadContainer maxWidth="lg" sx={{ mt: 4 }}>
+    <JobPostContainer maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <IconButton onClick={() => navigate("/all-job-postings")}>
           <ArrowBack/>
@@ -114,7 +114,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
           </Paper>
         </Grid>
       </Grid>
-    </JobLeadContainer>
+    </JobPostContainer>
   );
 }
 

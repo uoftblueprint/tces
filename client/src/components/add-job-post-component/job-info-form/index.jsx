@@ -15,7 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { JobLeadContainer, H3 } from "../index.styles";
+import { JobPostContainer, H3 } from "../index.styles";
 import {
   JOB_TYPES_FOR_JOB_POSTS,
   COMPENSATION_RATES_FOR_JOB_POSTS,
@@ -34,7 +34,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
   };
 
   return (
-    <JobLeadContainer>
+    <JobPostContainer>
       <H3 style={{ paddingLeft: "2%" }}>Job Information</H3>
 
       <Container
@@ -252,7 +252,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           required
         />
       </Container>
-    </JobLeadContainer>
+    </JobPostContainer>
   );
 }
 

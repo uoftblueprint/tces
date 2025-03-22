@@ -108,7 +108,7 @@ export default function JobPostingsDashboardTableComponent() {
       const data = await response.json();
       if (data.status === "success" && data.jobPost) {
         // Pass the jobPostData via state to the EditJobPost component
-        navigate(`/job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
+        navigate(`/all-job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -149,10 +149,10 @@ export default function JobPostingsDashboardTableComponent() {
     handleCloseDialog();
   };
 
-  const handleJobPostingsNavClick = async (jobLeadId) => {
-    navigate(`/job-postings/${jobLeadId}`);
+  const handleJobPostingsNavClick = async (jobPostId) => {
+    navigate(`/all-job-postings/${jobPostId}`);
     try {
-      const response = await getOneJobPost(jobLeadId);
+      const response = await getOneJobPost(jobPostId);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -160,7 +160,7 @@ export default function JobPostingsDashboardTableComponent() {
       const data = await response.json();
       
       if (data.status === "success" && data.jobPost) {
-        navigate(`/job-postings/${jobLeadId}`, { state: { jobPostData: data.jobPost } });
+        navigate(`/all-job-postings/${jobPostId}`, { state: { jobPostData: data.jobPost } });
       } else {
         console.error("Error fetching job post:", data.message);
       }
