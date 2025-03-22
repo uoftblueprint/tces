@@ -34,7 +34,13 @@ import ConfirmDialog from "../../shared/confirm-dialog-component";
 import { JOB_TYPES_FOR_JOB_POSTS } from "../../../utils/constants";
 import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
-function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, isEditMode, setIsEditMode }) {
+function EditJobPostingFormComponent({
+  jobPost,
+  setJobPost,
+  setSnackBarMessage,
+  isEditMode,
+  setIsEditMode,
+}) {
   const [confirmEditDialog, setConfirmEditDialog] = useState(false);
   const [formSubmissionErrorDialog, setFormSubmissionErrorDialog] =
     useState(false);
@@ -79,23 +85,13 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
   };
   const handleMinCompensationChange = (event) => {
     const value = event.target.value ? Number(event.target.value) : null;
-  
-    if (value !== null && maxCompensation !== null && value > maxCompensation) {
-      setSnackBarMessage("Minimum compensation cannot be greater than maximum compensation.");
-      return;
-    }
-  
+
     setMinCompensation(value);
   };
-  
+
   const handleMaxCompensationChange = (event) => {
     const value = event.target.value ? Number(event.target.value) : null;
-  
-    if (value !== null && minCompensation !== null && value < minCompensation) {
-      setSnackBarMessage("Maximum compensation cannot be less than minimum compensation.");
-      return;
-    }
-  
+
     setMaxCompensation(value);
   };
 
@@ -157,12 +153,12 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
       title,
       employer,
       location,
-      rate_of_pay_min : minCompensation,
-      rate_of_pay_max : maxCompensation,
-      job_type : employmentType,
+      rate_of_pay_min: minCompensation,
+      rate_of_pay_max: maxCompensation,
+      job_type: employmentType,
       hours_per_week: hoursPerWeek,
       close_date: expirationDate?.toISOString(),
-      job_description : jobDescription,
+      job_description: jobDescription,
       jobPostID: jobPost.id,
     };
 
@@ -301,9 +297,7 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                 <>
                   <Grid item xs={4.5}>
                     <FormControl fullWidth>
-                      <InputLabel
-                        id={`minCompensationLabel-${jobPost.id}`}
-                      >
+                      <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Minimum Compensation
                       </InputLabel>
                       <OutlinedInput
@@ -320,15 +314,17 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                         value={minCompensation}
                         onChange={handleMinCompensationChange}
                         error={Number.isNaN(minCompensation)}
+                        inputProps={{
+                          min: 0,
+                          max: maxCompensation,
+                        }}
                         required
                       />
                     </FormControl>
                   </Grid>
                   <Grid item xs={4.5}>
                     <FormControl fullWidth>
-                      <InputLabel
-                        id={`minCompensationLabel-${jobPost.id}`}
-                      >
+                      <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Maximum Compensation
                       </InputLabel>
                       <OutlinedInput
@@ -345,6 +341,9 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                         value={maxCompensation}
                         onChange={handleMaxCompensationChange}
                         error={Number.isNaN(minCompensation)}
+                        inputProps={{
+                          min: minCompensation,
+                        }}
                         required
                       />
                     </FormControl>
@@ -499,7 +498,6 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                       borderColor: "#ced4da",
                     }}
                     onChange={(event) => setJobDescription(event.target.value)}
-                    
                   />
                 ) : (
                   renderViewValue("Job Description", jobDescription)
