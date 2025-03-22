@@ -1,9 +1,8 @@
-const Sequelize = require("sequelize");
 const logger = require("pino")();
 const JobApplications = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 
-const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
+const getAllJobApplicationsRequestHandler = async (req, res) => {
   try {
     // ! Return all applications sorted in descending order by application date (newest first)
     // ! There is probably a sequelize function that can do this for me.
@@ -21,7 +20,7 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
     if (name) {
       query.name = name;
     }
-  
+
     if (email) {
       query.email = email;
     }
@@ -36,7 +35,7 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
 
     const searchConfig = {
       where: query || {},
-      order: order,
+      order,
       attributes: [
         "id",
         "job_posting_id",
@@ -68,16 +67,10 @@ const getAllJobApplicationsRequestHandler = async (req, res, jobPostingId) => {
 
     const jobApplications = await JobApplications.findAll(searchConfig);
 
-    const uniqueApplicants = await JobApplications.findAll({
-      attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("name")), "name"]],
-      raw: true,
-    });
-
     const totalJobApplicationsNumber = await JobApplications.count({
       where: query,
     });
 
-    console.log(jobApplications);
     return res.status(200).json({
       status: "success",
       message: "All Job Applications found successfully",
