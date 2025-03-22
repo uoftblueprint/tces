@@ -77,21 +77,26 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
-
   const handleMinCompensationChange = (event) => {
-    if (/^\d*\.?\d*$/.test(event.target.value)) {
-      setMinCompensation(
-        event.target.value ? Number(event.target.value) : null,
-      );
+    const value = event.target.value ? Number(event.target.value) : null;
+  
+    if (value !== null && maxCompensation !== null && value > maxCompensation) {
+      setSnackBarMessage("Minimum compensation cannot be greater than maximum compensation.");
+      return;
     }
+  
+    setMinCompensation(value);
   };
-
+  
   const handleMaxCompensationChange = (event) => {
-    if (/^\d*\.?\d*$/.test(event.target.value)) {
-      setMaxCompensation(
-        event.target.value ? Number(event.target.value) : null,
-      );
+    const value = event.target.value ? Number(event.target.value) : null;
+  
+    if (value !== null && minCompensation !== null && value < minCompensation) {
+      setSnackBarMessage("Maximum compensation cannot be less than minimum compensation.");
+      return;
     }
+  
+    setMaxCompensation(value);
   };
 
   const copyCompensationToClipboard = () => {
@@ -299,7 +304,7 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                       <InputLabel
                         id={`minCompensationLabel-${jobPost.id}`}
                       >
-                        Compensation Minimum
+                        Minimum Compensation
                       </InputLabel>
                       <OutlinedInput
                         id={`minCompensation-${jobPost.id}`}
@@ -324,7 +329,7 @@ function EditJobPostingFormComponent({ jobPost, setJobPost, setSnackBarMessage, 
                       <InputLabel
                         id={`minCompensationLabel-${jobPost.id}`}
                       >
-                        Compensation Maximum
+                        Maximum Compensation
                       </InputLabel>
                       <OutlinedInput
                         id={`maxCompensation-${jobPost.id}`}

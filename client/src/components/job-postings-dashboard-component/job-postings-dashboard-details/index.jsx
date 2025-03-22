@@ -43,7 +43,6 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
   }, [jobPostData, setJobPostData,setLocalJobPostData]);
 
 
-
   return (
     <JobPostContainer maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -58,7 +57,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
             {jobPostData.employer || "Employer Name"}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Job ID #{jobPostData.id || "N/A"}
+            Job ID #{jobPostData.jobPostID || "N/A"}
           </Typography>
         </Box>
       </Box>
