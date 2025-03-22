@@ -131,6 +131,35 @@ const getOneJobApplication = async (jobApplicationId) => {
   return response;
 };
 
+const getFilterOptions = async (queryParams = {}) => {
+  // make a query string from given parameters, no queryString if empty
+  const queryString = new URLSearchParams(queryParams).toString();
+
+  try {
+    const response = await fetch(
+      `${REACT_APP_API_BASE_URL}/job_applications/filter-options?${queryString}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Error retrieving filter options: ${error.message}`);
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching filter options:", error);
+    throw error;
+  }
+};
+
 export {
   fetchAllJobApplications,
   fetchJobApplicationsByApplicantName,
@@ -138,4 +167,5 @@ export {
   getResumeUrl,
   updateJobApplicationStatus,
   getOneJobApplication,
+  getFilterOptions,
 };

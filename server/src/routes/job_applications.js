@@ -3,11 +3,11 @@ const multer = require("multer");
 const path = require("path");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
-const getOneJobApplicationRequestHandler = require("../controllers/job_applications/getOneJobApplication");
 const addJobApplicationRequestHandler = require("../controllers/job_applications/addJobApplication");
 const updateJobApplicationStatusRequestHandler = require("../controllers/job_applications/updateJobApplicationStatus");
 const getOneJobApplicationByIdRequestHandler = require("../controllers/job_applications/getOneJobApplicationById");
 const getJobApplicationResumeRequestHandler = require("../controllers/job_applications/getJobApplicationResumeUrl");
+const getFilterDropdownOptionsHandler = require("../controllers/job_applications/getFilterDropdownOptionsHandler");
 
 const upload = multer({ dest: path.join(__dirname, "..", "uploads") });
 
@@ -16,12 +16,6 @@ const router = express.Router();
 // Route to get all job applications
 router.get("/", isLoggedIn, async (req, res) => {
   return getAllJobApplicationsRequestHandler(req, res);
-});
-
-// Route to get job applications by name
-// NOT CURRENTLY USED
-router.get("/:name", isLoggedIn, async (req, res) => {
-  return getOneJobApplicationRequestHandler(req, res);
 });
 
 router.post("/", isLoggedIn, upload.single("resume"), async (req, res) => {
@@ -50,5 +44,23 @@ router.put(
   isLoggedIn,
   updateJobApplicationStatusRequestHandler,
 );
+
+/**
+ * Get Filter Options for Dropdowns
+ *
+ * Retrieves unique applicant names, emails, job titles, and job posting IDs based on the selected dropdown value.
+ *
+ * @type GET
+ *
+ * @route /filter-options
+ *
+ * Query Parameters:
+ * @param {string} [applicant_name]
+ * @param {string} [email]
+ * @param {string} [job_title]
+ * @param {string} [job_posting_id]
+ */
+
+router.get("/filter-options", isLoggedIn, getFilterDropdownOptionsHandler);
 
 module.exports = router;
