@@ -22,7 +22,7 @@ const getJobApplicationResumeRequestHandler = async (req, res) => {
 
     const resumeKey = JobApplication.resume; // Access the 'resume' attribute correctly.
 
-    const presignedResumeUrl = getResumePresignedUrl(resumeKey);
+    const presignedResumeUrl = await getResumePresignedUrl(resumeKey);
 
     const response = {
       status: "success",

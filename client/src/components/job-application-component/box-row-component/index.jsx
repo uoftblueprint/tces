@@ -1,6 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { Grid, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import { IMaskInput } from "react-imask";
 import PropTypes from "prop-types";
@@ -102,9 +109,7 @@ function BoxRowComponent({
                 <DownloadIcon
                   sx={{ color: "#1565c0", cursor: "pointer" }}
                   align="right"
-                  onClick={() => {
-                    
-                  }}
+                  onClick={() => {}}
                 />
               )}
             </div>
@@ -118,10 +123,7 @@ function BoxRowComponent({
 
 BoxRowComponent.propTypes = {
   leftSide: PropTypes.string.isRequired,
-  rightSide: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element,
-  ]),
+  rightSide: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   rightSideWrapper: PropTypes.func,
   downloadable: PropTypes.bool,
   editable: PropTypes.bool.isRequired,
@@ -131,7 +133,7 @@ BoxRowComponent.propTypes = {
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import JobApplicationComponent from "../../components/job-application-component";
 
@@ -7,13 +7,14 @@ function JobApplicationPage({
   setApplicationStatus,
   getJobPostById,
 }) {
-    const { jobApplicationID } = useParams();
+  const { jobApplicationID } = useParams();
   return (
     <JobApplicationComponent
       jobApplicationID={jobApplicationID}
       getApplicationById={getApplicationById}
       setApplicationStatus={setApplicationStatus}
-      getJobPostById={getJobPostById} />
+      getJobPostById={getJobPostById}
+    />
   );
 }
 
