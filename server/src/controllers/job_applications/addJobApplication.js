@@ -135,7 +135,7 @@ const addJobApplicationRequestHandler = async (req, res) => {
 
     // ! Confirm that the email is valid.
 
-    if (!/^.+@.+\..+$/.test(email)) {
+    if (!/^.+@.+\..+$/.test(email)) {w
       return res.status(400).json({ error: "Invalid email." });
     }
 

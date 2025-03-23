@@ -28,7 +28,7 @@ router.get("/:name", isLoggedIn, async (req, res) => {
   return getOneJobApplicationRequestHandler(req, res);
 });
 
-router.post("/", upload.single("resume"), async (req, res) => {
+router.post("/", isLoggedIn, upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
 
