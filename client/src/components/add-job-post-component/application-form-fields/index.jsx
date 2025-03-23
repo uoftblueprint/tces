@@ -10,13 +10,13 @@ import {
   FormHelperText,
   Typography,
 } from "@mui/material";
-import { ButtonL, JobLeadContainer, H3 } from "../index.styles";
+import { ButtonL, JobPostContainer, H3 } from "../index.styles";
 import styles from "./index.module.css";
 
 function AddApplicationFields() {
   return (
     <>
-      <JobLeadContainer>
+      <JobPostContainer>
         <div
           style={{
             display: "flex",
@@ -124,7 +124,7 @@ function AddApplicationFields() {
             </Container>
           </Box>
         </Container>
-      </JobLeadContainer>
+      </JobPostContainer>
 
       {/* Add specific behaviour when design P2 completed */}
       <ButtonL
