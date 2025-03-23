@@ -295,7 +295,7 @@ function EditJobPostingFormComponent({
 
               {isEditMode ? (
                 <>
-                  <Grid item xs={4.5}>
+                  <Grid item sx={{ width: "37%", marginRight: 1 }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Minimum Compensation
@@ -322,7 +322,7 @@ function EditJobPostingFormComponent({
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={4.5}>
+                  <Grid item sx={{ width: "37%" }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Maximum Compensation
