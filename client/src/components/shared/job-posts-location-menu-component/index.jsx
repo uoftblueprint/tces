@@ -41,6 +41,7 @@ function LocationMenu({ locations, onSelectLocation }) {
           backgroundColor: "#3568E5",
           color: "white",
           borderColor: "#3568E5",
+          borderRadius: "10px",
         }}
         endIcon={
           <span
