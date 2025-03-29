@@ -27,6 +27,7 @@ import { styled } from "@mui/material/styles";
 
 import { uploadJobApplication } from "../../utils/job_applications_api";
 import { getOneActiveJobPost } from "../../utils/job_posts_api";
+import FormSubmissionErrorDialog from "../../components/shared/form-submission-error-dialog";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -191,6 +192,8 @@ function JobPostingPage() {
     }, 500);
   };
 
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleFileChange,
     accept: { "application/pdf": [] },
@@ -317,7 +320,8 @@ function JobPostingPage() {
       alert("Application submitted successfully!");
     } catch (error) {
       console.error("Error submitting application:", error.message);
-      alert("An error occurred while submitting your application.");
+      setErrorDialogOpen(true);
+
     }
   };
 
@@ -859,6 +863,7 @@ function JobPostingPage() {
           </StyledPaper>
         </Grid>
       </Grid>
+      <FormSubmissionErrorDialog open={errorDialogOpen} onBack={() => setErrorDialogOpen(false)} />
     </StyledContainer>
   );
 }

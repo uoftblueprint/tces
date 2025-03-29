@@ -35,7 +35,6 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
     job_description: "",
     job_id: "",
   };
-
   const [jobPostData, setLocalJobPostData] = useState(initialJobData);
 
   useEffect(() => {
@@ -57,7 +56,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
             {jobPostData.employer || "Employer Name"}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Job ID #{jobPostData.jobPostID || "N/A"}
+            Job ID #{jobPostData.id || "N/A"}
           </Typography>
         </Box>
       </Box>
