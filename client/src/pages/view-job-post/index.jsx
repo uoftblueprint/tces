@@ -28,6 +28,7 @@ import { styled } from "@mui/material/styles";
 
 import { uploadJobApplication } from "../../utils/job_applications_api";
 import { getOneActiveJobPost } from "../../utils/job_posts_api";
+import { formatLongDate } from "../../utils/date";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -259,25 +260,23 @@ function JobPostingPage() {
     setRecaptchaToken(token);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  const formatSalaryRange = (min, max) => {
+  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
     // Convert to numbers
     const minNum = Number(min);
     const maxNum = Number(max);
 
-    // Format with "K" notation (divide by 1000 and append "K")
-    const formattedMin = `${minNum}K`;
-    const formattedMax = `${maxNum}K`;
+    switch (rateOfPayFrequency) {
+      case "Annually": {
+        const formattedMin = `${Math.floor(minNum / 1000)}K`;
+        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
 
-    return `$${formattedMin}/year - $${formattedMax}/year`;
+        return `$${formattedMin}/year - $${formattedMax}/year`;
+      }
+      default:
+        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
+    }
+
+    // Format with "K" notation (divide by 1000 and append "K")
   };
 
   const handleSubmit = async (event) => {
@@ -387,6 +386,7 @@ function JobPostingPage() {
                   value: formatSalaryRange(
                     jobPosting.compensation.min,
                     jobPosting.compensation.max,
+                    jobPosting.rateOfPayFrequency,
                   ),
                 },
                 { label: "Job Type", value: jobPosting.jobType },
@@ -396,7 +396,7 @@ function JobPostingPage() {
                 },
                 {
                   label: "Close Date",
-                  value: formatDate(jobPosting.closeDate),
+                  value: formatLongDate(jobPosting.closeDate),
                 },
               ].map((item, index) => (
                 <Box

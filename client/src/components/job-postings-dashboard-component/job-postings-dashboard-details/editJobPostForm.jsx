@@ -17,7 +17,6 @@ import {
   InputLabel,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import ContentCopy from "@mui/icons-material/ContentCopy";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -26,8 +25,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import { displayCompensationRange } from "../../../utils/jobLeads";
-import { formateDateObjToStr } from "../../../utils/date";
+import { formatLongDate } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobPost } from "../../../utils/job_posts_api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
@@ -103,22 +101,6 @@ function EditJobPostingFormComponent({
     setMaxCompensation(value);
   };
 
-  const copyCompensationToClipboard = () => {
-    const text = displayCompensationRange(
-      minCompensation,
-      maxCompensation,
-      "/hour",
-    );
-    navigator.clipboard.writeText(text).then(
-      () => {
-        setSnackBarMessage("Copied to clipboard");
-      },
-      () => {
-        setSnackBarMessage("Failed to copy");
-      },
-    );
-  };
-
   const renderViewValue = (
     typeValue,
     value,
@@ -151,6 +133,23 @@ function EditJobPostingFormComponent({
 
   const returnToForm = () => {
     setFormSubmissionErrorDialog(false);
+  };
+
+  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
+    // Convert to numbers
+    const minNum = Number(min);
+    const maxNum = Number(max);
+
+    switch (rateOfPayFrequency) {
+      case "Annually": {
+        const formattedMin = `${Math.floor(minNum / 1000)}K`;
+        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
+
+        return `$${formattedMin}/year - $${formattedMax}/year`;
+      }
+      default:
+        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -362,22 +361,15 @@ function EditJobPostingFormComponent({
                 <>
                   {minCompensation !== undefined &&
                   maxCompensation !== undefined ? (
-                    <>
-                      <Grid item xs={8} md={7}>
-                        <Typography>
-                          {displayCompensationRange(
-                            minCompensation,
-                            maxCompensation,
-                            "/hour",
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={1} md={2} sx={{ textAlign: "right" }}>
-                        <IconButton onClick={copyCompensationToClipboard}>
-                          <ContentCopy />
-                        </IconButton>
-                      </Grid>
-                    </>
+                    <Grid item xs={8} md={7}>
+                      <Typography>
+                        {formatSalaryRange(
+                          minCompensation,
+                          maxCompensation,
+                          jobPost.rate_of_pay_frequency,
+                        )}
+                      </Typography>
+                    </Grid>
                   ) : (
                     renderViewValue("Compensation", null)
                   )}
@@ -476,7 +468,7 @@ function EditJobPostingFormComponent({
                 ) : (
                   renderViewValue(
                     "Expiration Date",
-                    formateDateObjToStr(expirationDate),
+                    formatLongDate(expirationDate),
                   )
                 )}
               </Grid>
