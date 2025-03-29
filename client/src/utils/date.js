@@ -32,4 +32,13 @@ function monthsSince(dateStr) {
   return totalMonths;
 }
 
-export { formatDateStr, formateDateObjToStr, monthsSince };
+const formatLongDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+export { formatDateStr, formateDateObjToStr, monthsSince, formatLongDate };
