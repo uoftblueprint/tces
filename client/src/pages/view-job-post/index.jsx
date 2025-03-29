@@ -22,6 +22,7 @@ import {
   Grid,
   LinearProgress,
   IconButton,
+  Divider,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -322,16 +323,14 @@ function JobPostingPage() {
   };
 
   return (
-    <StyledContainer maxWidth="lg">
+    <StyledContainer>
       {/* Top Section with Job Title and Company */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          padding: "4px 8px", // Reduced padding
-          marginBottom: 1, // Reduced margin
+          marginBottom: 2,
           backgroundColor: "#fff",
-          borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         }}
       >
         <IconButton
@@ -369,22 +368,14 @@ function JobPostingPage() {
       </Box>
 
       {/* Main Content */}
-      <Grid container spacing={1}>
-        {/* Left Section - Job Information */}
+      <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
-          <StyledPaper elevation={1} sx={{ p: 2, maxHeight: "623px" }}>
+          <StyledPaper elevation={1}>
             {/* Information Header (Slightly Bigger but Compact) */}
-            <Typography
-              variant="h6"
-              fontWeight={600}
-              sx={{
-                pb: 1.5,
-                borderBottom: "2px solid #E0E0E0",
-                fontSize: "1rem", // Reduced font size
-              }}
-            >
+            <Typography variant="h5" sx={{ flexGrow: 1 }}>
               Information
             </Typography>
+            <Divider sx={{ my: 2, borderBottomWidth: 2.5 }} />
 
             <Box sx={{ mt: 1 }}>
               {[
@@ -418,44 +409,22 @@ function JobPostingPage() {
                     borderBottom: index < 6 ? "1px solid #E0E0E0" : "none",
                   }}
                 >
-                  <Typography
-                    variant="body2"
-                    fontWeight={500}
-                    sx={{
-                      color: "#333",
-                      fontSize: "0.85rem", // Slightly smaller font
-                      textAlign: "left",
-                    }}
-                  >
+                  <Typography variant="subtitle1" sx={{ ml: 2 }} align="left">
                     {item.label}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#666",
-                      fontSize: "0.85rem",
-                      textAlign: "left",
-                    }}
-                  >
+                  <Typography variant="subtitle1" sx={{ ml: 2 }} align="left">
                     {item.value || "N/A"}
                   </Typography>
                 </Box>
               ))}
             </Box>
+            <Divider sx={{ my: 2, borderBottomWidth: 2.5 }} />
 
             {/* Description Section */}
-            <Typography
-              variant="h6"
-              fontWeight={600}
-              sx={{
-                pt: 2,
-                pb: 1.5,
-                borderBottom: "2px solid #E0E0E0",
-                fontSize: "1rem", // Matched font size with "Information"
-              }}
-            >
+            <Typography variant="h5" sx={{ flexGrow: 1, pt: 2 }}>
               Description
             </Typography>
+            <Divider sx={{ my: 2, borderBottomWidth: 2.5 }} />
 
             <Box
               ref={descriptionRef} // Move ref here
@@ -512,15 +481,14 @@ function JobPostingPage() {
         </Grid>
 
         {/* Right Section */}
-        <Grid item xs={12} md={6.5}>
+        <Grid item xs={12} md={7}>
           {" "}
           {/* Reduced width from md={7} to md={6.5} */}
           <StyledPaper elevation={1} sx={{ p: 2.5 }}>
             {/* Apply for Position Header */}
             <Typography
-              variant="h6"
-              fontWeight={600}
-              sx={{ mb: 1.5, fontSize: "0.9rem" }} // Slightly smaller
+              gutterBottom
+              sx={{ fontSize: "1.6rem", fontWeight: "normal", pb: 2 }}
             >
               Apply for this Position
             </Typography>
@@ -534,17 +502,8 @@ function JobPostingPage() {
                   label="Name"
                   value={application.name}
                   onChange={handleInputChange("name")}
-                  size="small"
-                  InputProps={{
-                    sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
-                  }}
+                  helperText="*Required"
                 />
-                <Typography
-                  variant="caption"
-                  sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                >
-                  *Required
-                </Typography>
               </Box>
 
               {/* Phone & Postal Code Fields */}
@@ -557,17 +516,8 @@ function JobPostingPage() {
                       label="Phone"
                       value={application.phone}
                       onChange={handleInputChange("phone")}
-                      size="small"
-                      InputProps={{
-                        sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
-                      }}
+                      helperText="*Required"
                     />
-                    <Typography
-                      variant="caption"
-                      sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                    >
-                      *Required
-                    </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -578,17 +528,8 @@ function JobPostingPage() {
                       label="Postal Code"
                       value={application.postalCode}
                       onChange={handleInputChange("postalCode")}
-                      size="small"
-                      InputProps={{
-                        sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
-                      }}
+                      helperText="*Required"
                     />
-                    <Typography
-                      variant="caption"
-                      sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                    >
-                      *Required
-                    </Typography>
                   </Box>
                 </Grid>
               </Grid>
@@ -602,43 +543,20 @@ function JobPostingPage() {
                   type="email"
                   value={application.emailAddress}
                   onChange={handleInputChange("emailAddress")}
-                  size="small"
-                  InputProps={{
-                    sx: { height: "45px", paddingY: "10px" }, // Adjusts height and vertical padding
-                  }}
+                  helperText="*Required"
                 />
-                <Typography
-                  variant="caption"
-                  sx={{ color: "gray", fontSize: "0.7rem", mt: 0.3 }}
-                >
-                  *Required
-                </Typography>
               </Box>
 
               <Grid container spacing={2} alignItems="center">
                 {/* Status in Canada Dropdown */}
                 <Grid item xs={application.statusInCanada === "Other" ? 6 : 12}>
-                  <FormControl fullWidth variant="outlined" size="small">
+                  <FormControl fullWidth variant="outlined">
                     <InputLabel id="status-label">Status in Canada</InputLabel>
                     <Select
                       labelId="status-label"
                       value={application.statusInCanada}
                       onChange={handleStatusChange}
                       label="Status in Canada"
-                      sx={{
-                        height: "50px", // Ensures uniform height
-                        display: "flex",
-                        alignItems: "center",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "gray",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "black",
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "black",
-                        },
-                      }}
                     >
                       {statusOptions.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
@@ -658,32 +576,10 @@ function JobPostingPage() {
                   >
                     <TextField
                       fullWidth
-                      size="small"
                       variant="outlined"
                       label="Other: Please specify"
                       value={application.otherStatus}
                       onChange={handleInputChange("otherStatus")}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          height: "50px", // Ensures uniform height
-                          display: "flex",
-                          alignItems: "center", // Centers text vertically
-                        },
-                        "& .MuiInputBase-input": {
-                          paddingY: 0, // Removes unnecessary top/bottom padding
-                          display: "flex",
-                          alignItems: "center", // Ensures text is centered properly
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "gray",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "black",
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "black",
-                        },
-                      }}
                     />
                   </Grid>
                 )}
@@ -691,11 +587,7 @@ function JobPostingPage() {
 
               {/* Upload Resume Section */}
               <Box mt={1}>
-                <Typography
-                  variant="subtitle1"
-                  fontWeight={600}
-                  sx={{ mb: 0.7, fontSize: "0.9rem" }}
-                >
+                <Typography color="#9E9E9E" pb="13px" pt="1.2rem">
                   *Upload Resume
                 </Typography>
                 <Box
@@ -714,12 +606,12 @@ function JobPostingPage() {
                     cursor: "pointer",
                     transition: "border-color 0.3s ease",
                     "&:hover": {
-                      borderColor: "#3f51b5",
+                      borderColor: "#3568E5",
                     },
                   }}
                 >
                   <input {...getInputProps()} />
-                  <Box
+                  {/* <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
@@ -732,16 +624,17 @@ function JobPostingPage() {
                     }}
                   >
                     <UploadFileIcon sx={{ color: "#3f51b5", fontSize: 32 }} />
-                  </Box>
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: 500, color: "#3f51b5", mb: 0.5 }}
-                  >
-                    Click to upload a file
+                  </Box> */}
+                  <Container sx={{ width: "auto" }}>
+                    <IconButton sx={{ backgroundColor: "#E6ECFB" }}>
+                      <UploadFileIcon sx={{ color: "#3568E5" }} />
+                    </IconButton>
+                  </Container>
+                  <Typography variant="body1" pb="10px" pt="10px">
+                    <span>Click to upload</span>
+                    &nbsp;or drag and drop
                   </Typography>
-                  <Typography variant="3" sx={{ color: "text.secondary" }}>
-                    PDF file only
-                  </Typography>
+                  <Typography variant="body2">PDF file only</Typography>
                 </Box>
                 {file || fileError ? (
                   <Box
@@ -852,7 +745,7 @@ function JobPostingPage() {
                   size="small"
                   sx={{ width: "90px" }}
                 >
-                  Submit
+                  SUBMIT
                 </Button>
               </Box>
             </form>

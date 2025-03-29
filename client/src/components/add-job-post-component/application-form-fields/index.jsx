@@ -120,7 +120,7 @@ function AddApplicationFields() {
                 <span className={styles.underline}>Click to upload</span>
                 &nbsp;or drag and drop
               </Typography>
-              <Typography variant="body2">PDF (max. 3MB)</Typography>
+              <Typography variant="body2">PDF file only</Typography>
             </Container>
           </Box>
         </Container>
