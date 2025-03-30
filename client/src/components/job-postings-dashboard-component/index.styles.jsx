@@ -63,4 +63,12 @@ const Container = styled.div`
   background-color: #f0f3f8;
   gap: 30px;
 `;
-export { DashboardContainer, ButtonContainer, HeaderContainer, JobPostContainer, H3, ButtonL , Container};
+export {
+  DashboardContainer,
+  ButtonContainer,
+  HeaderContainer,
+  JobPostContainer,
+  H3,
+  ButtonL,
+  Container,
+};

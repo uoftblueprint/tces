@@ -23,7 +23,11 @@ import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-componen
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts, deleteJobPost, getOneJobPost} from "../../../utils/job_posts_api";
+import {
+  getAllJobPosts,
+  deleteJobPost,
+  getOneJobPost,
+} from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -104,11 +108,13 @@ export default function JobPostingsDashboardTableComponent() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       if (data.status === "success" && data.jobPost) {
         // Pass the jobPostData via state to the EditJobPost component
-        navigate(`/all-job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
+        navigate(`/all-job-postings/${id}`, {
+          state: { jobPostData: data.jobPost, editMode: true },
+        });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -116,7 +122,6 @@ export default function JobPostingsDashboardTableComponent() {
       console.error("Failed to fetch job post:", error);
     }
   };
-  
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
@@ -156,11 +161,13 @@ export default function JobPostingsDashboardTableComponent() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.status === "success" && data.jobPost) {
-        navigate(`/all-job-postings/${jobPostId}`, { state: { jobPostData: data.jobPost } });
+        navigate(`/all-job-postings/${jobPostId}`, {
+          state: { jobPostData: data.jobPost },
+        });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -168,8 +175,7 @@ export default function JobPostingsDashboardTableComponent() {
       console.error("Failed to fetch job post:", error);
     }
   };
- 
-  
+
   const columns = [
     {
       width: 60,
