@@ -61,8 +61,6 @@ const getResumePresignedUrl = async (fileKey) => {
   const command = new GetObjectCommand(params);
   try {
     const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 }); // URL expires in 5 minutes
-    console.log("Generated Presigned URL:", signedUrl);
-
     return signedUrl;
   } catch (error) {
     logger.error({ error }, "Error generating presigned URL");
