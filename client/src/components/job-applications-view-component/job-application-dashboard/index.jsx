@@ -21,21 +21,7 @@ function JobApplicationDashboard({
     !jobApplicationQuery.job_title &&
     !jobApplicationQuery.name &&
     !jobApplicationQuery.job_posting_id &&
-    jobApplicationQuery.sort === "descending";
-
-  if (jobApplicationQuery) {
-    if (jobApplicationQuery.sort === "ascending") {
-      jobApplications.sort(
-        (jobApplication1, jobApplication2) =>
-          jobApplication1.createdAt - jobApplication2.createdAt,
-      );
-    } else {
-      jobApplications.sort(
-        (jobApplication1, jobApplication2) =>
-          jobApplication2.createdAt - jobApplication1.createdAt,
-      );
-    }
-  }
+    jobApplicationQuery.sort === "desc";
 
   return (
     <Container
@@ -147,7 +133,7 @@ function JobApplicationDashboard({
             job_posting_id: null,
             name: null,
             job_title: null,
-            sort: "descending",
+            sort: "desc",
           });
         }}
       >
