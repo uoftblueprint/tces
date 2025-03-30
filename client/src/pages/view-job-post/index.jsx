@@ -29,6 +29,7 @@ import { styled } from "@mui/material/styles";
 import { uploadJobApplication } from "../../utils/job_applications_api";
 import { getOneActiveJobPost } from "../../utils/job_posts_api";
 import { formatLongDate } from "../../utils/date";
+import SuccessfulFormSubmissionDialog from "../../components/shared/successful-submission-dialog";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -193,6 +194,8 @@ function JobPostingPage() {
     }, 500);
   };
 
+  const [isSuccessDialog, setIsSuccessDialog] = useState(false);
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleFileChange,
     accept: { "application/pdf": [] },
@@ -275,8 +278,6 @@ function JobPostingPage() {
       default:
         return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
     }
-
-    // Format with "K" notation (divide by 1000 and append "K")
   };
 
   const handleSubmit = async (event) => {
@@ -314,7 +315,7 @@ function JobPostingPage() {
         throw new Error("Failed to submit application");
       }
 
-      alert("Application submitted successfully!");
+      setIsSuccessDialog(true);
     } catch (error) {
       console.error("Error submitting application:", error.message);
       alert("An error occurred while submitting your application.");
@@ -752,6 +753,10 @@ function JobPostingPage() {
           </StyledPaper>
         </Grid>
       </Grid>
+      <SuccessfulFormSubmissionDialog
+        open={isSuccessDialog}
+        onBack={() => setIsSuccessDialog(false)}
+      />
     </StyledContainer>
   );
 }
