@@ -20,3 +20,4 @@ export const COMPENSATION_RATES_FOR_JOB_POSTS = [
 
 export const JOB_TYPES = ["Full Time", "Part Time", "Casual", "On-Call"];
 export const STATUS_TYPES = ["Active", "R&I", "Closed"];
+export const MAX_JOB_DESCRIPTION_LENGTH = 250;
