@@ -58,15 +58,6 @@ function CustomDialog({ open, onClose, title, message }) {
         },
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 20,
-          width: "100%",
-        }}
-      >
       <ErrorOutlineIcon style={{ fontSize: 40, color: "#D32F2F", margin: "10px auto" }} />
       <DialogTitle>
         <Typography variant="h5" fontWeight="bold">
@@ -83,7 +74,6 @@ function CustomDialog({ open, onClose, title, message }) {
           BACK
         </Button>
       </DialogActions>
-      </div>
     </Dialog>
   );
 }
