@@ -17,7 +17,6 @@ import {
   InputLabel,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import ContentCopy from "@mui/icons-material/ContentCopy";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -26,12 +25,14 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import { displayCompensationRange } from "../../../utils/jobLeads";
-import { formateDateObjToStr } from "../../../utils/date";
+import { formatLongDate } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobPost } from "../../../utils/job_posts_api";
 import ConfirmDialog from "../../shared/confirm-dialog-component";
-import { JOB_TYPES_FOR_JOB_POSTS } from "../../../utils/constants";
+import {
+  JOB_TYPES_FOR_JOB_POSTS,
+  MAX_JOB_DESCRIPTION_LENGTH,
+} from "../../../utils/constants";
 import FormSubmissionErrorDialog from "../../shared/form-submission-error-dialog";
 
 function EditJobPostingFormComponent({
@@ -79,6 +80,11 @@ function EditJobPostingFormComponent({
   const [jobDescription, setJobDescription] = React.useState(
     jobPost.job_description || "",
   );
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  const handleToggleExpand = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -93,22 +99,6 @@ function EditJobPostingFormComponent({
     const value = event.target.value ? Number(event.target.value) : null;
 
     setMaxCompensation(value);
-  };
-
-  const copyCompensationToClipboard = () => {
-    const text = displayCompensationRange(
-      minCompensation,
-      maxCompensation,
-      "/hour",
-    );
-    navigator.clipboard.writeText(text).then(
-      () => {
-        setSnackBarMessage("Copied to clipboard");
-      },
-      () => {
-        setSnackBarMessage("Failed to copy");
-      },
-    );
   };
 
   const renderViewValue = (
@@ -143,6 +133,23 @@ function EditJobPostingFormComponent({
 
   const returnToForm = () => {
     setFormSubmissionErrorDialog(false);
+  };
+
+  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
+    // Convert to numbers
+    const minNum = Number(min);
+    const maxNum = Number(max);
+
+    switch (rateOfPayFrequency) {
+      case "Annually": {
+        const formattedMin = `${Math.floor(minNum / 1000)}K`;
+        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
+
+        return `$${formattedMin}/year - $${formattedMax}/year`;
+      }
+      default:
+        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -215,7 +222,7 @@ function EditJobPostingFormComponent({
               <EditIcon sx={{ color: isEditMode ? "#3568E5" : "inherit" }} />
             </IconButton>
           </HeaderContainer>
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ m: 2, borderBottomWidth: 2.5 }} />
           <Stack spacing={2} sx={{ m: 2 }}>
             <Grid container alignItems="center">
               <Grid item xs={3}>
@@ -354,22 +361,15 @@ function EditJobPostingFormComponent({
                 <>
                   {minCompensation !== undefined &&
                   maxCompensation !== undefined ? (
-                    <>
-                      <Grid item xs={8} md={7}>
-                        <Typography>
-                          {displayCompensationRange(
-                            minCompensation,
-                            maxCompensation,
-                            "/hour",
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={1} md={2} sx={{ textAlign: "right" }}>
-                        <IconButton onClick={copyCompensationToClipboard}>
-                          <ContentCopy />
-                        </IconButton>
-                      </Grid>
-                    </>
+                    <Grid item xs={8} md={7}>
+                      <Typography>
+                        {formatSalaryRange(
+                          minCompensation,
+                          maxCompensation,
+                          jobPost.rate_of_pay_frequency,
+                        )}
+                      </Typography>
+                    </Grid>
                   ) : (
                     renderViewValue("Compensation", null)
                   )}
@@ -443,7 +443,7 @@ function EditJobPostingFormComponent({
             <Grid container alignItems="center">
               <Grid item xs={3}>
                 <Typography sx={{ ml: 2 }} variant="subtitle1" align="left">
-                  Expiration Date
+                  Close Date
                 </Typography>
               </Grid>
               <Grid item xs={9}>
@@ -468,43 +468,72 @@ function EditJobPostingFormComponent({
                 ) : (
                   renderViewValue(
                     "Expiration Date",
-                    formateDateObjToStr(expirationDate),
+                    formatLongDate(expirationDate),
                   )
                 )}
               </Grid>
             </Grid>
+            <Divider sx={{ my: 2, borderBottomWidth: 2.5, pb: 2 }} />
+            <Typography variant="h5" sx={{ flexGrow: 1, pt: 2 }}>
+              Description
+            </Typography>
+            <Divider sx={{ my: 2, borderBottomWidth: 2.5 }} />
 
-            <Divider sx={{ my: 2 }} />
-
-            <Grid container alignItems="center">
-              <Grid item xs={3}>
-                <Typography sx={{ ml: 2 }} variant="subtitle1" align="left">
-                  Job Description
+            {isEditMode ? (
+              <TextField
+                multiline
+                minRows={3}
+                value={jobDescription}
+                disabled={!isEditMode}
+                style={{
+                  width: "100%",
+                  fontSize: "1rem",
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                  borderRadius: "4px",
+                  borderColor: "#ced4da",
+                }}
+                onChange={(event) => setJobDescription(event.target.value)}
+              />
+            ) : (
+              <>
+                {/* Conditionally render the truncated or full job description */}
+                <Typography
+                  variant="body1"
+                  sx={{
+                    maxHeight: isDescriptionExpanded ? "none" : "80px", // Control height based on expansion state
+                    overflow: isDescriptionExpanded ? "auto" : "hidden", // Allow scrolling when expanded
+                    transition: "max-height 0.3s ease", // Smooth transition for height change
+                  }}
+                >
+                  {jobDescription.length > MAX_JOB_DESCRIPTION_LENGTH &&
+                  !isDescriptionExpanded
+                    ? `${jobDescription.slice(
+                        0,
+                        MAX_JOB_DESCRIPTION_LENGTH,
+                      )}...`
+                    : jobDescription}
                 </Typography>
-              </Grid>
-              <Grid item xs={9}>
-                {isEditMode ? (
-                  <TextField
-                    multiline
-                    minRows={3}
-                    value={jobDescription}
-                    disabled={!isEditMode}
-                    style={{
-                      width: "100%",
-                      fontSize: "1rem",
-                      marginTop: "8px",
-                      marginBottom: "8px",
-                      borderRadius: "4px",
-                      borderColor: "#ced4da",
-                    }}
-                    onChange={(event) => setJobDescription(event.target.value)}
-                  />
-                ) : (
-                  renderViewValue("Job Description", jobDescription)
-                )}
-              </Grid>
-            </Grid>
 
+                {/* Display the Read More or Read Less link based on the expansion state */}
+                {jobDescription.length > MAX_JOB_DESCRIPTION_LENGTH && (
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    sx={{
+                      cursor: "pointer",
+                      marginTop: 1,
+                      fontWeight: 500,
+                      color: "#3568E5",
+                      fontSize: "0.95rem",
+                    }}
+                    onClick={handleToggleExpand}
+                  >
+                    {isDescriptionExpanded ? "READ LESS" : "READ MORE"}
+                  </Typography>
+                )}
+              </>
+            )}
             {isEditMode && (
               <Grid container justifyContent="flex-end">
                 <Grid item>
