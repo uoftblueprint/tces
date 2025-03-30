@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
+import "./editJobPostForm.css"
 import {
   Box,
   Typography,
@@ -25,6 +26,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
+import { displayCompensationRange } from "../../../utils/jobLeads";
 import { formatLongDate } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobPost } from "../../../utils/job_posts_api";
@@ -135,23 +137,6 @@ function EditJobPostingFormComponent({
     setFormSubmissionErrorDialog(false);
   };
 
-  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
-    // Convert to numbers
-    const minNum = Number(min);
-    const maxNum = Number(max);
-
-    switch (rateOfPayFrequency) {
-      case "Annually": {
-        const formattedMin = `${Math.floor(minNum / 1000)}K`;
-        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
-
-        return `$${formattedMin}/year - $${formattedMax}/year`;
-      }
-      default:
-        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -196,10 +181,10 @@ function EditJobPostingFormComponent({
         sx={{
           width: "90%",
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: 1,
           ml: 9,
           mb: 2,
-          border: "1px solid #e0e0e0",
+          border: "0.5px solid #e0e0e0",
         }}
       >
         <form onSubmit={commitEdit}>
@@ -223,7 +208,7 @@ function EditJobPostingFormComponent({
             </IconButton>
           </HeaderContainer>
           <Divider sx={{ m: 2, borderBottomWidth: 2.5 }} />
-          <Stack spacing={2} sx={{ m: 2 }}>
+          <Stack spacing={1} sx={{ m: 2 }}>
             <Grid container alignItems="center">
               <Grid item xs={3}>
                 <Typography sx={{ ml: 2 }} variant="subtitle1" align="left">
@@ -302,7 +287,7 @@ function EditJobPostingFormComponent({
 
               {isEditMode ? (
                 <>
-                  <Grid item sx={{ width: "37%", marginRight: 1 }}>
+                  <Grid item sx={{ width: "36%", marginRight: 1 }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Minimum Compensation
@@ -329,7 +314,8 @@ function EditJobPostingFormComponent({
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item sx={{ width: "37%" }}>
+                  <Grid item sx={{ width: "1%" }}/>
+                  <Grid item sx={{ width: "36%" }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Maximum Compensation
@@ -363,10 +349,10 @@ function EditJobPostingFormComponent({
                   maxCompensation !== undefined ? (
                     <Grid item xs={8} md={7}>
                       <Typography>
-                        {formatSalaryRange(
+                        {displayCompensationRange(
                           minCompensation,
                           maxCompensation,
-                          jobPost.rate_of_pay_frequency,
+                          "/hour",
                         )}
                       </Typography>
                     </Grid>

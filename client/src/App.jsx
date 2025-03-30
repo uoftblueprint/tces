@@ -129,6 +129,7 @@ function App() {
   const THEME = createTheme({
     typography: {
       fontFamily: `"Inter"`,
+      "fontWeightBold": 600
     },
   });
 
@@ -153,11 +154,12 @@ function App() {
                 element={<JobPostingsClientDashboard />}
               />
             </Route>
-            <Route
-              path="/job-postings/:jobPostingId"
-              element={<ViewJobPosting />}
-            />
-
+            <Route element={<PublicNavbar />}>
+              <Route
+                path="/job-postings/:jobPostingId"
+                element={<ViewJobPosting />}
+              />
+            </Route>
             <Route
               path="/signin"
               element={
