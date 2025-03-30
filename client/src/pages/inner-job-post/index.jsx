@@ -6,7 +6,7 @@ import EditJobPostComponent from "../../components/job-postings-dashboard-compon
 import JobLeadType from "../../prop-types/JobLeadType";
 import UserType from "../../prop-types/UserType";
 import ClientType from "../../prop-types/ClientType";
-import {  getOneJobPost } from "../../utils/job_posts_api";
+import { getOneJobPost } from "../../utils/job_posts_api";
 import LoadingScreenComponent from "../../components/shared/loading-screen-component";
 import { formatDateStr } from "../../utils/date";
 
@@ -22,7 +22,7 @@ function InnerJobPost({
 }) {
   const errorMessage = "Job Post not found.";
   const { jobPostID } = useParams();
-  const parsedjobLeadID = parseInt(jobPostID,10);
+  const parsedjobLeadID = parseInt(jobPostID, 10);
 
   const [jobPostToEdit, setJobPostToEdit] = useState(null);
   const [error, setError] = useState("");
@@ -30,7 +30,7 @@ function InnerJobPost({
   useEffect(() => {
     setError("");
     const fetchJobLead = async () => {
-      const res = await  getOneJobPost(parsedjobLeadID);
+      const res = await getOneJobPost(parsedjobLeadID);
       const json = await res.json();
       if (json.status === "success") {
         const jobPosting = json.jobPost;
