@@ -35,6 +35,7 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
     job_description: "",
     job_id: "",
   };
+
   const [jobPostData, setLocalJobPostData] = useState(initialJobData);
 
   useEffect(() => {
