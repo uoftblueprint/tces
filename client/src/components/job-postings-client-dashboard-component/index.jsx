@@ -24,6 +24,19 @@ function JobPostingsClientDashboardComponent() {
     });
   };
 
+  // Function to reset sort, job type and location filters
+  const handleReset = () => {
+    setSortConfig(null);
+    setSelectedJobType(null);
+    setSelectedLocation(null);
+  };
+
+  // Pass this flag for reset button in job postings header component
+  const canReset =
+    (!sortConfig || sortConfig?.direction === "desc") &&
+    !selectedJobType &&
+    !selectedLocation;
+
   // Fetch job postings whenever filters or sorting change
   useEffect(() => {
     const fetchActiveJobPostings = async () => {
@@ -84,6 +97,8 @@ function JobPostingsClientDashboardComponent() {
         sortConfig={sortConfig}
         setSelectedJobType={setSelectedJobType}
         setSelectedLocation={setSelectedLocation}
+        handleReset={handleReset}
+        canReset={canReset}
       />
 
       <JobPostingsClientDashboardTableComponent

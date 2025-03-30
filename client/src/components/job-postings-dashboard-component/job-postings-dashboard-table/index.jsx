@@ -7,7 +7,6 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  GridRowModes,
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
@@ -24,7 +23,7 @@ import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-componen
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts, deleteJobPost } from "../../../utils/job_posts_api";
+import { getAllJobPosts, deleteJobPost, getOneJobPost} from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -66,7 +65,6 @@ export default function JobPostingsDashboardTableComponent() {
             closeDate: jobPost.close_date,
             state: jobPost.state,
           }));
-
           setRows(formattedData);
         } else {
           const errorData = await response.json();
@@ -100,12 +98,25 @@ export default function JobPostingsDashboardTableComponent() {
     );
   };
 
-  const handleEditClick = (id) => () => {
-    setRowModesModel((prevModel) => ({
-      ...prevModel,
-      [id]: { mode: GridRowModes.Edit },
-    }));
+  const handleEditClick = (id) => async () => {
+    try {
+      const response = await getOneJobPost(id);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      if (data.status === "success" && data.jobPost) {
+        // Pass the jobPostData via state to the EditJobPost component
+        navigate(`/all-job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
+      } else {
+        console.error("Error fetching job post:", data.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch job post:", error);
+    }
   };
+  
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
@@ -138,10 +149,27 @@ export default function JobPostingsDashboardTableComponent() {
     handleCloseDialog();
   };
 
-  const handleJobPostingsNavClick = (jobLeadId) => {
-    navigate(`/job-postings/${jobLeadId}`);
+  const handleJobPostingsNavClick = async (jobPostId) => {
+    navigate(`/all-job-postings/${jobPostId}`);
+    try {
+      const response = await getOneJobPost(jobPostId);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.status === "success" && data.jobPost) {
+        navigate(`/all-job-postings/${jobPostId}`, { state: { jobPostData: data.jobPost } });
+      } else {
+        console.error("Error fetching job post:", data.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch job post:", error);
+    }
   };
-
+ 
+  
   const columns = [
     {
       width: 60,
@@ -164,7 +192,7 @@ export default function JobPostingsDashboardTableComponent() {
       headerClassName: "header-class",
       renderCell: (params) => (
         <Button
-          onClick={() => handleJobPostingsNavClick(params.row.jobLeadID)}
+          onClick={() => handleJobPostingsNavClick(params.row.id)}
           style={{
             textDecoration: "underline",
             color: "#3568E5",
