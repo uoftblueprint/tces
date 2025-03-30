@@ -172,31 +172,20 @@ const addJobApplicationRequestHandler = async (req, res) => {
       },
     });
 
-    // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on Supabase
+    // ! use the uploadFileToS3 function to upload the resume to the S3 bucket on AWS
 
-    uploadFileToS3(
-      resume,
-      `${jobApplication.id}_${name}_${associatedJobPost.title}`,
+    const sanitizedJobTitle = associatedJobPost.title.replace(
+      /[^a-zA-Z0-9_-]/g,
+      "_",
     );
+    const fileName = `${jobApplication.id}_${parseInt(
+      jobPostingId,
+      10,
+    )}_${name}_${sanitizedJobTitle}`;
 
-    // ! Delete temporarily saved resume file that was uploaded.
+    uploadFileToS3(resume, fileName);
 
-    const uploadsDir = path.join(__dirname, "..", "..", "uploads");
-
-    fs.readdir(uploadsDir, (err, files) => {
-      files.forEach((file) => {
-        const filePath = path.join(uploadsDir, file);
-        if (file !== ".gitkeep") {
-          fs.unlink(filePath, () => {});
-        }
-      });
-    });
-
-    // ! Set resume as ${jobApplication.id}_${name}_${associatedJobPost.title}
-
-    const nameWithNoSpaces = name.replace(/\s+/g, "_");
-
-    jobApplication.resume = `${jobApplication.id}_${nameWithNoSpaces}_${associatedJobPost.title}`;
+    jobApplication.resume = fileName;
 
     // ! Save the job application with the updated resume field
 

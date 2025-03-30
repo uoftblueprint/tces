@@ -63,9 +63,6 @@ const fetchJobApplicationsByApplicantName = async ({
 const uploadJobApplication = async (formData, token) => {
   // eslint-disable-next-line no-useless-catch
 
-  const formDataObject = Object.fromEntries(formData.entries());
-  console.log(formDataObject);
-
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_applications`, {
     method: "POST",
     credentials: "include",
@@ -77,9 +74,10 @@ const uploadJobApplication = async (formData, token) => {
 
 const getResumeUrl = async (jobApplicationId) => {
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    `${REACT_APP_API_BASE_URL}/job_applications/resume/${jobApplicationId}`,
     {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

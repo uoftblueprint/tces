@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+
 import {
   Paper,
   Typography,
@@ -10,19 +12,22 @@ import {
   MenuItem,
   IconButton,
   Box,
+  Container,
+  FormControl,
+  FormHelperText,
 } from "@mui/material";
-import { UploadFile,ArrowBack} from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { JobPostContainer } from "../index.styles";
 import EditJobPostingFormComponent from "./editJobPostForm";
 
-function JobDetails({ setJobPostData,setSnackBarMessage}) {
+function JobDetails({ setJobPostData, setSnackBarMessage }) {
   const location = useLocation();
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   const editMode = location.state?.editMode || false;
   const [isEditMode, setIsEditMode] = useState(editMode);
-  
+
   const initialJobData = location.state?.jobPostData || {
     title: "",
     employer: "",
@@ -40,14 +45,13 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
 
   useEffect(() => {
     setJobPostData(jobPostData);
-  }, [jobPostData, setJobPostData,setLocalJobPostData]);
-
+  }, [jobPostData, setJobPostData, setLocalJobPostData]);
 
   return (
     <JobPostContainer maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <IconButton onClick={() => navigate("/all-job-postings")}>
-          <ArrowBack/>
+          <ArrowBack />
         </IconButton>
         <Box sx={{ ml: 5 }}>
           <Typography variant="h4" fontWeight="bold" display="inline">
@@ -65,51 +69,115 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
       <Grid container spacing={4}>
         {/* Job Details Section */}
         <Grid item xs={12} md={7}>
-          <EditJobPostingFormComponent jobPost={jobPostData} setJobPost={setLocalJobPostData} setSnackBarMessage={setSnackBarMessage} 
-          isEditMode={isEditMode} setIsEditMode={setIsEditMode}
+          <EditJobPostingFormComponent
+            jobPost={jobPostData}
+            setJobPost={setLocalJobPostData}
+            setSnackBarMessage={setSnackBarMessage}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
           />
         </Grid>
 
         {/* Application Form Section */}
         <Grid item xs={12} md={5}>
           <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
+            <Typography
+              color="#9E9E9E"
+              gutterBottom
+              sx={{ fontSize: "1.6rem", fontWeight: "normal", pb: 2 }}
+            >
               Apply for this Position
             </Typography>
-            <TextField fullWidth label="Name" required sx={{ mb: 2 }} disabled />
+            <TextField
+              fullWidth
+              label="Name"
+              required
+              helperText="*Required"
+              sx={{ mb: 2 }}
+              disabled
+            />
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <TextField fullWidth label="Phone" required sx={{ mb: 2 }} disabled />
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  required
+                  sx={{ mb: 2 }}
+                  helperText="*Required"
+                  disabled
+                />
               </Grid>
               <Grid item xs={6}>
-                <TextField fullWidth label="Postal Code" required sx={{ mb: 2 }} disabled />
+                <TextField
+                  fullWidth
+                  label="Postal Code"
+                  required
+                  sx={{ mb: 2 }}
+                  helperText="*Required"
+                  disabled
+                />
               </Grid>
             </Grid>
-            <TextField fullWidth label="Email address" required sx={{ mb: 2 }} disabled />
-            <Select fullWidth defaultValue="" displayEmpty sx={{ mb: 2 }} disabled>
-              <MenuItem value="">Status in Canada</MenuItem>
-              <MenuItem value="Citizen">Citizen</MenuItem>
-              <MenuItem value="Permanent Resident">Permanent Resident</MenuItem>
-              <MenuItem value="Work Permit">Work Permit</MenuItem>
-            </Select>
+            <TextField
+              fullWidth
+              label="Email address"
+              required
+              sx={{ mb: 2 }}
+              helperText="*Required"
+              disabled
+            />
+            <FormControl fullWidth disabled>
+              <Select defaultValue="" displayEmpty>
+                <MenuItem value="">Status in Canada</MenuItem>
+                <MenuItem value="Citizen">Citizen</MenuItem>
+                <MenuItem value="Permanent Resident">
+                  Permanent Resident
+                </MenuItem>
+                <MenuItem value="Work Permit">Work Permit</MenuItem>
+              </Select>
+              <FormHelperText>*Required</FormHelperText>
+            </FormControl>
             {/* Upload Resume */}
-            <Paper
-              sx={{
-                border: "2px dashed #B0BEC5",
-                textAlign: "center",
-                p: 3,
-                backgroundColor: "#ECEFF1",
-                mb: 2,
-                borderRadius: 2,
-              }}
-            >
-              <UploadFile sx={{ fontSize: 40, color: "#607D8B" }} />
-              <Typography variant="body2" sx={{ fontWeight: "medium" }}>Click to upload a file</Typography>
-              <Typography variant="caption">PDF file only</Typography>
-            </Paper>
-            <Button variant="contained" color="primary" fullWidth disabled>
-              SUBMIT
-            </Button>
+            <Box sx={{ margin: "8px", width: "96%" }}>
+              <Typography color="#9E9E9E" pb="13px" pt="1.2rem">
+                *Upload Resume
+              </Typography>
+              <Container
+                maxWidth={false}
+                sx={{
+                  border: "1px dashed #E0E0E0",
+                  borderRadius: "15px",
+                  color: "#AAAFBA",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  padding: "30px 0",
+                }}
+              >
+                <Container sx={{ width: "auto" }}>
+                  <IconButton sx={{ backgroundColor: "#E6ECFB" }}>
+                    <UploadFileIcon />
+                  </IconButton>
+                </Container>
+                <Typography variant="body1" pb="10px" pt="10px">
+                  <span>Click to upload</span>
+                  &nbsp;or drag and drop
+                </Typography>
+                <Typography variant="body2">PDF file only</Typography>
+              </Container>
+            </Box>
+            <Box sx={{ mt: 1.5, display: "flex", justifyContent: "right" }}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="small"
+                sx={{ width: "90px" }}
+                disabled
+              >
+                Submit
+              </Button>
+            </Box>
           </Paper>
         </Grid>
       </Grid>
@@ -119,12 +187,12 @@ function JobDetails({ setJobPostData,setSnackBarMessage}) {
 
 JobDetails.propTypes = {
   setJobPostData: PropTypes.func,
-  setSnackBarMessage: PropTypes.func
+  setSnackBarMessage: PropTypes.func,
 };
 
 JobDetails.defaultProps = {
   setJobPostData: () => {},
-  setSnackBarMessage: () => {}
+  setSnackBarMessage: () => {},
 };
 
 export default JobDetails;
