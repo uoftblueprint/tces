@@ -91,13 +91,13 @@ function JobApplicationsTable({
               <ContentTableCell>{row.id}</ContentTableCell>
 
               <ContentTableCell>
-                <Link href={`/job-posts/${row.job_posting_id}`}>
-                  {row.title}
+                <Link href={`/job-applications/${row.id}`}>
+                  {row.job_posting.title}
                 </Link>
               </ContentTableCell>
 
               <ContentTableCell>
-                <Link href={`/job-applications/${row.id}`}>{row.name}</Link>
+                {row.name}
               </ContentTableCell>
 
               <ContentTableCell>{row.email}</ContentTableCell>
@@ -147,7 +147,7 @@ function JobApplicationsTable({
                   handlePageRowChange({ page: parseInt(newPage, 10) })
                 }
                 onRowsPerPageChange={(e) => {
-                  handlePageRowChange({ rows: parseInt(e.target.value, 10) });
+                  handlePageRowChange({ rows: parseInt(e.target.value, 10), page: 0 });
                 }}
               />
             </TableCell>

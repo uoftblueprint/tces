@@ -19,11 +19,11 @@ function SortMenu({ applySort, intialState }) {
   const options = [
     {
       label: "Application date: Ascending",
-      value: "ascending",
+      value: "asc",
     },
     {
       label: "Application date: Descending",
-      value: "descending",
+      value: "desc",
     },
   ];
 

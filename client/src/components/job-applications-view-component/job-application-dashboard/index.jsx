@@ -18,27 +18,10 @@ function JobApplicationDashboard({
   };
 
   const isAllEmptyFilters =
-    !jobApplicationQuery.jobTitle &&
-    !jobApplicationQuery.applicant &&
-    !jobApplicationQuery.searchID &&
-    jobApplicationQuery.sort === "descending";
-
-  if (jobApplicationQuery) {
-    if (jobApplicationQuery.sort === "ascending") {
-      jobApplications.sort(
-        (jobApplication1, jobApplication2) =>
-          jobApplication1.createdAt - jobApplication2.createdAt,
-      );
-    } else {
-      jobApplications.sort(
-        (jobApplication1, jobApplication2) =>
-          jobApplication2.createdAt - jobApplication1.createdAt,
-      );
-    }
-  }
-
-  const getJobTitleLabels = (option) => jobTitles[option];
-  const jobTitleIds = Object.keys(jobTitles);
+    !jobApplicationQuery.job_title &&
+    !jobApplicationQuery.name &&
+    !jobApplicationQuery.job_posting_id &&
+    jobApplicationQuery.sort === "desc";
 
   return (
     <Container
@@ -99,39 +82,39 @@ function JobApplicationDashboard({
           <SearchInput
             onChange={(e, value, reason) => {
               if (reason === "clear" && e.type === "click") {
-                handleFilterChange({ jobTitle: null });
+                handleFilterChange({ job_title: null });
               } else {
-                handleFilterChange({ jobTitle: parseInt(value, 10) });
+                handleFilterChange({ job_title: value });
               }
             }}
-            options={jobTitleIds}
-            getOptionLabel={getJobTitleLabels}
+            options={Object.values(jobTitles)}
+            getOptionLabel={(option) => option}
             label="Job Title"
-            selectedValue={jobApplicationQuery.jobTitle}
+            selectedValue={jobApplicationQuery.job_title}
           />
           <SearchInput
             onChange={(e, value, reason) => {
               if (reason === "clear" && e.type === "click") {
-                handleFilterChange({ applicant: null });
+                handleFilterChange({ name: null });
               } else {
-                handleFilterChange({ applicant: value });
+                handleFilterChange({ name: value });
               }
             }}
             options={applicants}
             label="Applicant"
-            selectedValue={jobApplicationQuery.applicant}
+            selectedValue={jobApplicationQuery.name}
           />
           <SearchInput
             onChange={(e, value, reason) => {
               if (reason === "clear" && e.type === "click") {
-                handleFilterChange({ searchID: null });
+                handleFilterChange({ job_posting_id: null });
               } else {
-                handleFilterChange({ searchID: parseInt(value, 10) });
+                handleFilterChange({ job_posting_id: parseInt(value, 10) });
               }
             }}
             options={searchIDs}
             label="Search ID#"
-            selectedValue={jobApplicationQuery.searchID}
+            selectedValue={jobApplicationQuery.job_posting_id}
           />
         </Container>
       </Container>
@@ -147,10 +130,11 @@ function JobApplicationDashboard({
         disabled={isAllEmptyFilters}
         onClick={() => {
           handleFilterChange({
-            searchID: null,
-            applicant: null,
-            jobTitle: null,
-            sort: "descending",
+            job_posting_id: null,
+            name: null,
+            job_title: null,
+            sort: "desc",
+            page: 0,
           });
         }}
       >
@@ -189,9 +173,9 @@ JobApplicationDashboard.propTypes = {
   jobApplicationQuery: PropTypes.shape({
     rows: PropTypes.number.isRequired,
     page: PropTypes.number.isRequired,
-    searchID: PropTypes.oneOfType([PropTypes.string, PropTypes.number, null]),
-    applicant: PropTypes.oneOfType([PropTypes.string, null]),
-    jobTitle: PropTypes.oneOfType([PropTypes.string, null]),
+    job_posting_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number, null]),
+    name: PropTypes.oneOfType([PropTypes.string, null]),
+    job_title: PropTypes.oneOfType([PropTypes.string, null]),
     sort: PropTypes.string.isRequired,
   }).isRequired,
   fetchFilteredApplications: PropTypes.func.isRequired,

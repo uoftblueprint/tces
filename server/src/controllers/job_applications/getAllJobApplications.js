@@ -12,10 +12,8 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
     // ! Paginate the data (take a look at the existing API endpoints in the codebase for an example)
     // ! This pagination logic is from the existing code base. Maybe I should use this.
 
-    const page = req?.query?.page ? parseInt(req.query.page, 10) - 1 : null;
-    const pageSize = req?.query?.pageSize
-      ? parseInt(req.query.pageSize, 10)
-      : null;
+    const page = req?.query?.page ? Math.max(parseInt(req.query.page, 10), 0) : 0;
+    const pageSize = req?.query?.rows ? parseInt(req.query.rows, 10) : 10;
 
     if (name) {
       query.name = name;
@@ -60,9 +58,9 @@ const getAllJobApplicationsRequestHandler = async (req, res) => {
       ],
     };
 
-    if (page !== null && pageSize !== null) {
-      searchConfig.limit = parseInt(pageSize, 10);
-      searchConfig.offset = parseInt(pageSize, 10) * parseInt(page, 10);
+    if (pageSize !== null) {
+      searchConfig.limit = pageSize;
+      searchConfig.offset = page * pageSize;
     }
 
     const jobApplications = await JobApplications.findAll(searchConfig);
