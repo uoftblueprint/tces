@@ -130,7 +130,7 @@ function JobApplicationsTable({
                   handlePageRowChange({ page: parseInt(newPage, 10) })
                 }
                 onRowsPerPageChange={(e) => {
-                  handlePageRowChange({ rows: parseInt(e.target.value, 10) });
+                  handlePageRowChange({ rows: parseInt(e.target.value, 10), page: 0 });
                 }}
               />
             </TableCell>

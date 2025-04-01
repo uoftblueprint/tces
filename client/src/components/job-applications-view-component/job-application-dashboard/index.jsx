@@ -134,6 +134,7 @@ function JobApplicationDashboard({
             name: null,
             job_title: null,
             sort: "desc",
+            page: 0,
           });
         }}
       >
