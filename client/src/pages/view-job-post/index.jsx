@@ -61,7 +61,9 @@ function CustomDialog({ open, onClose, title, message }) {
         },
       }}
     >
-      <ErrorOutlineIcon style={{ fontSize: 40, color: "#D32F2F", margin: "10px auto" }} />
+      <ErrorOutlineIcon
+        style={{ fontSize: 40, color: "#D32F2F", margin: "10px auto" }}
+      />
       <DialogTitle>
         <Typography variant="h5" fontWeight="bold">
           {title}
@@ -151,9 +153,11 @@ function JobPostingPage() {
             },
           });
         } catch (error) {
-          setDialogData({ title: "Error", message: "Error fetching job posting:" });
+          setDialogData({
+            title: "Error",
+            message: "Error fetching job posting:",
+          });
           setDialogOpen(true);
-          
         }
       }
     };
@@ -203,7 +207,6 @@ function JobPostingPage() {
   const [fileError, setFileError] = useState("");
   const [, setDropzoneKey] = useState(0);
   const [recaptchaToken, setRecaptchaToken] = useState("");
-
 
   const handleFileChange = (acceptedFiles) => {
     if (!acceptedFiles || acceptedFiles.length === 0) {
@@ -333,7 +336,10 @@ function JobPostingPage() {
     }
 
     if (!recaptchaToken) {
-      setDialogData({ title: "Error", message: "Please complete the reCAPTCHA verification." });
+      setDialogData({
+        title: "Error",
+        message: "Please complete the reCAPTCHA verification.",
+      });
       setDialogOpen(true);
       return;
     }
@@ -363,7 +369,6 @@ function JobPostingPage() {
       setIsSuccessDialog(true);
     } catch (error) {
       setErrorDialogOpen(true);
-
     }
   };
 
@@ -798,8 +803,16 @@ function JobPostingPage() {
           </StyledPaper>
         </Grid>
       </Grid>
-      <FormSubmissionErrorDialog open={errorDialogOpen} onBack={() => setErrorDialogOpen(false)} />
-      <CustomDialog open={dialogOpen} onClose={() => setDialogOpen(false)} title={dialogData.title} message={dialogData.message} />
+      <FormSubmissionErrorDialog
+        open={errorDialogOpen}
+        onBack={() => setErrorDialogOpen(false)}
+      />
+      <CustomDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        title={dialogData.title}
+        message={dialogData.message}
+      />
       <SuccessfulFormSubmissionDialog
         open={isSuccessDialog}
         onBack={() => setIsSuccessDialog(false)}
