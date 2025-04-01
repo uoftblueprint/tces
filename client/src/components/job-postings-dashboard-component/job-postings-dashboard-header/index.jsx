@@ -10,16 +10,14 @@ function JobPostingsDashboardHeaderComponent() {
     <HeaderContainer>
       <div>
         <Typography
-          style={{
-            fontFamily: "Arial",
-            fontSize: "34px",
-            fontWeight: "Bold",
-            lineHeight: "42px",
-            letterSpacing: "0.25px",
-            textAlign: "left",
-            marginRight: 40,
-            marginLeft: 40,
+          sx={{
+            justifySelf: "start",
+            alignSelf: "start",
+            fontWeight: "bold",
+            padding: "6% 0 0 0",
+            marginLeft: "40px",
           }}
+          variant="h3"
         >
           All Job Postings
         </Typography>

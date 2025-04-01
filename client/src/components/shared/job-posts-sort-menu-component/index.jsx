@@ -58,6 +58,9 @@ function SortMenu({ applySort }) {
             &#9662;
           </span>
         }
+        sx={{
+          borderRadius: "8px",
+        }}
       >
         Sort
       </Button>
@@ -69,6 +72,7 @@ function SortMenu({ applySort }) {
         MenuListProps={{
           "aria-labelledby": "sort-button",
         }}
+        sx={{ borderRadius: "10px" }}
       >
         <MenuItem onClick={() => handleSelect("asc")}>
           <ListItemIcon>
