@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import JobPostingsClientDashboardTableComponent from "./job-postings-client-dashboard-table";
 import JobPostingsClientDashboardHeader from "./job-postings-client-dashboard-header";
 
@@ -10,6 +10,7 @@ function JobPostingsClientDashboardComponent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1); // Stores total number of pages
+  const topPageRef = useRef(null); // Used to scroll to top of table on pagination change
 
   // Function to update sorting state
   const handleSortChange = (newSortConfig) => {
@@ -24,6 +25,11 @@ function JobPostingsClientDashboardComponent() {
     });
   };
 
+  // Function to handle pagination change
+  const handlePaginationChange = (e) => {
+    setRowsPerPage(e.target.value);
+    topPageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   // Function to reset sort, job type and location filters
   const handleReset = () => {
     setSortConfig(null);
@@ -92,6 +98,7 @@ function JobPostingsClientDashboardComponent() {
 
   return (
     <div
+      ref={topPageRef}
       style={{
         padding: "90px",
         paddingBottom: "72px",
@@ -119,7 +126,7 @@ function JobPostingsClientDashboardComponent() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
+        handlePaginationChange={handlePaginationChange}
         totalPages={totalPages}
       />
     </div>
