@@ -1,5 +1,5 @@
 const logger = require("pino")();
-const { Op } = require("sequelize");
+const { Op, fn, col, where } = require("sequelize");
 const JobApplication = require("../../models/job_applications.model");
 const JobPosting = require("../../models/job_posts.model");
 
@@ -30,16 +30,37 @@ const getFilterDropdownOptionsHandler = async (req, res) => {
       baseQuery.where.job_posting_id = job_posting_id;
     }
 
+    const andConditions = [];
+
     if (name) {
-      baseQuery.where.name = { [Op.like]: `%${name}%` };
+      andConditions.push(
+        where(fn("LOWER", col("job_applications.name")), {
+          [Op.like]: `%${name.toLowerCase()}%`,
+        })
+      );
     }
 
     if (email) {
-      baseQuery.where.email = { [Op.like]: `%${email}%` };
+      andConditions.push(
+        where(fn("LOWER", col("job_applications.email")), {
+          [Op.like]: `%${email.toLowerCase()}%`,
+        })
+      );
+    }
+
+    if (andConditions.length > 0) {
+      baseQuery.where = {
+        ...baseQuery.where,
+        [Op.and]: andConditions,
+      };
     }
 
     if (jobTitle) {
-      baseQuery.include[0].where.title = { [Op.like]: `%${jobTitle}%` };
+      baseQuery.include[0].where = {
+        [Op.and]: where(fn("LOWER", col("job_posting.title")), {
+          [Op.like]: `%${jobTitle.toLowerCase()}%`,
+        }),
+      };
     }
 
     // Fetch data from the database

@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
-  width: 100%; 
+  width: 100%;
 `;
 
 const Divider = styled(Box)`
