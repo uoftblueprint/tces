@@ -3,10 +3,13 @@ import styled from "styled-components";
 const DashboardContainer = styled.div`
   margin-right: 40px;
   overflow: "auto";
+  background-color: #fafafa;
+  min-height: 100vh;
+  width: 100vw;
 `;
 
 const HeaderContainer = styled.div`
-  margin: 20px;
+  padding: 20px;
   display: flex;
   align-items: center;
 `;

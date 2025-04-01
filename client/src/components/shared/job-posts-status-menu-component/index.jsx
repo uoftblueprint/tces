@@ -52,6 +52,7 @@ function StatusMenu({ applyStatus }) {
             &#9662;
           </span>
         }
+        sx={{ borderRadius: "8px" }}
       >
         Status
       </Button>
