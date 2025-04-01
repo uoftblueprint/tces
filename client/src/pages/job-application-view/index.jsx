@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  fetchJobTitles,
-  fetchSearchIDs,
-  fetchApplicantNames,
-  fetchAllJobApplicationsMock,
-  fetchPaginatedData,
-} from "../../mock-data/mockJobApplications";
+  fetchAllJobApplications,
+  getFilterOptions,
+} from "../../utils/job_applications_api";
 import JobApplicationDashboard from "../../components/job-applications-view-component/job-application-dashboard";
 
 const START_PAGE = 0;
@@ -35,28 +32,21 @@ function JobApplicationView() {
   // Adds job title property to each job application and replaces string createdAt value to Date type
   // jobTitlesMap consists of key value pairs between job_posting_id (from jobApplication api call) and
   // the corresponding job title
-  const formatJobApplications = (rawJobApplications, jobTitlesMap) =>
+  const formatJobApplications = (rawJobApplications) =>
     rawJobApplications.map((jobApplication) => {
       return {
         ...jobApplication,
-        title: jobTitlesMap[jobApplication.job_posting_id],
+        title: jobApplication.job_posting.title,
       };
     });
 
   // Used to get job titles on page load
-  const fetchFormattedJobApplications = async (jobTitlesMap) => {
-    // const response = await fetchAllJobApplications(START_PAGE, START_ROWS);
-    const response = await fetchAllJobApplicationsMock(
-      jobApplicationQuery.page,
-      jobApplicationQuery.rows,
-    );
+  const fetchFormattedJobApplications = async () => {
+    const response = await fetchAllJobApplications(jobApplicationQuery);
     const rawJobApplications = response.jobApplications;
     const totalJobApps = parseInt(response.totalJobApplicationsNumber, 10);
 
-    const formattedJobApplications = formatJobApplications(
-      rawJobApplications,
-      jobTitlesMap,
-    );
+    const formattedJobApplications = formatJobApplications(rawJobApplications);
 
     return { formattedJobApplications, totalJobApps };
   };
@@ -66,24 +56,25 @@ function JobApplicationView() {
 
     setJobApplicationQuery(newApplicationQuery);
 
-    const jobApplicationData = fetchPaginatedData(newApplicationQuery);
-    setTotalJobApplications(jobApplicationData.totalJobApplicationsNumber);
-    setJobApplications(
-      formatJobApplications(jobApplicationData.jobApplications, jobTitles),
-    );
+    const response = await fetchAllJobApplications(newApplicationQuery);
+
+    const jobApplicationData = response.jobApplications;
+    const totalJobApps = parseInt(response.totalJobApplicationsNumber, 10);
+
+    const formattedJobApplications = formatJobApplications(jobApplicationData);
+
+    setTotalJobApplications(totalJobApps);
+    setJobApplications(formattedJobApplications);
   };
 
   const firstTimeLoad = async () => {
-    const newJobTitles = fetchJobTitles();
-    const newApplicants = fetchApplicantNames();
-    const newSearchIDs = fetchSearchIDs();
+    const data = await getFilterOptions();
 
-    setJobTitles(newJobTitles);
-    setApplicants(newApplicants);
-    setSearchIDs(newSearchIDs);
+    setJobTitles(data.jobTitles);
+    setApplicants(data.names);
+    setSearchIDs(data.jobPostingIds);
 
-    const jobApplicationData =
-      await fetchFormattedJobApplications(newJobTitles);
+    const jobApplicationData = await fetchFormattedJobApplications(data.jobTitles);
 
     // set table to initially show some rows
     setJobApplications(jobApplicationData.formattedJobApplications);
