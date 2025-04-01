@@ -29,7 +29,7 @@ function JobPostingsClientDashboardTableComponent({
   currentPage,
   setCurrentPage,
   rowsPerPage,
-  setRowsPerPage,
+  handlePaginationChange,
   totalPages,
 }) {
   const navigate = useNavigate();
@@ -129,7 +129,7 @@ function JobPostingsClientDashboardTableComponent({
         <Typography variant="body2">Rows per page</Typography>
         <Select
           value={rowsPerPage}
-          onChange={(e) => setRowsPerPage(e.target.value)}
+          onChange={handlePaginationChange}
           size="small"
         >
           {[10, 20, 30, 50].map((option) => (
@@ -175,7 +175,7 @@ JobPostingsClientDashboardTableComponent.propTypes = {
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  setRowsPerPage: PropTypes.func.isRequired,
+  handlePaginationChange: PropTypes.func.isRequired,
   totalPages: PropTypes.number.isRequired,
 };
 

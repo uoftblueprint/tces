@@ -1,6 +1,4 @@
 const express = require("express");
-const multer = require("multer");
-const path = require("path");
 const isLoggedIn = require("../middlewares/auth/isLoggedIn");
 const getAllJobApplicationsRequestHandler = require("../controllers/job_applications/getAllJobApplications");
 const addJobApplicationRequestHandler = require("../controllers/job_applications/addJobApplication");
@@ -9,7 +7,7 @@ const getOneJobApplicationByIdRequestHandler = require("../controllers/job_appli
 const getJobApplicationResumeRequestHandler = require("../controllers/job_applications/getJobApplicationResumeUrl");
 const getFilterDropdownOptionsHandler = require("../controllers/job_applications/getFilterDropdownOptionsHandler");
 
-const upload = multer({ dest: path.join(__dirname, "..", "uploads") });
+const upload = require("../middlewares/multer/upload");
 
 const router = express.Router();
 
@@ -18,7 +16,7 @@ router.get("/", isLoggedIn, async (req, res) => {
   return getAllJobApplicationsRequestHandler(req, res);
 });
 
-router.post("/", isLoggedIn, upload.single("resume"), async (req, res) => {
+router.post("/", upload.single("resume"), async (req, res) => {
   return addJobApplicationRequestHandler(req, res);
 });
 
@@ -28,7 +26,7 @@ router.get("/id/:application_id", async (req, res) => {
 });
 
 // Route to get the presigned resume URL for a job application
-router.get("resume/:job_application_id", isLoggedIn, async (req, res) => {
+router.get("/resume/:job_application_id", isLoggedIn, async (req, res) => {
   return getJobApplicationResumeRequestHandler(req, res);
 });
 

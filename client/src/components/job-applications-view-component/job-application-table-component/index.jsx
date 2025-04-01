@@ -9,12 +9,14 @@ import {
   TableRow,
   Paper,
   TableContainer,
+  IconButton,
 } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import PropTypes from "prop-types";
 import ApplicationStatusChipComponent from "../../shared/application-status-chips";
 import { formatDateStr } from "../../../utils/date";
 import { ContentTableCell, HeaderTableCell } from "../index.styles";
+import { getResumeUrl } from "../../../utils/job_applications_api";
 
 // Future TODOs ------
 // 1. When single job specific pages and single application pages are implemented,
@@ -36,6 +38,16 @@ function JobApplicationsTable({
     postalCode
       .toUpperCase()
       .replace(/^([A-Za-z]\d[A-Za-z])(\d[A-Za-z]\d)$/, "$1 $2");
+
+  const handleDownload = async (resume) => {
+    const presignedUrlObject = await getResumeUrl(resume);
+    const presignedUrl = presignedUrlObject.resume_url;
+    if (!presignedUrl) {
+      console.error("Failed to retrieve the presigned URL.");
+      return;
+    }
+    window.open(presignedUrl, "_blank");
+  };
 
   return (
     <TableContainer
@@ -79,13 +91,13 @@ function JobApplicationsTable({
               <ContentTableCell>{row.id}</ContentTableCell>
 
               <ContentTableCell>
-                <Link href={`/job-posts/${row.job_posting_id}`}>
-                  {row.title}
+                <Link href={`/job-applications/${row.id}`}>
+                  {row.job_posting.title}
                 </Link>
               </ContentTableCell>
 
               <ContentTableCell>
-                <Link href={`/job-applications/${row.id}`}>{row.name}</Link>
+                {row.name}
               </ContentTableCell>
 
               <ContentTableCell>{row.email}</ContentTableCell>
@@ -110,7 +122,12 @@ function JobApplicationsTable({
 
               {/* Add corresponding resume link  to this columns values */}
               <ContentTableCell>
-                <DownloadIcon color="primary" />
+                <IconButton
+                  color="primary"
+                  onClick={() => handleDownload(row.resume)}
+                >
+                  <DownloadIcon />
+                </IconButton>
               </ContentTableCell>
             </TableRow>
           ))}
@@ -130,7 +147,7 @@ function JobApplicationsTable({
                   handlePageRowChange({ page: parseInt(newPage, 10) })
                 }
                 onRowsPerPageChange={(e) => {
-                  handlePageRowChange({ rows: parseInt(e.target.value, 10) });
+                  handlePageRowChange({ rows: parseInt(e.target.value, 10), page: 0 });
                 }}
               />
             </TableCell>

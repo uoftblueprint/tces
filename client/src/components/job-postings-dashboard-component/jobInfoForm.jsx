@@ -198,7 +198,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           required
           InputLabelProps={{ shrink: true, required: false }}
         />
-      </Container> 
+      </Container>
     </JobLeadContainer>
   );
 }
