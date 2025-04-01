@@ -18,12 +18,17 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import JobTypeChipsComponent from "../../view-job-posts-component/job-type-chips-component";
 import JobPostsSortMenuComponent from "../../shared/job-posts-sort-menu-component";
 import JobPostsStatusMenuComponent from "../../shared/job-posts-status-menu-component";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import JobPostsDeleteErrorDialog from "../../shared/job-posts-delete-error-dialog";
-import { getAllJobPosts, deleteJobPost, getOneJobPost} from "../../../utils/job_posts_api";
+import {
+  getAllJobPosts,
+  deleteJobPost,
+  getOneJobPost,
+} from "../../../utils/job_posts_api";
 
 export default function JobPostingsDashboardTableComponent() {
   const navigate = useNavigate();
@@ -104,11 +109,13 @@ export default function JobPostingsDashboardTableComponent() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       if (data.status === "success" && data.jobPost) {
         // Pass the jobPostData via state to the EditJobPost component
-        navigate(`/all-job-postings/${id}`, { state: { jobPostData: data.jobPost, editMode: true } });
+        navigate(`/all-job-postings/${id}`, {
+          state: { jobPostData: data.jobPost, editMode: true },
+        });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -116,7 +123,6 @@ export default function JobPostingsDashboardTableComponent() {
       console.error("Failed to fetch job post:", error);
     }
   };
-  
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
@@ -156,11 +162,13 @@ export default function JobPostingsDashboardTableComponent() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.status === "success" && data.jobPost) {
-        navigate(`/all-job-postings/${jobPostId}`, { state: { jobPostData: data.jobPost } });
+        navigate(`/all-job-postings/${jobPostId}`, {
+          state: { jobPostData: data.jobPost },
+        });
       } else {
         console.error("Error fetching job post:", data.message);
       }
@@ -168,20 +176,21 @@ export default function JobPostingsDashboardTableComponent() {
       console.error("Failed to fetch job post:", error);
     }
   };
- 
-  
+
   const columns = [
     {
+      // field: "Job ID #",
       width: 60,
       sortable: false,
       filterable: false,
-      renderCell: (params) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(params.id)}
-          onChange={() => handleCheckboxChange(params.id)}
-        />
-      ),
+      renderCell: (params) => {
+        return (
+          <Checkbox
+            checked={selectedRows.includes(params.id)}
+            onChange={() => handleCheckboxChange(params.id)}
+          />
+        );
+      },
     },
     {
       field: "jobTitle",
@@ -263,9 +272,7 @@ export default function JobPostingsDashboardTableComponent() {
     <Box
       sx={{
         padding: "20px",
-        marginRight: "30px",
-        marginLeft: "auto",
-        marginBottom: "20px",
+        boxSizing: "border-box",
         overflowX: "hidden",
         width: "100%",
         "& .actions": {
@@ -301,7 +308,8 @@ export default function JobPostingsDashboardTableComponent() {
             />
 
             <Button
-              variant="outlined"
+              variant="contained"
+              size="small"
               onClick={() => {
                 setFilteredStatus("");
                 setSortOrder("");
@@ -309,11 +317,8 @@ export default function JobPostingsDashboardTableComponent() {
               disabled={!filterStatus && !sortOrder}
               sx={{
                 textTransform: "none",
-                borderColor: "#3568E5",
-                borderRadius: "8px",
-                height: "36px",
-                padding: "6px 16px",
-                width: "100px",
+                alignSelf: "flex-start",
+                borderRadius: "10px",
                 fontSize: "12.5px",
                 backgroundColor:
                   !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
@@ -338,10 +343,10 @@ export default function JobPostingsDashboardTableComponent() {
         </Box>
         <Button
           sx={{
+            borderRadius: "8px",
             marginLeft: "30px",
             marginBottom: "30px",
             marginRight: "40px",
-            marginTop: "20px",
             width: "100px",
             backgroundColor: "#3568E5",
             color: "white",
@@ -387,9 +392,17 @@ export default function JobPostingsDashboardTableComponent() {
             toolbar: { setRows, setRowModesModel },
           }}
           sx={{
+            padding: "15px",
+            backgroundColor: "white",
             "& .MuiDataGrid-virtualScroller": {
               overflowY: "hidden !important",
             },
+            ".MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold !important",
+            },
+            border: "none",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
           }}
         />
       </Box>

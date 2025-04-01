@@ -3,10 +3,15 @@ import styled from "styled-components";
 const DashboardContainer = styled.div`
   margin-right: 40px;
   overflow: "auto";
+  background-color: #fafafa;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: -1;
 `;
 
 const HeaderContainer = styled.div`
-  margin: 20px;
+  padding: 20px;
   display: flex;
   align-items: center;
 `;
@@ -63,4 +68,12 @@ const Container = styled.div`
   background-color: #f0f3f8;
   gap: 30px;
 `;
-export { DashboardContainer, ButtonContainer, HeaderContainer, JobPostContainer, H3, ButtonL , Container};
+export {
+  DashboardContainer,
+  ButtonContainer,
+  HeaderContainer,
+  JobPostContainer,
+  H3,
+  ButtonL,
+  Container,
+};

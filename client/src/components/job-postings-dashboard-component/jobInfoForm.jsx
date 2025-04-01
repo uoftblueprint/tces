@@ -22,7 +22,6 @@ import {
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
     setJobPostData({ ...jobPostData, [field]: input });
-
   };
   return (
     <JobLeadContainer>

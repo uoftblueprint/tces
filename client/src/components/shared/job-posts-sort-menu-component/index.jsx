@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 function SortMenu({ applySort }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,13 +42,7 @@ function SortMenu({ applySort }) {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         variant="outlined"
-        startIcon={
-          <img
-            src="/img/sortIcon.svg"
-            alt="sort icon"
-            style={{ width: 20, height: 20 }}
-          />
-        }
+        startIcon={<FilterListIcon color="primary" />}
         endIcon={
           <span
             style={{
@@ -63,6 +58,9 @@ function SortMenu({ applySort }) {
             &#9662;
           </span>
         }
+        sx={{
+          borderRadius: "8px",
+        }}
       >
         Sort
       </Button>
@@ -74,6 +72,7 @@ function SortMenu({ applySort }) {
         MenuListProps={{
           "aria-labelledby": "sort-button",
         }}
+        sx={{ borderRadius: "10px" }}
       >
         <MenuItem onClick={() => handleSelect("asc")}>
           <ListItemIcon>
