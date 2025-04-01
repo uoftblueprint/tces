@@ -91,7 +91,17 @@ function JobPostingsClientDashboardComponent() {
   }, [sortConfig, selectedJobType, selectedLocation, currentPage, rowsPerPage]);
 
   return (
-    <div style={{ padding: "90px", paddingBottom: "72px", paddingTop: "24px" }}>
+    <div
+      style={{
+        padding: "90px",
+        paddingBottom: "72px",
+        paddingTop: "24px",
+        backgroundColor: "#fafafa",
+        width: "100vw",
+        minHeight: "100vh",
+        boxSizing: "border-box",
+      }}
+    >
       <JobPostingsClientDashboardHeader
         onSortChange={handleSortChange}
         sortConfig={sortConfig}
