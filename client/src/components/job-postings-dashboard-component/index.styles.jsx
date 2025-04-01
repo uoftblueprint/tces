@@ -6,8 +6,6 @@ const DashboardContainer = styled.div`
   background-color: #fafafa;
   height: 100vh;
   width: 100vw;
-  position: relative;
-  z-index: -1;
 `;
 
 const HeaderContainer = styled.div`
