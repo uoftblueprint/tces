@@ -49,9 +49,12 @@ function JobDetails({ setJobPostData, setSnackBarMessage }) {
 
   return (
     <JobPostContainer maxWidth="lg" sx={{ mt: 4 }}>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-        <IconButton onClick={() => navigate("/all-job-postings")}>
-          <ArrowBack />
+      <Box sx={{ display: "flex", alignItems: "center", 
+        mb: "1.5rem",
+        mt: "1.5rem"
+        }}>
+        <IconButton onClick={() => navigate("/all-job-postings")} sx={{paddingLeft: "1rem", paddingRight:"0"}}>
+          <ArrowBack/>
         </IconButton>
         <Box sx={{ ml: 5 }}>
           <Typography variant="h4" fontWeight="bold" display="inline">
@@ -66,9 +69,13 @@ function JobDetails({ setJobPostData, setSnackBarMessage }) {
         </Box>
       </Box>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={2} sx={{
+        width:"96%", 
+        justifyContent: "center",
+        alignContent: "flex-start",
+        }}>
         {/* Job Details Section */}
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={6}>
           <EditJobPostingFormComponent
             jobPost={jobPostData}
             setJobPost={setLocalJobPostData}
@@ -79,8 +86,8 @@ function JobDetails({ setJobPostData, setSnackBarMessage }) {
         </Grid>
 
         {/* Application Form Section */}
-        <Grid item xs={12} md={5}>
-          <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
             <Typography
               color="#9E9E9E"
               gutterBottom

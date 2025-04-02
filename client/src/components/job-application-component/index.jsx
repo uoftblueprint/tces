@@ -73,6 +73,7 @@ function JobApplicationComponent({
           display: "flex",
           alignItems: "center",
           margin: "20px",
+          marginTop: "2rem"
         }}
       >
         <IconButton onClick={() => navigate("/job-applications")}>
@@ -92,7 +93,7 @@ function JobApplicationComponent({
           flexDirection: "row",
           width: "98%",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "flex-start",
         }}
       >
         <ApplicantInformationCard application={application} />

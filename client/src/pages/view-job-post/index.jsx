@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
 import { useRef, useEffect, useState } from "react";
+import './index.css';
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
@@ -8,6 +9,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorIcon from "@mui/icons-material/Error";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
@@ -35,6 +37,7 @@ import { uploadJobApplication } from "../../utils/job_applications_api";
 import { getOneActiveJobPost } from "../../utils/job_posts_api";
 import FormSubmissionErrorDialog from "../../components/shared/form-submission-error-dialog";
 import { formatLongDate } from "../../utils/date";
+import { MainContainer } from "./index.styles";
 import SuccessfulFormSubmissionDialog from "../../components/shared/successful-submission-dialog";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -43,10 +46,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(4),
-}));
+// const StyledContainer = styled(Container)(({ theme }) => ({
+//   paddingTop: theme.spacing(4),
+//   paddingBottom: theme.spacing(4),
+//   marginLeft: theme.spacing(10)
+//   // marginLeft: theme.spacing(15),
+// }));
 
 function CustomDialog({ open, onClose, title, message }) {
   return (
@@ -319,7 +324,11 @@ function JobPostingPage() {
         const formattedMin = `${Math.floor(minNum / 1000)}K`;
         const formattedMax = `${Math.floor(maxNum / 1000)}K`;
 
-        return `$${formattedMin}/year - $${formattedMax}/year`;
+        return `$${formattedMin} - $${formattedMax}/year`;
+      } case "Hourly": {
+        return `$${minNum} - $${maxNum}/hour`
+      } case "Weekly": {
+        return `$${minNum} - $${maxNum}/week`
       }
       default:
         return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
@@ -373,35 +382,23 @@ function JobPostingPage() {
   };
 
   return (
-    <StyledContainer>
+    <MainContainer>
       {/* Top Section with Job Title and Company */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          marginBottom: 2,
+          marginBottom: "2rem",
           backgroundColor: "#fff",
+          width: "80%",
         }}
       >
         <IconButton
-          sx={{ marginRight: 1 }} // Reduced margin
+          sx={{ marginRight: "2rem",
+            marginLeft: "2rem" }} // Reduced margin
           onClick={() => window.history.back()}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            width="20" // Reduced icon size
-            height="20"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          <ArrowBackIcon />
         </IconButton>
 
         <Box>
@@ -418,8 +415,13 @@ function JobPostingPage() {
       </Box>
 
       {/* Main Content */}
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={5}>
+      <Grid container spacing={2} 
+        sx={{
+          justifyContent: "center",
+          width: "90%",
+          mx: 'auto'
+        }}>
+        <Grid item xs={12} md={6}>
           <StyledPaper elevation={1}>
             {/* Information Header (Slightly Bigger but Compact) */}
             <Typography variant="h5" sx={{ flexGrow: 1 }}>
@@ -440,7 +442,7 @@ function JobPostingPage() {
                     jobPosting.rateOfPayFrequency,
                   ),
                 },
-                { label: "Job Type", value: jobPosting.jobType },
+                { label: "Job Type", value: jobPosting.jobType.join(", ") },
                 {
                   label: "Hours per Week",
                   value: `${jobPosting.hoursPerWeek} hours`,
@@ -454,7 +456,7 @@ function JobPostingPage() {
                   key={item.label}
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1.2fr", // Slightly more compact column sizing
+                    gridTemplateColumns: "1fr 2fr", // Slightly more compact column sizing
                     alignItems: "center",
                     py: 1.2, // Reduced padding for compact layout
                     borderBottom: index < 6 ? "1px solid #E0E0E0" : "none",
@@ -532,7 +534,7 @@ function JobPostingPage() {
         </Grid>
 
         {/* Right Section */}
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={6}>
           {" "}
           {/* Reduced width from md={7} to md={6.5} */}
           <StyledPaper elevation={1} sx={{ p: 2.5 }}>
@@ -817,7 +819,7 @@ function JobPostingPage() {
         open={isSuccessDialog}
         onBack={() => setIsSuccessDialog(false)}
       />
-    </StyledContainer>
+    </MainContainer>
   );
 }
 

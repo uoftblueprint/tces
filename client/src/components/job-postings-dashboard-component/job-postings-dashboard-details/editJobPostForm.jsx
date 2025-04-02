@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from "react";
+import "./editJobPostForm.css"
 import {
   Box,
   Typography,
@@ -101,6 +102,27 @@ function EditJobPostingFormComponent({
     setMaxCompensation(value);
   };
 
+  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
+    // Convert to numbers
+    const minNum = Number(min);
+    const maxNum = Number(max);
+
+    switch (rateOfPayFrequency) {
+      case "Annually": {
+        const formattedMin = `${Math.floor(minNum / 1000)}K`;
+        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
+
+        return `$${formattedMin} - $${formattedMax}/year`;
+      } case "Hourly": {
+        return `$${minNum} - $${maxNum}/hour`
+      } case "Weekly": {
+        return `$${minNum} - $${maxNum}/week`
+      }
+      default:
+        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
+    }
+  };
+
   const renderViewValue = (
     typeValue,
     value,
@@ -109,6 +131,7 @@ function EditJobPostingFormComponent({
     forceError = false,
   ) => {
     if (value !== undefined && value !== null && !forceError) {
+      console.log(typeValue, value)
       return (
         <Typography variant="body1" gutterBottom>
           {prefix}
@@ -133,23 +156,6 @@ function EditJobPostingFormComponent({
 
   const returnToForm = () => {
     setFormSubmissionErrorDialog(false);
-  };
-
-  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
-    // Convert to numbers
-    const minNum = Number(min);
-    const maxNum = Number(max);
-
-    switch (rateOfPayFrequency) {
-      case "Annually": {
-        const formattedMin = `${Math.floor(minNum / 1000)}K`;
-        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
-
-        return `$${formattedMin}/year - $${formattedMax}/year`;
-      }
-      default:
-        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
-    }
   };
 
   const handleSubmit = async (event) => {
@@ -196,10 +202,10 @@ function EditJobPostingFormComponent({
         sx={{
           width: "90%",
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: 1,
           ml: 9,
           mb: 2,
-          border: "1px solid #e0e0e0",
+          border: "0.5px solid #e0e0e0",
         }}
       >
         <form onSubmit={commitEdit}>
@@ -223,7 +229,7 @@ function EditJobPostingFormComponent({
             </IconButton>
           </HeaderContainer>
           <Divider sx={{ m: 2, borderBottomWidth: 2.5 }} />
-          <Stack spacing={2} sx={{ m: 2 }}>
+          <Stack spacing={1} sx={{ m: 2 }}>
             <Grid container alignItems="center">
               <Grid item xs={3}>
                 <Typography sx={{ ml: 2 }} variant="subtitle1" align="left">
@@ -302,7 +308,7 @@ function EditJobPostingFormComponent({
 
               {isEditMode ? (
                 <>
-                  <Grid item sx={{ width: "37%", marginRight: 1 }}>
+                  <Grid item sx={{ width: "36%", marginRight: 1 }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Minimum Compensation
@@ -329,7 +335,8 @@ function EditJobPostingFormComponent({
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item sx={{ width: "37%" }}>
+                  <Grid item sx={{ width: "1%" }}/>
+                  <Grid item sx={{ width: "36%" }}>
                     <FormControl fullWidth>
                       <InputLabel id={`minCompensationLabel-${jobPost.id}`}>
                         Maximum Compensation
@@ -405,7 +412,7 @@ function EditJobPostingFormComponent({
                     </Select>
                   </FormControl>
                 ) : (
-                  renderViewValue("Job Type", employmentType)
+                  renderViewValue("Job Type", employmentType.join(", "))
                 )}
               </Grid>
             </Grid>
@@ -572,7 +579,7 @@ EditJobPostingFormComponent.propTypes = {
   jobPost: JobLeadType.isRequired,
   setJobPost: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
-  isEditMode: PropTypes.func.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };
