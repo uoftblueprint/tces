@@ -26,7 +26,6 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { HeaderContainer } from "../index.styles";
 import JobLeadType from "../../../prop-types/JobLeadType";
-import { displayCompensationRange } from "../../../utils/jobLeads";
 import { formatLongDate } from "../../../utils/date";
 import ErrorScreenComponent from "../../shared/error-screen-component";
 import { modifyJobPost } from "../../../utils/job_posts_api";
@@ -103,6 +102,27 @@ function EditJobPostingFormComponent({
     setMaxCompensation(value);
   };
 
+  const formatSalaryRange = (min, max, rateOfPayFrequency) => {
+    // Convert to numbers
+    const minNum = Number(min);
+    const maxNum = Number(max);
+
+    switch (rateOfPayFrequency) {
+      case "Annually": {
+        const formattedMin = `${Math.floor(minNum / 1000)}K`;
+        const formattedMax = `${Math.floor(maxNum / 1000)}K`;
+
+        return `$${formattedMin} - $${formattedMax}/year`;
+      } case "Hourly": {
+        return `$${minNum} - $${maxNum}/hour`
+      } case "Weekly": {
+        return `$${minNum} - $${maxNum}/week`
+      }
+      default:
+        return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
+    }
+  };
+
   const renderViewValue = (
     typeValue,
     value,
@@ -111,6 +131,7 @@ function EditJobPostingFormComponent({
     forceError = false,
   ) => {
     if (value !== undefined && value !== null && !forceError) {
+      console.log(typeValue, value)
       return (
         <Typography variant="body1" gutterBottom>
           {prefix}
@@ -349,10 +370,10 @@ function EditJobPostingFormComponent({
                   maxCompensation !== undefined ? (
                     <Grid item xs={8} md={7}>
                       <Typography>
-                        {displayCompensationRange(
+                        {formatSalaryRange(
                           minCompensation,
                           maxCompensation,
-                          "/hour",
+                          jobPost.rate_of_pay_frequency,
                         )}
                       </Typography>
                     </Grid>
@@ -391,7 +412,7 @@ function EditJobPostingFormComponent({
                     </Select>
                   </FormControl>
                 ) : (
-                  renderViewValue("Job Type", employmentType)
+                  renderViewValue("Job Type", employmentType.join(", "))
                 )}
               </Grid>
             </Grid>
@@ -558,7 +579,7 @@ EditJobPostingFormComponent.propTypes = {
   jobPost: JobLeadType.isRequired,
   setJobPost: PropTypes.func.isRequired,
   setSnackBarMessage: PropTypes.func.isRequired,
-  isEditMode: PropTypes.func.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
   // eslint-disable-next-line
 };

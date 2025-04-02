@@ -275,7 +275,11 @@ function JobPostingPage() {
         const formattedMin = `${Math.floor(minNum / 1000)}K`;
         const formattedMax = `${Math.floor(maxNum / 1000)}K`;
 
-        return `$${formattedMin}/year - $${formattedMax}/year`;
+        return `$${formattedMin} - $${formattedMax}/year`;
+      } case "Hourly": {
+        return `$${minNum} - $${maxNum}/hour`
+      } case "Weekly": {
+        return `$${minNum} - $${maxNum}/week`
       }
       default:
         return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
@@ -387,7 +391,7 @@ function JobPostingPage() {
                     jobPosting.rateOfPayFrequency,
                   ),
                 },
-                { label: "Job Type", value: jobPosting.jobType },
+                { label: "Job Type", value: jobPosting.jobType.join(", ") },
                 {
                   label: "Hours per Week",
                   value: `${jobPosting.hoursPerWeek} hours`,
