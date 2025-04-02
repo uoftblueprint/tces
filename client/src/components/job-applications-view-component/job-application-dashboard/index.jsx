@@ -173,7 +173,11 @@ JobApplicationDashboard.propTypes = {
   jobApplicationQuery: PropTypes.shape({
     rows: PropTypes.number.isRequired,
     page: PropTypes.number.isRequired,
-    job_posting_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number, null]),
+    job_posting_id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      null,
+    ]),
     name: PropTypes.oneOfType([PropTypes.string, null]),
     job_title: PropTypes.oneOfType([PropTypes.string, null]),
     sort: PropTypes.string.isRequired,

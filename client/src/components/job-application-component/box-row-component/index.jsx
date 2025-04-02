@@ -13,6 +13,7 @@ import { IMaskInput } from "react-imask";
 import PropTypes from "prop-types";
 import { BoxDivider } from "./index.styles";
 import ApplicationStatusChipComponent from "../../shared/application-status-chips";
+import { getResumeUrl } from "../../../utils/job_applications_api";
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(
   { onChange, name, ...other },
@@ -51,6 +52,15 @@ function BoxRowComponent({
   isLast,
 }) {
   const [selectedValue, setSelectedValue] = useState(rightSide[0]);
+  const handleDownload = async (resume) => {
+    const presignedUrlObject = await getResumeUrl(resume);
+    const presignedUrl = presignedUrlObject.resume_url;
+    if (!presignedUrl) {
+      console.error("Failed to retrieve the presigned URL.");
+      return;
+    }
+    window.open(presignedUrl, "_blank");
+  };
 
   return (
     <>
@@ -109,7 +119,9 @@ function BoxRowComponent({
                 <DownloadIcon
                   sx={{ color: "#1565c0", cursor: "pointer" }}
                   align="right"
-                  onClick={() => {}}
+                  onClick={() => {
+                    handleDownload(rightSide);
+                  }}
                 />
               )}
             </div>
