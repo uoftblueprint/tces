@@ -2,6 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import { useRef, useEffect, useState } from "react";
 import './index.css';
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -24,14 +25,20 @@ import {
   Grid,
   LinearProgress,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Divider,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { uploadJobApplication } from "../../utils/job_applications_api";
 import { getOneActiveJobPost } from "../../utils/job_posts_api";
+import FormSubmissionErrorDialog from "../../components/shared/form-submission-error-dialog";
 import { formatLongDate } from "../../utils/date";
 import { MainContainer } from "./index.styles";
+import SuccessfulFormSubmissionDialog from "../../components/shared/successful-submission-dialog";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -46,6 +53,40 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 //   // marginLeft: theme.spacing(15),
 // }));
 
+function CustomDialog({ open, onClose, title, message }) {
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      sx={{
+        "& .MuiDialog-paper": {
+          borderTop: "10px solid #D32F2F",
+          padding: "20px",
+          textAlign: "center",
+        },
+      }}
+    >
+      <ErrorOutlineIcon
+        style={{ fontSize: 40, color: "#D32F2F", margin: "10px auto" }}
+      />
+      <DialogTitle>
+        <Typography variant="h5" fontWeight="bold">
+          {title}
+        </Typography>
+      </DialogTitle>
+      <DialogContent>
+        <Typography variant="body1" style={{ textAlign: "center" }}>
+          {message}
+        </Typography>
+      </DialogContent>
+      <DialogActions sx={{ justifyContent: "center" }}>
+        <Button onClick={onClose} variant="outlined" color="error" fullWidth>
+          BACK
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 // eslint-disable-next-line react/prop-types
 function JobPostingPage() {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
@@ -60,7 +101,8 @@ function JobPostingPage() {
   });
 
   const { jobPostingId } = useParams(); // Get jobPostingId from URL
-
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogData, setDialogData] = useState({ title: "", message: "" });
   // Define the initial state based on the JobPosting model attributes
   const [jobPosting, setJobPosting] = useState({
     id: null,
@@ -116,7 +158,11 @@ function JobPostingPage() {
             },
           });
         } catch (error) {
-          console.error("Error fetching job posting:", error);
+          setDialogData({
+            title: "Error",
+            message: "Error fetching job posting:",
+          });
+          setDialogOpen(true);
         }
       }
     };
@@ -198,6 +244,9 @@ function JobPostingPage() {
     }, 500);
   };
 
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [isSuccessDialog, setIsSuccessDialog] = useState(false);
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleFileChange,
     accept: { "application/pdf": [] },
@@ -259,7 +308,7 @@ function JobPostingPage() {
   //     );
   //     return { ...prev, customResponses: updatedResponses };
   //   });
-  // };
+  // };z
 
   const handleRecaptchaChange = (token) => {
     setRecaptchaToken(token);
@@ -284,20 +333,23 @@ function JobPostingPage() {
       default:
         return `$${minNum} - $${maxNum} ${rateOfPayFrequency}`;
     }
-
-    // Format with "K" notation (divide by 1000 and append "K")
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!file) {
-      alert("Please upload a resume.");
+      setDialogData({ title: "Error", message: "Please upload a resume." });
+      setDialogOpen(true);
       return;
     }
 
     if (!recaptchaToken) {
-      alert("Please complete the reCAPTCHA verification.");
+      setDialogData({
+        title: "Error",
+        message: "Please complete the reCAPTCHA verification.",
+      });
+      setDialogOpen(true);
       return;
     }
 
@@ -323,10 +375,9 @@ function JobPostingPage() {
         throw new Error("Failed to submit application");
       }
 
-      alert("Application submitted successfully!");
+      setIsSuccessDialog(true);
     } catch (error) {
-      console.error("Error submitting application:", error.message);
-      alert("An error occurred while submitting your application.");
+      setErrorDialogOpen(true);
     }
   };
 
@@ -754,8 +805,28 @@ function JobPostingPage() {
           </StyledPaper>
         </Grid>
       </Grid>
+      <FormSubmissionErrorDialog
+        open={errorDialogOpen}
+        onBack={() => setErrorDialogOpen(false)}
+      />
+      <CustomDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        title={dialogData.title}
+        message={dialogData.message}
+      />
+      <SuccessfulFormSubmissionDialog
+        open={isSuccessDialog}
+        onBack={() => setIsSuccessDialog(false)}
+      />
     </MainContainer>
   );
 }
 
 export default JobPostingPage;
+CustomDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+};

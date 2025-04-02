@@ -22,7 +22,6 @@ import {
 function AddJobDetails({ jobPostData, setJobPostData }) {
   const handleInputChange = (input, field) => {
     setJobPostData({ ...jobPostData, [field]: input });
-
   };
   return (
     <JobLeadContainer>
@@ -199,7 +198,7 @@ function AddJobDetails({ jobPostData, setJobPostData }) {
           required
           InputLabelProps={{ shrink: true, required: false }}
         />
-      </Container> 
+      </Container>
     </JobLeadContainer>
   );
 }

@@ -1,13 +1,13 @@
 const { REACT_APP_API_BASE_URL } = process.env;
 
-const fetchAllJobApplications = async (page, pageSize, jobPostingId) => {
+const fetchAllJobApplications = async (queryParams = {}) => {
   const url = new URL(`${REACT_APP_API_BASE_URL}/job_applications`);
 
-  // Set query parameters for pagination and filtering by job posting ID
-  if (page) url.searchParams.append("page", parseInt(page, 10));
-  if (pageSize) url.searchParams.append("pageSize", parseInt(pageSize, 10));
-  if (jobPostingId)
-    url.searchParams.append("job_posting_id", parseInt(jobPostingId, 10));
+  Object.keys(queryParams).forEach((key) => {
+    if (queryParams[key] !== null && queryParams[key] !== undefined) {
+      url.searchParams.append(key, queryParams[key]);
+    }
+  });
 
   try {
     const response = await fetch(url, {
@@ -63,9 +63,6 @@ const fetchJobApplicationsByApplicantName = async ({
 const uploadJobApplication = async (formData, token) => {
   // eslint-disable-next-line no-useless-catch
 
-  const formDataObject = Object.fromEntries(formData.entries());
-  console.log(formDataObject);
-
   const response = await fetch(`${REACT_APP_API_BASE_URL}/job_applications`, {
     method: "POST",
     credentials: "include",
@@ -77,9 +74,10 @@ const uploadJobApplication = async (formData, token) => {
 
 const getResumeUrl = async (jobApplicationId) => {
   const response = await fetch(
-    `${REACT_APP_API_BASE_URL}/job_applications/${jobApplicationId}`,
+    `${REACT_APP_API_BASE_URL}/job_applications/resume/${jobApplicationId}`,
     {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

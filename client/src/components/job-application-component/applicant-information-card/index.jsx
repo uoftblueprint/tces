@@ -1,16 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { Divider } from "../index.styles";
 
 import BoxRowComponent from "../box-row-component";
 
 function ApplicantInformationCard({ application }) {
-
   const [applicationName] = useState(application.name);
   const [applicationEmail] = useState(application.email);
   const [applicationPhoneNumber] = useState(application.phone);
@@ -51,11 +46,7 @@ function ApplicantInformationCard({ application }) {
       </CardContent>
       <Divider />
       <CardContent>
-        <BoxRowComponent
-          leftSide="Name"
-          rightSide={applicationName}
-          isFirst
-        />
+        <BoxRowComponent leftSide="Name" rightSide={applicationName} isFirst />
         <BoxRowComponent
           leftSide="Email"
           rightSideWrapper={emailWrapper}
