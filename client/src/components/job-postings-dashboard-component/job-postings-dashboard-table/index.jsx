@@ -54,7 +54,7 @@ export default function JobPostingsDashboardTableComponent() {
         page: page.toString(),
         pageSize: pageSize.toString(),
         status: filterStatus,
-        order: sortOrder,
+        order: sortOrder?.direction,
       });
 
       try {
