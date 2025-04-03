@@ -91,7 +91,7 @@ function JobApplicationsTable({
               <ContentTableCell>{row.id}</ContentTableCell>
 
               <ContentTableCell>
-                <Link href={`/job-postings/${row.job_posting_id}`}>
+                <Link href={`/all-job-postings/${row.job_posting_id}`}>
                   {row.job_posting.title}
                 </Link>
               </ContentTableCell>
