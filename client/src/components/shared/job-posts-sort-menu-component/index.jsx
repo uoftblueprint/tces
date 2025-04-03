@@ -74,15 +74,21 @@ function SortMenu({ applySort }) {
         }}
         sx={{ borderRadius: "10px" }}
       >
-        <MenuItem onClick={() => handleSelect("asc")}>
+        <MenuItem onClick={() => handleSelect("ascending")}>
           <ListItemIcon>
-            <Radio checked={selectedDirection === "asc"} value="asc" />
+            <Radio
+              checked={selectedDirection === "ascending"}
+              value="ascending"
+            />
           </ListItemIcon>
           <ListItemText primary="Close date: Ascending" />
         </MenuItem>
-        <MenuItem onClick={() => handleSelect("desc")}>
+        <MenuItem onClick={() => handleSelect("descending")}>
           <ListItemIcon>
-            <Radio checked={selectedDirection === "desc"} value="desc" />
+            <Radio
+              checked={selectedDirection === "descending"}
+              value="descending"
+            />
           </ListItemIcon>
           <ListItemText primary="Close date: Descending" />
         </MenuItem>

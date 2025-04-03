@@ -54,7 +54,7 @@ export default function JobPostingsDashboardTableComponent() {
         page: page.toString(),
         pageSize: pageSize.toString(),
         status: filterStatus,
-        order: sortOrder,
+        order: sortOrder?.direction,
       });
 
       try {
@@ -268,6 +268,9 @@ export default function JobPostingsDashboardTableComponent() {
     },
   ];
 
+  const canReset =
+    !filterStatus && (!sortOrder || sortOrder.direction === "descending");
+
   return (
     <Box
       sx={{
@@ -314,15 +317,14 @@ export default function JobPostingsDashboardTableComponent() {
                 setFilteredStatus("");
                 setSortOrder("");
               }}
-              disabled={!filterStatus && !sortOrder}
+              disabled={canReset}
               sx={{
                 textTransform: "none",
                 alignSelf: "flex-start",
                 borderRadius: "10px",
                 fontSize: "12.5px",
-                backgroundColor:
-                  !filterStatus && !sortOrder ? "#ccc" : "#3568E5",
-                color: !filterStatus && !sortOrder ? "#666" : "white",
+                backgroundColor: canReset ? "#ccc" : "#3568E5",
+                color: canReset ? "#666" : "white",
                 "&:hover": {
                   backgroundColor: "#3568E5",
                   color: "white",
