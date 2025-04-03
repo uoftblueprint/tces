@@ -152,7 +152,7 @@ const getAllLocations = async () => {
   return response;
 };
 
-module.exports = {
+export {
   createJobPost,
   deleteJobPost,
   modifyJobPost,

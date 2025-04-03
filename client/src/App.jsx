@@ -58,6 +58,7 @@ import {
   getOneJobApplication,
   updateJobApplicationStatus,
 } from "./utils/job_applications_api";
+
 function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
@@ -127,7 +128,7 @@ function App() {
   const THEME = createTheme({
     typography: {
       fontFamily: `"Inter"`,
-      "fontWeightBold": 600
+      fontWeightBold: 600,
     },
   });
 
