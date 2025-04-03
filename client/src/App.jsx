@@ -58,8 +58,6 @@ import {
   getOneJobApplication,
   updateJobApplicationStatus,
 } from "./utils/job_applications_api";
-import { getOneJobPost } from "./utils/job_posts_api";
-
 function App() {
   // redirect urls in-case user has a cached login or not
   const dashboardRedirect = "/dashboard";
@@ -325,7 +323,6 @@ function App() {
                     <JobApplicationPage
                       getApplicationById={getOneJobApplication}
                       setApplicationStatus={updateJobApplicationStatus}
-                      getJobPostById={getOneJobPost}
                     />
                   </AuthGuard>
                 }
